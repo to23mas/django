@@ -122,7 +122,7 @@ USE_TZ = True
 
 STATIC_URL = "public/"
 STATICFILES_DIRS = [
-    BASE_DIR / 'public/'
+    BASE_DIR / 'public/',
 ]
 
 STATIC_ROOT = BASE_DIR / 'public' / 'root'

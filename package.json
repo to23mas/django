@@ -1,8 +1,15 @@
 {
-	"scripts": {
-		"dev": "tailwindcss -i  src/public/static/input.css -o src/public/static/output.css -w"
-	},
-	"devDependencies": {
-		"tailwindcss": "^3.4.1"
-	}
+  "name": "django",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "vite": "^5.1.4"
+  }
 }
