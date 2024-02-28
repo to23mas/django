@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: gunicorn inpv.wsgi:application --bind 0.0.0.0:8000
+    expose:
+      - 8000
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=inpv
+
+  nginx:
+    build: ./docker/nginx
+    volumes:
+      - ./src/public/:/var/www/public/
+    ports:
+      - 1337:80
+    depends_on:
+      - web
+

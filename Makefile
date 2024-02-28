@@ -7,10 +7,10 @@ static:
 	python ./src/manage.py collectstatic
 
 .PHONY: run-server
-run:
+run-server:
 	python ./src/manage.py runserver
 
 .PHONY: assets
-dev:
+assets:
 	npx tailwindcss -i  src/public/static/input.css -o src/public/static/output.css -w
 
