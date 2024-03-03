@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
-	base: "./src/public",
+	base: "src/public",
 	resolve: {
 		alias: {
 			'@': resolve(__dirname, 'assets/js'),
@@ -12,7 +12,7 @@ export default defineConfig({
 	build: {
 		manifest: true,
 		minify: 'esbuild',
-		outDir: resolve("./src/public/dist"),
+		outDir: resolve("src/public/dist"),
 		rollupOptions: {
 			output: {
 				entryFileNames: '[name].js',

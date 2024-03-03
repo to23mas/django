@@ -11,3 +11,5 @@ node_modules
 
 # Editor directories and files
 venv
+
+src/public
