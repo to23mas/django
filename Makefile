@@ -14,3 +14,11 @@ run-server:
 assets:
 	npx tailwindcss -i  src/public/static/input.css -o src/public/static/output.css -w
 
+.PHONY: dev
+dev:
+	docker compose up -d
+
+.PHONY: prod
+prod:
+	docker compose up -d -f docker-compose.prod.yml
+
