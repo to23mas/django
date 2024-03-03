@@ -18,7 +18,7 @@ export default defineConfig({
 				entryFileNames: '[name].js',
 			},
 			input: {
-				app: './assets/js/app.js'
+				app: './assets/js/app.ts'
 			}
 		}
 	}
