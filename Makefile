@@ -29,3 +29,8 @@ psql:
 .PHONY: migrate
 migrate:
 	docker compose exec web python manage.py migrate
+
+.PHONY: lint
+lint:
+	pylint --rcfile pylintrc.toml src
+

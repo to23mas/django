@@ -1,3 +1,4 @@
-from django.db import models
+"""Database layer for Login module"""
+# from django.db import models
 
 # Create your models here.

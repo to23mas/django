@@ -11,6 +11,7 @@
 
 # Infrastructure
 - [ ]
+- [ ] github settings (disallow pushing into main)
 - [ ] tests
 - [ ] pylint
 - [x] properly add postgres

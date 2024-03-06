@@ -13,5 +13,4 @@ node_modules
 venv
 
 src/public
-src/login/__pycache__
-src/login/migrations/__pycache__
+__pycache__
