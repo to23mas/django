@@ -1,9 +1,27 @@
 version: '3.8'
 
 services:
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=inpv
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "user", "-d", "inpv", "-h", "localhost", "-p", "5432"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8888
+    command: >
+      sh -c "sleep 8 &&
+             python manage.py migrate &&
+             python manage.py createsuperuser --username admin  --email admin@admin.admin --noinput &&
+             python manage.py runserver 0.0.0.0:8888"
     volumes:
       - ./src/:/usr/src/app
     ports:
@@ -13,9 +31,3 @@ services:
     depends_on:
       - db
 
-  db:
-    image: postgres:15
-    environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=inpv

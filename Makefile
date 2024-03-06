@@ -22,3 +22,10 @@ dev:
 prod:
 	docker compose up -d -f docker-compose.prod.yml
 
+.PHONY: psql
+psql:
+	docker-compose exec db psql --username=user --dbname=inpv
+
+.PHONY: migrate
+migrate:
+	docker compose exec web python manage.py migrate
