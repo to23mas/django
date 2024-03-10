@@ -16,6 +16,7 @@
     "vite": "^5.1.4"
   },
   "dependencies": {
-    "@pyscript/core": "^0.4.5"
+    "@pyscript/core": "^0.4.5",
+    "flowbite": "^2.3.0"
   }
 }
