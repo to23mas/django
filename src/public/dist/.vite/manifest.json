@@ -1,7 +1,12 @@
 {
-  "assets/js/app.js": {
+  "assets/js/app.ts": {
     "file": "app.js",
-    "src": "assets/js/app.js",
+    "src": "assets/js/app.ts",
+    "isEntry": true
+  },
+  "assets/js/flowbite.ts": {
+    "file": "flwobite.js",
+    "src": "assets/js/flowbite.ts",
     "isEntry": true
   }
 }

@@ -6,10 +6,14 @@
 ## frontend
 - [ ]
 - [ ] error page
-- [ ] navbar
-- [ ] flowbite
+- [ ] favicon
+- [ ] name
+- [-] navbar
+        - [x] install navbar
+        - [ ] styling
+        - [ ] add coresponding fields
+- [x] flowbite
 - [ ] registration
-        - [ ]
         - [ ] styles
         - [ ] to login
 - [-] loginscreen
@@ -23,11 +27,9 @@
         - [ ] forgotten password part
 
 ## backend
-- [ ]
 - [ ] fontawesome
 
 # Infrastructure
-- [ ]
 - [ ] smtp and emails
 - [ ] github settings (disallow pushing into main)
 - [ ] update readme.md

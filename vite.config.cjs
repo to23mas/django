@@ -18,7 +18,8 @@ export default defineConfig({
 				entryFileNames: '[name].js',
 			},
 			input: {
-				app: './assets/js/app.ts'
+				app: './assets/js/app.ts',
+				flwobite: './assets/js/flowbite.ts',
 			}
 		}
 	}
