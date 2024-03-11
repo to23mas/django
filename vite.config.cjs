@@ -19,7 +19,7 @@ export default defineConfig({
 			},
 			input: {
 				app: './assets/js/app.ts',
-				flwobite: './assets/js/flowbite.ts',
+				flowbite: './assets/js/flowbite.ts',
 			}
 		}
 	}

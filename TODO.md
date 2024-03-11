@@ -30,8 +30,8 @@
 - [ ] fontawesome
 
 # Infrastructure
+- [ ] mongo
 - [ ] smtp and emails
-- [ ] github settings (disallow pushing into main)
 - [ ] update readme.md
 - [ ] tests
 - [ ] integrational acceptance and unit test
@@ -39,8 +39,13 @@
 - [ ] test tailwind with vite (test after some css node package is added ... font aweseome 6 icons/ fonts)
 - [ ] deploy
 - [ ] try to add **pyscript** as **esmodule** via vite
+- [x] github settings (disallow pushing into main) DONT WANT TO DO THAT
 - [x] pylint
 - [x] .editorconfig
 - [x] for some reason django hmls are not being updated on change and save
 - [x] properly add postgres
 - [x] superuser
+
+
+## resources
+svg: https://www.svgrepo.com/
