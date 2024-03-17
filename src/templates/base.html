@@ -7,7 +7,9 @@
 
   <body>
     <div>
-      {% include 'navbar/navbar.html' %}
+      {% if user.is_authenticated %}
+        {% include 'navbar/navbar.html' %}
+      {% endif %}
     </div>
 
     <div>

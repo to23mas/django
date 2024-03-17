@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
-    'login.apps.LoginConfig'
+    'login.apps.LoginConfig',
+    'overview.apps.OverviewConfig',
 ]
 
 MIDDLEWARE = [
@@ -58,7 +59,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            BASE_DIR / 'login/templates',
+            BASE_DIR / 'overview/templates',
             BASE_DIR / 'templates',
         ],
         "APP_DIRS": True,
@@ -137,5 +138,5 @@ STATIC_ROOT = BASE_DIR / 'public' / 'root'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "home"
-LOGOUT_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/login/"
