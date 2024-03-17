@@ -1,9 +1,8 @@
 """URLS"""
 from django.urls import path
-
 from . import views
 
-app_name = 'login'
+app_name = 'overview'
 urlpatterns = [
-    path("", views.Overview.as_view(), name="overview"),
+    path("", views.overview, name="overview"),
 ]

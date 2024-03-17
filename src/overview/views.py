@@ -1,13 +1,14 @@
 """views.py"""
-from django.views.generic import TemplateView
 from domain.data.projects_storage import ProjectsStorage
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 
-class Overview(LoginRequiredMixin, TemplateView):
-    """index view testing purposes"""
-    login_url = "/login"
-    template_name = 'overview.html'
+@login_required
+def overview(request: HttpRequest) -> HttpResponse:
+    """list all projects"""
 
-    def get_context_data(self, **kwargs):
-        return {'projects': ProjectsStorage.findTitles()}
+    return render(request, 'overview.html', {
+        'projects': ProjectsStorage.findOverviews()
+    })
