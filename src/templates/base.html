@@ -6,13 +6,13 @@
   </head>
 
   <body>
-    <div>
+    <div class="h-15">
       {% if user.is_authenticated %}
         {% include 'navbar/navbar.html' %}
       {% endif %}
     </div>
 
-    <div>
+    <div class="h-full">
       {% block content %} {% endblock %}
     </div>
   </body>

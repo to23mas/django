@@ -8,5 +8,10 @@
     "file": "flowbite.js",
     "src": "assets/js/flowbite.ts",
     "isEntry": true
+  },
+  "assets/js/vis.js": {
+    "file": "vis.js",
+    "src": "assets/js/vis.js",
+    "isEntry": true
   }
 }
