@@ -21,8 +21,8 @@ services:
       sh -c "sleep 8 &&
              python manage.py migrate ;
              python manage.py createsuperuser --username admin  --email admin@admin.admin --noinput ;
-             python manage.py runserver 0.0.0.0:8888 ;
-             python ../../db/migration/migrate.py"
+             python /usr/src/db/migrations/migrate.py ;
+             python manage.py runserver 0.0.0.0:8888"
     volumes:
       - ./src/:/usr/src/app
       - ./db/:/usr/src/db

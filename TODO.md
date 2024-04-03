@@ -25,6 +25,7 @@
         - [x] install navbar
         - [ ] styling
         - [ ] add coresponding fields
+        - [ ] working anchor tags
 - [-] loginscreen
         -  https://learndjango.com/tutorials/django-login-and-logout-tutorial
         - [x] functional login and redirect to main app

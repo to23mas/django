@@ -1,20 +1,24 @@
-from pymongo import MongoClient
-
-client = MongoClient('localhost', 27017)
-
-db = client.inpv
-projects = list(db.projects.find())
-
-print(projects)
-# for project in projects.find():
+## mongo test
+# from pymongo import MongoClient
+# client = MongoClient('localhost', 27017)
+# db = client.inpv
+# for project in db.projects.find():
 #     print(project)
 
-# from src.domain.data.projects_storage import ProjectsStorage
 
-# ms = MongoStorage()
-# db = ms.client.inpv
-# project = db.projects.find()
-#
-# print(project)
-# ProjectsStorage.findTitles()
-# get_projects()
+## postgresql
+import psycopg2
+import pprint
+from datetime import datetime
+
+conn = psycopg2.connect(database="inpv",
+                        host="localhost",
+                        user="user",
+                        password="password",
+                        port="5432")
+
+cursor = conn.cursor()
+cursor.execute("INSERT INTO django_migrations values (88, %s, %s, %s);",
+               ('ahoj', 'ahoj', datetime.now()))
+cursor.execute('select * from django_migrations')
+pprint.pp(cursor.fetchall())
