@@ -1,4 +1,5 @@
 {
+    "_id": 1000,
     "no": 1,
     "title": "Hello World!",
     "card": {
@@ -9,6 +10,10 @@
             "django console",
             "představení administrace"
         ]
-    }
-
+    },
+    "lessons": [
+        {"lesson_id": 1001, "display_name": "setup"},
+        {"lesson_id": 1002, "display_name": "terminal"},
+        {"lesson_id": 1003, "display_name": "editor"}
+    ]
 }
