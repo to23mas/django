@@ -7,7 +7,7 @@ def clear_database(db):
     db.projects.delete_many({})
     db.lessons.delete_many({})
     db.chapters.delete_many({})
-
+    
 
 def list_files(directory):
     file_list = []
