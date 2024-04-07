@@ -1,0 +1,9 @@
+{
+    "_id": 1100,
+    "title": "Django setup",
+    "chapters": [
+        {"id": 1101, "label": "introduction"},
+        {"id": 1102, "label": "instalation"}
+    ]
+}
+

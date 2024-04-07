@@ -1,14 +1,24 @@
 """views.py"""
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from domain.data.projects_storage import ProjectsStorage
+from domain.data.projects_storage import *
 from django.contrib.auth.decorators import login_required
 
 
 @login_required
-def project_detail(request: HttpRequest, project_no: int) -> HttpResponse:
+def project_detail(request: HttpRequest, project_id: int) -> HttpResponse:
     """detail view for projets"""
 
     return render(request, 'project_detail.html', {
-        'project': ProjectsStorage.getDetail(project_no)
+        'project': get_project_detail(project_id),
+        'hello': 'ahoj'
+    })
+
+@login_required
+def lesson(request: HttpRequest, lesson_id: int, chapter_id: int) -> HttpResponse:
+    """display lesson"""
+
+    return render(request, 'lesson.html', {
+        'lesson': get_lesson(lesson_id),
+        'chapter': get_chapter(chapter_id)
     })

@@ -1,0 +1,24 @@
+{
+    "_id": 1102,
+    "title": "Introduction chapter",
+    "texts": [
+        {
+            "title": "napis",
+            "text": "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
+            "code": "from smth import clasical\n\nif __name__ == '__main__':\n\tprint('hello World!')",
+            "cli": "python3 install django"
+        },{
+            "title": "napis 2",
+            "text": "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
+            "code": "from smth import clasical\n\nif __name__ == '__main__':\n\tprint('hello World!')",
+            "cli": "python3 install django"
+        },{
+            "title": "napis 2",
+            "text": "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.",
+            "code": "from smth import clasical\n\nif __name__ == '__main__':\n\tprint('hello World!')",
+            "cli": "python3 install django"
+        }
+    ]
+}
+
+

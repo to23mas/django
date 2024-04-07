@@ -1,35 +1,43 @@
 from pymongo import MongoClient
-from os import listdir, path
+from os import path, walk
 import json
-import psycopg2
-from datetime import datetime
 
-dir = '/usr/src/db/migrations/documents/projects/'
-files = listdir(dir)
 
-# psql
-conn = psycopg2.connect(database="inpv", host="db", user="user", password="password", port="5432")
-cursor = conn.cursor()
+def clear_database(db):
+    db.projects.delete_many({})
+    db.lessons.delete_many({})
+    db.chapters.delete_many({})
 
-# mongo
-client = MongoClient('mongodb', 27017)
-db = client.inpv
-projects = db.projects
 
-for file in files:
-    with open(dir + file) as f:
-        file_data = json.load(f)
-        filename = path.basename(f.name)
-        cursor.execute(f"select * from django_migrations where name = '{filename}'")
-        if cursor.fetchone() is None:
-            projects.insert_one(file_data)
-            cursor.execute(" INSERT INTO django_migrations values (99%s, %s, %s, %s)",
-                           (int(path.basename(f.name).split('-')[0]), 'migrations', path.basename(f.name), datetime.now()))
-            print(f'{filename} has been sucessfully migrated')
-        else:
-            print(f'{filename} already in DB')
+def list_files(directory):
+    file_list = []
+    for root, _, files in walk(directory):
+        for filename in files:
+            file_list.append(path.join(root, filename))
+    return file_list
 
-conn.commit()
-cursor.close()
-conn.close()
-client.close()
+
+def migrate(files, collection):
+    for file in files:
+        with open(file) as f:
+            file_data = json.load(f)
+            filename = path.basename(f.name)
+            collection.insert_one(file_data)
+            print(f'{filename} -> migrated')
+
+
+if __name__ == "__main__":
+    client = MongoClient('mongodb', 27017)
+    db = client.inpv
+
+    clear_database(db)
+
+    project_files = list_files('/usr/src/db/migrations/documents/projects/')
+    lessons_files = list_files('/usr/src/db/migrations/documents/lessons/')
+    chapters_files = list_files('/usr/src/db/migrations/documents/chapters/')
+
+    migrate(project_files, db.projects)
+    migrate(lessons_files, db.lessons)
+    migrate(chapters_files, db.chapters)
+
+    client.close()
