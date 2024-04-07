@@ -2,62 +2,73 @@
 
 {% block content %}
    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js" ></script>
-   <div style="height: 90vh;" id="projectNetwork"> ahoj </div>
-
    {{project}}
-
+   {{hello}}
+   <div style="height: 90vh;" class="cursor-grabbing" id="projectNetwork"></div>
 
    <script type="text/javascript">
-     // create an array with nodes
-     var nodes = new vis.DataSet([
-       { id: 1, label: "Node 1", url: "/" },
-       { id: 2, label: "Node 2" },
-       { id: 3, label: "Node 3" },
-       { id: 4, label: "Node 4" },
-       { id: 5, label: "Node 5" },
-       { id: 6, label: "Node 5" },
-       { id: 7, label: "Node 5" },
-       { id: 8, label: "Node 5" },
-       { id: 9, label: "Node 5" },
-       { id: 10, label: "Node 5" },
-       { id: 11, label: "Node 5" },
-       { id: 12, label: "Node 5" },
-       { id: 13, label: "Node 5" },
-       { id: 14, label: "Node 5" },
-       { id: 15, label: "Node 5" },
-       { id: 16, label: "Node 5" },
-       { id: 17, label: "Node 5" },
-       { id: 18, label: "Node 5" },
-       { id: 19, label: "Node 5" },
-       { id: 20, label: "Node 5" },
-       { id: 21, label: "Node 5" },
-       { id: 22, label: "Node 5" },
-       { id: 23, label: "Node 5" },
-     ]);
+   // NODES
+   let nodes_parsed = [];
+   {% for lesson in project.lessons %}
+      nodes_parsed.push({
+        id: {{ lesson.id }},
+        label: '{{ lesson.label }}',
+        url: {{ lesson.id }} === 1100 ? '/projects/lesson-{{ lesson.id }}/chapter-' + ({{lesson.id}} + 1) : '#',
+        color: {{ lesson.id }} === 1100 ? '#34eb40' :
+               {{ lesson.id }} === 1200 ? '#34c6eb' :
+               {{ lesson.id }} === 1300 ? '#34c6eb' : '#cccccc'
+        });
+   {% endfor %}
 
-     // create an array with edges
-     var edges = new vis.DataSet([
-       { from: 1, to: 3 },
-       { from: 1, to: 2 },
-       { from: 2, to: 4 , },
-       { from: 2, to: 5 },
-       { from: 3, to: 3 },
-     ]);
+   var nodes = new vis.DataSet(
+     nodes_parsed
+   );
 
-     // create a network
-     var container = document.getElementById("projectNetwork");
-     var data = {
-       nodes: nodes,
-       edges: edges,
-     };
-     var options = {};
-     var network = new vis.Network(container, data, options);
-     network.on("selectNode", function (params) {
-       if (params.nodes.length === 1) {
-         var node = nodes.get(params.nodes[0]);
-         window.open(node.url, '_blank');
-       }});
-     </script>
+   // EDGES
+   let edges_parsed = [];
+   {% for lesson in project.lessons %}
+     {% for to in lesson.to %}
+       edges_parsed.push({ from: {{ lesson.id }} , to: {{ to }} });
+     {% endfor %}
+   {% endfor %}
 
-{% endblock %}
+   var edges = new vis.DataSet(
+     edges_parsed
+   );
+
+   var network = new vis.Network(
+     document.getElementById("projectNetwork"),
+     {nodes: nodes, edges: edges},
+     {
+       edges: {
+          arrows: { to: {enabled: true} },
+          color: { color: '#cccccc' },
+          chosen: false
+       },
+       nodes: {
+         font: {
+           size: 30
+         },
+         fixed: {
+           x: true,
+           y: true
+         },
+         shape: 'ellipse'
+       },
+       layout: {
+         randomSeed: 1
+       }
+     }
+   );
+
+   network.on("selectNode", function (params) {
+     if (params.nodes.length === 1) {
+       var node = nodes.get(params.nodes[0]);
+       if (node.url !== '#') {
+          window.location.href = node.url;
+       }
+     }});
+   </script>
+
+   {% endblock %}
 

@@ -1,6 +1,6 @@
 {
     "_id": 1000,
-    "no": 1,
+    "no": 1000,
     "title": "Hello World!",
     "card": {
         "description": "V prvním projektu si ukážeme jak nastartovat django aplikaci",
@@ -12,8 +12,9 @@
         ]
     },
     "lessons": [
-        {"lesson_id": 1001, "display_name": "setup"},
-        {"lesson_id": 1002, "display_name": "terminal"},
-        {"lesson_id": 1003, "display_name": "editor"}
+        {"id": 1100, "label": "setup", "to": [1200, 1300]},
+        {"id": 1200, "label": "terminal", "to": [1400]},
+        {"id": 1300, "label": "editor"},
+        {"id": 1400, "label": "test"}
     ]
 }

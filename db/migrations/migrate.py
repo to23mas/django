@@ -6,11 +6,12 @@ import json
 def clear_database(db):
     db.projects.delete_many({})
     db.lessons.delete_many({})
-
+    db.chapters.delete_many({})
+    
 
 def list_files(directory):
     file_list = []
-    for root, directories, files in walk(directory):
+    for root, _, files in walk(directory):
         for filename in files:
             file_list.append(path.join(root, filename))
     return file_list
@@ -33,8 +34,10 @@ if __name__ == "__main__":
 
     project_files = list_files('/usr/src/db/migrations/documents/projects/')
     lessons_files = list_files('/usr/src/db/migrations/documents/lessons/')
+    chapters_files = list_files('/usr/src/db/migrations/documents/chapters/')
 
     migrate(project_files, db.projects)
     migrate(lessons_files, db.lessons)
+    migrate(chapters_files, db.chapters)
 
     client.close()
