@@ -2,8 +2,10 @@
 
 {% block content %}
 
-    {{ lesson }}
-    <hr>
-    {{ chapter }}
+  <div>
+    {% include 'sidebar.html' %}
+  </div>
+  <div class="ml-64">
+    {% include 'sidebar.html' %}
+  </div>
 {% endblock %}
-

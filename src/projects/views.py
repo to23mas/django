@@ -11,7 +11,6 @@ def project_detail(request: HttpRequest, project_id: int) -> HttpResponse:
 
     return render(request, 'project_detail.html', {
         'project': get_project_detail(project_id),
-        'hello': 'ahoj'
     })
 
 @login_required
@@ -20,5 +19,6 @@ def lesson(request: HttpRequest, lesson_id: int, chapter_id: int) -> HttpRespons
 
     return render(request, 'lesson.html', {
         'lesson': get_lesson(lesson_id),
-        'chapter': get_chapter(chapter_id)
+        'chapter': get_chapter(chapter_id),
+        'chapter_id': chapter_id,
     })

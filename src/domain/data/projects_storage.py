@@ -20,4 +20,4 @@ def get_lesson(lesson_id: int):
 
 def get_chapter(chapter_id: int):
     ms = MongoStorage()
-    return ms.database.chapter.find_one({"_id": chapter_id})
+    return ms.database.chapters.find_one({"_id": chapter_id})

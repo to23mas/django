@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm-run-all --parallel build:vite",
+    "build:vite": "vite build --mode=production",
     "preview": "vite preview"
   },
   "devDependencies": {
@@ -16,6 +17,7 @@
     "vite": "^5.1.4"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.2",
     "@pyscript/core": "^0.4.5",
     "flowbite": "^2.3.0"
   }

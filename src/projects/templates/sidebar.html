@@ -1,0 +1,20 @@
+{% load static %}
+{% load get_mongo_id %}
+
+<aside id="default-sidebar" class="fixed left-0 z-40 w-64 h-full transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidenav">
+  <div class="overflow-y-auto py-5 px-3 h-full bg-gray-100 border-r border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <ul class="space-y-2">
+      {% for chapter in lesson.chapters %}
+        <li>
+        <a href="/projects/lesson-{{ lesson | mongo_id }}/chapter-{{chapter.id}}"
+          class="flex items-center p-2 text-base font-normal {% if chapter_id == chapter.id %} bg-blue-100 {% endif %} text-gray-900 rounded-lg group">
+          <i class="fa-solid fa-{{ chapter.icon }}"></i>
+            <span class="ml-3">{{ chapter.label }}</span>
+          </a>
+        </li>
+        <hr>
+      {% endfor %}
+    </ul>
+  </div>
+</aside>
+
