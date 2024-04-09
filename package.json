@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "built": "vite build",
     "build": "npm-run-all --parallel build:vite",
     "build:vite": "vite build --mode=production",
     "preview": "vite preview"
