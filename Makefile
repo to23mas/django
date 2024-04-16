@@ -12,7 +12,7 @@ run-server:
 
 .PHONY: assets
 assets:
-	npx tailwindcss -i assets/styles/tailwind.css -o src/public/static/styles.css -w
+	npx tailwindcss -i assets/styles/tailwind.css -o src/public/static/styles.css
 
 .PHONY: dev
 dev:

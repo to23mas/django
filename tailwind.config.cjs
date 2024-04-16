@@ -10,14 +10,3 @@ module.exports = {
         require('flowbite/plugin'),
     ],
 }
-
-    // theme: {
-    //     colors: {
-    //         ...colors,
-    //         ...{
-    //             main:colors.sky,
-    //             secondary: colors.black,
-    //         }
-    //     },
-    //     extend: {},
-    // },

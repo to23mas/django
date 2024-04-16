@@ -1,19 +1,27 @@
-<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/default.min.css">
+{% load get_type %}
+{% load to_code %}
+
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/atom-one-dark.min.css">
 <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
-<!--<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/languages/python.min.js"></script>-->
 <script>hljs.highlightAll();</script>
 
-<h2 class="text-5xl">{{ chapter.title }}</h2>
+<h2 class="p-6 text-4xl font-extrabold">{{ chapter.title }}</h2>
 
-{% for section in chapter.texts %}
-  <h3 class="text-xl">{{ section.title }}</h3>
-  <p>{{ section.text }}<p>
-  <pre><code class="language-python">{{ section.code }}</code></pre>
-  <hr>
-  <pre><code class="language-bash">{{ section.cli }}</code></pre>
-  <pre><code class="language-bash">echo ${a[$i,$j]}</code></pre>
-  <hr>
-  <hr>
-  <hr>
+{% for block  in chapter.blocks %}
+  <div class="p-6 m-5 bg-white border border-gray-200 rounded-lg shadow">
+    {% for block_type, block_val  in block.items %}
+      {% if block_type == 'text' %}
+        {% include 'text_card.html' %}
+      {% endif %}
 
+      {% if block_type == 'python' %}
+        <br><pre><code class="rounded-lg shadow">{{ block_val | to_code }}</code></pre>
+      {% endif %}
+
+      {% if block_type == 'cli' %}
+        <br><pre><code class="rounded-lg shadow language-bash">{{ block_val | to_code }}</code></pre>
+      {% endif %}
+
+    {% endfor %}
+  </div>
 {% endfor %}

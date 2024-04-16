@@ -7,7 +7,8 @@ def clear_database(db):
     db.projects.delete_many({})
     db.lessons.delete_many({})
     db.chapters.delete_many({})
-    
+    db.progress.delete_many({})
+
 
 def list_files(directory):
     file_list = []
@@ -35,9 +36,11 @@ if __name__ == "__main__":
     project_files = list_files('/usr/src/db/migrations/documents/projects/')
     lessons_files = list_files('/usr/src/db/migrations/documents/lessons/')
     chapters_files = list_files('/usr/src/db/migrations/documents/chapters/')
+    progress_files = list_files('/usr/src/db/migrations/documents/user/')
 
     migrate(project_files, db.projects)
     migrate(lessons_files, db.lessons)
     migrate(chapters_files, db.chapters)
+    migrate(progress_files, db.progress)
 
     client.close()

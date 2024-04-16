@@ -1,6 +1,6 @@
 {
-    "_id": 1101,
-    "title": "Introduction chapter",
+    "_id": 1103,
+    "title": "Editor",
     "blocks": [
         {
             "title": "napis",
@@ -57,4 +57,3 @@
         }
     ]
 }
-
