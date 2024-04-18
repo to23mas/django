@@ -32,3 +32,7 @@ def get_chapter(chapter_id: int):
 def get_progress_projects(username: str):
     ms = MongoStorage()
     return ms.database.progress.find_one({"_id": username}, {"projects": 1})
+
+def get_locked_projects(username: str):
+    ms = MongoStorage()
+    return ms.database.progress.find_one({"_id": username}, {"projects": 1})
