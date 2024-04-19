@@ -1,3 +1,7 @@
+## Venv
+
+`source ./venv/bin/activate.fish`
+
 ## Access mongo
 
 ```bash
