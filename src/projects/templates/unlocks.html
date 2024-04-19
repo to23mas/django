@@ -1,0 +1,14 @@
+{% load get_mongo_id %}
+
+{% if not chapter_finished  %}
+  <form action="{% url 'projects:next_chapter' %}" method="post">
+      {% csrf_token %}
+      <input type="hidden" name="chapter_id" value="{{ chapter_id }}">
+      <button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        Další
+      </button>
+  </form>
+{% else %}
+
+{% endif %}
+

@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+  <h1 class="mb-4 mt-20 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl text-center">
+    {{project.title}}
+  </h1>
+  <p class="text-center mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48">
+    {{project.card.description}}
+  </p>
+
+
+   <div style="height: 110vh;" class="cursor-grabbing" id="projectNetwork"></div>
+
    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js" ></script>
-   {{project}}
-   {{hello}}
-   <div style="height: 90vh;" class="cursor-grabbing" id="projectNetwork"></div>
 
    <script type="text/javascript">
    // NODES
@@ -13,10 +21,20 @@
       nodes_parsed.push({
         id: {{ lesson.id }},
         label: '{{ lesson.label }}',
-        url: {{ lesson.id }} === 1100 ? '/projects/lesson-{{ lesson.id }}/chapter-' + ({{lesson.id}} + 1) : '#',
-        color: {{ lesson.id }} === 1100 ? '#34eb40' :
-               {{ lesson.id }} === 1200 ? '#34c6eb' :
-               {{ lesson.id }} === 1300 ? '#34c6eb' : '#cccccc'
+       url: {% if lesson.id in lesson_progress.open %}
+               '/projects/lesson-{{ lesson.id }}/chapter-{{lesson.id|add:1}}'
+            {% elif lesson.id in lesson_progress.done %}
+               '/projects/lesson-{{ lesson.id }}/chapter-{{lesson.id|add:1}}'
+            {% else %}
+               '#'
+            {% endif %},
+        color: {% if lesson.id in lesson_progress.done %}
+                 '#34c6eb'
+               {% elif lesson.id in lesson_progress.open %}
+                 '#34eb40'
+               {% else %}
+                 '#cccccc'
+               {%endif %}
         });
    {% endfor %}
 
@@ -35,6 +53,7 @@
    var edges = new vis.DataSet(
      edges_parsed
    );
+
 
    var network = new vis.Network(
      document.getElementById("projectNetwork"),
@@ -61,6 +80,7 @@
      }
    );
 
+
    network.on("selectNode", function (params) {
      if (params.nodes.length === 1) {
        var node = nodes.get(params.nodes[0]);
@@ -68,6 +88,9 @@
           window.location.href = node.url;
        }
      }});
+
+    const canvas = network.canvas.frame.canvas;
+    canvas.style.top = parseInt(canvas.style.top || 0) - 20 + "%";
    </script>
 
    {% endblock %}

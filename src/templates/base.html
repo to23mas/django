@@ -12,6 +12,10 @@
       {% endif %}
     </div>
 
+    {% if messages %}
+        {% include 'messages/flash_messages.html' %}
+    {% endif %}
+
     <div class="h-full">
       {% block content %} {% endblock %}
     </div>

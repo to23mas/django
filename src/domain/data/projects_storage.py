@@ -16,7 +16,10 @@ def find_projects_in(ids: list) -> Cursor:
 
 def get_project_detail(project_id: int):
     ms = MongoStorage()
-    return ms.database.projects.find_one({"_id": project_id})
+    return ms.database.projects.find_one(
+        {"_id": project_id},
+        {'lessons': 1, 'title': 1, 'card': {'description':1}}
+    )
 
 
 def get_lesson(lesson_id: int):
@@ -31,7 +34,16 @@ def get_chapter(chapter_id: int):
 
 def get_progress_projects(username: str):
     ms = MongoStorage()
-    return ms.database.progress.find_one({"_id": username}, {"projects": 1})
+    return ms.database.progress.find_one({"_id": username})
+
+
+def get_lesson_progress(username: str, project_id: int):
+    ms = MongoStorage()
+    return ms.database.progress.find_one(
+        {"_id": username, f'lessons.{project_id}': {'$exists': True}},
+        {'lessons': 1}
+    )
+
 
 def get_locked_projects(username: str):
     ms = MongoStorage()

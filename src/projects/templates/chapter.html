@@ -1,14 +1,13 @@
-{% load get_type %}
 {% load to_code %}
 
 <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/atom-one-dark.min.css">
 <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
 
-<h2 class="p-6 text-4xl font-extrabold">{{ chapter.title }}</h2>
+<h2 class="text-4xl font-extrabold mx-auto md:w-4/6">{{ chapter.title }}</h2>
 
 {% for block  in chapter.blocks %}
-  <div class="p-6 m-5 bg-white border border-gray-200 rounded-lg shadow">
+  <div class="p-6 bg-white border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
     {% for block_type, block_val  in block.items %}
       {% if block_type == 'text' %}
         {% include 'text_card.html' %}
@@ -24,4 +23,5 @@
 
     {% endfor %}
   </div>
+
 {% endfor %}

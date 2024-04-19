@@ -1,6 +1,10 @@
 {
     "_id": 1101,
     "title": "Introduction chapter",
+    "unlocks": {
+        "chapters": [1102, 1103],
+        "type": {"type": "button"}
+    },
     "blocks": [
         {
             "title": "napis",
