@@ -1,14 +1,28 @@
 {% load get_mongo_id %}
 
-{% if not chapter_finished  %}
-  <form action="{% url 'projects:next_chapter' %}" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="chapter_id" value="{{ chapter_id }}">
-      <button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-        Další
-      </button>
-  </form>
-{% else %}
+<div class="mx-auto lg:w-4/6 pt-3">
+  {% if chapter_finished  %}
+    <form action="{% url 'projects:next_chapter' %}" class="float-end" method="post">
+        {% csrf_token %}
 
-{% endif %}
+        <input type="hidden" name="chapter_id" value="{{ chapter_id }}">
 
+        <button type="submit" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 shadow-lg shadow-green-500/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+          Další
+        </button>
+    </form>
+  {% else %}
+    {% if chapter.unlocks.type  == 'button' %}
+        <form action="{% url 'projects:unlock_chapter' %}" class="float-end" method="post">
+            {% csrf_token %}
+
+            <input type="hidden" name="chapter_id" value="{{ chapter_id }}">
+
+            <button type="submit"
+                    class="text text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 shadow-lg shadow-blue-500/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+              Udemknout další kapitolu
+            </button>
+        </form>
+    {% endif %}
+  {% endif %}
+</div>

@@ -3,7 +3,7 @@
     "title": "Introduction chapter",
     "unlocks": {
         "chapters": [1102, 1103],
-        "type": {"type": "button"}
+        "type": "button"
     },
     "blocks": [
         {

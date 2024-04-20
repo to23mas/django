@@ -30,7 +30,7 @@ def project_detail(request: HttpRequest, project_id: int) -> HttpResponse:
 
 
 @login_required
-def lesson(request: HttpRequest, lesson_id: int, chapter_id: int) -> HttpResponse:
+def lesson(request: HttpRequest, project_id: int, lesson_id: int, chapter_id: int) -> HttpResponse:
     """display lesson"""
 
     lesson = get_lesson(lesson_id)
@@ -43,25 +43,49 @@ def lesson(request: HttpRequest, lesson_id: int, chapter_id: int) -> HttpRespons
 
     # locked lesson or chapter
     progress = get_progress_projects(request.user.username) #type: ignore
-    if lesson_id in progress['projects']['lock'] or chapter_id in progress['projects']['lock']: #type: ignore
+    if lesson_id in progress['lessons'][str(project_id)]['lock'] or chapter_id in progress['chapters'][str(lesson_id)]['lock']: #type: ignore
         messages.warning(request, 'Lekce/kapitola ještě není odemčena!')
         return redirect('overview:overview')
 
     return render(request, 'lesson.html', {
+        'project_id': project_id,
         'lesson': lesson,
         'chapter': chapter,
         'chapter_finished': chapter_id in progress['chapters'][str(lesson_id)]['done'], #type: ignore
+        'sidebar_progress': progress['chapters'][str(lesson_id)], #type: ignore
         'chapter_id': chapter_id,
     })
 
 
+@login_required
 def next_chapter(request: HttpRequest) -> HttpResponse:
     """display lesson"""
 
     next_chapter_id = int(request.POST.get('chapter_id')) + 1 #type: ignore
     lesson_id = next_chapter_id - (next_chapter_id % 100)
+    project_id = next_chapter_id - (next_chapter_id % 1000)
 
-    if (get_chapter(next_chapter_id + 1) == None):
+    if (get_chapter(next_chapter_id) == None):
         return redirect('projects:lesson', lesson_id=(lesson_id + 100), chapter_id=(lesson_id+1))
 
-    return redirect('projects:lesson', lesson_id=lesson_id, chapter_id=next_chapter_id)
+    return redirect('projects:lesson', project_id=project_id, lesson_id=lesson_id, chapter_id=next_chapter_id)
+
+
+@login_required
+def unlock_chapter(request: HttpRequest) -> HttpResponse:
+    """display lesson"""
+
+    next_chapter_id = int(request.POST.get('chapter_id')) + 1 #type: ignore
+    lesson_id = next_chapter_id - (next_chapter_id % 100)
+    project_id = next_chapter_id - (next_chapter_id % 1000)
+
+    progress_lesson_or_chapter(request.user.username, next_chapter_id, lesson_id, unlock=True, lesson=False) #type: ignore
+    progress_lesson_or_chapter(request.user.username, (next_chapter_id-1), lesson_id, unlock=False, lesson=False) #type: ignore
+
+    if (get_chapter(next_chapter_id) == None):
+        # TODO may -> redirect to the next lesson/project instead of overview
+        return redirect('overview:overview')
+
+    return redirect('projects:lesson', project_id=project_id, lesson_id=lesson_id, chapter_id=next_chapter_id)
+
+

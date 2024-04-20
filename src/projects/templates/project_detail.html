@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load get_mongo_id %}
 
 {% block content %}
 
@@ -21,13 +22,11 @@
       nodes_parsed.push({
         id: {{ lesson.id }},
         label: '{{ lesson.label }}',
-       url: {% if lesson.id in lesson_progress.open %}
-               '/projects/lesson-{{ lesson.id }}/chapter-{{lesson.id|add:1}}'
-            {% elif lesson.id in lesson_progress.done %}
-               '/projects/lesson-{{ lesson.id }}/chapter-{{lesson.id|add:1}}'
-            {% else %}
+        url: {% if lesson.id in lesson_progress.open or lesson.id in lesson_progress.done %}
+               '/projects/project-{{project|mongo_id}}/lesson-{{ lesson.id }}/chapter-{{lesson.id|add:1}}'
+             {% else %}
                '#'
-            {% endif %},
+             {% endif %},
         color: {% if lesson.id in lesson_progress.done %}
                  '#34c6eb'
                {% elif lesson.id in lesson_progress.open %}

@@ -19,11 +19,22 @@
         <ul class="space-y-2">
           {% for chapter in lesson.chapters %}
              <li>
-                <a href="/projects/lesson-{{ lesson | mongo_id }}/chapter-{{chapter.id}}"
-                class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_id == chapter.id %} bg-blue-100 {% endif %}">
-                <i class="fa-solid fa-{{ chapter.icon }}"></i>
-                <span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.label }}</span>
+              {% if chapter.id in sidebar_progress.done %}
+                <a href="/projects/project-{{ project_id }}/lesson-{{ lesson|mongo_id }}/chapter-{{chapter.id}}"
+                   class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_id == chapter.id %} bg-blue-100 {% endif %}">
+                    <i class="fa-solid fa-check"></i>
+                    <span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.label }}done</span>
                 </a>
+              {% elif chapter.id in sidebar_progress.open %}
+                <a href="/projects/project-{{ project_id }}/lesson-{{ lesson|mongo_id }}/chapter-{{chapter.id}}"
+                   class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_id == chapter.id %} bg-blue-100 {% endif %}">
+                    <i class="fa-solid fa-lock-open"></i>
+                    <span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.label }}open</span>
+                </a>
+              {% else %}
+                    <i class="fa-solid fa-lock"></i>
+                    <span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.label }}lock</span>
+              {% endif %}
              </li>
           {% endfor %}
         </ul>
