@@ -1,0 +1,11 @@
+{
+    "_id": 13,
+    "title": "HTMX",
+    "visible": true,
+    "open": false,
+    "img": "htmx.png",
+    "description": "Poznejte HTMX, inovativní nástroj pro vytváření interaktivních webových aplikací bez nutnosti psaní JavaScriptu. Tento kurz vás naučí, jak využít HTML pro dynamické načítání obsahu, odesílání formulářů a aktualizace stránky v reálném čase. Zaměříme se na principy práce s HTMX, jeho integraci s existujícími projekty a techniky pro zlepšení uživatelského zážitku. Kurz je ideální pro vývojáře, kteří chtějí zjednodušit vývoj webových aplikací a zvýšit produktivitu pomocí moderních technologií.",
+    "tags": [
+        "HTMX"
+    ]
+}

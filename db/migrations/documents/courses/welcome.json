@@ -1,0 +1,15 @@
+{
+    "_id": 10,
+    "title": "INPV",
+    "visible": true,
+    "open": true,
+    "img": "howto.jpeg",
+    "description": "Ponořte se do světa webového vývoje s naší vzdělávací aplikací, která vás provede krok za krokem celým procesem tvorby webových aplikací. Naše aplikace nabízí interaktivní lekce, praktické cvičení a projekty, které vám pomohou zvládnout vše od základů HTML a CSS až po pokročilé frameworky jako Django a HTMX. Naučíte se, jak navrhovat, vyvíjet a nasazovat moderní, responzivní a uživatelsky přívětivé webové aplikace. Ideální pro začátečníky i pokročilé vývojáře, kteří chtějí rozšířit své dovednosti a vytvářet profesionální webové projekty.",
+    "tags": [
+        "kurzy",
+        "projekty",
+        "lekce",
+        "testy",
+        "blockly"
+    ]
+}
