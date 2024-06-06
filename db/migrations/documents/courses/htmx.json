@@ -1,6 +1,7 @@
 {
     "_id": 13,
     "title": "HTMX",
+    "projects": "htmx",
     "visible": true,
     "open": false,
     "img": "htmx.png",
