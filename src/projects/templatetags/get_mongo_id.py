@@ -3,6 +3,6 @@ from django import template
 
 register = template.Library()
 
-@register.filter("mongo_id")
-def mongo_id(value):
+@register.filter("get_mongo_id")
+def get_mongo_id(value):
     return str(value['_id'])

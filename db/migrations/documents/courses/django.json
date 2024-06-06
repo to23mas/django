@@ -1,7 +1,7 @@
 {
     "_id": 12,
+    "projects": "django",
     "title": "Django",
-    "projectId": 111,
     "visible": true,
     "open": true,
     "img": "django-basics.png",

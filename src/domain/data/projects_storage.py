@@ -3,14 +3,13 @@ from pymongo.cursor import Cursor
 from domain.Mongo import MongoStorage
 
 
-def find_projects() -> Cursor:
+def find_projects(course: str) -> Cursor:
     ms = MongoStorage()
-    return ms.database.projects.find()
+    return ms.database.projects[course].find()
 
 
 def find_projects_in(ids: list) -> Cursor:
     ms = MongoStorage()
-    print(ids)
     return ms.database.projects.find({"no": {"$in": ids}})
 
 

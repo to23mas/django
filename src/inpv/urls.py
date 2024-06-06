@@ -7,10 +7,10 @@ from django.urls import path, include
 
 urlpatterns = [
     # admin
-    path("admin/", admin.site.urls),
+    path('admin/', admin.site.urls),
 
     # overviews
-    path('', include('overview.urls')),
+    path('overview', include('overview.urls')),
     # projects
     path('projects/', include('projects.urls')),
 
@@ -19,5 +19,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
 
     #courses
-    path("courses/", include("courses.urls")),
+    path('', include('courses.urls')),
 ]

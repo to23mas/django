@@ -1,6 +1,7 @@
 {
     "_id": 10,
     "title": "INPV",
+    "projects": "inpv",
     "visible": true,
     "open": true,
     "img": "howto.jpeg",

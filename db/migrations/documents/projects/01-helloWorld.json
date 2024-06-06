@@ -1,6 +1,5 @@
 {
-    "_id": 1000,
-    "no": 1000,
+    "no": 1,
     "title": "Hello World!",
     "card": {
         "description": "V prvním projektu si ukážeme jak nastartovat django aplikaci",

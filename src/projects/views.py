@@ -5,6 +5,15 @@ from domain.data.projects_storage import *
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+# overview_html = 'overview/overview.html'
+# @login_required
+# def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
+#     """list all projects"""
+#
+#     return render(request, overview_html, {
+#         'projects': find_projects(course),
+#         'user_progress': get_progress_projects(request.user.username), #type: ignore
+#     })
 
 @login_required
 def project_detail(request: HttpRequest, project_id: int) -> HttpResponse:
