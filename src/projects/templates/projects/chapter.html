@@ -10,7 +10,7 @@
   <div class="p-6 bg-white border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
     {% for block_type, block_val  in block.items %}
       {% if block_type == 'text' %}
-        {% include 'text_card.html' %}
+        {% include 'projects/text_card.html' %}
       {% endif %}
 
       {% if block_type == 'python' %}

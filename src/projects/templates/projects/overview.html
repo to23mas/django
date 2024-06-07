@@ -26,7 +26,7 @@
           <div class="bg-white hidden p-4 rounded-lg md:p-8" id="about{{project.no}}" role="tabpanel" aria-labelledby="1about-tab">
             <h2 class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900">{{project.title}}</h2>
             <p class="mb-3 text-gray-500 ">{{project.card.description}}</p>
-            <a href="{% url 'projects:project_detail' project.no %}" class="inline-flex items-center font-medium text-blue-600 hover:text-blue-800">
+            <a href="{% url 'projects:detail' course=course_name project_no=project.no %}" class="inline-flex items-center font-medium text-blue-600 hover:text-blue-800">
               Přejít k lekci
               <svg class=" w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
@@ -73,7 +73,7 @@
             <div class="bg-green-200 hidden p-4 rounded-lg md:p-8" id="about{{project.no}}" role="tabpanel" aria-labelledby="1about-tab">
               <h2 class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900">{{project.title}}</h2>
               <p class="mb-3 text-gray-500 ">{{project.card.description}}</p>
-              <a href="{% url 'projects:project_detail' project.no %}" class="inline-flex items-center font-medium text-blue-600 hover:text-blue-800">
+              <a href="{% url 'projects:detail' course=course_name project_no=project.no %}" class="inline-flex items-center font-medium text-blue-600 hover:text-blue-800">
                 Přejít k lekci
                 <svg class=" w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
@@ -138,5 +138,5 @@
         </div>
       </div>
     {% endif %}
-  {% endfor %}
+{% endfor %}
 {% endblock %}

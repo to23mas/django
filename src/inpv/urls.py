@@ -9,8 +9,6 @@ urlpatterns = [
     # admin
     path('admin/', admin.site.urls),
 
-    # overviews
-    path('overview', include('overview.urls')),
     # projects
     path('projects/', include('projects.urls')),
 

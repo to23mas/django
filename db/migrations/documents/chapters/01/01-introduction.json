@@ -1,8 +1,8 @@
 {
-    "_id": 1101,
+    "no": 1,
     "title": "Introduction chapter",
     "unlocks": {
-        "chapters": [1102, 1103],
+        "chapters": [2, 3],
         "type": "button"
     },
     "blocks": [

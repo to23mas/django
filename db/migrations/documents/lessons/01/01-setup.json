@@ -1,10 +1,10 @@
 {
-    "_id": 1100,
+    "no": 1,
     "title": "Django setup",
     "chapters": [
-        {"id": 1101, "label": "introduction", "icon": "check"},
-        {"id": 1102, "label": "instalation", "icon": "lock-open"},
-        {"id": 1103, "label": "testing", "icon": "lock"},
-        {"id": 1104, "label": "testing 02", "icon": "lock"}
+        {"no": 1, "label": "introduction", "icon": "check"},
+        {"no": 2, "label": "instalation", "icon": "lock-open"},
+        {"no": 3, "label": "testing", "icon": "lock"},
+        {"no": 4, "label": "testing 02", "icon": "lock"}
     ]
 }

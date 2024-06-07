@@ -6,9 +6,16 @@ import json
 def clear_database(db):
     db.projects.delete_many({})
     db.projects.django.delete_many({})
+
     db.lessons.delete_many({})
+    db.lessons.django.delete_many({})
+
     db.chapters.delete_many({})
+    db.chapters.django.delete_many({})
+
     db.progress.delete_many({})
+    db.progress.django.delete_many({})
+
     db.courses.delete_many({})
 
 
@@ -42,9 +49,9 @@ if __name__ == "__main__":
     courses_files = list_files('/usr/src/db/migrations/documents/courses/')
 
     migrate(project_files, db.projects.django)
-    migrate(lessons_files, db.lessons)
-    migrate(chapters_files, db.chapters)
-    migrate(progress_files, db.progress)
+    migrate(lessons_files, db.lessons.django)
+    migrate(chapters_files, db.chapters.django)
+    migrate(progress_files, db.progress.django)
     migrate(courses_files, db.courses)
 
     client.close()

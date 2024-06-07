@@ -1,6 +1,4 @@
 {% extends "base.html" %}
-{% load get_mongo_id %}
-
 {% block content %}
 
   <h1 class="mb-4 mt-20 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl text-center">
@@ -13,24 +11,25 @@
 
    <div style="height: 110vh;" class="cursor-grabbing" id="projectNetwork"></div>
 
-   <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js" ></script>
 
+   <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
    <script type="text/javascript">
+
    // NODES
    let nodes_parsed = [];
    {% for lesson in project.lessons %}
       nodes_parsed.push({
-        id: {{ lesson.id }},
+        id: {{ lesson.no }},
         label: '{{ lesson.label }}',
-        url: {% if lesson.id in lesson_progress.open or lesson.id in lesson_progress.done %}
-               '/projects/project-{{project|mongo_id}}/lesson-{{ lesson.id }}/chapter-{{lesson.id|add:1}}'
+        url: {% if lesson.no in lesson_progress.open or lesson.no in lesson_progress.done %}
+               "{% url 'projects:lesson' course=course_name project_no=project.no lesson_no=lesson.no chapter_no=1 %}"
              {% else %}
                '#'
              {% endif %},
-        color: {% if lesson.id in lesson_progress.done %}
-                 '#34c6eb'
-               {% elif lesson.id in lesson_progress.open %}
+        color: {% if lesson.no in lesson_progress.done %}
                  '#34eb40'
+               {% elif lesson.no in lesson_progress.open %}
+                 '#34c6eb'
                {% else %}
                  '#cccccc'
                {%endif %}
@@ -45,7 +44,7 @@
    let edges_parsed = [];
    {% for lesson in project.lessons %}
      {% for to in lesson.to %}
-       edges_parsed.push({ from: {{ lesson.id }} , to: {{ to }} });
+       edges_parsed.push({ from: {{ lesson.no }} , to: {{ to }} });
      {% endfor %}
    {% endfor %}
 

@@ -7,16 +7,16 @@
     },
     "lessons": {
         "1": {
-            "done": [],
-            "open": [1],
-            "lock": [2, 3, 4]
+            "done": [1],
+            "open": [2, 3],
+            "lock": [4]
         }
     },
     "chapters": {
         "1": {
-            "done": [],
-            "open": [1],
-            "lock": [2, 3, 4]
+            "done": [1],
+            "open": [2],
+            "lock": [3, 4]
         }
     }
 }

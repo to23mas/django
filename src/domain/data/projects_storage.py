@@ -8,37 +8,61 @@ def find_projects(course: str) -> Cursor:
     return ms.database.projects[course].find()
 
 
-def find_projects_in(ids: list) -> Cursor:
+def find_projects_in(ids: list, course: str) -> Cursor:
     ms = MongoStorage()
-    return ms.database.projects.find({"no": {"$in": ids}})
+    return ms.database.projects[course].find({"no": {"$in": ids}})
 
 
-def get_project_detail(project_id: int):
+def get_project_detail(project_no: int, course: str):
     ms = MongoStorage()
-    return ms.database.projects.find_one(
-        {"_id": project_id},
-        {'lessons': 1, 'title': 1, 'card': {'description':1}})
+    return ms.database.projects[course].find_one(
+        {"no": project_no},
+        {'no': 1, 'lessons': 1, 'title': 1, 'card': {'description':1}})
 
 
-def get_lesson(lesson_id: int):
+def get_lesson(lesson_no: int, course: str):
     ms = MongoStorage()
-    return ms.database.lessons.find_one({"_id": lesson_id})
+    return ms.database.lessons[course].find_one({"no": lesson_no})
 
 
-def get_chapter(chapter_id: int):
+def get_chapter(chapter_no: int, course: str):
     ms = MongoStorage()
-    return ms.database.chapters.find_one({"_id": chapter_id})
+    return ms.database.chapters[course].find_one({"no": chapter_no})
 
 
-def get_progress_projects(username: str):
+def chapter_is_accessible_and_done(username: str, course: str, project_no: str, lesson_no: str, chapter_no: str) -> bool:
     ms = MongoStorage()
-    return ms.database.progress.find_one({"_id": username})
+    return ms.database.progress[course].count_documents({
+        '_id': username,
+        '$or': [{"projects.done": int(project_no)},
+                {"projects.open": int(project_no)}],
+        '$or': [{f"lessons.{project_no}.done": int(lesson_no)},
+                {f"lessons.{project_no}.open": int(lesson_no)}],
+        f"chapters.{lesson_no}.done": int(chapter_no)
+    }) == 1
 
-
-def get_lesson_progress(username: str, project_id: int):
+def is_chapter_open(username: str, course: str, project_no: str, lesson_no: str, chapter_no: str) -> bool:
     ms = MongoStorage()
-    return ms.database.progress.find_one(
-        {"_id": username, f'lessons.{project_id}': {'$exists': True}},
+    return ms.database.progress[course].count_documents({
+        '_id': username,
+        '$or': [{"projects.done": int(project_no)},
+                {"projects.open": int(project_no)}],
+        '$or': [{f"lessons.{project_no}.done": int(lesson_no)},
+                {f"lessons.{project_no}.open": int(lesson_no)}],
+        '$or': [{f"chapters.{lesson_no}.open": int(chapter_no)},
+                {f"chapters.{lesson_no}.done": int(chapter_no)}],
+    }) == 1
+
+
+def get_progress_projects(username: str, course: str):
+    ms = MongoStorage()
+    return ms.database.progress[course].find_one({"_id": username})
+
+
+def get_lesson_progress(username: str, project_no: int, course: str):
+    ms = MongoStorage()
+    return ms.database.progress[course].find_one(
+        {"_id": username, f'lessons.{str(project_no)}': {'$exists': True}},
         {'lessons': 1})
 
 

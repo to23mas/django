@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     'login.apps.LoginConfig',
-    'overview.apps.OverviewConfig',
     'projects.apps.ProjectsConfig',
+    'courses.apps.CoursesConfig',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +61,6 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             BASE_DIR / 'courses/templates',
-            BASE_DIR / 'overview/templates',
             BASE_DIR / 'projects/templates',
             BASE_DIR / 'templates',
         ],

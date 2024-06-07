@@ -1,5 +1,5 @@
 {% load static %}
-{% load get_mongo_id %}
+{{project}}
 <div class="">
    <button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-200 rounded-full px-5 py-2.5 focus:outline-none m-5"
       type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation">
@@ -19,15 +19,17 @@
         <ul class="space-y-2">
           {% for chapter in lesson.chapters %}
              <li>
-              {% if chapter.id in sidebar_progress.done %}
-                <a href="/projects/project-{{ project_id }}/lesson-{{ lesson|mongo_id }}/chapter-{{chapter.id}}"
-                   class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_id == chapter.id %} bg-blue-100 {% endif %}">
+              {% if chapter.no in sidebar_progress.done %}
+          <a
+            href="{% url 'projects:lesson' course=course_name project_no=project_no lesson_no=lesson.no chapter_no=forloop.counter %}"
+            class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_no == chapter.no %} bg-blue-100 {% endif %}">
                     <i class="fa-solid fa-check"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.label }}</span>
                 </a>
-              {% elif chapter.id in sidebar_progress.open %}
-                <a href="/projects/project-{{ project_id }}/lesson-{{ lesson|mongo_id }}/chapter-{{chapter.id}}"
-                   class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_id == chapter.id %} bg-blue-100 {% endif %}">
+              {% elif chapter.no in sidebar_progress.open %}
+                <a
+            href="{% url 'projects:lesson' course=course_name project_no=project_no lesson_no=lesson.no chapter_no=forloop.counter %}"
+                   class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_no == chapter.no %} bg-blue-100 {% endif %}">
                     <i class="fa-solid fa-lock-open"></i>
                     <span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.label }}</span>
                 </a>

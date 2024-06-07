@@ -10,5 +10,5 @@ def overview(request: HttpRequest) -> HttpResponse:
 
     return render(request, 'courses/overview.html', {
         'courses': find_courses(),
-        'h': 'hovno',
+        'courses_overview': True,
     })

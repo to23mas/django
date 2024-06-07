@@ -11,9 +11,9 @@
         ]
     },
     "lessons": [
-        {"id": 1100, "label": "setup", "to": [1200, 1300]},
-        {"id": 1200, "label": "terminal", "to": [1400]},
-        {"id": 1300, "label": "editor"},
-        {"id": 1400, "label": "test"}
+        {"no": 1, "label": "setup", "to": [2, 3]},
+        {"no": 2, "label": "terminal", "to": [4]},
+        {"no": 3, "label": "editor"},
+        {"no": 4, "label": "test"}
     ]
 }
