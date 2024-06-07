@@ -1,5 +1,6 @@
 {
     "no": 1,
+    "project": 1,
     "title": "Django setup",
     "chapters": [
         {"no": 1, "label": "introduction", "icon": "check"},

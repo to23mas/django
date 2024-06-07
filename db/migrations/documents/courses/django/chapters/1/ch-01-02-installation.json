@@ -1,8 +1,9 @@
 {
-    "no": 1,
-    "title": "Introduction chapter",
+    "no": 2,
+    "project": 1,
+    "lesson": 1,
+    "title": "Terminal",
     "unlocks": {
-        "chapters": [2, 3],
         "type": "button"
     },
     "blocks": [

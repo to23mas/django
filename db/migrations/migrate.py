@@ -4,19 +4,21 @@ import json
 
 
 def clear_database(db):
-    db.projects.delete_many({})
-    db.projects.django.delete_many({})
-
-    db.lessons.delete_many({})
-    db.lessons.django.delete_many({})
-
-    db.chapters.delete_many({})
-    db.chapters.django.delete_many({})
-
-    db.progress.delete_many({})
-    db.progress.django.delete_many({})
+    # db.lessons.delete_many({})
+    # db.lessons.django.delete_many({})
+    #
+    # db.chapters.delete_many({})
+    # db.chapters.django.delete_many({})
+    #
+    # db.progress.delete_many({})
+    # db.progress.django.delete_many({})
 
     db.courses.delete_many({})
+    #django
+    db.projects.django.delete_many({})
+    db.django.projects.delete_many({})
+    db.django.lessons.delete_many({})
+    db.django.chapters.delete_many({})
 
 
 def list_files(directory):
@@ -35,6 +37,12 @@ def migrate(files, collection):
             collection.insert_one(file_data)
             print(f'{filename} -> migrated')
 
+def migrate_one_file(file, collection):
+    with open(file) as f:
+        file_data = json.load(f)
+        filename = path.basename(f.name)
+        collection.insert_one(file_data)
+        print(f'{filename} -> migrated')
 
 if __name__ == "__main__":
     client = MongoClient('mongodb', 27017)
@@ -42,16 +50,44 @@ if __name__ == "__main__":
 
     clear_database(db)
 
-    project_files = list_files('/usr/src/db/migrations/documents/projects/')
-    lessons_files = list_files('/usr/src/db/migrations/documents/lessons/')
-    chapters_files = list_files('/usr/src/db/migrations/documents/chapters/')
-    progress_files = list_files('/usr/src/db/migrations/documents/user/')
-    courses_files = list_files('/usr/src/db/migrations/documents/courses/')
+    #django course
+    django_course = migrate_one_file(
+        '/usr/src/db/migrations/documents/courses/django/django.json',
+        db.courses)
+    ## projects
+    migrate(
+        list_files('/usr/src/db/migrations/documents/courses/django/projects/'),
+        db.django.projects)
+    ## lessons
+    migrate(
+        list_files('/usr/src/db/migrations/documents/courses/django/lessons/1/'),
+        db.django.lessons)
+    ## chapters
+    migrate(
+        list_files('/usr/src/db/migrations/documents/courses/django/chapters/1/'),
+        db.django.chapters)
 
-    migrate(project_files, db.projects.django)
-    migrate(lessons_files, db.lessons.django)
-    migrate(chapters_files, db.chapters.django)
-    migrate(progress_files, db.progress.django)
-    migrate(courses_files, db.courses)
+    #inpv course
+    django_course = migrate_one_file(
+        '/usr/src/db/migrations/documents/courses/inpv/inpv.json',
+        db.courses)
+
+    #htmx course
+    django_course = migrate_one_file(
+        '/usr/src/db/migrations/documents/courses/htmx/htmx.json',
+        db.courses)
+
+
+    # project_files = list_files('/usr/src/db/migrations/documents/projects/')
+    # lessons_files = list_files('/usr/src/db/migrations/documents/lessons/')
+    # chapters_files = list_files('/usr/src/db/migrations/documents/chapters/')
+    # progress_files = list_files('/usr/src/db/migrations/documents/user/')
+    # courses_files = list_files('/usr/src/db/migrations/documents/courses/')
+    #
+    # migrate(project_files, db.projects.django)
+    # migrate(lessons_files, db.lessons.django)
+    # migrate(chapters_files, db.chapters.django)
+    # migrate(progress_files, db.progress.django)
+    # migrate(courses_files, db.courses)
 
     client.close()

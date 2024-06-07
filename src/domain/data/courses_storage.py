@@ -5,4 +5,4 @@ from domain.Mongo import MongoStorage
 
 def find_courses() -> Cursor:
     ms = MongoStorage()
-    return ms.database.courses.find().sort('_id')
+    return ms.database.courses.find().sort('no')

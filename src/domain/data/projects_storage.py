@@ -3,19 +3,19 @@ from pymongo.cursor import Cursor
 from domain.Mongo import MongoStorage
 
 
-def find_projects(course: str) -> Cursor:
+def find_projects_by_course(course: str) -> Cursor:
     ms = MongoStorage()
-    return ms.database.projects[course].find()
+    return ms.database[course].projects.find().sort('no')
 
 
-def find_projects_in(ids: list, course: str) -> Cursor:
+def find_projects_by_course_and_ids(ids: list, course: str) -> Cursor:
     ms = MongoStorage()
-    return ms.database.projects[course].find({"no": {"$in": ids}})
+    return ms.database[course].projects.find({"no": {"$in": ids}}).sort('no')
 
 
 def get_project_detail(project_no: int, course: str):
     ms = MongoStorage()
-    return ms.database.projects[course].find_one(
+    return ms.database[course].projects.find_one(
         {"no": project_no},
         {'no': 1, 'lessons': 1, 'title': 1, 'card': {'description':1}})
 
@@ -39,6 +39,15 @@ def chapter_is_accessible_and_done(username: str, course: str, project_no: str, 
         '$or': [{f"lessons.{project_no}.done": int(lesson_no)},
                 {f"lessons.{project_no}.open": int(lesson_no)}],
         f"chapters.{lesson_no}.done": int(chapter_no)
+    }) == 1
+
+def chapter_is_open(username: str, course: str, project_no: str, lesson_no: str, chapter_no: str) -> bool:
+    ms = MongoStorage()
+    return ms.database.progress[course].count_documents({
+        '_id': username,
+        'projects.open': int(project_no),
+        f'lessons.{project_no}.open': int(lesson_no),
+        f'chapters.{lesson_no}.done': int(chapter_no),
     }) == 1
 
 def is_chapter_open(username: str, course: str, project_no: str, lesson_no: str, chapter_no: str) -> bool:

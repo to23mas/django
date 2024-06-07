@@ -10,7 +10,7 @@ def next_chapter(request: HttpRequest) -> HttpResponse:
     """display lesson"""
 
     if request.method != 'POST':
-        pass
+        pass # TODO redirect to overview/kurzy
 
     chapter_no = request.POST.get('chapter_no')
     lesson_no = request.POST.get('lesson_no')
@@ -34,9 +34,28 @@ def next_chapter(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def unlock_chapter(request: HttpRequest) -> HttpResponse:
-    """display lesson"""
+    """unlock chapter and redirect there"""
 
+    if request.method != 'POST':
+        pass # TODO redirect to overview/kurzy
+
+    chapter_no = request.POST.get('chapter_no')
+    lesson_no = request.POST.get('lesson_no')
+    project_no = request.POST.get('project_no')
+    course = request.POST.get('course')
     next_chapter_id = int(request.POST.get('chapter_id')) + 1 #type: ignore
+
+    # pravděpodobně podvržený formulář (uživatel posílá akci z místa kde ve skutečnosti být nemůže
+    if not chapter_is_open(request.user.username, course, project_no, lesson_no, chapter_no): #type: ignore
+        messages.warning(request, 'Nevalidní akce')
+        return redirect('projects:overview', course=course, sort_type='all')
+
+    if (get_chapter(next_chapter, course) == None): #type: ignore
+        pass #unlock new lesson
+
+
+
+
     lesson_id = next_chapter_id - (next_chapter_id % 100)
     project_id = next_chapter_id - (next_chapter_id % 1000)
 

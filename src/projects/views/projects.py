@@ -12,9 +12,9 @@ def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
     user_progress = get_progress_projects(request.user.username, course) #type: ignore
 
     if sort_type == 'all':
-        projects_collection = list(find_projects(course))
+        projects_collection = list(find_projects_by_course(course))
     else:
-        projects_collection = list(find_projects_in(user_progress['projects'][sort_type], course)) #type: ignore
+        projects_collection = list(find_projects_by_course_and_ids(user_progress['projects'][sort_type], course)) #type: ignore
 
     # no projects in (lock, open, done, all)
     if not projects_collection:

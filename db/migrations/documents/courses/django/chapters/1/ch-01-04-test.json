@@ -1,6 +1,11 @@
 {
-    "no": 3,
-    "title": "Editor",
+    "no": 4,
+    "project": 1,
+    "lesson": 1,
+    "title": "Terminal",
+    "unlocks": {
+        "type": "button"
+    },
     "blocks": [
         {
             "title": "napis",
@@ -57,3 +62,4 @@
         }
     ]
 }
+
