@@ -18,7 +18,7 @@
         <form action="{% url 'projects:unlock_chapter' %}" class="float-end" method="post">
             {% csrf_token %}
             <input type="hidden" name="chapter_no" value="{{ chapter_no }}">
-            <input type="hidden" name="lesson_no" value="{{ lesson_no }}">
+            <input type="hidden" name="lesson_no" value="{{ lesson.no }}">
             <input type="hidden" name="project_no" value="{{ project_no }}">
             <input type="hidden" name="course" value="{{ course_name }}">
 
