@@ -1,0 +1,54 @@
+<button id="dropdownNavbarLink" data-dropdown-toggle="testdropdownNavbar" class="flex items-center justify-between w-full py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
+  Testy
+  <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+  </svg>
+</button>
+<!-- Dropdown menu -->
+<div id="testdropdownNavbar" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+  <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+    <li class="hover:bg-gray-100">
+      <div class="grid grid-cols-5">
+        <div class="grid col-span-4">
+          <a href="{% url 'tests:overview' course=course_name sort_type='all' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Všechny testy</a>
+        </div>
+        <div class="py-1.5">
+        </div>
+      </div>
+    <li class="hover:bg-gray-100">
+      <div class="grid grid-cols-5">
+        <div class="grid col-span-4">
+          <a href="" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odemčené</a>
+        </div>
+        <div class="py-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+            <path d="M8 10v-4c0-2.206 1.795-4 4-4s4 1.794 4 4v1h2v-1c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-13zm11 12h-14v-10h14v10z"/>
+          </svg>
+        </div>
+      </div>
+    <li class="hover:bg-gray-100">
+      <div class="grid grid-cols-5">
+        <div class="grid col-span-4">
+          <a href="" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Splněné</a>
+        </div>
+        <div class="py-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+            <path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.393 7.5l-5.643 5.784-2.644-2.506-1.856 1.858 4.5 4.364 7.5-7.643-1.857-1.857z"/>
+          </svg>
+        </div>
+      </div>
+    <li class="hover:bg-gray-100">
+      <div class="grid grid-cols-5">
+        <div class="grid col-span-4">
+          <a href="" class="block px-4 py-2">Nesplněné</a>
+        </div>
+        <div class="py-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+            <path d="M18 10v-4c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-3zm-5 7.723v2.277h-2v-2.277c-.595-.347-1-.984-1-1.723 0-1.104.896-2 2-2s2 .896 2 2c0 .738-.404 1.376-1 1.723zm-5-7.723v-4c0-2.206 1.794-4 4-4 2.205 0 4 1.794 4 4v4h-8z"/>
+          </svg>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+

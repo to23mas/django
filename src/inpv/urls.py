@@ -12,6 +12,9 @@ urlpatterns = [
     # projects
     path('projects/', include('projects.urls')),
 
+    #tests
+    path('tests/', include('tests.urls')),
+
     #accounts
     path('accounts/login/', LoginView.as_view(redirect_authenticated_user=True)),
     path('logout/', LogoutView.as_view(), name='logout'),

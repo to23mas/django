@@ -12,6 +12,12 @@
             "lock": [4]
         }
     },
+    "tests": {
+        "1": [
+            {"state": "open"},
+            {"score": []}
+        ]
+    },
     "chapters": {
         "1": {
             "done": [],

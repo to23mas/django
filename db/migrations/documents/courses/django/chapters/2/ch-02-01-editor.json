@@ -4,7 +4,8 @@
     "lesson": 2,
     "title": "Editor",
     "unlocks": {
-        "type": "button"
+        "type": "test",
+        "no": 1
     },
     "blocks": [
         {

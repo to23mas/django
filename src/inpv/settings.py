@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'login.apps.LoginConfig',
     'projects.apps.ProjectsConfig',
     'courses.apps.CoursesConfig',
+    'tests.apps.TestsConfig',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +63,7 @@ TEMPLATES = [
         "DIRS": [
             BASE_DIR / 'courses/templates',
             BASE_DIR / 'projects/templates',
+            BASE_DIR / 'tests/templates',
             BASE_DIR / 'templates',
         ],
         "APP_DIRS": True,

@@ -4,7 +4,8 @@
     "lesson": 1,
     "title": "Terminal",
     "unlocks": {
-        "type": "button"
+        "type": "test",
+        "no": 1
     },
     "blocks": [
         {
