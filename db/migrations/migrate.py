@@ -19,6 +19,7 @@ def clear_database(db):
     db.django.projects.delete_many({})
     db.django.lessons.delete_many({})
     db.django.chapters.delete_many({})
+    db.django.progress.delete_many({})
 
 
 def list_files(directory):
@@ -66,14 +67,18 @@ if __name__ == "__main__":
     migrate(
         list_files('/usr/src/db/migrations/documents/courses/django/chapters/1/'),
         db.django.chapters)
+    ## user progreess
+    migrate_one_file(
+        '/usr/src/db/migrations/documents/user/admin-django-progress.json',
+        db.django.progress)
 
     #inpv course
-    django_course = migrate_one_file(
+    migrate_one_file(
         '/usr/src/db/migrations/documents/courses/inpv/inpv.json',
         db.courses)
 
     #htmx course
-    django_course = migrate_one_file(
+    migrate_one_file(
         '/usr/src/db/migrations/documents/courses/htmx/htmx.json',
         db.courses)
 

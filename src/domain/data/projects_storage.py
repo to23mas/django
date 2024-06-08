@@ -20,16 +20,6 @@ def get_project_detail(project_no: int, course: str):
         {'no': 1, 'lessons': 1, 'title': 1, 'card': {'description':1}})
 
 
-def get_lesson(lesson_no: int, course: str):
-    ms = MongoStorage()
-    return ms.database.lessons[course].find_one({"no": lesson_no})
-
-
-def get_chapter(chapter_no: int, course: str):
-    ms = MongoStorage()
-    return ms.database.chapters[course].find_one({"no": chapter_no})
-
-
 def chapter_is_accessible_and_done(username: str, course: str, project_no: str, lesson_no: str, chapter_no: str) -> bool:
     ms = MongoStorage()
     return ms.database.progress[course].count_documents({
@@ -41,6 +31,7 @@ def chapter_is_accessible_and_done(username: str, course: str, project_no: str, 
         f"chapters.{lesson_no}.done": int(chapter_no)
     }) == 1
 
+
 def chapter_is_open(username: str, course: str, project_no: str, lesson_no: str, chapter_no: str) -> bool:
     ms = MongoStorage()
     return ms.database.progress[course].count_documents({
@@ -49,6 +40,7 @@ def chapter_is_open(username: str, course: str, project_no: str, lesson_no: str,
         f'lessons.{project_no}.open': int(lesson_no),
         f'chapters.{lesson_no}.done': int(chapter_no),
     }) == 1
+
 
 def is_chapter_open(username: str, course: str, project_no: str, lesson_no: str, chapter_no: str) -> bool:
     ms = MongoStorage()
@@ -61,18 +53,6 @@ def is_chapter_open(username: str, course: str, project_no: str, lesson_no: str,
         '$or': [{f"chapters.{lesson_no}.open": int(chapter_no)},
                 {f"chapters.{lesson_no}.done": int(chapter_no)}],
     }) == 1
-
-
-def get_progress_projects(username: str, course: str):
-    ms = MongoStorage()
-    return ms.database.progress[course].find_one({"_id": username})
-
-
-def get_lesson_progress(username: str, project_no: int, course: str):
-    ms = MongoStorage()
-    return ms.database.progress[course].find_one(
-        {"_id": username, f'lessons.{str(project_no)}': {'$exists': True}},
-        {'lessons': 1})
 
 
 def get_locked_projects(username: str):
