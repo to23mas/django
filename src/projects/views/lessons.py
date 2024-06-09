@@ -10,7 +10,7 @@ from domain.data.lessons_storage import get_lesson
 
 
 @login_required
-def lesson(request: HttpRequest, course: str, project_no: int, lesson_no: int, chapter_no: int) -> HttpResponse:
+def lesson(request: HttpRequest, course: str, project_no: str, lesson_no: str, chapter_no: str) -> HttpResponse:
     """display lesson"""
 
     username = request.user.username #type: ignore
@@ -21,14 +21,14 @@ def lesson(request: HttpRequest, course: str, project_no: int, lesson_no: int, c
         return redirect('projects:overview', course=course, sort_type='all')
 
 
-    chapter = get_chapter(chapter_no, project_no, lesson_no, course)
+    chapter = get_chapter(project_no, lesson_no, chapter_no, course)
     if chapter == None:
         messages.error(request, 'Pokus o vstup k neexistující kapitole!')
         return redirect('projects:overview', course=course, sort_type='all')
 
     # locked lesson or chapter
     progress = get_user_progress_by_course(username, course)
-    if lesson_no in progress['lessons'][str(project_no)]['lock']:
+    if progress == None or lesson_no in progress['lessons'][str(project_no)]['lock']:
         messages.warning(request, 'Lekce ještě není odemčena!')
         return redirect('projects:overview', course=course, sort_type='all')
 

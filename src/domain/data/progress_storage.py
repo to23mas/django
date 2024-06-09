@@ -55,25 +55,27 @@ def finish_chapter(username: str, course: str, lesson_no: str, chapter_no: str) 
          '$pull': {f'chapters.{str(lesson_no)}.open': int(chapter_no)}})
 
 
-def find_tests(course: str) -> Cursor:
-    """returns all test"""
-    ms = MongoStorage()
-
-    return ms.database[course].tests.find()
-
-
-def get_test(course: str, test_no: str) -> dict | None:
-    """returns one test by its NO"""
-    ms = MongoStorage()
-
-    return ms.database[course].tests.find_one({'no': int(test_no)})
-
-
 def find_tests_progress(course: str, username: str) -> dict | None:
     """return user's all tests progress"""
     ms = MongoStorage()
 
+    # return ms.database[course].progress.find_one()
     return ms.database[course].progress.find_one({'_id': username}, {'tests': 1})
+
+
+def find_available_tests(course: str, username: str) -> list | None:
+    """return nos of open tests"""
+    all_tests = find_tests_progress(course, username)
+
+    if all_tests == None: return None
+
+    available_tests_nos = []
+    for test in all_tests['tests']:
+        if test['state'] == 'open':
+            available_tests_nos.append(test['test_no'])
+
+    return available_tests_nos
+
 
 
 def get_tests_progress(course: str, username: str, test_no: str) -> dict | None:

@@ -12,12 +12,18 @@
             "lock": [4]
         }
     },
-    "tests": {
-        "1": [
-            {"state": "open"},
-            {"score": []}
-        ]
-    },
+    "tests": [
+        {
+            "test_no": 1,
+            "state": "open",
+            "score": []
+        },
+        {
+            "test_no": 2,
+            "state": "close",
+            "score": []
+        }
+    ],
     "chapters": {
         "1": {
             "done": [],

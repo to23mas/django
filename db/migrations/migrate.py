@@ -75,7 +75,7 @@ if __name__ == "__main__":
     ## tests
     migrate(
         list_files('/usr/src/db/migrations/documents/courses/django/tests/'),
-        db.django.chapters)
+        db.django.tests)
 
     #inpv course
     migrate_one_file(

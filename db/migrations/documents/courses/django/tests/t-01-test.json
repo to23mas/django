@@ -1,5 +1,7 @@
 {
     "no": 1,
+    "title": "test title",
+    "description": "první test který blablabla",
     "target_type": "chapter",
     "target_no": 2,
     "questions": [
