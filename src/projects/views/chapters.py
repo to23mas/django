@@ -66,4 +66,5 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
     finish_chapter(username, course, lesson_no, chapter_no)
     unlock_chapter(username, course, lesson_no, next_chapter)
 
+    messages.success(request, 'Kapitola ůspěšnš splněna.')
     return redirect('projects:lesson', course=course, project_no=project_no, lesson_no=lesson_no, chapter_no=next_chapter)

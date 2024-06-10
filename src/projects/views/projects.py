@@ -21,7 +21,7 @@ def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
 
     # no projects in (lock, open, done, all)
     if not projects_collection:
-        messages.warning(request, 'V této kategorii nebyly nalezeny žádné projekty.')
+        messages.warning(request, 'V tomto kurzu nebyly nalezeny žádné projekty.')
 
     return render(request, 'projects/overview.html', {
         'projects': projects_collection,

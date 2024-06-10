@@ -58,3 +58,27 @@
 
 ## resources
 svg: https://www.svgrepo.com/
+
+
+# q's
+
+- kurzy (jestli jeden udělat ve smyslu seznámení s aplikací -> jak používat)
+- problém s pojmenováním (PREREKVIZITY)
+- učební texty
+- gamifikace
+
+jak pokračovat
+- testy
+- demo ukázky
+- blockly
+
+- první kurz (jak používat aplikaci)
+- uml -> vývojovej postupy METODIKAS
+- admin page
+- Django
+
+
+- připomenout se na školní server září
+- Michal Dočekal -> školní server
+
+v teoretické části soustředit se na to co dělám (nepopisuj Python -> jen to co se týká Djanga)
