@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 from typing import List
 
-from domain.data.tests_progress.test_progress_state import TestState
+from domain.data.tests.enum.TestState import TestState
 
 
 @dataclass
-class TestProgress():
+class TestProgressData():
     test_no:    int
     attempts:   int
     state:      TestState

@@ -1,7 +1,7 @@
 """storage for progress"""
 from pymongo.cursor import Cursor
 from domain.Mongo import MongoStorage
-from domain.data.tests_progress.test_progress_state import TestState
+from domain.data.tests.enum.TestState import TestState
 
 
 def get_user_progress_by_course(username: str, course: str) -> dict | None:

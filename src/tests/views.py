@@ -1,19 +1,18 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
-from domain.data.progress_storage import find_available_tests, find_tests_progress
-from domain.data.tests_progress.test_progress_storage import get_test_progress
-from domain.data.tests_storage import find_tests_for_overview, get_test
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 
+from domain.data.progress_storage import find_available_tests
+from domain.data.tests.TestStorage import find_tests_for_overview, get_test
+
+
 from tests.forms import DynamicTestForm
-from tests.utils import progress_test
+from tests.utils import validate_test_get_result
 
 
 @login_required
@@ -44,33 +43,29 @@ class TestDetailView(LoginRequiredMixin, View):
         """display one test"""
 
         username = request.user.username #type: ignore
-        user_tests_progress = find_tests_progress(course, username)
-
-        print(get_test_progress(course, username, test_no))
-        testData = get_test(course, test_no)
-        if testData == None:
+        testData, questionDataCollection = get_test(course, test_no)
+        if testData == None or questionDataCollection == None:
             messages.success(request, 'Pokus o přístup k neexistujícímu testu')
             return  redirect('tests:overview', course=course, sort_type='all')
 
         return render(request, 'tests/detail.html', {
-            'testForm': DynamicTestForm(testData),
-            # 'progress': user_tests_progress, # TODO -> pro testy, které uživatel opakuje asi změnit vizuál + display pokus
+            'testForm': DynamicTestForm(questionDataCollection),
             'course_name': course,
         })
 
     def post(self, request: HttpRequest, course: str, test_no: str) -> HttpResponse:
         """validate one test"""
         username = request.user.username #type: ignore
-        testData = get_test(course, test_no)
+        testData, questionDataCollection = get_test(course, test_no)
 
         if testData == None:
             messages.success(request, 'Pokus o přístup k neexistujícímu testu')
             return  redirect('tests:overview', course=course, sort_type='all')
 
-        if (not progress_test(request.POST,  testData, course, username, test_no)):
-            messages.success(request, f'Test úspěšně splněn')
-            return  redirect('tests:overview', course=course, sort_type='all')
+        test_result =  validate_test_get_result(request.POST, testData, questionDataCollection, course, username, test_no)
+        # return  redirect('tests:overview', course=course, sort_type='all')
 
+        return JsonResponse({'result': 'ahoj'})
         messages.warning(request, f'Nebylo dosaženo požadovaného minima')
 
 

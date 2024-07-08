@@ -1,11 +1,11 @@
-from domain.data.tests_progress.test_progress_data import TestProgress
-from domain.data.tests_progress.test_progress_table_definition import TestProgressTable
+from domain.data.tests_progress.TestProgressData import TestProgressData
+from domain.data.tests_progress.tableDefinition.TableDefinition import TestProgressTable
 
 
-class TestProgressSerializer:
+class TestProgressDataSerializer:
     @staticmethod
-    def from_array(progressData: dict) -> TestProgress:
-        return TestProgress(
+    def from_array(progressData: dict) -> TestProgressData:
+        return TestProgressData(
             test_no=progressData[TestProgressTable.TEST_NO.value],
             attempts=progressData[TestProgressTable.ATTEMPTS.value],
             state=progressData[TestProgressTable.STATE.value],
