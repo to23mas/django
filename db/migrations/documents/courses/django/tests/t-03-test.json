@@ -1,12 +1,12 @@
 {
-    "no": 1,
-    "title": "Finished (not 100%)",
-    "time": 15,
-    "description": "první test který blablabla",
+    "no": 3,
+    "title": "OPEN test title",
+    "time": 35,
+    "description": "third test který blablabla",
     "target_type": "chapter",
     "target_no": 2,
     "attempts": 3,
-    "success_score": 70,
+    "success_score": 100,
     "questions": [
         {
             "question": "who is smarter",

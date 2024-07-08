@@ -10,10 +10,17 @@
 - [ ] logout
 - [ ] forgotten password
 
-### projects
-- [ ] project detail
-
 ### overview
+
+## Tests module
+- [ ] auto exit after time
+- [ ] does not reset timer on F5 (use timestamp or something idk)
+- [ ] implement sorting tests
+- [ ] overview -> show last and max score. if same just one
+
+## Basic correction
+- [ ] Login: forgotten password to the bottom of the form
+- [ ] TopBar: Odhlásit button have weird background
 
 
 ## frontend

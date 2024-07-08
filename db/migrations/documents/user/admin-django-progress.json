@@ -15,11 +15,27 @@
     "tests": [
         {
             "test_no": 1,
+            "attempts": 0,
+            "state": "finish",
+            "score": []
+        },{
+            "test_no": 2,
+            "attempts": 2,
+            "state": "fail",
+            "score": []
+        },{
+            "test_no": 3,
+            "attempts": 0,
             "state": "open",
             "score": []
-        },
-        {
-            "test_no": 2,
+        },{
+            "test_no": 4,
+            "attempts": 0,
+            "state": "success",
+            "score": []
+        },{
+            "test_no": 5,
+            "attempts": 0,
             "state": "close",
             "score": []
         }
