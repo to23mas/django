@@ -1,37 +1,40 @@
 {
-    "no": 1,
-    "title": "Finished (not 100%)",
-    "time": 15,
-    "description": "první test který blablabla",
-    "target_type": "chapter",
-    "target_no": 2,
-    "attempts": 3,
-    "success_score": 70,
-    "questions": [
-        {
-            "question": "who is smarter",
-            "type": "single",
-            "answers" : {
-                "1": "first",
-                "2": "second",
-                "3": "third",
-                "4": "fourth"
-            },
-            "correct": "4"
-        },{
-            "question": "second questino multiple choice",
-            "type": "multiple",
-            "answers": {
-                "1": "one",
-                "2": "two",
-                "3": "three",
-                "4": "four"
-            },
-            "correct": ["1", "2", "3"]
-        },{
-            "question": "say something!",
-            "type": "open",
-            "correct": ["ahoj", "nazdar", "bazar"]
-        }
-    ]
+	"no": 1,
+	"title": "Finished (not 100%)",
+	"time": 15,
+	"description": "první test který blablabla",
+	"target_type": "chapter",
+	"target_no": 2,
+	"attempts": 3,
+	"success_score": 70,
+	"questions": [
+		{
+			"question": "who is smarter",
+			"type": "single",
+			"points": 5,
+			"answers" : {
+				"1": "first",
+				"2": "second",
+				"3": "third",
+				"4": "fourth"
+			},
+			"correct": "4"
+		},{
+			"question": "second questino multiple choice",
+			"type": "multiple",
+			"points": 5,
+			"answers": {
+				"1": "one",
+				"2": "two",
+				"3": "three",
+				"4": "four"
+			},
+			"correct": ["1", "2", "3"]
+		},{
+			"question": "say something!",
+			"type": "open",
+			"points": 5,
+			"correct": ["ahoj", "nazdar", "bazar"]
+		}
+	]
 }

@@ -83,13 +83,3 @@ def find_available_tests(course: str, username: str) -> list | None:
             available_tests_nos.append(test['test_no'])
 
     return available_tests_nos
-
-
-def update_test_progress(course: str, username: str, test_no: str, score: float, state: TestState) -> dict | None:
-    MongoStorage().database[course].progress.update_one(
-        {'_id': username, 'tests.test_no': int(test_no)},
-        {'$push': { 'tests.$.score': score },
-         '$set': { 'tests.$.state': state.value }},
-        upsert=False)
-
-

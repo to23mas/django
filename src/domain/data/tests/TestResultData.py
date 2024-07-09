@@ -3,4 +3,8 @@ from dataclasses import dataclass
 
 @dataclass
 class TestResultData():
-    pass
+	success: bool
+	score_percentage: float
+	score_total: int
+	target_unlock_type: str
+	target_no: int

@@ -15,8 +15,9 @@
 ## Tests module
 - [ ] auto exit after time
 - [ ] does not reset timer on F5 (use timestamp or something idk)
-- [ ] implement sorting tests
+- [x] implement sorting tests
 - [ ] overview -> show last and max score. if same just one
+- [ ] display points to overview and questions itselves
 
 ## Basic correction
 - [ ] Login: forgotten password to the bottom of the form

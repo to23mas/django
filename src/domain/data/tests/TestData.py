@@ -10,3 +10,4 @@ class TestData():
     target_no: int
     attempts: int
     success_score: float
+    total_points: int
