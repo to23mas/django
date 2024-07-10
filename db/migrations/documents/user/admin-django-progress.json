@@ -1,56 +1,48 @@
 {
-    "_id": "admin",
-    "projects": {
-        "done": [],
-        "open": [1],
-        "lock": [2, 3, 4]
-    },
-    "lessons": {
-        "1": {
-            "done": [],
-            "open": [1,2, 3],
-            "lock": [4]
-        }
-    },
-    "tests": [
-        {
-            "test_no": 1,
-            "attempts": 0,
-            "state": "finish",
-            "score": []
-        },{
-            "test_no": 2,
-            "attempts": 2,
-            "state": "fail",
-            "score": []
-        },{
-            "test_no": 3,
-            "attempts": 0,
-            "state": "open",
-            "score": []
-        },{
-            "test_no": 4,
-            "attempts": 0,
-            "state": "success",
-            "score": []
-        },{
-            "test_no": 5,
-            "attempts": 0,
-            "state": "close",
-            "score": []
-        }
-    ],
-    "chapters": {
-        "1": {
-            "done": [],
-            "open": [1],
-            "lock": [2, 3, 4]
-        },
-        "2": {
-            "done": [],
-            "open": [1],
-            "lock": []
-        }
-    }
+	"_id": "admin",
+	"projects": {
+		"1": "open",
+		"2": "done",
+		"3": "lock",
+		"4": "lock"
+	},
+	"lessons": {
+		"1": "open",
+		"2": "done",
+		"3": "lock",
+		"4": "lock"
+	},
+	"chapters": {
+		"1": "open",
+		"2": "done",
+		"3": "lock",
+		"4": "lock"
+	},
+	"tests": [{
+			"test_no": 1,
+			"attempts": 0,
+			"state": "finish",
+			"score": []
+		},{
+			"test_no": 2,
+			"attempts": 2,
+			"state": "fail",
+			"score": []
+		},{
+			"test_no": 3,
+			"attempts": 0,
+			"state": "open",
+			"score": []
+		},{
+			"test_no": 4,
+			"attempts": 0,
+			"state": "success",
+			"score": []
+		},{
+			"test_no": 5,
+			"attempts": 0,
+			"state": "close",
+			"score": []
+		}
+	]
 }
-

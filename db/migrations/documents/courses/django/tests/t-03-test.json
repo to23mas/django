@@ -5,6 +5,7 @@
 	"description": "third test který blablabla",
 	"target_type": "chapter",
 	"target_no": 2,
+	"source_no": 1,
 	"attempts": 3,
 	"success_score": 100,
 	"questions": [

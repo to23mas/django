@@ -13,6 +13,8 @@ from domain.data.lessons_storage import get_lesson
 def lesson(request: HttpRequest, course: str, project_no: str, lesson_no: str, chapter_no: str) -> HttpResponse:
     """display lesson"""
 
+	#TODO fix progress because of the data refactor
+
     username = request.user.username #type: ignore
 
     lesson = get_lesson(lesson_no, project_no, course)
@@ -28,7 +30,7 @@ def lesson(request: HttpRequest, course: str, project_no: str, lesson_no: str, c
 
     # locked lesson or chapter
     progress = get_user_progress_by_course(username, course)
-    if progress == None or lesson_no in progress['lessons'][str(project_no)]['lock']:
+    if progress == None or lesson_no in progress['lessons'][project_no]['lock']:
         messages.warning(request, 'Lekce ještě není odemčena!')
         return redirect('projects:overview', course=course, sort_type='all')
 

@@ -5,6 +5,7 @@
 	"description": "první test který blablabla",
 	"target_type": "chapter",
 	"target_no": 2,
+	"source_no": 1,
 	"attempts": 3,
 	"success_score": 70,
 	"questions": [

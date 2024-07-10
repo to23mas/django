@@ -1,15 +1,13 @@
 {
-    "no": 3,
-    "title": "Hello World 3!",
-    "card": {
-        "description": "Poslední ze serie helloWorld",
-        "todo": [
-            "smth",
-            "smth1",
-            "smth2",
-            "smth3",
-            "smth4"
-        ]
-    }
+	"no": 3,
+	"title": "Hello World 3!",
+	"description": "Poslední ze serie helloWorld",
+	"todo": [
+		"smth",
+		"smth1",
+		"smth2",
+		"smth3",
+		"smth4"
+	]
 }
 

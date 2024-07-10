@@ -1,7 +1,7 @@
 from typing import List
 from django.http import QueryDict
 
-from domain.data.progress_storage import unlock_lesson, unlock_project
+from domain.data.content_progress.ContentProgressStorage import finish_project, unlock_project
 from domain.data.tests.QuestionData import QuestionData
 from domain.data.tests.TestData import TestData
 from domain.data.tests.TestResultData import TestResultData
@@ -52,7 +52,8 @@ def validate_test_get_result(
 		success=(test_result / test_data.total_points * 100) >= test_data.success_score,
 		score_percentage=test_result / test_data.total_points * 100,
 		target_unlock_type=test_data.target_type,
-		target_no=test_data.target_no
+		target_no=test_data.target_no,
+		source_no=test_data.source_no,
 	)
 	make_progress(test_result_data, test_data, course, username, test_no)
 
@@ -68,12 +69,13 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 		new_test_state = TestState.SUCCESS
 	else:
 		new_test_state = TestState.FAIL
+
 	update_test_progress(course, username, test_no, test_result_data.score_total, new_test_state)
 
 	if not new_test_state == TestState.FAIL:
 		if test_result_data.target_unlock_type == TargetUnlockType.PROJECT.value:
-			# unlock_project()
-			pass
+			unlock_project(username, test_result_data.target_no)
+			finish_project(username, test_result_data.source_no)
 		elif test_result_data.target_unlock_type == TargetUnlockType.LESSON.value:
 			# unlock_lesson(username, course, test_result_data.target_no )
 			pass

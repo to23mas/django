@@ -1,11 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
+{% load tags %}
 
   <h1 class="mb-4 mt-20 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl text-center">
     {{project.title}}
   </h1>
   <p class="text-center mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48">
-    {{project.card.description}}
+    {{project.description}}
+	{{lessons_graph_data}}
   </p>
 
 
@@ -17,22 +19,17 @@
 
    // NODES
    let nodes_parsed = [];
-   {% for lesson in project.lessons %}
+   {% for lesson in lessons_graph_data %}
+    {% get_lesson_status lessons_progress lesson.no as lesson_status %}
       nodes_parsed.push({
         id: {{ lesson.no }},
         label: '{{ lesson.label }}',
-        url: {% if lesson.no in lesson_progress.open or lesson.no in lesson_progress.done %}
+        url: {% if lesson_status == 'open' or lesson_status == 'done' %}
                "{% url 'projects:lesson' course=course_name project_no=project.no lesson_no=lesson.no chapter_no=1 %}"
              {% else %}
                '#'
              {% endif %},
-        color: {% if lesson.no in lesson_progress.done %}
-                 '#34eb40'
-               {% elif lesson.no in lesson_progress.open %}
-                 '#34c6eb'
-               {% else %}
-                 '#cccccc'
-               {%endif %}
+        color: {% if lesson_status == 'done' %} '#34eb40' {% elif lesson_status == 'open' %} '#34c6eb' {% else %} '#cccccc' {%endif %}
         });
    {% endfor %}
 
@@ -42,7 +39,7 @@
 
    // EDGES
    let edges_parsed = [];
-   {% for lesson in project.lessons %}
+   {% for lesson in lessons_graph_data %}
      {% for to in lesson.to %}
        edges_parsed.push({ from: {{ lesson.no }} , to: {{ to }} });
      {% endfor %}

@@ -13,4 +13,5 @@ class TestResultSerializer:
 			"score_total": test_result_data.score_total,
 			"target_unlock_type": test_result_data.target_unlock_type,
 			"target_no": test_result_data.target_no,
+			"source_no": test_result_data.source_no,
 		}

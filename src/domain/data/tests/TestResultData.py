@@ -8,3 +8,4 @@ class TestResultData():
 	score_total: int
 	target_unlock_type: str
 	target_no: int
+	source_no: int
