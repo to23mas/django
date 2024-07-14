@@ -1,0 +1,74 @@
+{% extends "content/base.html" %}
+{% load content_tags %}
+{% block content %}
+{% include 'content/sidebar.html' %}
+
+<main id="content-start" class="content" tabindex="-1">
+	<!-- Content -->
+	<div id="content" class="">
+		<h1>List of chapters</h1>
+		<div id="content-main">
+			<ul class="object-tools">
+				<li>
+					<a href="#" class="addlink">
+						New Chapter
+					</a>
+				</li>
+			</ul>
+			<div class="module filtered" id="changelist">
+				<div class="changelist-form-container">
+					<div class="results">
+						<table id="result_list">
+							<thead>
+								<tr>
+									<th scope="col">
+										<div class="text">ID</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Title</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Project</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Lesson</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Unlocks</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Actions</div>
+										<div class="clear"></div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for chapter in chapters %}
+								<tr>
+									<td>{{chapter.no}}</td>
+									<td>{{chapter.title}}</td>
+									<td>{{chapter.project | get_project_name_from_id:course_name}}</td>
+									{% get_lesson_name_from_id chapter.lesson chapter.project course_name as lesson_name %}
+									<td>{{lesson_name}}</td>
+									<td>{{chapter.unlocks}}</td>
+									<td> </td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br class="clear">
+	</div>
+	<!-- END Content -->
+	<div id="footer"></div>
+</main>
+<!-- END Container -->
+{% endblock %}

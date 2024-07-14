@@ -1,11 +1,11 @@
 {
-    "no": 1,
-    "project": 1,
-    "title": "Django setup",
-    "chapters": [
-        {"no": 1, "label": "introduction", "icon": "check"},
-        {"no": 2, "label": "instalation", "icon": "lock-open"},
-        {"no": 3, "label": "testing", "icon": "lock"},
-        {"no": 4, "label": "testing 02", "icon": "lock"}
-    ]
+	"no": 1,
+	"project": 1,
+	"title": "Django setup",
+	"chapters": [
+		{"no": 1, "label": "introduction"},
+		{"no": 2, "label": "instalation"},
+		{"no": 3, "label": "testing"},
+		{"no": 4, "label": "testing 02"}
+	]
 }

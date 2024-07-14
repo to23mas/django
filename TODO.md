@@ -19,6 +19,10 @@
 - [ ] overview -> show last and max score. if same just one
 - [ ] display points to overview and questions itselves
 
+## Content module
+- [ ] templatestag -> projectid to project name http://localhost:8888/admin/content/1/lessons
+- [ ] add sorting to grids
+
 ## Basic correction
 - [ ] Login: forgotten password to the bottom of the form
 - [ ] TopBar: Odhlásit button have weird background

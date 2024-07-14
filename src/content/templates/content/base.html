@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		{% include 'content/head.html' %}
+	</head>
+
+  <body>
+		{% include 'content/navbar.html' %}
+		<div class="main shifted" id="main">
+			{% block content %} {% endblock %}
+		</div>
+	</body>
+
+</html>

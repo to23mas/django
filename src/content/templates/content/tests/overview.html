@@ -1,0 +1,92 @@
+{% extends "content/base.html" %}
+{% block content %}
+{% include 'content/sidebar.html' %}
+
+<main id="content-start" class="content" tabindex="-1">
+	<!-- Content -->
+	<div id="content" class="">
+		<h1>List of tests</h1>
+		<div id="content-main">
+			<ul class="object-tools">
+				<li>
+					<a href="#" class="addlink">
+						New Test
+					</a>
+				</li>
+			</ul>
+			<div class="module filtered" id="changelist">
+				<div class="changelist-form-container">
+					<div class="results">
+						<table id="result_list">
+							<thead>
+								<tr>
+									<th scope="col">
+										<div class="text">ID</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Title</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Time</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Target Type</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Target ID</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Source ID</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Attempts</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Success Score</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Total Points</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Actions</div>
+										<div class="clear"></div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for test in tests %}
+								<tr>
+									<td>{{test.no}}</td>
+									<td>{{test.title}}</td>
+									<td>{{test.time}}</td>
+									<td>{{test.target_type}}</td>
+									<td>{{test.target_no}}</td>
+									<td>{{test.source_no}}</td>
+									<td>{{test.attempts}}</td>
+									<td>{{test.success_score}}</td>
+									<td>{{test.total_points}}</td>
+									<td> </td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br class="clear">
+	</div>
+	<!-- END Content -->
+	<div id="footer"></div>
+</main>
+<!-- END Container -->
+{% endblock %}

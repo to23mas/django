@@ -20,7 +20,7 @@
    // NODES
    let nodes_parsed = [];
    {% for lesson in lessons_graph_data %}
-    {% get_lesson_status lessons_progress lesson.no as lesson_status %}
+    {% get_status lessons_progress lesson.no as lesson_status %}
       nodes_parsed.push({
         id: {{ lesson.no }},
         label: '{{ lesson.label }}',

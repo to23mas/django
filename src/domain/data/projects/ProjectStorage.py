@@ -19,6 +19,7 @@ def find_projects_by_course_and_ids(ids: list, course: str) -> List[ProjectData]
 
 def get_project(project_no: int, course: str) -> Tuple[ProjectData | None, List | None]:
 	project = MongoStorage().database[course].projects.find_one({"no": project_no})
+	__import__('pprint').pprint(project)
 	if project == None: return (None, None)
 
 	return (ProjectDataSerializer.from_array(project), project['lessons'])

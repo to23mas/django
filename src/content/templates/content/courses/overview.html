@@ -1,0 +1,82 @@
+{% extends "content/base.html" %}
+{% block content %}
+
+<style>
+	th { padding: 5px !important;}
+</style>
+
+	<main id="content-start" class="content" tabindex="-1">
+		<!-- Content -->
+		<div id="content" class="">
+		<h1>List of courses</h1>
+			<div id="content-main">
+				<ul class="object-tools">
+					<li>
+						<a href="#" class="addlink">
+							New course
+						</a>
+					</li>
+				</ul>
+				<div class="module filtered" id="changelist">
+					<div class="changelist-form-container">
+						<div class="results">
+							<table id="result_list">
+								<thead>
+									<tr>
+										<th scope="col">
+											<div class="text">Order</div>
+											<div class="clear"></div>
+										</th>
+										<th scope="col">
+											<div class="text">ID</div>
+											<div class="clear"></div>
+										</th>
+										<th scope="col">
+											<div class="text">Title</div>
+											<div class="clear"></div>
+										</th>
+										<th scope="col">
+											<div class="text">Projects</div>
+											<div class="clear"></div>
+										</th>
+										<th scope="col">
+											<div class="text">Visible</div>
+											<div class="clear"></div>
+										</th>
+										<th scope="col">
+											<div class="text">Open</div>
+											<div class="clear"></div>
+										</th>
+										<th scope="col">
+											<div class="text">Actions</div>
+											<div class="clear"></div>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for course in courses %}
+									<tr>
+										<td>{{course.order}}</td>
+										<td>{{course.no}}</td>
+										<td>{{course.title}}</td>
+										<td>{{course.projects}}</td>
+										<td>{% if course.visible %} <img src="/public/admin/img/icon-yes.svg" alt="True"> {% else %}<img src="/public/admin/img/icon-no.svg" alt="False"> {% endif %}</td>
+										<td>{% if course.open %} <img src="/public/admin/img/icon-yes.svg" alt="True"> {% else %}<img src="/public/admin/img/icon-no.svg" alt="False"> {% endif %}</td>
+										<td>
+											<a href="{% url 'admin_course_edit' course_no=course.no %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br class="clear">
+		</div>
+		<!-- END Content -->
+		<div id="footer"></div>
+	</main>
+	<!-- END Container -->
+{% endblock %}

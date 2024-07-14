@@ -34,3 +34,11 @@ def get_test(course: str, test_no: str) -> Tuple[TestData | None, List[QuestionD
 	return (serialized_test_data, serialized_question_data_collection)
 
 
+def find_tests(course: str) -> List[TestData] | None:
+
+	tests = MongoStorage().database[course].tests.find()
+	match tests:
+		case None: return tests
+		case _: return TestDataCollection.from_array(tests)
+
+

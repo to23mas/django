@@ -32,19 +32,21 @@ def list_files(directory):
 
 
 def migrate(files, collection):
-    for file in files:
-        with open(file) as f:
-            file_data = json.load(f)
-            filename = path.basename(f.name)
-            collection.insert_one(file_data)
-            print(f'{filename} -> migrated')
+	for file in files:
+		print('migrating -> ', file)
+		with open(file) as f:
+			file_data = json.load(f)
+			filename = path.basename(f.name)
+			collection.insert_one(file_data)
+			print(f'{filename} -> migrated')
 
 def migrate_one_file(file, collection):
-    with open(file) as f:
-        file_data = json.load(f)
-        filename = path.basename(f.name)
-        collection.insert_one(file_data)
-        print(f'{filename} -> migrated')
+	print('migrating -> ', file)
+	with open(file) as f:
+		file_data = json.load(f)
+		filename = path.basename(f.name)
+		collection.insert_one(file_data)
+		print(f'{filename} -> migrated')
 
 if __name__ == "__main__":
     client = MongoClient('mongodb', 27017)

@@ -1,0 +1,34 @@
+<button class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar" aria-label="Toggle navigation"></button>
+<nav class="sticky" id="nav-sidebar" aria-label="Sidebar" aria-expanded="true">
+	<div class="app-auth module current-app">
+		<table>
+			<p> </p>
+			<caption>
+				<a href="#" class="section" title="Models in the Authentication and Authorization application">{{course_title}}</a>
+			</caption>
+			<tbody>
+				<tr class="model-group">
+					<th scope="row"><a href="{% url 'admin_course_edit' course_no=course_no %}">Course</a></th>
+					<td></td>
+				</tr>
+				<tr class="model-group">
+					<th scope="row"><a href="{% url 'admin_project_overview' course_no=course_no %}">Projects</a></th>
+					<td></td>
+				</tr>
+				<tr class="model-group">
+					<th scope="row"><a href="{% url 'admin_lesson_overview' course_no=course_no %}">Lessons</a></th>
+					<td><a href="#" class="addlink">Add</a></td>
+				</tr>
+				<tr class="model-group">
+					<th scope="row"><a href="{% url 'admin_chapter_overview' course_no=course_no %}">Chapters</a></th>
+					<td></td>
+				</tr>
+				<tr class="model-group">
+					<th scope="row"><a href="{% url 'admin_test_overview' course_no=course_no %}">Tests</a></th>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</nav>
+

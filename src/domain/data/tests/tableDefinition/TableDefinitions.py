@@ -8,6 +8,7 @@ class TestsTable(Enum):
     DESCRIPTION = "description"
     TARGET_TYPE = "target_type"
     TARGET_NO = "target_no"
+    SOURCE_NO = "source_no"
     ATTEMPTS = "attempts"
     SUCCESS_SCORE = "success_score"
     QUESTIONS = "questions"

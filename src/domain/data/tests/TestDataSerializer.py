@@ -14,6 +14,7 @@ class TestDataSerializer:
 			description=testData[TestsTable.DESCRIPTION.value],
 			target_type=testData[TestsTable.TARGET_TYPE.value],
 			target_no=testData[TestsTable.TARGET_NO.value],
+			source_no=testData[TestsTable.SOURCE_NO.value],
 			attempts=testData[TestsTable.ATTEMPTS.value],
 			success_score=testData[TestsTable.SUCCESS_SCORE.value],
 			total_points=sum(

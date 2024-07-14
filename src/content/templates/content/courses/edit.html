@@ -1,0 +1,50 @@
+{% extends "content/base.html" %}
+	{% block content %}
+	{% include 'content/sidebar.html' %}
+	<main id="content-start" class="content" tabindex="-1">
+		<div id="content" class="colM">
+			<div id="content-main">
+				<h1>Editing project - {{course_title}}</h1>
+				<form method="post" id="user_form" novalidate="">
+					{% csrf_token %}
+					<div>
+						<fieldset class="module aligned wide">
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Is Visible:</label>
+								{{form.visible}}
+							</div></div>
+							<div><div class="flex-container">
+								<label class="required">Is Open:</label>
+								{{form.open}}
+							</div></div></div>
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Title:</label>
+								{{form.title}}
+							</div></div></div>
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Order:</label>
+								{{form.order}}
+							</div></div></div>
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Projects:</label>
+								{{form.projects}}
+							</div></div></div>
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Description:</label>
+								{{form.description}}
+							</div></div></div>
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Tags:</label>
+								{{form.tags}}
+							</div></div></div>
+						</fieldset>
+						<div class="submit-row">
+							<input type="submit" value="Save" class="default" name="_save">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+
+	{% endblock %}

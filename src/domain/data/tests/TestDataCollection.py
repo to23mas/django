@@ -8,9 +8,9 @@ from domain.data.tests.TestDataSerializer import TestDataSerializer
 class TestDataCollection:
 
 	@staticmethod
-	def from_array(testData: dict|Cursor) -> List[TestData]:
+	def from_array(test_data: dict|Cursor) -> List[TestData]:
 		collection = []
-		for test in testData:
+		for test in test_data:
 			collection.append(TestDataSerializer.from_array(test))
 		return collection
 

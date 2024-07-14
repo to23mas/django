@@ -1,0 +1,64 @@
+{% extends "content/base.html" %}
+{% block content %}
+
+{% include 'content/sidebar.html' %}
+<main id="content-start" class="content" tabindex="-1">
+	<!-- Content -->
+	<div id="content" class="">
+		<h1>List of projects</h1>
+		<div id="content-main">
+			<ul class="object-tools">
+				<li>
+					<a href="#" class="addlink">
+						New project
+					</a>
+				</li>
+			</ul>
+			<div class="module filtered" id="changelist">
+				<div class="changelist-form-container">
+					<div class="results">
+						<table id="result_list">
+							<thead>
+								<tr>
+									<th scope="col">
+										<div class="text">ID</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Title</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Description</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Actions</div>
+										<div class="clear"></div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for project in projects %}
+								<tr>
+									<td>{{project.no}}</td>
+									<td>{{project.title}}</td>
+									<td>{{project.description}}</td>
+									<td>
+										<a href="{% url 'admin_project_edit' course_no=course_no project_no=project.no %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br class="clear">
+	</div>
+	<!-- END Content -->
+	<div id="footer"></div>
+</main>
+<!-- END Container -->
+{% endblock %}
