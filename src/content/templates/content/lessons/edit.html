@@ -4,7 +4,7 @@
 	<main id="content-start" class="content" tabindex="-1">
 		<div id="content" class="colM">
 			<div id="content-main">
-				<h1>Editing project - {{course.title}}</h1>
+				<h1>Editing project - {{course_title}}</h1>
 				<form method="post" id="user_form" novalidate="">
 					{% csrf_token %}
 					<div>
@@ -14,32 +14,16 @@
 								{{form.id}}
 							</div></div></div>
 							<div class="form-row"><div><div class="flex-container">
-								<label class="required">Is Visible:</label>
-								{{form.visible}}
-							</div></div>
-							<div><div class="flex-container">
-								<label class="required">Is Open:</label>
-								{{form.open}}
-							</div></div></div>
-							<div class="form-row"><div><div class="flex-container">
 								<label class="required">Title:</label>
 								{{form.title}}
 							</div></div></div>
 							<div class="form-row"><div><div class="flex-container">
-								<label class="required">Order:</label>
-								{{form.order}}
+								<label class="required">NO:</label>
+								{{form.no}}
 							</div></div></div>
 							<div class="form-row"><div><div class="flex-container">
-								<label class="required">Database:</label>
-								{{form.database}}
-							</div></div></div>
-							<div class="form-row"><div><div class="flex-container">
-								<label class="required">Description:</label>
-								{{form.description}}
-							</div></div></div>
-							<div class="form-row"><div><div class="flex-container">
-								<label class="required">Tags:</label>
-								{{form.tags}}
+								<label class="required">Project:</label>
+								{{form.project}}
 							</div></div></div>
 						</fieldset>
 						<div class="submit-row">

@@ -4,9 +4,11 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
 from content.forms.CourseEditForm import CourseEditForm
+from content.forms.LessonEditForm import LessonEditForm
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
 from domain.data.courses.CourseStorage import find_courses, get_course
-from domain.data.lessons.LessonStorage import find_lessons
+from domain.data.lessons.LessonDataSerializer import LessonDataSerializer
+from domain.data.lessons.LessonStorage import find_lessons, get_lesson
 from domain.data.projects.ProjectStorage import find_projects_by_course
 
 
@@ -15,10 +17,12 @@ def lesson_edit(request: HttpRequest, course_no: str, project_no: str, lesson_no
 	"""list all courses"""
 	course = get_course(course_no)
 	if course == None: return  redirect('admin_course_overview')
+	lesson = get_lesson(lesson_no, project_no, course.projects)
+	if lesson == None: return  redirect('admin_course_overview')
 
-	edit_form = CourseEditForm(initial=CourseDataSerializer.to_dict(course))
+	edit_form = LessonEditForm(initial=LessonDataSerializer.to_dict(lesson))
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/content_overview'}, {'Edit': '#'}]
-	return render(request, 'content/courses/edit.html', {
+	return render(request, 'content/lessons/edit.html', {
 		'course_title': course.title,
 		'breadcrumbs': breadcrumbs,
 		'course_no': course_no,

@@ -2,7 +2,7 @@
 	"order": 2,
 	"no": 1,
 	"title": "Django",
-	"projects": "django",
+	"database": "django",
 	"visible": true,
 	"open": true,
 	"img": "django-basics.png",

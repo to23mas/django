@@ -534,6 +534,12 @@ a.button {
     opacity: 0.4;
 }
 
+input[disabled], textarea[disabled], select[disabled] {
+    background-color: #e9ecef; /* Light grey background */
+    cursor: not-allowed;      /* Change cursor to indicate disabled state */
+    color: #6c757d;           /* Grey text color */
+}
+
 .button.default, input[type=submit].default, .submit-row input.default {
     border: none;
     font-weight: 400;

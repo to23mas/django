@@ -2,7 +2,7 @@
     "order": 1,
     "no": 3,
     "title": "Jak používat tuto aplikaci",
-    "projects": "inpv",
+    "database": "inpv",
     "visible": true,
     "open": true,
     "img": "howto.jpeg",

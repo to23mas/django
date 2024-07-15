@@ -24,11 +24,11 @@
 								<thead>
 									<tr>
 										<th scope="col">
-											<div class="text">Order</div>
+											<div class="text">ID</div>
 											<div class="clear"></div>
 										</th>
 										<th scope="col">
-											<div class="text">ID</div>
+											<div class="text">Order</div>
 											<div class="clear"></div>
 										</th>
 										<th scope="col">
@@ -36,7 +36,7 @@
 											<div class="clear"></div>
 										</th>
 										<th scope="col">
-											<div class="text">Projects</div>
+											<div class="text">Database</div>
 											<div class="clear"></div>
 										</th>
 										<th scope="col">
@@ -56,14 +56,15 @@
 								<tbody>
 									{% for course in courses %}
 									<tr>
+										<td>{{course.id}}</td>
 										<td>{{course.order}}</td>
 										<td>{{course.no}}</td>
 										<td>{{course.title}}</td>
-										<td>{{course.projects}}</td>
+										<td>{{course.database}}</td>
 										<td>{% if course.visible %} <img src="/public/admin/img/icon-yes.svg" alt="True"> {% else %}<img src="/public/admin/img/icon-no.svg" alt="False"> {% endif %}</td>
 										<td>{% if course.open %} <img src="/public/admin/img/icon-yes.svg" alt="True"> {% else %}<img src="/public/admin/img/icon-no.svg" alt="False"> {% endif %}</td>
 										<td>
-											<a href="{% url 'admin_course_edit' course_no=course.no %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+											<a href="{% url 'admin_course_edit' course_id=course.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
 										</td>
 									</tr>
 									{% endfor %}

@@ -2,7 +2,7 @@
     "order": 3,
     "no": 2,
     "title": "HTMX",
-    "projects": "htmx",
+    "database": "htmx",
     "visible": true,
     "open": false,
     "img": "htmx.png",

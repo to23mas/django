@@ -1,5 +1,7 @@
 """storage for lessons"""
-from typing import List
+from typing import Dict, List
+
+from bson.objectid import ObjectId
 from domain.Mongo import MongoStorage
 from domain.data.courses.CourseData import CourseData
 from domain.data.courses.CourseDataCollection import CourseDataCollection
@@ -14,10 +16,15 @@ def find_courses() -> List[CourseData] | None:
 		case _: return CourseDataCollection.from_array(courses)
 
 
-def get_course(course_no: str) -> CourseData | None:
-	course = MongoStorage().database.courses.find_one({
-		"no": int(course_no),
-	})
+def get_course_by_query(query: Dict) -> CourseData | None:
+	course = MongoStorage().database.courses.find_one(query)
+
+	match course:
+		case None: return course
+		case _: return CourseDataSerializer.from_array(course)
+
+def get_course_by_id(id: str) -> CourseData | None:
+	course = MongoStorage().database.courses.find_one({"_id": ObjectId(id)})
 
 	match course:
 		case None: return course

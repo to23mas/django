@@ -5,10 +5,11 @@ from django import forms
 class CourseEditForm(forms.Form):
 
 
+	id = forms.CharField()
 	order = forms.IntegerField()
 	no = forms.IntegerField()
 	title = forms.CharField()
-	projects = forms.CharField()
+	database = forms.CharField()
 	visible = forms.BooleanField()
 	open = forms.BooleanField()
 	description = forms.CharField(
@@ -20,6 +21,9 @@ class CourseEditForm(forms.Form):
 
 	def clean_tags(self):
 		data = self.cleaned_data['tags']
-		string_list = [s.strip() for s in data.splitlines() if s.strip()]
+		string_list = [s.strip() for s in data.split(',') if s.strip()]
 		return string_list
 
+	def __init__(self, *args, **kwargs):
+		super(CourseEditForm, self).__init__(*args, **kwargs)
+		self.fields['id'].widget.attrs['disabled'] = True
