@@ -52,8 +52,8 @@
 								<tr>
 									<td>{{chapter.no}}</td>
 									<td>{{chapter.title}}</td>
-									<td>{{chapter.project | get_project_name_from_id:course_name}}</td>
-									{% get_lesson_name_from_id chapter.lesson chapter.project course_name as lesson_name %}
+									<td>{{chapter.project | get_project_name_from_id:course.database}}</td>
+									{% get_lesson_name_from_id chapter.lesson chapter.project course.database as lesson_name %}
 									<td>{{lesson_name}}</td>
 									<td>{{chapter.unlocks}}</td>
 									<td> </td>

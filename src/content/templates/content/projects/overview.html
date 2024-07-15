@@ -45,7 +45,7 @@
 									<td>{{project.title}}</td>
 									<td>{{project.description}}</td>
 									<td>
-										<a href="{% url 'admin_project_edit' course_no=course_no project_no=project.no %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+										<a href="{% url 'admin_project_edit' course_id=course.id project_no=project.no %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
 									</td>
 								</tr>
 								{% endfor %}

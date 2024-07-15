@@ -5,8 +5,8 @@ from domain.data.lessons.LessonData import LessonData
 from domain.data.lessons.LessonDataCollection import LessonDataCollection
 from domain.data.lessons.LessonDataSerializer import LessonDataSerializer
 
-def get_lesson(lesson_no: str, project_no: str, course: str) -> LessonData | None:
-	lesson = MongoStorage().database[course].lessons.find_one({
+def get_lesson(lesson_no: str, project_no: str, db: str) -> LessonData | None:
+	lesson = MongoStorage().database[db].lessons.find_one({
 		"no": int(lesson_no),
 		"project": int(project_no),
 	})
@@ -16,10 +16,10 @@ def get_lesson(lesson_no: str, project_no: str, course: str) -> LessonData | Non
 		case _: return LessonDataSerializer.from_array(lesson)
 
 
-def find_lessons(course: str, project_no: str|None=None) -> List[LessonData] | None:
+def find_lessons(db: str, project_no: str|None=None) -> List[LessonData] | None:
 	match project_no:
-		case None: lessons = MongoStorage().database[course].lessons.find()
-		case _: lessons = MongoStorage().database[course].lessons.find({"project": int(project_no)})
+		case None: lessons = MongoStorage().database[db].lessons.find()
+		case _: lessons = MongoStorage().database[db].lessons.find({"project": int(project_no)})
 
 	match lessons:
 		case None: return lessons

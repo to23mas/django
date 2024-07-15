@@ -10,9 +10,9 @@ from domain.data.tests.TestDataSerializer import TestDataSerializer
 from domain.data.tests.TestData import TestData
 
 
-def find_tests_for_overview(course: str, open_tests: list = []) -> List[TestData]:
+def find_tests_for_overview(db: str, open_tests: list = []) -> List[TestData]:
 	"""returns all test"""
-	tests = MongoStorage().database[course].tests.find(
+	tests = MongoStorage().database[db].tests.find(
 		{'no': {'$in': open_tests}}).sort('no', pymongo.DESCENDING)
 
 	if tests == None: raise DataNotFoundException
@@ -20,10 +20,10 @@ def find_tests_for_overview(course: str, open_tests: list = []) -> List[TestData
 	return TestDataCollection.from_array(tests)
 
 
-def get_test(course: str, test_no: str) -> Tuple[TestData | None, List[QuestionData] | None]:
+def get_test(db: str, test_no: str) -> Tuple[TestData | None, List[QuestionData] | None]:
 	""" Return one test by its NO. Raises: DataNotFoundException"""
 
-	test_data = MongoStorage().database[course].tests.find_one({'no': int(test_no)})
+	test_data = MongoStorage().database[db].tests.find_one({'no': int(test_no)})
 
 	if test_data == None:
 		raise DataNotFoundException
@@ -34,9 +34,9 @@ def get_test(course: str, test_no: str) -> Tuple[TestData | None, List[QuestionD
 	return (serialized_test_data, serialized_question_data_collection)
 
 
-def find_tests(course: str) -> List[TestData] | None:
+def find_tests(db: str) -> List[TestData] | None:
 
-	tests = MongoStorage().database[course].tests.find()
+	tests = MongoStorage().database[db].tests.find()
 	match tests:
 		case None: return tests
 		case _: return TestDataCollection.from_array(tests)

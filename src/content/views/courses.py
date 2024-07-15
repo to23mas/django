@@ -15,7 +15,7 @@ def course_edit(request: HttpRequest, course_id: str) -> HttpResponse:
 	if course == None: return  redirect('admin_course_overview')
 
 	edit_form = CourseEditForm(initial=CourseDataSerializer.to_dict(course))
-	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/content_overview'}, {'Edit': '#'}]
+	breadcrumbs = [{'Home': '/admin/'}, {'Courses >': '#'}, {'Edit': '#'}]
 	return render(request, 'content/courses/edit.html', {
 		'course': course,
 		'breadcrumbs': breadcrumbs,

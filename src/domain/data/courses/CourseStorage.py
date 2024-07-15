@@ -16,7 +16,10 @@ def find_courses() -> List[CourseData] | None:
 		case _: return CourseDataCollection.from_array(courses)
 
 
-def get_course_by_query(query: Dict) -> CourseData | None:
+def get_course(smth: str) -> CourseData | None:
+	pass
+
+def get_course_query(query: Dict) -> CourseData | None:
 	course = MongoStorage().database.courses.find_one(query)
 
 	match course:

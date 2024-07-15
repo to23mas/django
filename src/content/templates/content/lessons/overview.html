@@ -48,10 +48,10 @@
 								<tr>
 									<td>{{lesson.no}}</td>
 									<td>{{lesson.title}}</td>
-									<td>{{lesson.project | get_project_name_from_id:course_name}}</td>
+									<td>{{lesson.project | get_project_name_from_id:course.database}}</td>
 									<td>{{lesson.chapters}}</td>
 									<td>
-										<a href="{% url 'admin_lesson_edit' course_no=course_no project_no=lesson.project lesson_no=lesson.no%}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+										<a href="{% url 'admin_lesson_edit' course_id=course.no project_no=lesson.project lesson_no=lesson.no%}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
 									</td>
 								</tr>
 								{% endfor %}
