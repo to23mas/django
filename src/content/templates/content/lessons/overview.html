@@ -1,70 +1,72 @@
 {% extends "content/base.html" %}
 {% load content_tags %}
 {% block content %}
-{% include 'content/sidebar.html' %}
 
-<main id="content-start" class="content" tabindex="-1">
-	<!-- Content -->
-	<div id="content" class="">
-		<h1>List of lessons</h1>
-		<div id="content-main">
-			<ul class="object-tools">
-				<li>
-					<a href="#" class="addlink">
-						New Lesson
-					</a>
-				</li>
-			</ul>
-			<div class="module filtered" id="changelist">
-				<div class="changelist-form-container">
-					<div class="results">
-						<table id="result_list">
-							<thead>
-								<tr>
-									<th scope="col">
-										<div class="text">ID</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Title</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Project</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Chapters</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Actions</div>
-										<div class="clear"></div>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for lesson in lessons %}
-								<tr>
-									<td>{{lesson.no}}</td>
-									<td>{{lesson.title}}</td>
-									<td>{{lesson.project | get_project_name_from_id:course.database}}</td>
-									<td>{{lesson.chapters}}</td>
-									<td>
-										<a href="{% url 'admin_lesson_edit' course_id=course.no project_no=lesson.project lesson_no=lesson.no%}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
-									</td>
-								</tr>
-								{% endfor %}
-							</tbody>
-						</table>
+	<div class="main shifted" id="main">
+		{% include 'content/sidebar.html' %}
+		<main id="content-start" class="content" tabindex="-1">
+			<!-- Content -->
+			<div id="content" class="">
+				<h1>List of lessons</h1>
+				<div id="content-main">
+					<ul class="object-tools">
+						<li>
+							<a href="#" class="addlink">
+								New Lesson
+							</a>
+						</li>
+					</ul>
+					<div class="module filtered" id="changelist">
+						<div class="changelist-form-container">
+							<div class="results">
+								<table id="result_list">
+									<thead>
+										<tr>
+											<th scope="col">
+												<div class="text">ID</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Title</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Project</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Chapters</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Actions</div>
+												<div class="clear"></div>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for lesson in lessons %}
+										<tr>
+											<td>{{lesson.no}}</td>
+											<td>{{lesson.title}}</td>
+											<td>{{lesson.project | get_project_name_from_id:course.database}}</td>
+											<td>{{lesson.chapters}}</td>
+											<td>
+												<a href="{% url 'admin_lesson_edit' course_id=course.id project_no=lesson.project lesson_no=lesson.no %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+											</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
+				<br class="clear">
 			</div>
-		</div>
-		<br class="clear">
+			<!-- END Content -->
+			<div id="footer"></div>
+		</main>
+		<!-- END Container -->
 	</div>
-	<!-- END Content -->
-	<div id="footer"></div>
-</main>
-<!-- END Container -->
-{% endblock %}
+	{% endblock %}

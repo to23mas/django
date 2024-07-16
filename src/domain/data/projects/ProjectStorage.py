@@ -21,7 +21,7 @@ def get_project(project_no: int, db: str) -> Tuple[ProjectData | None, List | No
 	project = MongoStorage().database[db].projects.find_one({"no": project_no})
 	if project == None: return (None, None)
 
-	return (ProjectDataSerializer.from_array(project), project['lessons'])
+	return (ProjectDataSerializer.from_array(project), project.get('lessons'))
 
 
 def get_locked_projects(username: str):

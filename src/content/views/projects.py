@@ -22,6 +22,7 @@ def project_edit(request: HttpRequest, course_id: str, project_no: str) -> HttpR
 	edit_form = ProjectEditForm(initial=ProjectDataSerializer.to_dict(project))
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/content_overview'}, {'Edit': '#'}]
 	return render(request, 'content/projects/edit.html', {
+		'project': project,
 		'course': course,
 		'breadcrumbs': breadcrumbs,
 		'form': edit_form,

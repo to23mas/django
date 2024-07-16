@@ -1,8 +1,9 @@
 {% extends "content/base.html" %}
 {% load content_tags %}
 {% block content %}
-{% include 'content/sidebar.html' %}
 
+	<div class="main shifted" id="main">
+{% include 'content/sidebar.html' %}
 <main id="content-start" class="content" tabindex="-1">
 	<!-- Content -->
 	<div id="content" class="">
@@ -70,5 +71,6 @@
 	<!-- END Content -->
 	<div id="footer"></div>
 </main>
+	</div>
 <!-- END Container -->
 {% endblock %}
