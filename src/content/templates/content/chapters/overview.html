@@ -57,7 +57,11 @@
 									{% get_lesson_name_from_id chapter.lesson chapter.project course.database as lesson_name %}
 									<td>{{lesson_name}}</td>
 									<td>{{chapter.unlocks}}</td>
-									<td> </td>
+									<td>
+										<a href="{% url 'admin_chapter_edit' course_id=course.id project_no=chapter.project lesson_no=chapter.lesson chapter_no=chapter.no %}">
+											<img src="/public/admin/img/icon-changelink.svg" alt="False">
+										</a>
+									</td>
 								</tr>
 								{% endfor %}
 							</tbody>

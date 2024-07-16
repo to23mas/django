@@ -1,0 +1,91 @@
+{% extends "content/base.html" %}
+	{% block content %}
+	<div class="main shifted" id="main">
+		{% include 'content/sidebar.html' %}
+		<main id="content-start" class="content" tabindex="-1">
+			<div id="content" class="colM">
+				<div id="content-main">
+					<h1>Editing project - {{course.title}}</h1>
+					<form method="post" id="user_form" novalidate="">
+						{% csrf_token %}
+						<div>
+							<fieldset class="module aligned wide">
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Title:</label>
+									{{form.title}}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">ID:</label>
+									{{form.no}}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Lesson:</label>
+									{{form.lesson}}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Project:</label>
+									{{form.project}}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Unlock Type:</label>
+									{{form.unlock_type}}
+									<label class="required" style="margin-left: 25px;">Unlock No:</label>
+									{{form.unlock_no}}
+								</div></div></div>
+							</fieldset>
+							<div class="submit-row">
+								<input type="submit" value="Save" class="default" name="_save">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<br class="clear">
+			<br class="clear">
+			<br class="clear">
+
+			<div id="content" class="content">
+			<h2> text blocks </h2>
+				<div id="content-main">
+					<div class="module filtered" id="changelist">
+						<table id="result_list">
+							<thead>
+								<tr>
+									<th scope="col">
+										<div class="text">title</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">title</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Actions</div>
+										<div class="clear"></div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for b in chapter.blocks%}
+								<tr>
+									<td>{{b.title}}</td>
+									<td>{{b}}</td>
+								<td> </td>
+								</tr>
+								{% endfor %}
+								<tr>
+									<td>
+										<div class="cursor-grabbing" id="projectNetwork"></div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</main>
+	</div>
+
+	{% endblock %}

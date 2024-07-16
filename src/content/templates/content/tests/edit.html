@@ -1,0 +1,110 @@
+{% extends "content/base.html" %}
+	{% block content %}
+	<div class="main shifted" id="main">
+		{% include 'content/sidebar.html' %}
+		<main id="content-start" class="content" tabindex="-1">
+			<div id="content" class="colM">
+				<div id="content-main">
+					<h1>Editing test - {{test.title}}</h1>
+					<form method="post" id="user_form" novalidate="">
+						{% csrf_token %}
+						<div>
+							<fieldset class="module aligned wide">
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">ID:</label>
+									{{form.no}}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Title:</label>
+									{{form.title}}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Description:</label>
+									{{form.description}}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Time in mins:</label>
+									{{form.time}}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Target Type:</label>
+									{{form.target_type}}
+									<label class="required" style="margin-left: 25px;">Target No:</label>
+									{{form.target_no}}
+									<label class="required" style="margin-left: 25px;">Source No:</label>
+									{{form.source_no}}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Attempts:</label>
+									{{form.attempts}}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Success Score (%):</label>
+									{{form.success_score}}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Total Points:</label>
+									{{form.total_points}}
+								</div></div></div>
+							</fieldset>
+							<div class="submit-row">
+								<input type="submit" value="Save" class="default" name="_save">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<br class="clear">
+			<br class="clear">
+			<br class="clear">
+
+			<div id="content" class="content">
+			<h2> questions </h2>
+				<div id="content-main">
+					<div class="module filtered" id="changelist">
+						<table id="result_list">
+							<thead>
+								<tr>
+									<th scope="col">
+										<div class="text">Question</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Type</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Points</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Actions</div>
+										<div class="clear"></div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for q in questions %}
+								<tr>
+									<td>{{ q.question }}</td>
+									<td>{{ q.type }}</td>
+									<td>{{ q.points }}</td>
+								<td> </td>
+								</tr>
+								{% endfor %}
+								<tr>
+									<td>
+										<div class="cursor-grabbing" id="projectNetwork"></div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</main>
+	</div>
+
+	{% endblock %}

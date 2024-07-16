@@ -29,7 +29,7 @@ def get_test(db: str, test_no: str) -> Tuple[TestData | None, List[QuestionData]
 		raise DataNotFoundException
 
 	serialized_test_data =  TestDataSerializer().from_array(test_data)
-	serialized_question_data_collection = QuestionDataCollection.from_array(test_data['questions'])
+	serialized_question_data_collection = QuestionDataCollection.from_array(test_data.get('questions'))
 
 	return (serialized_test_data, serialized_question_data_collection)
 
