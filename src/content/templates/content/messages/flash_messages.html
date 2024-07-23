@@ -1,0 +1,18 @@
+<ul class="messagelist">
+	{% for message in messages %}
+	<li class="{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}">
+		{{ message }}
+	</li>
+	{% endfor %}
+</ul>
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+	setTimeout(function() {
+		var messages = document.querySelectorAll('.messagelist li');
+		messages.forEach(function(message) {
+			message.style.display = 'none';
+		});
+	}, 5000); //  5 seconds
+});
+</script>

@@ -3,6 +3,7 @@ from bson.objectid import ObjectId
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
+from django.contrib import messages
 
 from content.forms.LessonEditForm import LessonEditForm
 from domain.data.courses.CourseStorage import get_course_by_id
@@ -31,6 +32,7 @@ def lesson_edit(request: HttpRequest, course_id: str, project_no: str, lesson_no
 @staff_member_required
 def lesson_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
+	messages.success(request, 'V tuto chvíli nemáš žádné dostupné testy')
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
 
