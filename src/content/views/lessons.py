@@ -32,7 +32,6 @@ def lesson_edit(request: HttpRequest, course_id: str, project_no: str, lesson_no
 @staff_member_required
 def lesson_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
-	messages.success(request, 'V tuto chvíli nemáš žádné dostupné testy')
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
 
@@ -54,7 +53,6 @@ def lesson_new(request: HttpRequest, course_id: str) -> HttpResponse:
 	if request.method == 'POST':
 		edit_form = LessonEditForm(request.POST, db=course.database)
 		if edit_form.is_valid():
-			print( exists_lesson(course.database, edit_form.cleaned_data['no']))
 			if exists_lesson(course.database, edit_form.cleaned_data['no']):
 				edit_form.add_error('no', 'This number already exists in the database. Must be unique.')
 			else:
@@ -62,6 +60,7 @@ def lesson_new(request: HttpRequest, course_id: str) -> HttpResponse:
 				edit_form.cleaned_data['project'] = int(edit_form.cleaned_data['project'])
 				lesson_data = LessonDataSerializer.from_dict(edit_form.cleaned_data)
 				create_lesson(lesson_data, course.database)
+				messages.success(request, 'Lesson has been created')
 				return  redirect('admin_lesson_edit', course_id=course_id, project_no=lesson_data.project, lesson_no=lesson_data.no)
 
 	else:

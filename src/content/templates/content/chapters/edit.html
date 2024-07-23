@@ -13,24 +13,32 @@
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Title:</label>
 									{{form.title}}
+									{% if form.title.errors %} <div class="form-errors">{{ form.title.errors }}</div> {% endif %}
 								</div></div></div>
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">ID:</label>
 									{{form.no}}
+									{% if form.no.errors %} <div class="form-errors">{{ form.no.errors }}</div> {% endif %}
 								</div></div></div>
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Lesson:</label>
 									{{form.lesson}}
-								</div></div></div>
-								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Project:</label>
-									{{form.project}}
+									{% if form.lesson.errors %} <div class="form-errors">{{ form.lesson.errors }}</div> {% endif %}
 								</div></div></div>
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Unlock Type:</label>
 									{{form.unlock_type}}
-									<label class="required" style="margin-left: 25px;">Unlock No:</label>
+									{% if form.unlock_type.errors %} <div class="form-errors">{{ form.unlock_type.errors }}</div> {% endif %}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Unlock No:</label>
 									{{form.unlock_no}}
+									{% if form.unlock_no.errors %} <div class="form-errors">{{ form.unlock_no.errors }}</div> {% endif %}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Blocks:</label>
+									{{form.blocks}}
+									{% if form.blocks.errors %} <div class="form-errors">{{ form.blocks.errors }}</div> {% endif %}
 								</div></div></div>
 							</fieldset>
 							<div class="submit-row">

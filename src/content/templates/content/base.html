@@ -7,10 +7,8 @@
 
   <body>
 		{% include 'content/navbar.html' %}
-    {% if messages %} {% include 'content/messages/flash_messages.html' %} {% endif %}
-		<!--<div class="main shifted" id="main">-->
-			{% block content %} {% endblock %}
-		<!--</div>-->
+		{% if messages %} {% include 'content/messages/flash_messages.html' %} {% endif %}
+		{% block content %} {% endblock %}
 	</body>
 
 </html>

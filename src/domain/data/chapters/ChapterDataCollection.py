@@ -11,5 +11,5 @@ class ChapterDataCollection:
 	def from_array(chapter_data: dict|Cursor) -> List[ChapterData]:
 		collection = []
 		for chapter in chapter_data:
-			collection.append(ChapterDataSerializer.from_array(chapter))
+			collection.append(ChapterDataSerializer.from_dict(chapter))
 		return collection

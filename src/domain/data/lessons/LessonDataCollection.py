@@ -8,7 +8,7 @@ from domain.data.lessons.LessonDataSerializer import LessonDataSerializer
 class LessonDataCollection:
 
 	@staticmethod
-	def from_array(lessons_data: dict|Cursor) -> List[LessonData]:
+	def from_dict(lessons_data: dict|Cursor) -> List[LessonData]:
 		collection = []
 		for lesson in lessons_data:
 			collection.append(LessonDataSerializer.from_dict(lesson))

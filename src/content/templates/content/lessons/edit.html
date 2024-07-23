@@ -48,9 +48,13 @@
 			<br class="clear">
 			<br class="clear">
 
+		{% if lesson %}
 			<div id="content" class="content">
-			<h2> chapters </h2>
+			<h2> Chapters </h2>
 				<div id="content-main">
+					<ul class="object-tools">
+						<li><a href="{% url 'admin_lesson_new' course_id=course.id %}" class="addlink">New chapter</a></li>
+					</ul>
 					<div class="module filtered" id="changelist">
 						<table id="result_list">
 							<thead>
@@ -87,6 +91,7 @@
 					</div>
 				</div>
 			</div>
+		{% endif %}
 
 		</main>
 	</div>

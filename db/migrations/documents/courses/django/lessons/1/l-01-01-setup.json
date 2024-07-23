@@ -4,7 +4,7 @@
 	"title": "Django setup",
 	"chapters": [
 		{"no": 1, "label": "introduction"},
-		{"no": 2, "label": "instalation"},
+		{"no": 2, "label": "installation"},
 		{"no": 3, "label": "testing"},
 		{"no": 4, "label": "testing 02"}
 	]
