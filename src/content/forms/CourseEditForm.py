@@ -1,29 +1,39 @@
-from typing import List
 from django import forms
 
 
 class CourseEditForm(forms.Form):
-
-
-	id = forms.CharField()
 	order = forms.IntegerField()
-	no = forms.IntegerField()
 	title = forms.CharField()
 	database = forms.CharField()
-	visible = forms.BooleanField()
-	open = forms.BooleanField()
+	visible = forms.BooleanField(required=False, initial=False)
+	open = forms.BooleanField(required=False, initial=False)
 	description = forms.CharField(
-		widget=forms.Textarea(attrs={'rows': 15}),  # Adjust rows as needed
+		required=False,
+		widget=forms.Textarea(attrs={'rows': 15}),
 	)
 	tags = forms.CharField(
-		widget=forms.Textarea(attrs={'rows': 5}),  # Adjust rows as needed
+		required=False,
+		widget=forms.Textarea(attrs={'rows': 5}),
 	)
+
 
 	def clean_tags(self):
 		data = self.cleaned_data['tags']
 		string_list = [s.strip() for s in data.split(',') if s.strip()]
 		return string_list
 
+
+	def get_tags_as_string(self):
+		tags_list = self.cleaned_data.get('tags', [])
+		return ', '.join(tags_list)
+
+
 	def __init__(self, *args, **kwargs):
+		initial = kwargs.get('initial', {})
+		if 'tags' in initial and isinstance(initial['tags'], list):
+			initial['tags'] = ', '.join(initial['tags'])
+		kwargs['initial'] = initial
 		super(CourseEditForm, self).__init__(*args, **kwargs)
-		self.fields['id'].widget.attrs['disabled'] = True
+
+		if initial:
+			self.fields['database'].widget.attrs['disabled'] = True

@@ -10,4 +10,4 @@ class LessonData():
 	no: int
 	project: int
 	title: str
-	chapters: List[Dict[str, str|int]]
+	chapters: List[Dict[str, str|int]] | None

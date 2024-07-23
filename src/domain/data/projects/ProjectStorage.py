@@ -1,5 +1,7 @@
 """storage for projects"""
 from typing import List, Tuple
+
+from bson.objectid import ObjectId
 from domain.Mongo import MongoStorage
 from domain.data.projects.ProjectData import ProjectData
 from domain.data.projects.ProjectDataCollection import ProjectDataCollection
@@ -21,10 +23,18 @@ def get_project(project_no: int, db: str) -> Tuple[ProjectData | None, List | No
 	project = MongoStorage().database[db].projects.find_one({"no": project_no})
 	if project == None: return (None, None)
 
-	return (ProjectDataSerializer.from_array(project), project.get('lessons'))
+	return (ProjectDataSerializer.from_dict(project), project.get('lessons'))
 
 
-def get_locked_projects(username: str):
-	ms = MongoStorage()
-	return ms.database.progress.find_one({"_id": username}, {"projects": 1})
+def create_project(project_data: ProjectData, db: str) -> None:
+	MongoStorage().database[db].projects.insert_one(ProjectDataSerializer.to_dict(project_data))
+
+
+def delete_project(db: str, project_id: ObjectId) -> None:
+	MongoStorage().database[db].projects.delete_one({'_id': project_id})
+
+
+def exists_project(db: str, project_no: str) -> bool:
+	res = MongoStorage().database[db].projects.find_one({'no': project_no})
+	return True if res != None else False
 

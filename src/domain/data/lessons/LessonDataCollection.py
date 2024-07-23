@@ -11,6 +11,6 @@ class LessonDataCollection:
 	def from_array(lessons_data: dict|Cursor) -> List[LessonData]:
 		collection = []
 		for lesson in lessons_data:
-			collection.append(LessonDataSerializer.from_array(lesson))
+			collection.append(LessonDataSerializer.from_dict(lesson))
 		return collection
 

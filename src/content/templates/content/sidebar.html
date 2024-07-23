@@ -3,6 +3,7 @@
 	<div class="app-auth module current-app">
 		<table>
 			<p> </p>
+			{% if course %}
 			<caption>
 				<a href="#" class="section" title="Models in the Authentication and Authorization application">{{course.title}}</a>
 			</caption>
@@ -13,11 +14,11 @@
 				</tr>
 				<tr class="model-group">
 					<th scope="row"><a href="{% url 'admin_project_overview' course_id=course.id %}">Projects</a></th>
-					<td></td>
+					<td><a href="{% url 'admin_project_new' course_id=course.id%}" class="addlink">Add</a></td>
 				</tr>
 				<tr class="model-group">
 					<th scope="row"><a href="{% url 'admin_lesson_overview' course_id=course.id %}">Lessons</a></th>
-					<td><a href="#" class="addlink">Add</a></td>
+					<td><a href="{% url 'admin_lesson_new' course_id=course.id %}" class="addlink">Add</td>
 				</tr>
 				<tr class="model-group">
 					<th scope="row"><a href="{% url 'admin_chapter_overview' course_id=course.id %}">Chapters</a></th>
@@ -28,6 +29,7 @@
 					<td></td>
 				</tr>
 			</tbody>
+			{% endif %}
 		</table>
 	</div>
 </nav>

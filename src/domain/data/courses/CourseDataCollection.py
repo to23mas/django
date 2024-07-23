@@ -11,5 +11,5 @@ class CourseDataCollection:
 	def from_array(course_data: dict|Cursor) -> List[CourseData]:
 		collection = []
 		for course in course_data:
-			collection.append(CourseDataSerializer.from_array(course))
+			collection.append(CourseDataSerializer.from_dict(course))
 		return collection

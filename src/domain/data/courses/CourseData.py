@@ -8,7 +8,6 @@ from bson.objectid import ObjectId
 class CourseData():
 	id: ObjectId
 	order: int
-	no: int
 	database: str
 	title: str
 	visible: bool

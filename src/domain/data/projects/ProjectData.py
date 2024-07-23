@@ -1,12 +1,12 @@
 from dataclasses import dataclass
-from typing import Any, List
-# from bson.objectid import ObjectId
+from typing import List
+from bson.objectid import ObjectId
 
 
 @dataclass
 class ProjectData():
 
-	id: Any
+	id: ObjectId
 	no: int
 	title: str
 	description: str

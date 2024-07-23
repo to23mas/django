@@ -1,13 +1,19 @@
 from django import forms
 
+from domain.data.projects.ProjectStorage import find_projects_by_course
+
 
 class LessonEditForm(forms.Form):
-
-	id = forms.CharField()
 	no = forms.IntegerField()
-	project= forms.IntegerField()
 	title = forms.CharField()
+	project = forms.ChoiceField(widget=forms.Select)
 
-	def __init__(self, *args, **kwargs):
+	def __init__(self, *args, db=None, **kwargs):
+		initial = kwargs.get('initial', {})
+		kwargs['initial'] = initial
 		super(LessonEditForm, self).__init__(*args, **kwargs)
-		self.fields['id'].widget.attrs['disabled'] = True
+
+		if db:
+			self.fields['project'].choices = [(int(project.no), project.title) for project in find_projects_by_course(db)]
+		if initial:
+			self.fields['no'].widget.attrs['disabled'] = True

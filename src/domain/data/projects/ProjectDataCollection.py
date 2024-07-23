@@ -11,6 +11,6 @@ class ProjectDataCollection:
 	def from_array(testData: dict|Cursor) -> List[ProjectData]:
 		collection = []
 		for test in testData:
-			collection.append(ProjectDataSerializer.from_array(test))
+			collection.append(ProjectDataSerializer.from_dict(test))
 		return collection
 

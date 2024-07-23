@@ -1,4 +1,5 @@
 """views.py"""
+from bson.objectid import ObjectId
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
@@ -6,19 +7,20 @@ from django.shortcuts import redirect, render
 from content.forms.LessonEditForm import LessonEditForm
 from domain.data.courses.CourseStorage import get_course_by_id
 from domain.data.lessons.LessonDataSerializer import LessonDataSerializer
-from domain.data.lessons.LessonStorage import find_lessons, get_lesson
+from domain.data.lessons.LessonStorage import create_lesson, delete_lesson, exists_lesson, find_lessons, get_lesson
+from domain.data.projects.ProjectStorage import get_project
 
 
 @staff_member_required
 def lesson_edit(request: HttpRequest, course_id: str, project_no: str, lesson_no: str) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course == None: return redirect('admin_course_overview')
 	lesson = get_lesson(lesson_no, project_no, course.database)
-	if lesson == None: return  redirect('admin_course_overview')
+	if lesson == None: return redirect('admin_course_overview')
 
-	edit_form = LessonEditForm(initial=LessonDataSerializer.to_dict(lesson))
-	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/content_overview'}, {'Edit': '#'}]
+	edit_form = LessonEditForm(db=course.database, initial=LessonDataSerializer.to_dict(lesson))
+	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {'Edit Lesson': '#'}]
 	return render(request, 'content/lessons/edit.html', {
 		'lesson': lesson,
 		'course': course,
@@ -33,10 +35,50 @@ def lesson_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 	if course == None: return  redirect('admin_course_overview')
 
 	lessons = find_lessons(db=course.database)
-	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/content_overview'}, {'Lessons': '#'}]
-
+	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Lessons': '#'}]
 	return render(request, 'content/lessons/overview.html', {
 		'course': course,
 		'lessons': lessons,
 		'breadcrumbs': breadcrumbs,
 	})
+
+
+@staff_member_required
+def lesson_new(request: HttpRequest, course_id: str) -> HttpResponse:
+	"""list all courses"""
+	course = get_course_by_id(course_id)
+	if course == None: return  redirect('admin_course_overview')
+
+	if request.method == 'POST':
+		edit_form = LessonEditForm(request.POST, db=course.database)
+		if edit_form.is_valid():
+			print( exists_lesson(course.database, edit_form.cleaned_data['no']))
+			if exists_lesson(course.database, edit_form.cleaned_data['no']):
+				edit_form.add_error('no', 'This number already exists in the database. Must be unique.')
+			else:
+				edit_form.cleaned_data['_id'] = ObjectId()
+				edit_form.cleaned_data['project'] = int(edit_form.cleaned_data['project'])
+				lesson_data = LessonDataSerializer.from_dict(edit_form.cleaned_data)
+				create_lesson(lesson_data, course.database)
+				return  redirect('admin_lesson_edit', course_id=course_id, project_no=lesson_data.project, lesson_no=lesson_data.no)
+
+	else:
+		edit_form = LessonEditForm(db=course.database)
+
+	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'New Lesson': '#'}]
+	return render(request, 'content/lessons/edit.html', {
+		'breadcrumbs': breadcrumbs,
+		'form': edit_form,
+		'course': course,
+	})
+
+
+@staff_member_required
+def lesson_delete(request: HttpRequest, course_id: str, project_no: str, lesson_no: str) -> HttpResponse:
+	course = get_course_by_id(course_id)
+	if course == None: return  redirect('admin_course_overview')
+	lesson = get_lesson(lesson_no, project_no, course.database)
+	if lesson == None: return  redirect('admin_course_overview')
+
+	delete_lesson(course.database, lesson.id)
+	return redirect('admin_lesson_overview', course_id=course_id);

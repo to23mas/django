@@ -1,4 +1,6 @@
 from typing import Dict, List
+
+from bson.objectid import ObjectId
 from domain.data.projects.ProjectData import ProjectData
 from domain.data.projects.tableDefinition.TableDefinitions import ProjectsTable
 
@@ -6,18 +8,18 @@ from domain.data.projects.tableDefinition.TableDefinitions import ProjectsTable
 class ProjectDataSerializer:
 
 	@staticmethod
-	def to_dict(project_data: ProjectData) -> Dict[str, str | int | List[str]]:
+	def to_dict(project_data: ProjectData) -> Dict[str, ObjectId | str | int | List[str]]:
 		return {
-			'id': project_data.id,
+			'_id': ObjectId(project_data.id),
 			'no': project_data.no,
 			'title': project_data.title,
 			'description': project_data.description,
-			'todo': ','.join(project_data.todo),
+			'todo': project_data.todo,
 		}
 
 
 	@staticmethod
-	def from_array(project_data: dict) -> ProjectData:
+	def from_dict(project_data: dict) -> ProjectData:
 		return ProjectData(
 			id=project_data[ProjectsTable.ID.value],
 			no=project_data[ProjectsTable.NO.value],

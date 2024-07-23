@@ -22,11 +22,11 @@
 ## Content module
 - [ ] templatestag -> projectid to project name http://localhost:8888/admin/content/1/lessons
 - [ ] add sorting to grids
+- [ ] delete course should delete all the lessons and chapters inside
 
 ## Basic correction
 - [ ] Login: forgotten password to the bottom of the form
 - [ ] TopBar: Odhlásit button have weird background
-
 
 ## frontend
 - [x] flowbite
