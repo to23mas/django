@@ -7,15 +7,30 @@ from django.shortcuts import redirect, render
 from content.forms.ProjectEditForm import ProjectEditForm
 from domain.data.courses.CourseStorage import get_course_by_id
 from domain.data.projects.ProjectDataSerializer import ProjectDataSerializer
-from domain.data.projects.ProjectStorage import create_project, delete_project, exists_project, find_projects_by_course, get_project
+from domain.data.projects.ProjectStorage import create_project, delete_project, exists_project, find_projects, get_project
 
 
 @staff_member_required
-def project_edit(request: HttpRequest, course_id: str, project_no: str) -> HttpResponse:
+def project_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
-	project, lessons_graph = get_project(int(project_no), course.database)
+	projects = find_projects(course.database)
+
+	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Projects': '#'}]
+	return render(request, 'content/projects/overview.html', {
+		'course': course,
+		'projects': projects,
+		'breadcrumbs': breadcrumbs,
+	})
+
+
+@staff_member_required
+def project_edit(request: HttpRequest, course_id: str, project_id: int) -> HttpResponse:
+	"""list all courses"""
+	course = get_course_by_id(course_id)
+	if course == None: return  redirect('admin_course_overview')
+	project, lessons_graph = get_project(project_id, course.database)
 	if project == None: return  redirect('admin_course_overview')
 
 	edit_form = ProjectEditForm(initial=ProjectDataSerializer.to_dict(project))
@@ -44,7 +59,7 @@ def project_new(request: HttpRequest, course_id: str) -> HttpResponse:
 				edit_form.cleaned_data['_id'] = ObjectId()
 				project_data = ProjectDataSerializer.from_dict(edit_form.cleaned_data)
 				create_project(project_data, course.database)
-				return  redirect('admin_project_edit', course_id=course_id, project_no=project_data.no)
+				return  redirect('admin_project_edit', course_id=course_id, project_id=project_data.id)
 
 	else:
 		edit_form = ProjectEditForm()
@@ -54,21 +69,6 @@ def project_new(request: HttpRequest, course_id: str) -> HttpResponse:
 		'breadcrumbs': breadcrumbs,
 		'form': edit_form,
 		'course': course,
-	})
-
-
-@staff_member_required
-def project_overview(request: HttpRequest, course_id: str) -> HttpResponse:
-	"""list all courses"""
-	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
-	projects = find_projects_by_course(course.database)
-
-	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Projects': '#'}]
-	return render(request, 'content/projects/overview.html', {
-		'course': course,
-		'projects': projects,
-		'breadcrumbs': breadcrumbs,
 	})
 
 

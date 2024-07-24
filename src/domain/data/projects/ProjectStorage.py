@@ -8,19 +8,19 @@ from domain.data.projects.ProjectDataCollection import ProjectDataCollection
 from domain.data.projects.ProjectDataSerializer import ProjectDataSerializer
 
 
-def find_projects_by_course(db: str) -> List[ProjectData]:
-	projects = MongoStorage().database[db].projects.find().sort('no')
+def find_projects(db: str) -> List[ProjectData]:
+	projects = MongoStorage().database[db].projects.find().sort('_id')
 	return ProjectDataCollection.from_array(projects)
 
 
 def find_projects_by_course_and_ids(ids: list, db: str) -> List[ProjectData]:
-	projects = MongoStorage().database[db].projects.find({"no": {"$in": ids}}).sort('no')
+	projects = MongoStorage().database[db].projects.find({"no": {"$in": ids}}).sort('_id')
 
 	return ProjectDataCollection.from_array(projects)
 
 
-def get_project(project_no: int, db: str) -> Tuple[ProjectData | None, List | None]:
-	project = MongoStorage().database[db].projects.find_one({"no": project_no})
+def get_project(project_id: int, db: str) -> Tuple[ProjectData | None, List | None]:
+	project = MongoStorage().database[db].projects.find_one({"_id": project_id})
 	if project == None: return (None, None)
 
 	return (ProjectDataSerializer.from_dict(project), project.get('lessons'))

@@ -20,10 +20,10 @@ def find_tests_for_overview(db: str, open_tests: list = []) -> List[TestData]:
 	return TestDataCollection.from_array(tests)
 
 
-def get_test(db: str, test_no: str) -> Tuple[TestData | None, List[QuestionData] | None]:
+def get_test(db: str, test_id: int) -> Tuple[TestData | None, List[QuestionData] | None]:
 	""" Return one test by its NO. Raises: DataNotFoundException"""
 
-	test_data = MongoStorage().database[db].tests.find_one({'no': int(test_no)})
+	test_data = MongoStorage().database[db].tests.find_one({'_id': test_id})
 
 	if test_data == None:
 		raise DataNotFoundException
@@ -36,7 +36,7 @@ def get_test(db: str, test_no: str) -> Tuple[TestData | None, List[QuestionData]
 
 def find_tests(db: str) -> List[TestData] | None:
 
-	tests = MongoStorage().database[db].tests.find()
+	tests = MongoStorage().database[db].tests.find().sort('_id')
 	match tests:
 		case None: return tests
 		case _: return TestDataCollection.from_array(tests)

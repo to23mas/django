@@ -1,12 +1,10 @@
 from dataclasses import dataclass
 from typing import List
 
-from bson.objectid import ObjectId
-
 
 @dataclass
 class CourseData():
-	id: ObjectId
+	id: int
 	order: int
 	database: str
 	title: str

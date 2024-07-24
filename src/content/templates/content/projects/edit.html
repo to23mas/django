@@ -1,47 +1,58 @@
 {% extends "content/base.html" %}
 	{% block content %}
-	<div class="main shifted" id="main">
-		{% include 'content/sidebar.html' %}
-		<main id="content-start" class="content" tabindex="-1">
-			<div id="content" class="colM">
-				<div id="content-main">
-					{% if project %}
-						<h1>Course: {{course.title}} > Project: {{project.title}}</h1>
-					{% else %}
-						<h1>Creating new project</h1>
-					{% endif %}
-					<form method="post" novalidate="">
-						{% csrf_token %}
-						<div>
-							<fieldset class="module aligned wide">
-								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Order:</label>
-									{{form.no}}
-									{% if form.no.errors %} <div class="form-errors">{{ form.no.errors }}</div> {% endif %}
-								</div></div></div>
-								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Title:</label>
-									{{form.title}}
-									{% if form.title.errors %} <div class="form-errors">{{ form.title.errors }}</div> {% endif %}
-								</div></div></div>
-								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Description:</label>
-									{{form.description}}
-									{% if form.description.errors %} <div class="form-errors">{{ form.description.errors }}</div> {% endif %}
-								</div></div></div>
-								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Todo tags:</label>
-									{{form.todo}}
-									{% if form.todo.errors %} <div class="form-errors">{{ form.todo.errors }}</div> {% endif %}
-								</div></div></div>
-							</fieldset>
-							<div class="submit-row">
-								<input type="submit" value="Save" class="default" name="_save">
-							</div>
+<style>
+input:disabled, textarea:disabled, select:disabled {
+	background-color: #e0e0e0; /* Light grey background color */
+	color: #666; /* Optional: change text color for better contrast */
+}
+</style>
+<div class="main shifted" id="main">
+	{% include 'content/sidebar.html' %}
+	<main id="content-start" class="content" tabindex="-1">
+		<div id="content" class="colM">
+			<div id="content-main">
+				{% if project %}
+				<h1>Course: {{course.title}} > Project: {{project.title}}</h1>
+				{% else %}
+				<h1>Creating new project</h1>
+				{% endif %}
+				<form method="post" novalidate="">
+					{% csrf_token %}
+					<div>
+						<fieldset class="module aligned wide">
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">ID:</label>
+								{{form.id}}
+								{% if form.id.errors %} <div class="form-errors">{{ form.id.errors }}</div> {% endif %}
+							</div></div></div>
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Database:</label>
+								{{form.database}}
+								{% if form.database.errors %} <div class="form-errors">{{ form.database.errors }}</div> {% endif %}
+							</div></div></div>
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Title:</label>
+								{{form.title}}
+								{% if form.title.errors %} <div class="form-errors">{{ form.title.errors }}</div> {% endif %}
+							</div></div></div>
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Description:</label>
+								{{form.description}}
+								{% if form.description.errors %} <div class="form-errors">{{ form.description.errors }}</div> {% endif %}
+							</div></div></div>
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Todo tags:</label>
+								{{form.todo}}
+								{% if form.todo.errors %} <div class="form-errors">{{ form.todo.errors }}</div> {% endif %}
+							</div></div></div>
+						</fieldset>
+						<div class="submit-row">
+							<input type="submit" value="Save" class="default" name="_save">
 						</div>
-					</form>
-				</div>
+					</div>
+				</form>
 			</div>
+		</div>
 
 			<br class="clear">
 			<br class="clear">

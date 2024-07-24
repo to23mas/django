@@ -8,7 +8,7 @@ class TestDataSerializer:
 	@staticmethod
 	def to_dict(test_data: TestData) -> Dict[str, str | int | float]:
 		return {
-			'no': test_data.no,
+			'_id': test_data.id,
 			'title': test_data.title,
 			'time': test_data.time,
 			'description': test_data.description,
@@ -23,7 +23,7 @@ class TestDataSerializer:
 	@staticmethod
 	def from_array(testData: dict) -> TestData:
 		return TestData(
-			no=testData[TestsTable.NO.value],
+			id=testData[TestsTable.ID.value],
 			title=testData[TestsTable.TITLE.value],
 			time=testData[TestsTable.TIME.value],
 			description=testData[TestsTable.DESCRIPTION.value],

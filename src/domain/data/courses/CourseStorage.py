@@ -29,7 +29,7 @@ def get_course_query(query: Dict) -> CourseData | None:
 
 
 def get_course_by_id(id: str) -> CourseData | None:
-	course = MongoStorage().database.courses.find_one({"_id": ObjectId(id)})
+	course = MongoStorage().database.courses.find_one({"_id": int(id)})
 
 	match course:
 		case None: return course
@@ -41,4 +41,4 @@ def create_course(course_data: CourseData) -> None:
 
 
 def delete_course(course_id: str) -> None:
-	MongoStorage().database.courses.delete_one({'_id': ObjectId(course_id)})
+	MongoStorage().database.courses.delete_one({'_id': int(course_id)})

@@ -22,11 +22,15 @@
 									<thead>
 										<tr>
 											<th scope="col">
-												<div class="text">Order</div>
+												<div class="text">ID</div>
 												<div class="clear"></div>
 											</th>
 											<th scope="col">
 												<div class="text">Title</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Database</div>
 												<div class="clear"></div>
 											</th>
 											<th scope="col">
@@ -42,12 +46,13 @@
 									<tbody>
 										{% for project in projects %}
 										<tr>
-											<td>{{project.no}}</td>
+											<td>{{project.id}}</td>
 											<td>{{project.title}}</td>
+											<td>{{project.database}}</td>
 											<td>{{project.description}}</td>
 											<td>
-												<a style="margin-right: 20px;" href="{% url 'admin_project_edit' course_id=course.id project_no=project.no %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
-												<a href="{% url 'admin_project_delete' course_id=course.id project_no=project.no %}" onclick="if (!confirm('Are you sure you want to delete this course?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
+												<a style="margin-right: 20px;" href="{% url 'admin_project_edit' course_id=course.id project_id=project.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+												<a href="{% url 'admin_project_delete' course_id=course.id project_id=project.id %}" onclick="if (!confirm('Are you sure you want to delete this course?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
 											</td>
 										</tr>
 										{% endfor %}

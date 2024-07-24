@@ -29,10 +29,13 @@ def course_new(request: HttpRequest) -> HttpResponse:
 	if request.method == 'POST':
 		edit_form = CourseEditForm(request.POST)
 		if edit_form.is_valid():
-			edit_form.cleaned_data['_id'] = ObjectId()
+			edit_form.cleaned_data['_id'] = edit_form.cleaned_data['id']
 			course_data = CourseDataSerializer.from_dict(edit_form.cleaned_data)
-			create_course(course_data)
-			return redirect('admin_course_edit', course_id=course_data.id)
+			try:
+				create_course(course_data)
+				return redirect('admin_course_edit', course_id=course_data.id)
+			except:
+				edit_form.add_error('id', 'This id number already exists in the database. Must be unique.')
 	else:
 		edit_form = CourseEditForm()
 

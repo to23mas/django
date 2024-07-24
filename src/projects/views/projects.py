@@ -5,7 +5,7 @@ from django.contrib import messages
 
 from domain.data.content_progress.ContentProgressStorage import get_content_progress
 from domain.data.progress_storage import get_lesson_progress, get_user_progress_by_course
-from domain.data.projects.ProjectStorage import find_projects_by_course, find_projects_by_course_and_ids, get_project
+from domain.data.projects.ProjectStorage import find_projects, find_projects_by_course_and_ids, get_project
 
 
 @login_required
@@ -15,7 +15,7 @@ def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
 	username = request.user.username #type: ignore
 
 	if sort_type == 'all':
-		projects_collection = find_projects_by_course(course)
+		projects_collection = find_projects(course)
 	else:
 		project_progress = get_content_progress(course, username, 'projects')
 		filtered_project_ids = [int(key) for key, value in project_progress.items() if value == sort_type]

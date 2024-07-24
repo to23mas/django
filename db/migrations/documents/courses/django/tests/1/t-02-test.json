@@ -1,13 +1,13 @@
 {
-	"no": 5,
-	"title": "CLOSED",
-	"time": 150,
-	"description": "last první test který blablabla",
+	"_id": 2,
+	"title": "Failed",
+	"time": 15,
+	"description": "second test který blablabla",
 	"target_type": "chapter",
 	"target_no": 2,
 	"source_no": 1,
 	"attempts": 3,
-	"success_score": 70,
+	"success_score": 60,
 	"questions": [
 		{
 			"question": "who is smarter",

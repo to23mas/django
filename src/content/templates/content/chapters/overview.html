@@ -11,7 +11,7 @@
 		<div id="content-main">
 			<ul class="object-tools">
 				<li>
-							<a href="{% url 'admin_chapter_new' course_id=course.id %}" class="addlink">
+							<a href="{% url 'admin_chapter_new' course_id=course.id project_id=project.id %}" class="addlink">
 						New Chapter
 					</a>
 				</li>
@@ -31,15 +31,15 @@
 										<div class="clear"></div>
 									</th>
 									<th scope="col">
-										<div class="text">Project</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
 										<div class="text">Lesson</div>
 										<div class="clear"></div>
 									</th>
 									<th scope="col">
-										<div class="text">Unlocks</div>
+										<div class="text">Unlock type</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Unlock id</div>
 										<div class="clear"></div>
 									</th>
 									<th scope="col">
@@ -52,14 +52,13 @@
 
 								{% for chapter in chapters %}
 								<tr>
-									<td>{{chapter.no}}</td>
+									<td>{{chapter.id}}</td>
 									<td>{{chapter.title}}</td>
-									<td>{{chapter.project | get_project_name_from_id:course.database}}</td>
-									{% get_lesson_name_from_id chapter.lesson chapter.project course.database as lesson_name %}
-									<td>{{lesson_name}}</td>
-									<td>{{chapter.unlocks}}</td>
+									<td>{{chapter.lesson_id}}</td>
+									<td>{{chapter.unlock_type}}</td>
+									<td>{{chapter.unlock_id}}</td>
 									<td>
-										<a href="{% url 'admin_chapter_edit' course_id=course.id project_no=chapter.project lesson_no=chapter.lesson chapter_no=chapter.no %}">
+										<a href="{% url 'admin_chapter_edit' course_id=course.id project_id=project.id lesson_id=chapter.lesson_id chapter_id=chapter.id %}">
 											<img src="/public/admin/img/icon-changelink.svg" alt="False">
 										</a>
 									</td>

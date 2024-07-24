@@ -3,10 +3,8 @@ from enum import Enum
 class ChaptersTable(Enum):
 
 	ID = "_id"
-	NO = "no"
-	PROJECT = "project"
-	LESSON = "lesson"
+	LESSON_ID = "lesson_id"
 	TITLE = "title"
 	UNLOCK_TYPE = "unlock_type"
-	UNLOCK_NO = "unlock_no"
+	UNLOCK_ID = "unlock_id"
 	BLOCKS = "blocks"

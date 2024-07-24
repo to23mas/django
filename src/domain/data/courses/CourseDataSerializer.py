@@ -1,6 +1,5 @@
 from typing import Dict, List
 
-from bson.objectid import ObjectId
 from domain.data.courses.CourseData import CourseData
 from domain.data.table_definitions.TableDefinitions import CourseTable
 
@@ -8,9 +7,9 @@ from domain.data.table_definitions.TableDefinitions import CourseTable
 class CourseDataSerializer:
 
 	@staticmethod
-	def to_dict(course_data: CourseData) -> Dict[str, ObjectId| str | int | List[str]]:
+	def to_dict(course_data: CourseData) -> Dict[str, str | int | List[str]]:
 		return {
-			'_id': ObjectId(course_data.id),
+			'_id': course_data.id,
 			'database': course_data.database,
 			'order': course_data.order,
 			'title': course_data.title,

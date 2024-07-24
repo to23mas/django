@@ -13,7 +13,25 @@ from domain.data.projects.ProjectStorage import get_project
 
 
 @staff_member_required
-def lesson_edit(request: HttpRequest, course_id: str, project_no: str, lesson_no: str) -> HttpResponse:
+def lesson_overview(request: HttpRequest, course_id: str, project_id: int) -> HttpResponse:
+	"""list all courses"""
+	course = get_course_by_id(course_id)
+	if course == None: return  redirect('admin_course_overview')
+	project, _ = get_project(project_id, course.database)
+	if project == None: return  redirect('admin_course_overview')
+
+	lessons = find_lessons(course.database, project.database)
+	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Lessons': '#'}]
+	return render(request, 'content/lessons/overview.html', {
+		'course': course,
+		'lessons': lessons,
+		'project': project,
+		'breadcrumbs': breadcrumbs,
+	})
+
+
+@staff_member_required
+def lesson_edit(request: HttpRequest, course_id: str, project_id: int, lesson_id: id) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
 	if course == None: return redirect('admin_course_overview')
@@ -27,20 +45,6 @@ def lesson_edit(request: HttpRequest, course_id: str, project_no: str, lesson_no
 		'course': course,
 		'breadcrumbs': breadcrumbs,
 		'form': edit_form,
-	})
-
-@staff_member_required
-def lesson_overview(request: HttpRequest, course_id: str) -> HttpResponse:
-	"""list all courses"""
-	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
-
-	lessons = find_lessons(db=course.database)
-	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Lessons': '#'}]
-	return render(request, 'content/lessons/overview.html', {
-		'course': course,
-		'lessons': lessons,
-		'breadcrumbs': breadcrumbs,
 	})
 
 
@@ -75,7 +79,7 @@ def lesson_new(request: HttpRequest, course_id: str) -> HttpResponse:
 
 
 @staff_member_required
-def lesson_delete(request: HttpRequest, course_id: str, project_no: str, lesson_no: str) -> HttpResponse:
+def lesson_delete(request: HttpRequest, course_id: str, project_id: int, lesson_id: id) -> HttpResponse:
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
 	lesson = get_lesson(lesson_no, project_no, course.database)

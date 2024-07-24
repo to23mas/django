@@ -1,13 +1,13 @@
 {
-	"no": 2,
-	"title": "Failed",
-	"time": 15,
-	"description": "second test který blablabla",
+	"_id": 4,
+	"title": "SUCCESS 100%",
+	"time": 5,
+	"description": "první test který blablabla",
 	"target_type": "chapter",
 	"target_no": 2,
 	"source_no": 1,
 	"attempts": 3,
-	"success_score": 60,
+	"success_score": 1,
 	"questions": [
 		{
 			"question": "who is smarter",

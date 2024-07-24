@@ -3,6 +3,7 @@ from django import forms
 
 class CourseEditForm(forms.Form):
 	order = forms.IntegerField()
+	id = forms.IntegerField()
 	title = forms.CharField()
 	database = forms.CharField()
 	visible = forms.BooleanField(required=False, initial=False)
@@ -37,3 +38,5 @@ class CourseEditForm(forms.Form):
 
 		if initial:
 			self.fields['database'].widget.attrs['disabled'] = True
+			self.fields['id'].widget.attrs['disabled'] = True
+			self.fields['id'].initial = initial['_id']

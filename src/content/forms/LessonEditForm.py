@@ -1,6 +1,6 @@
 from django import forms
 
-from domain.data.projects.ProjectStorage import find_projects_by_course
+from domain.data.projects.ProjectStorage import find_projects
 
 
 class LessonEditForm(forms.Form):
@@ -14,6 +14,6 @@ class LessonEditForm(forms.Form):
 		super(LessonEditForm, self).__init__(*args, **kwargs)
 
 		if db:
-			self.fields['project'].choices = [(int(project.no), project.title) for project in find_projects_by_course(db)]
+			self.fields['project'].choices = [(int(project.no), project.title) for project in find_projects(db)]
 		if initial:
 			self.fields['no'].widget.attrs['disabled'] = True

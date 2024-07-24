@@ -3,8 +3,9 @@ from django import forms
 
 class ProjectEditForm(forms.Form):
 
-	no = forms.IntegerField()
+	id = forms.IntegerField()
 	title = forms.CharField()
+	database = forms.CharField()
 	description = forms.CharField(
 		required=False,
 		widget=forms.Textarea(attrs={'rows': 5}),
@@ -23,7 +24,9 @@ class ProjectEditForm(forms.Form):
 		if 'todo' in initial and isinstance(initial['todo'], list):
 			initial['todo'] = ', '.join(initial['todo'])
 		kwargs['initial'] = initial
-
 		super(ProjectEditForm, self).__init__(*args, **kwargs)
+
 		if initial:
-			self.fields['no'].widget.attrs['disabled'] = True
+			self.fields['database'].widget.attrs['disabled'] = True
+			self.fields['id'].widget.attrs['disabled'] = True
+			self.fields['id'].initial = initial['_id']

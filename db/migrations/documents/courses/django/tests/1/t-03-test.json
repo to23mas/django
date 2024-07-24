@@ -1,13 +1,13 @@
 {
-	"no": 4,
-	"title": "SUCCESS 100%",
-	"time": 5,
-	"description": "první test který blablabla",
+	"_id": 3,
+	"title": "OPEN test title",
+	"time": 35,
+	"description": "third test který blablabla",
 	"target_type": "chapter",
 	"target_no": 2,
 	"source_no": 1,
 	"attempts": 3,
-	"success_score": 1,
+	"success_score": 100,
 	"questions": [
 		{
 			"question": "who is smarter",
@@ -34,7 +34,7 @@
 		},{
 			"question": "say something!",
 			"type": "open",
-			"points": 5,
+			"points": 10,
 			"correct": ["ahoj", "nazdar", "bazar"]
 		}
 	]

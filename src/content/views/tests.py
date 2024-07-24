@@ -8,16 +8,18 @@ from content.forms.TestEditForm import TestEditForm
 from domain.data.chapters.ChapterStorage import find_chapter
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
 from domain.data.courses.CourseStorage import find_courses, get_course, get_course_by_id
-from domain.data.projects.ProjectStorage import find_projects_by_course
+from domain.data.projects.ProjectStorage import find_projects, get_project
 from domain.data.tests.TestDataSerializer import TestDataSerializer
 from domain.data.tests.TestStorage import find_tests, get_test
 
 
 @staff_member_required
-def test_edit(request: HttpRequest, course_id: str, test_no: str) -> HttpResponse:
+def test_edit(request: HttpRequest, course_id: str, test_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
-	test, questions = get_test(course.database, test_no)
+	project, _ = get_project(project_id, course.database)
+	if project == None: return  redirect('admin_course_overview')
+	test, questions = get_test(course.database, test_id)
 	if test == None: return  redirect('admin_course_overview')
 
 	edit_form = TestEditForm(initial=TestDataSerializer.to_dict(test))
@@ -27,6 +29,7 @@ def test_edit(request: HttpRequest, course_id: str, test_no: str) -> HttpRespons
 		'test': test,
 		'questions': questions,
 		'course': course,
+		'project': project,
 		'breadcrumbs': breadcrumbs,
 		'form': edit_form,
 	})

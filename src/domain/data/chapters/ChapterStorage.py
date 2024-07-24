@@ -17,16 +17,8 @@ def get_chapter(project_no: str, lesson_no: str, chapter_no: str, db: str) -> Ch
 
 	return ChapterDataSerializer.from_dict(chapter)
 
-def find_chapter(db: str, lesson_no: str|None=None, project_no: str|None=None) -> List[ChapterData] | None:
-
-	match (project_no, lesson_no):
-		case (None, None): query = {}
-		case (None, _): query = {"lesson": int(lesson_no)} #type: ignore
-		case (_, None): query = {"project": int(project_no)}
-		case _: query = {"project": int(project_no), "lesson": int(lesson_no)}
-
-	chapters = MongoStorage().database[db].chapters.find(query)
-	# MongoStorage().database[db].chapters.delete_many({})
+def find_chapter(db: str, project_db: str) -> List[ChapterData] | None:
+	chapters = MongoStorage().database[db].project[project_db].chapters.find().sort('_id')
 	match chapters:
 		case None: return chapters
 		case _: return ChapterDataCollection.from_array(chapters)

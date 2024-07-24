@@ -1,6 +1,7 @@
 {
-	"no": 2,
+	"_id": 2,
 	"title": "Hello World 2!",
+	"database": "project_2",
 	"description": "Naše aplikace již obsahuje Django, ale potřebujeme přeci databázi, css, docker a další technologie, které jsou dnes potřebné pro vývoj moderních webových aplikací",
 	"todo": [
 		"docker",

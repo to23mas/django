@@ -3,7 +3,7 @@ from dataclasses import dataclass
 @dataclass
 class TestData():
 
-	no: int
+	id: int
 	title: str
 	time: int
 	description: str

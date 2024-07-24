@@ -1,11 +1,9 @@
 {
-	"no": 1,
-	"project": 1,
-	"lesson": 1,
+	"_id": 1,
+	"lesson_id": 1,
 	"title": "Introduction chapter",
-	"unlocks": {
-		"type": "button"
-	},
+	"unlock_type": "button",
+	"unlock_id": 1,
 	"blocks": [
 		{
 			"title": "napis",

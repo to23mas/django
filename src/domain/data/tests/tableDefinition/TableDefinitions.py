@@ -2,7 +2,7 @@ from enum import Enum
 
 class TestsTable(Enum):
 
-    NO = "no"
+    ID = "_id"
     TITLE = "title"
     TIME = "time"
     DESCRIPTION = "description"

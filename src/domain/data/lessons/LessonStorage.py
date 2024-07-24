@@ -26,12 +26,8 @@ def get_lesson_unique_no(lesson_no: str, db: str) -> LessonData | None:
 		case None: return lesson
 		case _: return LessonDataSerializer.from_dict(lesson)
 
-def find_lessons(db: str, project_no: str|None=None) -> List[LessonData] | None:
-	match project_no:
-		case None: lessons = MongoStorage().database[db].lessons.find()
-		case _: lessons = MongoStorage().database[db].lessons.find({"project": int(project_no)})
-
-	# MongoStorage().database[db].lessons.delete_many({})
+def find_lessons(db: str, project_db: str) -> List[LessonData] | None:
+	lessons = MongoStorage().database[db].project[project_db].lessons.find().sort('_id')
 	match lessons:
 		case None: return lessons
 		case _: return LessonDataCollection.from_dict(lessons)

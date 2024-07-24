@@ -1,6 +1,5 @@
-from typing import Dict, List
+from typing import Dict
 
-from bson.objectid import ObjectId
 from domain.data.chapters.ChapterData import ChapterData
 from domain.data.chapters.tableDefinition.TableDefinitions import ChaptersTable
 
@@ -8,28 +7,25 @@ from domain.data.chapters.tableDefinition.TableDefinitions import ChaptersTable
 class ChapterDataSerializer:
 
 	@staticmethod
-	def to_dict(chapter_data: ChapterData) -> Dict[str, str | ObjectId | int | Dict | None]:
+	def to_dict(chapter_data: ChapterData) -> Dict[str, str | int | Dict | None]:
 		return {
-			'_id': ObjectId(chapter_data.id),
-			'no': chapter_data.no,
+			'_id': chapter_data.id,
 			'title': chapter_data.title,
-			'project': chapter_data.project,
-			'lesson': chapter_data.lesson,
+			'lesson_id': chapter_data.lesson_id,
 			'unlock_type': chapter_data.unlock_type,
-			'unlock_no': chapter_data.unlock_no,
+			'unlock_id': chapter_data.unlock_id,
 			'blocks': chapter_data.blocks,
 		}
 
 
 	@staticmethod
 	def from_dict(chapter_data: dict) -> ChapterData:
+		print(chapter_data)
 		return ChapterData(
 			id=chapter_data[ChaptersTable.ID.value],
-			no=chapter_data[ChaptersTable.NO.value],
 			title=chapter_data[ChaptersTable.TITLE.value],
-			project=chapter_data[ChaptersTable.PROJECT.value],
-			lesson=chapter_data[ChaptersTable.LESSON.value],
+			lesson_id=chapter_data[ChaptersTable.LESSON_ID.value],
 			unlock_type=chapter_data[ChaptersTable.UNLOCK_TYPE.value],
-			unlock_no=chapter_data[ChaptersTable.UNLOCK_TYPE.value],
+			unlock_id=chapter_data[ChaptersTable.UNLOCK_ID.value],
 			blocks=chapter_data[ChaptersTable.BLOCKS.value],
 		)

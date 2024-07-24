@@ -65,7 +65,7 @@
 									<tbody>
 										{% for test in tests %}
 										<tr>
-											<td>{{test.no}}</td>
+											<td>{{test.id}}</td>
 											<td>{{test.title}}</td>
 											<td>{{test.time}}</td>
 											<td>{{test.target_type}}</td>
@@ -75,7 +75,7 @@
 											<td>{{test.success_score}}</td>
 											<td>{{test.total_points}}</td>
 										<td>
-											<a href="{% url 'admin_test_edit' course_id=course.id test_no=test.no%}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+											<a href="{% url 'admin_test_edit' course_id=course.id test_id=test.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
 										</td>
 										</tr>
 										{% endfor %}
