@@ -26,5 +26,7 @@ urlpatterns = [
 	path('course/<str:course_id>-<int:project_id>-<int:lesson_id>-<int:chapter_id>/chapters/delete', chapter_delete, name='admin_chapter_delete'),
 
 	path('course/<str:course_id>/tests', test_overview, name='admin_test_overview'),
+    path('course/<str:course_id>/tests/new', test_new, name='admin_test_new'),
     path('course/<str:course_id>-<int:test_id>/test/edit', test_edit, name='admin_test_edit'),
+    path('course/<str:course_id>-<int:test_id>/test/delete', test_delete, name='admin_test_delete'),
 ]

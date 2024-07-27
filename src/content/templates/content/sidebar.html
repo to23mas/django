@@ -14,11 +14,11 @@
 				</tr>
 				<tr class="model-group">
 					<th scope="row"><a href="{% url 'admin_project_overview' course_id=course.id %}">Projects</a></th>
-					<td><a href="{% url 'admin_project_new' course_id=course.id%}" class="addlink">Add</a></td>
+					<td><a href="{% url 'admin_project_new' course_id=course.id %}" class="addlink">Add</a></td>
 				</tr>
 				<tr class="model-group">
 					<th scope="row"><a href="{% url 'admin_test_overview' course_id=course.id %}">Tests</a></th>
-				<td></td>
+					<td><a href="{% url 'admin_test_new' course_id=course.id %}" class="addlink">Add</a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -28,16 +28,16 @@
 		<table>
 			<p> </p>
 			<caption>
-				<a href="{% url 'admin_project_edit' course_id=course.id  project_id=project.id%}"
+				<a href="{% url 'admin_project_edit' course_id=course.id  project_id=project.id %}"
 					class="section" title="Models in the Authentication and Authorization application">Project -> {{project.title}}</a>
 			</caption>
 			<tbody>
 				<tr class="model-group">
-					<th scope="row"><a href="{% url 'admin_lesson_overview' course_id=course.id  project_id=project.id%}">Lessons</a></th>
+					<th scope="row"><a href="{% url 'admin_lesson_overview' course_id=course.id  project_id=project.id %}">Lessons</a></th>
 					<td><a href="{% url 'admin_lesson_new' course_id=course.id project_id=project.id %}" class="addlink">Add</td>
 				</tr>
 				<tr class="model-group">
-					<th scope="row"><a href="{% url 'admin_chapter_overview' course_id=course.id project_id=project.id%}">Chapters</a></th>
+					<th scope="row"><a href="{% url 'admin_chapter_overview' course_id=course.id project_id=project.id %}">Chapters</a></th>
 					<td><a href="{% url 'admin_lesson_new' course_id=course.id project_id=project.id %}" class="addlink">Add</td>
 				</tr>
 			</tbody>

@@ -9,7 +9,7 @@
 				<div id="content-main">
 					<ul class="object-tools">
 						<li>
-							<a href="#" class="addlink">
+							<a href="{% url 'admin_test_new' course_id=course.id %}" class="addlink">
 								New Test
 							</a>
 						</li>
@@ -76,6 +76,7 @@
 											<td>{{test.total_points}}</td>
 										<td>
 											<a href="{% url 'admin_test_edit' course_id=course.id test_id=test.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+											<a href="{% url 'admin_test_delete' course_id=course.id test_id=test.id %}" onclick="if (!confirm('Are you sure you want to delete this test?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
 										</td>
 										</tr>
 										{% endfor %}

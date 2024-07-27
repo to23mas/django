@@ -8,8 +8,8 @@ class TestData():
 	time: int
 	description: str
 	target_type: str
-	target_no: int
-	source_no: int
+	target_id: int
+	source_id: int
 	attempts: int
 	success_score: float
 	total_points: int

@@ -1,5 +1,11 @@
 {% extends "content/base.html" %}
 	{% block content %}
+<style>
+	input:disabled, textarea:disabled, select:disabled {
+		background-color: #e0e0e0; /* Light grey background color */
+		color: #666; /* Optional: change text color for better contrast */
+	}
+</style>
 	<div class="main shifted" id="main">
 		{% include 'content/sidebar.html' %}
 		<main id="content-start" class="content" tabindex="-1">
@@ -10,42 +16,66 @@
 						{% csrf_token %}
 						<div>
 							<fieldset class="module aligned wide">
+
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">ID:</label>
-									{{form.no}}
+									{{form.id}}
 								</div></div></div>
+
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Title:</label>
 									{{form.title}}
+									{% if form.title.errors %} <div class="form-errors">{{ form.title.errors }}</div> {% endif %}
 								</div></div></div>
+
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Description:</label>
 									{{form.description}}
+									{% if form.description.errors %} <div class="form-errors">{{ form.description.errors }}</div> {% endif %}
 								</div></div></div>
+
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Time in mins:</label>
 									{{form.time}}
+									{% if form.time.errors %} <div class="form-errors">{{ form.time.errors }}</div> {% endif %}
 								</div></div></div>
+
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Target Type:</label>
 									{{form.target_type}}
-									<label class="required" style="margin-left: 25px;">Target No:</label>
-									{{form.target_no}}
-									<label class="required" style="margin-left: 25px;">Source No:</label>
-									{{form.source_no}}
+									{% if form.target_type.errors %} <div class="form-errors">{{ form.target_type.errors }}</div> {% endif %}
 								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Target id:</label>
+									{{form.target_id}}
+									{% if form.target_id.errors %} <div class="form-errors">{{ form.target_id.errors }}</div> {% endif %}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Source id:</label>
+									{{form.source_id}}
+									{% if form.source_id.errors %} <div class="form-errors">{{ form.source_id.errors }}</div> {% endif %}
+								</div></div></div>
+
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Attempts:</label>
 									{{form.attempts}}
+									{% if form.attempts.errors %} <div class="form-errors">{{ form.attempts.errors }}</div> {% endif %}
 								</div></div></div>
+
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Success Score (%):</label>
 									{{form.success_score}}
+									{% if form.success_score.errors %} <div class="form-errors">{{ form.success_score.errors }}</div> {% endif %}
 								</div></div></div>
+
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Total Points:</label>
 									{{form.total_points}}
+									{% if form.total_points.errors %} <div class="form-errors">{{ form.total_points.errors }}</div> {% endif %}
 								</div></div></div>
+
 							</fieldset>
 							<div class="submit-row">
 								<input type="submit" value="Save" class="default" name="_save">
@@ -55,54 +85,52 @@
 				</div>
 			</div>
 
-			<br class="clear">
-			<br class="clear">
-			<br class="clear">
 
-			<div id="content" class="content">
-			<h2> questions </h2>
-				<div id="content-main">
-					<div class="module filtered" id="changelist">
-						<table id="result_list">
-							<thead>
-								<tr>
-									<th scope="col">
-										<div class="text">Question</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Type</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Points</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Actions</div>
-										<div class="clear"></div>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for q in questions %}
-								<tr>
-									<td>{{ q.question }}</td>
-									<td>{{ q.type }}</td>
-									<td>{{ q.points }}</td>
-								<td> </td>
-								</tr>
-								{% endfor %}
-								<tr>
-									<td>
-										<div class="cursor-grabbing" id="projectNetwork"></div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
+		{% if test %}
+		<br class="clear">
+		<br class="clear">
+		<br class="clear">
+
+		<div id="content" class="content">
+		<h2> Questions </h2>
+			<div id="content-main">
+				<div class="module filtered" id="changelist">
+					<table id="result_list">
+						<thead>
+							<tr>
+								<th scope="col">
+									<div class="text">Question</div>
+									<div class="clear"></div>
+								</th>
+								<th scope="col">
+									<div class="text">Type</div>
+									<div class="clear"></div>
+								</th>
+								<th scope="col">
+									<div class="text">Points</div>
+									<div class="clear"></div>
+								</th>
+								<th scope="col">
+									<div class="text">Actions</div>
+									<div class="clear"></div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for q in questions %}
+							<tr>
+								<td>{{ q.question }}</td>
+								<td>{{ q.type }}</td>
+								<td>{{ q.points }}</td>
+							<td> </td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
 				</div>
 			</div>
+		</div>
+		{% endif %}
 
 		</main>
 	</div>
