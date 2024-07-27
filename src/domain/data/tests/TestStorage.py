@@ -5,6 +5,7 @@ from domain.Mongo import MongoStorage
 from domain.data.exception.DataNotFoundException import DataNotFoundException
 from domain.data.tests.QuestionData import QuestionData
 from domain.data.tests.QuestionDataCollection import QuestionDataCollection
+from domain.data.tests.QuestionDataSerializer import QuestionDataSerializer
 from domain.data.tests.TestDataCollection import TestDataCollection
 from domain.data.tests.TestDataSerializer import TestDataSerializer
 from domain.data.tests.TestData import TestData
@@ -41,6 +42,13 @@ def create_test(test_data: TestData, db: str) -> None:
 	MongoStorage().database[db].tests.insert_one(TestDataSerializer.to_dict(test_data))
 
 
+def create_question(question_data: QuestionData, test_id: int, db: str) -> None:
+	MongoStorage().database[db].tests.update_one(
+		{'_id': test_id},
+		{'$push': {'questions': QuestionDataSerializer.to_dict(question_data)}}
+	)
+
+
 def find_tests(db: str) -> List[TestData] | None:
 	tests = MongoStorage().database[db].tests.find().sort('_id')
 	match tests:
@@ -64,8 +72,42 @@ def get_next_valid_id(db: str) -> int:
 		case _: return document['_id'] + 1
 
 
+def get_next_valid_question_id(db: str, test_id: int) -> int:
+	pipeline = [
+		{'$match': {'_id': test_id}},  # Match the document with the specified _id
+		{'$unwind': '$questions'},  # Deconstruct the questions array
+		{'$group': {'_id': None, 'max_question_id': {'$max': '$questions._id'}}}  # Group and find the maximum _id
+	]
+	result = list(MongoStorage().database[db].tests.aggregate(pipeline))
+
+	if result:
+		return result[0]['max_question_id'] + 1
+	else:
+		return 1
+
+
 def update_test(test_data: TestData, db: str) -> None:
 	MongoStorage().database[db].tests.update_one(
 		{'_id': test_data.id},
 		{'$set': TestDataSerializer.to_dict(test_data)}
+	)
+
+
+def update_question(question_data: QuestionData, db: str, test_id: int) -> None:
+	MongoStorage().database[db].tests.update_one(
+		{'_id': test_id, 'questions._id': question_data.id},
+		{'$set': {
+			'questions.$.question': question_data.question,
+			'questions.$.type': question_data.type,
+			'questions.$.points': question_data.points,
+			'questions.$.answers': question_data.answers,
+			'questions.$.correct': question_data.correct
+		}}
+	)
+
+
+def delete_question(db: str, test_id: int, question_id: int) -> None:
+	MongoStorage().database[db].tests.update_one(
+		{'_id': test_id},
+		{'$pull': {'questions': {'_id': question_id}}}
 	)

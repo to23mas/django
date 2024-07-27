@@ -1,0 +1,71 @@
+{% extends "content/base.html" %}
+	{% block content %}
+<style>
+	input:disabled, textarea:disabled, select:disabled {
+		background-color: #e0e0e0; /* Light grey background color */
+		color: #666; /* Optional: change text color for better contrast */
+	}
+</style>
+	<div class="main shifted" id="main">
+		{% include 'content/sidebar.html' %}
+		<main id="content-start" class="content" tabindex="-1">
+			<div id="content" class="colM">
+				<div id="content-main">
+				{% if question %}
+					<h1>Editing test - {{question.question}}</h1>
+				{% else %}
+					<h1>Creating test </h1>
+				{% endif %}
+
+					<form method="post" id="user_form" novalidate="">
+						{% csrf_token %}
+						<div>
+							<fieldset class="module aligned wide">
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">ID:</label>
+									{{form.id}}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Type:</label>
+									{{form.type}}
+									{% if form.type.errors %} <div class="form-errors">{{ form.type.errors }}</div> {% endif %}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Question:</label>
+									{{form.question}}
+									{% if form.question.errors %} <div class="form-errors">{{ form.question.errors }}</div> {% endif %}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Points:</label>
+									{{form.points}}
+									{% if form.points.errors %} <div class="form-errors">{{ form.points.errors }}</div> {% endif %}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Correct:</label>
+									{{form.correct}}
+									{% if form.correct.errors %} <div class="form-errors">{{ form.correct.errors }}</div> {% endif %}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Answers:</label>
+									{{form.answers}}
+									{% if form.answers.errors %} <div class="form-errors">{{ form.answers.errors }}</div> {% endif %}
+								</div></div></div>
+
+							</fieldset>
+							<div class="submit-row">
+								<input type="submit" value="Save" class="default" name="_save">
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	{% endblock %}

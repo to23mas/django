@@ -15,6 +15,7 @@ class TestsTable(Enum):
 
 class TestQuestionTable(Enum):
 
+    ID = "_id"
     QUESTION = "question"
     TYPE = "type"
     ANSWERS = "answers"
