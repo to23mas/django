@@ -4,3 +4,4 @@ class TargetUnlockType(Enum):
     LESSON = 'lesson'
     CHAPTER = 'chapter'
     PROJECT = 'project'
+    ALL = 'all'

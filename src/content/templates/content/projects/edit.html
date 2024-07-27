@@ -58,71 +58,10 @@ input:disabled, textarea:disabled, select:disabled {
 			<br class="clear">
 			<br class="clear">
 
-			<div id="content" class="content">
-			<h2> lesson map </h2>
-				<div id="content-main">
-					<div class="module filtered" id="changelist">
-						<table id="result_list">
-							<thead>
-								<tr>
-									<th scope="col">
-										<div class="text">No</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Label</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">To</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Actions</div>
-										<div class="clear"></div>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for g in lessons_graph %}
-								<tr>
-									<td>{{g.no}}</td>
-									<td>{{g.label}}</td>
-									<td>{{g.to}}</td>
-								<td> </td>
-								</tr>
-								{% endfor %}
-								<tr>
-									<td>
-										<div class="cursor-grabbing" id="projectNetwork"></div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
+
 		</main>
 	</div>
 
-	<script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-<script type="text/javascript">
-	let nodes_parsed = [];
-	{% for lesson in lessons_graph %}
-		nodes_parsed.push({ id: {{ lesson.no }}, label: '{{ lesson.label }}'});
-	{% endfor %}
-
-	var nodes = new vis.DataSet( nodes_parsed );
-	let edges_parsed = [];
-	{% for lesson in lessons_graph %}
-		{% for to in lesson.to %}
-			edges_parsed.push({ from: {{ lesson.no }} , to: {{ to }} });
-		{% endfor %}
-	{% endfor %}
-
-	var edges = new vis.DataSet( edges_parsed );
-	var network = new vis.Network( document.getElementById("projectNetwork"), {nodes: nodes, edges: edges}, {});
-</script>
 
 
 	{% endblock %}

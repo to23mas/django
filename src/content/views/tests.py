@@ -3,36 +3,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
-from content.forms.CourseEditForm import CourseEditForm
 from content.forms.TestEditForm import TestEditForm
-from domain.data.chapters.ChapterStorage import find_chapter
-from domain.data.courses.CourseDataSerializer import CourseDataSerializer
-from domain.data.courses.CourseStorage import find_courses, get_course, get_course_by_id
-from domain.data.projects.ProjectStorage import find_projects, get_project
+from domain.data.courses.CourseStorage import get_course_by_id
+from domain.data.projects.ProjectStorage import get_project
 from domain.data.tests.TestDataSerializer import TestDataSerializer
 from domain.data.tests.TestStorage import find_tests, get_test
 
-
-@staff_member_required
-def test_edit(request: HttpRequest, course_id: str, test_id: int) -> HttpResponse:
-	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
-	project, _ = get_project(project_id, course.database)
-	if project == None: return  redirect('admin_course_overview')
-	test, questions = get_test(course.database, test_id)
-	if test == None: return  redirect('admin_course_overview')
-
-	edit_form = TestEditForm(initial=TestDataSerializer.to_dict(test))
-	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/test/content_overview'}, {'Edit': '#'}]
-	print(questions)
-	return render(request, 'content/tests/edit.html', {
-		'test': test,
-		'questions': questions,
-		'course': course,
-		'project': project,
-		'breadcrumbs': breadcrumbs,
-		'form': edit_form,
-	})
 
 @staff_member_required
 def test_overview(request: HttpRequest, course_id: str) -> HttpResponse:
@@ -47,4 +23,25 @@ def test_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 		'course': course,
 		'tests': tests,
 		'breadcrumbs': breadcrumbs,
+	})
+
+
+@staff_member_required
+def test_edit(request: HttpRequest, course_id: str, test_id: int) -> HttpResponse:
+	course = get_course_by_id(course_id)
+	if course == None: return  redirect('admin_course_overview')
+	project, _ = get_project(project_id, course.database)
+	if project == None: return  redirect('admin_course_overview')
+	test, questions = get_test(course.database, test_id)
+	if test == None: return  redirect('admin_course_overview')
+
+	edit_form = TestEditForm(initial=TestDataSerializer.to_dict(test))
+	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/test/content_overview'}, {'Edit': '#'}]
+	return render(request, 'content/tests/edit.html', {
+		'test': test,
+		'questions': questions,
+		'course': course,
+		'project': project,
+		'breadcrumbs': breadcrumbs,
+		'form': edit_form,
 	})

@@ -11,7 +11,6 @@ class IndexView(generic.TemplateView):
         client = MongoClient('localhost', 27017)
         db = client.inpv
         projects = db.projects.find({}, {"title": 1})
-        print(projects)
         return {"text": "ahoj"}
     # def get_queryset(self):
     #     return ['ahoj', 'nazdar']

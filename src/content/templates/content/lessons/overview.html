@@ -31,10 +31,6 @@
 												<div class="clear"></div>
 											</th>
 											<th scope="col">
-												<div class="text">Chapters</div>
-												<div class="clear"></div>
-											</th>
-											<th scope="col">
 												<div class="text">Actions</div>
 												<div class="clear"></div>
 											</th>
@@ -45,7 +41,6 @@
 										<tr>
 											<td>{{lesson.id}}</td>
 											<td>{{lesson.title}}</td>
-											<td>{{lesson.chapters}}</td>
 											<td>
 												<a style="margin-right: 20px;" href="{% url 'admin_lesson_edit' course_id=course.id project_id=project.id lesson_id=lesson.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
 												<a href="{% url 'admin_lesson_delete' course_id=course.id project_id=project.id lesson_id=lesson.id %}" onclick="if (!confirm('Are you sure you want to delete this project?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
@@ -55,14 +50,34 @@
 									</tbody>
 								</table>
 							</div>
+							<div id="content" class="">
+								<h3> Lesson map </h3>
+								<hr>
+								<div class="cursor-grabbing" id="projectNetwork" style="height: 500px; border: 1px black solid;"></div>
+							</div>
 						</div>
 					</div>
 				</div>
-				<br class="clear">
 			</div>
-			<!-- END Content -->
-			<div id="footer"></div>
+
 		</main>
-		<!-- END Container -->
 	</div>
+	<script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+	<script type="text/javascript">
+	let nodes_parsed = [];
+	{% for lesson in lessons %}
+	nodes_parsed.push({ id: {{ lesson.id }}, label: '{{ lesson.id }}: ' + '{{ lesson.title }}'});
+	{% endfor %}
+	var nodes = new vis.DataSet( nodes_parsed );
+	let edges_parsed = [];
+	{% for lesson in lessons %}
+		{% for to in lesson.to %}
+			edges_parsed.push({ from: {{ lesson.id }} , to: {{ to }} });
+		{% endfor %}
+	{% endfor %}
+
+	console.log(edges_parsed);
+	var edges = new vis.DataSet( edges_parsed );
+	var network = new vis.Network( document.getElementById("projectNetwork"), {nodes: nodes, edges: edges}, {});
+</script>
 	{% endblock %}

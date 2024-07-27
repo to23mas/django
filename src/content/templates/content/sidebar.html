@@ -38,7 +38,7 @@
 				</tr>
 				<tr class="model-group">
 					<th scope="row"><a href="{% url 'admin_chapter_overview' course_id=course.id project_id=project.id%}">Chapters</a></th>
-				<td></td>
+					<td><a href="{% url 'admin_lesson_new' course_id=course.id project_id=project.id %}" class="addlink">Add</td>
 				</tr>
 			</tbody>
 		</table>

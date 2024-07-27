@@ -68,5 +68,5 @@ if __name__ == "__main__":
     migrate(
         list_files('/usr/src/db/migrations/documents/courses/django/tests/1/'),
         db.django.tests)
-
+    ## user progress
     client.close()

@@ -8,11 +8,5 @@
 		"instalace frameworku django",
 		"django console",
 		"představení administrace"
-	],
-	"lessons": [
-		{"no": 1, "label": "setup", "to": [2, 3]},
-		{"no": 2, "label": "terminal", "to": [4]},
-		{"no": 3, "label": "editor"},
-		{"no": 4, "label": "test"}
 	]
 }

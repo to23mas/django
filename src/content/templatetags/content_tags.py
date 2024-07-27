@@ -14,6 +14,9 @@ def get_project_name_from_id(project_no: str, course: str):
 
 
 @register.simple_tag
-def get_lesson_name_from_id(lesson_no: str, project_no: str, course: str) -> str:
-	lesson = get_lesson(lesson_no, project_no, course)
-	return lesson.title #type: ignore
+def get_lesson_name(lesson_id: int, course_db: str, project_db: str) -> str:
+	lesson = get_lesson(lesson_id, course_db, project_db)
+	print(lesson)
+	match lesson:
+		case None: return 'ERROR -> no lesson found'
+		case _: return lesson.title

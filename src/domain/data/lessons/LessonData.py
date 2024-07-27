@@ -1,10 +1,10 @@
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import List
 
 
 @dataclass
 class LessonData():
 
-	id:int
+	id: int
 	title: str
-	chapters: List[Dict[str, str|int]] | None
+	to: List[int]

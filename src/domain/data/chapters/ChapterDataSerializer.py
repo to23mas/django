@@ -20,7 +20,6 @@ class ChapterDataSerializer:
 
 	@staticmethod
 	def from_dict(chapter_data: dict) -> ChapterData:
-		print(chapter_data)
 		return ChapterData(
 			id=chapter_data[ChaptersTable.ID.value],
 			title=chapter_data[ChaptersTable.TITLE.value],

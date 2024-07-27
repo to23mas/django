@@ -7,15 +7,15 @@ from domain.data.lessons.LessonData import LessonData
 from domain.data.lessons.LessonDataCollection import LessonDataCollection
 from domain.data.lessons.LessonDataSerializer import LessonDataSerializer
 
-def get_lesson(lesson_no: str, project_no: str, db: str) -> LessonData | None:
-	lesson = MongoStorage().database[db].lessons.find_one({
-		"no": int(lesson_no),
-		"project": int(project_no),
+def get_lesson(lesson_id: int, db: str, project_db: str) -> LessonData | None:
+	lesson = MongoStorage().database[db].project[project_db].lessons.find_one({
+		"_id": lesson_id,
 	})
 
 	match lesson:
 		case None: return lesson
 		case _: return LessonDataSerializer.from_dict(lesson)
+
 
 def get_lesson_unique_no(lesson_no: str, db: str) -> LessonData | None:
 	lesson = MongoStorage().database[db].lessons.find_one({
@@ -25,6 +25,7 @@ def get_lesson_unique_no(lesson_no: str, db: str) -> LessonData | None:
 	match lesson:
 		case None: return lesson
 		case _: return LessonDataSerializer.from_dict(lesson)
+
 
 def find_lessons(db: str, project_db: str) -> List[LessonData] | None:
 	lessons = MongoStorage().database[db].project[project_db].lessons.find().sort('_id')

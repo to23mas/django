@@ -3,50 +3,65 @@
 {% block content %}
 
 	<div class="main shifted" id="main">
-{% include 'content/sidebar.html' %}
-<main id="content-start" class="content" tabindex="-1">
-	<!-- Content -->
-	<div id="content" class="">
-		<h1>List of chapters</h1>
-		<div id="content-main">
-			<ul class="object-tools">
-				<li>
+		{% include 'content/sidebar.html' %}
+		<main id="content-start" class="content" tabindex="-1">
+			<!-- Content -->
+			<div id="content" class="">
+				<h1>List of chapters</h1>
+				<div id="content-main">
+					<ul class="object-tools">
+						<li>
 							<a href="{% url 'admin_chapter_new' course_id=course.id project_id=project.id %}" class="addlink">
-						New Chapter
-					</a>
-				</li>
-			</ul>
-			<div class="module filtered" id="changelist">
-				<div class="changelist-form-container">
-					<div class="results">
-						<table id="result_list">
-							<thead>
-								<tr>
-									<th scope="col">
-										<div class="text">ID</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Title</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Lesson</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Unlock type</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Unlock id</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Actions</div>
-										<div class="clear"></div>
-									</th>
-								</tr>
+								New Chapter
+							</a>
+						</li>
+					</ul>
+					<div class="module filtered" id="changelist">
+						<div class="changelist-form-container">
+							<div class="results">
+								<table id="result_list">
+									<thead>
+										<tr>
+											<th scope="col">
+												<div class="text">ID</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Title</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Lesson</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Unlock type</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Unlock id</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Actions</div>
+												<div class="clear"></div>
+											</th>
+										</tr>
+
+										<form method="post">
+											{% csrf_token %}
+											<tr>
+												<th scope="col"> </th>
+												<th scope="col"> <div class="text">{{filter.title}}</div> </th>
+												<th scope="col"> <div class="text">{{filter.lesson_id}}</div> </th>
+												<th scope="col"> <div class="text">{{filter.unlock_type}}</div> </th>
+												<th scope="col"> <div class="text">{{filter.unlock_id}}</div> </th>
+												<th scope="col">
+														<button type="submit"> <img src="/public/admin/img/icon-viewlink.svg" alt="False"> </button>
+												</th>
+											</tr>
+										</form>
+
 							</thead>
 							<tbody>
 
@@ -54,7 +69,8 @@
 								<tr>
 									<td>{{chapter.id}}</td>
 									<td>{{chapter.title}}</td>
-									<td>{{chapter.lesson_id}}</td>
+									{% get_lesson_name chapter.lesson_id course.database project.database as lesson_title %}
+									<td>{{lesson_title}}</td>
 									<td>{{chapter.unlock_type}}</td>
 									<td>{{chapter.unlock_id}}</td>
 									<td>

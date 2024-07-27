@@ -7,23 +7,19 @@ from domain.data.lessons.tableDefinition.TableDefinitions import LessonsTable
 class LessonDataSerializer:
 
 	@staticmethod
-	def to_dict(lesson_data: LessonData) -> Dict[str, str | int | None | List[Dict[str, str|int]]]:
+	def to_dict(lesson_data: LessonData) -> Dict[str, str | int | List[int]]:
 		return {
 			'_id': lesson_data.id,
 			'title': lesson_data.title,
-			'chapters': lesson_data.chapters,
+			'to': lesson_data.to,
 		}
 
 
 	@staticmethod
 	def from_dict(lesson_data: dict) -> LessonData:
-		try:
-			chapters = lesson_data[LessonsTable.CHAPTERS.value]
-		except KeyError:
-			chapters = None
 
 		return LessonData(
 			id=lesson_data[LessonsTable.ID.value],
 			title=lesson_data[LessonsTable.TITLE.value],
-			chapters=chapters
+			to=lesson_data[LessonsTable.TO.value],
 		)
