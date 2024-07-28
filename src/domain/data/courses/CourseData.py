@@ -4,6 +4,7 @@ from typing import List
 
 @dataclass
 class CourseData():
+
 	id: int
 	order: int
 	database: str

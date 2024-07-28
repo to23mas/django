@@ -20,9 +20,17 @@
 - [ ] display points to overview and questions itselves
 
 ## Content module
-- [ ] templatestag -> projectid to project name http://localhost:8888/admin/content/1/lessons
+- [x] templatestag -> projectid to project name http://localhost:8888/admin/content/1/lessons
 - [ ] delete course should delete all the lessons and chapters inside
-- [ ] come up with better id system
+- [x] come up with better id system
+- [x] courses
+- [ ] projects
+- [ ] lessons
+- [ ] chapters
+- [x] tests
+- [ ] users
+- [ ] users progress
+- [ ] upload download document
 
 ## Basic correction
 - [ ] Login: forgotten password to the bottom of the form

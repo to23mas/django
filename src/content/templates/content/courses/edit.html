@@ -1,10 +1,11 @@
 {% extends "content/base.html" %}
 	{% block content %}
 <style>
-	input:disabled, textarea:disabled, select:disabled {
-		background-color: #e0e0e0; /* Light grey background color */
-		color: #666; /* Optional: change text color for better contrast */
-	}
+input[readonly] {
+	background-color: #e0e0e0; /* Light grey background color */
+	color: #666; /* Optional: change text color for better contrast */
+	cursor: not-allowed;
+}
 </style>
 	<div class="main shifted" id="main">
 		{% include 'content/sidebar.html' %}

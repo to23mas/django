@@ -3,7 +3,7 @@ from django import forms
 
 class CourseEditForm(forms.Form):
 	order = forms.IntegerField()
-	id = forms.IntegerField()
+	id = forms.IntegerField(required=False)
 	title = forms.CharField()
 	database = forms.CharField()
 	visible = forms.BooleanField(required=False, initial=False)
@@ -29,14 +29,17 @@ class CourseEditForm(forms.Form):
 		return ', '.join(tags_list)
 
 
-	def __init__(self, *args, **kwargs):
+	def __init__(self, *args, database=None, **kwargs):
 		initial = kwargs.get('initial', {})
 		if 'tags' in initial and isinstance(initial['tags'], list):
 			initial['tags'] = ', '.join(initial['tags'])
 		kwargs['initial'] = initial
 		super(CourseEditForm, self).__init__(*args, **kwargs)
 
+		self.fields['id'].widget.attrs['readonly'] = True
+		if database:
+			self.fields['database'].widget.attrs['readonly'] = True
+			self.fields['database'].initial = database
 		if initial:
-			self.fields['database'].widget.attrs['disabled'] = True
-			self.fields['id'].widget.attrs['disabled'] = True
+			self.fields['database'].widget.attrs['readonly'] = True
 			self.fields['id'].initial = initial['_id']

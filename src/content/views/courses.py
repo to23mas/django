@@ -1,12 +1,11 @@
 """views.py"""
-from bson.objectid import ObjectId
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
 from content.forms.CourseEditForm import CourseEditForm
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
-from domain.data.courses.CourseStorage import create_course, delete_course, find_courses, get_course_by_id
+from domain.data.courses.CourseStorage import create_course, delete_course, find_courses, get_course_by_id, get_next_valid_id, update_course
 
 
 @staff_member_required
@@ -15,7 +14,17 @@ def course_edit(request: HttpRequest, course_id: str) -> HttpResponse:
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
 
-	edit_form = CourseEditForm(initial=CourseDataSerializer.to_dict(course))
+	if request.method == 'POST':
+		print(request.POST)
+		edit_form = CourseEditForm(request.POST, database=course.database)
+		if edit_form.is_valid():
+			edit_form.cleaned_data['_id'] = course.id
+			course_data = CourseDataSerializer.from_dict(edit_form.cleaned_data)
+			update_course(course_data)
+			return redirect('admin_course_edit', course_id=course_data.id)
+	else:
+		edit_form = CourseEditForm(initial=CourseDataSerializer.to_dict(course))
+
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {'Edit': '#'}]
 	return render(request, 'content/courses/edit.html', {
 		'course': course,
@@ -23,19 +32,20 @@ def course_edit(request: HttpRequest, course_id: str) -> HttpResponse:
 		'form': edit_form,
 	})
 
+
 @staff_member_required
 def course_new(request: HttpRequest) -> HttpResponse:
 	"""list all courses"""
 	if request.method == 'POST':
 		edit_form = CourseEditForm(request.POST)
 		if edit_form.is_valid():
-			edit_form.cleaned_data['_id'] = edit_form.cleaned_data['id']
+			edit_form.cleaned_data['_id'] = get_next_valid_id()
 			course_data = CourseDataSerializer.from_dict(edit_form.cleaned_data)
 			try:
 				create_course(course_data)
 				return redirect('admin_course_edit', course_id=course_data.id)
 			except:
-				edit_form.add_error('id', 'This id number already exists in the database. Must be unique.')
+				edit_form.add_error('database', 'This string must be unique. choose another one')
 	else:
 		edit_form = CourseEditForm()
 
@@ -44,6 +54,7 @@ def course_new(request: HttpRequest) -> HttpResponse:
 		'breadcrumbs': breadcrumbs,
 		'form': edit_form,
 	})
+
 
 @staff_member_required
 def course_overview(request: HttpRequest) -> HttpResponse:
