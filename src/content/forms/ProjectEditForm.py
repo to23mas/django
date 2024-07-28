@@ -3,7 +3,7 @@ from django import forms
 
 class ProjectEditForm(forms.Form):
 
-	id = forms.IntegerField()
+	id = forms.IntegerField(required=False)
 	title = forms.CharField()
 	database = forms.CharField()
 	description = forms.CharField(
@@ -26,7 +26,8 @@ class ProjectEditForm(forms.Form):
 		kwargs['initial'] = initial
 		super(ProjectEditForm, self).__init__(*args, **kwargs)
 
+		self.fields['id'].widget.attrs['readonly'] = True
+
 		if initial:
-			self.fields['database'].widget.attrs['disabled'] = True
-			self.fields['id'].widget.attrs['disabled'] = True
+			self.fields['database'].widget.attrs['readonly'] = True
 			self.fields['id'].initial = initial['_id']

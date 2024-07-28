@@ -1,9 +1,10 @@
 {% extends "content/base.html" %}
 	{% block content %}
 <style>
-input:disabled, textarea:disabled, select:disabled {
+input[readonly] {
 	background-color: #e0e0e0; /* Light grey background color */
 	color: #666; /* Optional: change text color for better contrast */
+	cursor: not-allowed;
 }
 </style>
 <div class="main shifted" id="main">
@@ -53,14 +54,8 @@ input:disabled, textarea:disabled, select:disabled {
 				</form>
 			</div>
 		</div>
-
-			<br class="clear">
-			<br class="clear">
-			<br class="clear">
-
-
-		</main>
-	</div>
+	</main>
+</div>
 
 
 

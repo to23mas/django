@@ -1,5 +1,4 @@
 """views.py"""
-from bson.objectid import ObjectId
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
@@ -7,7 +6,7 @@ from django.shortcuts import redirect, render
 from content.forms.ProjectEditForm import ProjectEditForm
 from domain.data.courses.CourseStorage import get_course_by_id
 from domain.data.projects.ProjectDataSerializer import ProjectDataSerializer
-from domain.data.projects.ProjectStorage import create_project, delete_project, exists_project, find_projects, get_project
+from domain.data.projects.ProjectStorage import create_project, delete_project, find_projects, get_next_valid_id, get_project, get_project_by_id, update_project
 
 
 @staff_member_required
@@ -30,17 +29,25 @@ def project_edit(request: HttpRequest, course_id: str, project_id: int) -> HttpR
 	"""list all courses"""
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
-	project, lessons_graph = get_project(project_id, course.database)
+	project = get_project_by_id(project_id, course.database)
 	if project == None: return  redirect('admin_course_overview')
 
-	edit_form = ProjectEditForm(initial=ProjectDataSerializer.to_dict(project))
+	if request.method == 'POST':
+		edit_form = ProjectEditForm(request.POST)
+		if edit_form.is_valid():
+			edit_form.cleaned_data['_id'] = edit_form.cleaned_data['id']
+			project_data = ProjectDataSerializer.from_dict(edit_form.cleaned_data)
+			update_project(project_data, course.database)
+			return  redirect('admin_project_edit', course_id=course_id, project_id=project_data.id)
+	else:
+		edit_form = ProjectEditForm(initial=ProjectDataSerializer.to_dict(project))
+
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Edit Project': '#'}]
 	return render(request, 'content/projects/edit.html', {
 		'project': project,
 		'course': course,
 		'breadcrumbs': breadcrumbs,
 		'form': edit_form,
-		'lessons_graph': lessons_graph,
 	})
 
 
@@ -53,14 +60,13 @@ def project_new(request: HttpRequest, course_id: str) -> HttpResponse:
 	if request.method == 'POST':
 		edit_form = ProjectEditForm(request.POST)
 		if edit_form.is_valid():
-			if exists_project(course.database, edit_form.cleaned_data['no']):
-				edit_form.add_error('no', 'This number already exists in the database. Must be unique.')
-			else:
-				edit_form.cleaned_data['_id'] = ObjectId()
-				project_data = ProjectDataSerializer.from_dict(edit_form.cleaned_data)
+			edit_form.cleaned_data['_id'] = get_next_valid_id(course.database)
+			project_data = ProjectDataSerializer.from_dict(edit_form.cleaned_data)
+			try:
 				create_project(project_data, course.database)
 				return  redirect('admin_project_edit', course_id=course_id, project_id=project_data.id)
-
+			except:
+				edit_form.add_error('database', 'This value must be unique')
 	else:
 		edit_form = ProjectEditForm()
 
