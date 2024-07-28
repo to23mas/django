@@ -1,101 +1,101 @@
 {% extends "base.html" %}
 {% load test_tags %}
 
-{% block content %}
-{% for test in tests %}
-    {% get_test_state course username test.no as test_progress %}
-    {% if test_progress.state == 'open' %}
-      <div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
-        <div class="p-6">
-          <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-            {{test.title}}
-          </h5>
-          <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-            {{test.description}}
-          </p>
-          <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-            Počet pokusů: {{test.attempts}}
-          </p>
-          <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-            Potřebné scóre: {{test.success_score}}%
-          </p>
-            <br>
-            <a href="{% url 'tests:test' course=course_name test_no=test.no %}"
-              class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-              Přejít k testu
-            </a>
-        </div>
-      </div>
-    {% elif test_progress.state == 'finish' %}
-      <div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
-        <div class="p-6 bg-green-100">
-          <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-            {{test.title}}
-          </h5>
-          <h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-            Test je úspěšně splněn. Lze jej ale opakovat až do dosažení 100%
-          </h6>
-          <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-            {{test.description}}
-          </p>
-          <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-            Počet pokusů: {{test_progress.attempts}} z {{test.attempts}}
-          </p>
-          <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-            Potřebné scóre: {{test.success_score}}%
-          </p>
-            <br>
-            <a href="{% url 'tests:test' course=course_name test_no=test.no %}"
-              class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-              Přejít k testu
-            </a>
-        </div>
-      </div>
-    {% elif test_progress.state == 'success' %}
-      <div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
-        <div class="p-6 bg-green-200">
-          <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-            {{test.title}}
-          </h5>
-          <h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-            Test je úspěšně splněn.
-          </h6>
-          <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-            {{test.description}}
-          </p>
-        </div>
-      </div>
-    {% elif test_progress.state == 'fail' %}
-      <div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
-        <div class="p-6 bg-red-100">
-          <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-            {{test.title}}
-          </h5>
-          <h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-            Test prozatím není splněn. Možnost opakovat až do vyčerpání pokusů.
-          </h6>
-          <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-            {{test.description}}
-          </p>
-          <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-            Počet pokusů: {{test_progress.attempts}} z {{test.attempts}}
-          </p>
-          <p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-            Potřebné scóre: {{test.success_score}}%
-          </p>
-          {% if test_progress.attempts == test.attempts %}
-            <h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-              Vyčerpány všechny pokusy.
-            </h6>
-          {% else %}
-            <br>
-            <a href="{% url 'tests:test' course=course_name test_no=test.no %}"
-              class="mt-7  select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-              Přejít k testu
-            </a>
-          {% endif %}
-        </div>
-      </div>
-    {% endif %}
-{% endfor %}
-{% endblock %}
+	{% block content %}
+		{% for test in tests %}
+		{% get_test_state course username test.no as test_progress %}
+			{% if test_progress.state == 'open' %}
+			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
+				<div class="p-6">
+					<h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+						{{test.title}}
+					</h5>
+					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+						{{test.description}}
+					</p>
+					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+						Počet pokusů: {{test.attempts}}
+					</p>
+					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+						Potřebné scóre: {{test.success_score}}%
+					</p>
+					<br>
+					<a href="{% url 'tests:test' course=course_name test_no=test.no %}"
+						class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
+						Přejít k testu
+					</a>
+				</div>
+			</div>
+			{% elif test_progress.state == 'finish' %}
+			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
+				<div class="p-6 bg-green-100">
+					<h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+						{{test.title}}
+					</h5>
+					<h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+						Test je úspěšně splněn. Lze jej ale opakovat až do dosažení 100%
+					</h6>
+					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+						{{test.description}}
+					</p>
+					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+						Počet pokusů: {{test_progress.attempts}} z {{test.attempts}}
+					</p>
+					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+						Potřebné scóre: {{test.success_score}}%
+					</p>
+					<br>
+					<a href="{% url 'tests:test' course=course_name test_no=test.no %}"
+						class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
+						Přejít k testu
+					</a>
+				</div>
+			</div>
+			{% elif test_progress.state == 'success' %}
+			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
+				<div class="p-6 bg-green-200">
+					<h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+						{{test.title}}
+					</h5>
+					<h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+						Test je úspěšně splněn.
+					</h6>
+					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+						{{test.description}}
+					</p>
+				</div>
+			</div>
+			{% elif test_progress.state == 'fail' %}
+			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
+				<div class="p-6 bg-red-100">
+					<h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+						{{test.title}}
+					</h5>
+					<h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+						Test prozatím není splněn. Možnost opakovat až do vyčerpání pokusů.
+					</h6>
+					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+						{{test.description}}
+					</p>
+					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+						Počet pokusů: {{test_progress.attempts}} z {{test.attempts}}
+					</p>
+					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+						Potřebné scóre: {{test.success_score}}%
+					</p>
+					{% if test_progress.attempts == test.attempts %}
+					<h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+						Vyčerpány všechny pokusy.
+					</h6>
+					{% else %}
+					<br>
+					<a href="{% url 'tests:test' course=course_name test_no=test.no %}"
+						class="mt-7  select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
+						Přejít k testu
+					</a>
+					{% endif %}
+				</div>
+			</div>
+			{% endif %}
+			{% endfor %}
+			{% endblock %}

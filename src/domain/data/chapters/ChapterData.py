@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Dict
+from typing import Dict, List
 
 
 @dataclass
@@ -8,5 +8,5 @@ class ChapterData():
 	lesson_id: int
 	title: str
 	unlock_type: str
-	unlock_id: str
-	blocks: Dict
+	unlock_id: int
+	blocks: List[Dict]

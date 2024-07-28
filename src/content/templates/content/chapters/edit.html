@@ -1,99 +1,111 @@
 {% extends "content/base.html" %}
 	{% block content %}
+<style>
+input[readonly] {
+	background-color: #e0e0e0; /* Light grey background color */
+	color: #666; /* Optional: change text color for better contrast */
+	cursor: not-allowed;
+}
+</style>
+
 	<div class="main shifted" id="main">
 		{% include 'content/sidebar.html' %}
 		<main id="content-start" class="content" tabindex="-1">
 			<div id="content" class="colM">
 				<div id="content-main">
-					<h1>Editing project - {{course.title}}</h1>
+				{% if chapter %}
+					<h1>Editing chapter - {{course.title}}</h1>
+				{% else %}
+					<h1>Creating new chapter</h1>
+				{% endif %}
 					<form method="post" id="user_form" novalidate="">
 						{% csrf_token %}
 						<div>
 							<fieldset class="module aligned wide">
 								<div class="form-row"><div><div class="flex-container">
+									<label class="required">ID:</label>
+									{{form.id}}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Title:</label>
 									{{form.title}}
 									{% if form.title.errors %} <div class="form-errors">{{ form.title.errors }}</div> {% endif %}
 								</div></div></div>
-								<div class="form-row"><div><div class="flex-container">
-									<label class="required">ID:</label>
-									{{form.no}}
-									{% if form.no.errors %} <div class="form-errors">{{ form.no.errors }}</div> {% endif %}
-								</div></div></div>
+
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Lesson:</label>
-									{{form.lesson}}
-									{% if form.lesson.errors %} <div class="form-errors">{{ form.lesson.errors }}</div> {% endif %}
+									{{form.lesson_id}}
+									{% if form.lesson_id.errors %} <div class="form-errors">{{ form.lesson_id.errors }}</div> {% endif %}
 								</div></div></div>
+
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Unlock Type:</label>
 									{{form.unlock_type}}
 									{% if form.unlock_type.errors %} <div class="form-errors">{{ form.unlock_type.errors }}</div> {% endif %}
 								</div></div></div>
+
 								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Unlock No:</label>
-									{{form.unlock_no}}
-									{% if form.unlock_no.errors %} <div class="form-errors">{{ form.unlock_no.errors }}</div> {% endif %}
+									<label class="required">Unlock ID:</label>
+									{{form.unlock_id}}
+									{% if form.unlock_id.errors %} <div class="form-errors">{{ form.unlock_id.errors }}</div> {% endif %}
 								</div></div></div>
-								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Blocks:</label>
-									{{form.blocks}}
-									{% if form.blocks.errors %} <div class="form-errors">{{ form.blocks.errors }}</div> {% endif %}
-								</div></div></div>
-							</fieldset>
-							<div class="submit-row">
-								<input type="submit" value="Save" class="default" name="_save">
-							</div>
+
+						</fieldset>
+						<div class="submit-row">
+							<input type="submit" value="Save" class="default" name="_save">
 						</div>
-					</form>
-				</div>
-			</div>
-
-			<br class="clear">
-			<br class="clear">
-			<br class="clear">
-
-			<div id="content" class="content">
-			<h2> text blocks </h2>
-				<div id="content-main">
-					<div class="module filtered" id="changelist">
-						<table id="result_list">
-							<thead>
-								<tr>
-									<th scope="col">
-										<div class="text">title</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">title</div>
-										<div class="clear"></div>
-									</th>
-									<th scope="col">
-										<div class="text">Actions</div>
-										<div class="clear"></div>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for b in chapter.blocks%}
-								<tr>
-									<td>{{b.title}}</td>
-									<td>{{b}}</td>
-								<td> </td>
-								</tr>
-								{% endfor %}
-								<tr>
-									<td>
-										<div class="cursor-grabbing" id="projectNetwork"></div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
 					</div>
+				</form>
+			</div>
+		</div>
+		<br class="clear">
+		<br class="clear">
+		<br class="clear">
+
+		{% if chapter %}
+		<div id="content" class="content">
+			<h2> Blocks </h2>
+			<div id="content-main">
+				<ul class="object-tools">
+					<li><a href="{% url 'admin_block_new' course_id=course.id project_id=project.id lesson_id=chapter.lesson_id chapter_id=chapter.id%}" class="addlink">New Block</a></li>
+				</ul>
+				<div class="module filtered" id="changelist">
+					<table id="result_list">
+						<thead>
+							<tr>
+								<th scope="col">
+									<div class="text">ID</div>
+									<div class="clear"></div>
+								</th>
+								<th scope="col">
+									<div class="text">Title</div>
+									<div class="clear"></div>
+								</th>
+								<th scope="col">
+									<div class="text">Actions</div>
+									<div class="clear"></div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for b in chapter.blocks %}
+							<tr>
+								<td>{{b.id}}</td>
+								<td>{{b.title}}</td>
+								<td>
+									<a style="margin-right: 10px;" href="{% url 'admin_block_edit' course_id=course.id project_id=project.id lesson_id=chapter.lesson_id chapter_id=chapter.id  block_id=b.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+									<a href="{% url 'admin_block_delete' course_id=course.id project_id=project.id lesson_id=chapter.lesson_id chapter_id=chapter.id block_id=b.id %}" onclick="if (!confirm('Are you sure you want to delete this project?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
 				</div>
 			</div>
-
-		</main>
-	</div>
+		</div>
+		{% endif %}
+	</main>
+</div>
 
 	{% endblock %}

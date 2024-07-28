@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 from domain.data.chapters.ChapterData import ChapterData
 from domain.data.chapters.tableDefinition.TableDefinitions import ChaptersTable
@@ -7,7 +7,7 @@ from domain.data.chapters.tableDefinition.TableDefinitions import ChaptersTable
 class ChapterDataSerializer:
 
 	@staticmethod
-	def to_dict(chapter_data: ChapterData) -> Dict[str, str | int | Dict | None]:
+	def to_dict(chapter_data: ChapterData) -> Dict[str, str | int | List[Dict] | None]:
 		return {
 			'_id': chapter_data.id,
 			'title': chapter_data.title,
@@ -20,11 +20,16 @@ class ChapterDataSerializer:
 
 	@staticmethod
 	def from_dict(chapter_data: dict) -> ChapterData:
+		try:
+			blocks = chapter_data[ChaptersTable.BLOCKS.value]
+		except:
+			blocks = []
+
 		return ChapterData(
 			id=chapter_data[ChaptersTable.ID.value],
 			title=chapter_data[ChaptersTable.TITLE.value],
 			lesson_id=chapter_data[ChaptersTable.LESSON_ID.value],
 			unlock_type=chapter_data[ChaptersTable.UNLOCK_TYPE.value],
-			unlock_id=chapter_data[ChaptersTable.UNLOCK_ID.value],
-			blocks=chapter_data[ChaptersTable.BLOCKS.value],
+			unlock_id=int(chapter_data[ChaptersTable.UNLOCK_ID.value]),
+			blocks=blocks
 		)

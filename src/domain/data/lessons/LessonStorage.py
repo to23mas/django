@@ -34,8 +34,8 @@ def find_lessons(db: str, project_db: str) -> List[LessonData] | None:
 		case _: return LessonDataCollection.from_dict(lessons)
 
 
-def find_lessons_by_course(db: str) -> List[LessonData]:
-	lessons = MongoStorage().database[db].lessons.find()
+def find_lessons_by_course(db: str, project_db) -> List[LessonData]:
+	lessons = MongoStorage().database[db].project[project_db].lessons.find()
 	return LessonDataCollection.from_dict(lessons)
 
 

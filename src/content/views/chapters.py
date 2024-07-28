@@ -1,5 +1,4 @@
 """views.py"""
-from bson.objectid import ObjectId
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest, HttpResponse
@@ -8,10 +7,9 @@ from django.shortcuts import redirect, render
 from content.forms.ChapterEditForm import ChapterEditForm
 from content.forms.ChapterFilterForm import ChapterFilterForm
 from domain.data.chapters.ChapterDataSerializer import ChapterDataSerializer
-from domain.data.chapters.ChapterStorage import create_chapter, exists_chapter, find_chapter, get_chapter
+from domain.data.chapters.ChapterStorage import create_chapter, delete_chapter, find_chapter, get_chapter, get_next_valid_id, update_chapter
 from domain.data.courses.CourseStorage import get_course_by_id
-from domain.data.lessons.LessonStorage import get_lesson_unique_no
-from domain.data.projects.ProjectStorage import get_project
+from domain.data.projects.ProjectStorage import get_project_by_id
 
 
 @staff_member_required
@@ -19,14 +17,13 @@ def chapter_overview(request: HttpRequest, course_id: str, project_id: int) -> H
 	"""list all courses"""
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
-	project, _ = get_project(project_id, course.database)
+	project = get_project_by_id(project_id, course.database)
 	if project == None: return  redirect('admin_course_overview')
 
 	filter = ChapterFilterForm(db=course.database, project_db=project.database)
 	if request.method == 'POST':
 		filter = ChapterFilterForm(request.POST, db=course.database, project_db=project.database)
 		if filter.is_valid():
-			print(filter.cleaned_data)
 			chapters = find_chapter(course.database, project.database, filter.cleaned_data)
 		else:
 			chapters = find_chapter(course.database, project.database)
@@ -48,56 +45,69 @@ def chapter_overview(request: HttpRequest, course_id: str, project_id: int) -> H
 def chapter_edit(request: HttpRequest, course_id: str, project_id: int, lesson_id: int, chapter_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
-	chapter = get_chapter(project_no, lesson_no, chapter_no, course.database)
+	project = get_project_by_id(project_id, course.database)
+	if project == None: return  redirect('admin_course_overview')
+	chapter = get_chapter(chapter_id, lesson_id, course.database, project.database)
 	if chapter == None: return  redirect('admin_course_overview')
 
-	edit_form = ChapterEditForm(initial=ChapterDataSerializer.to_dict(chapter))
+	if request.method == 'POST':
+		edit_form = ChapterEditForm(request.POST, db=course.database, project_db=project.database)
+		if edit_form.is_valid():
+			edit_form.cleaned_data['_id'] = edit_form.cleaned_data['id']
+			chapter_data = ChapterDataSerializer.from_dict(edit_form.cleaned_data)
+			update_chapter(chapter_data, course.database, project.database, chapter.lesson_id)
+			messages.success(request, 'Chapter has been updated')
+			return  redirect('admin_chapter_edit', course_id=course_id, project_id=project.id, lesson_id=chapter_data.lesson_id, chapter_id=chapter_data.id)
+	else:
+		edit_form = ChapterEditForm(initial=ChapterDataSerializer.to_dict(chapter), db=course.database, project_db=project.database)
+
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Edit Chapters': '#'}]
 	return render(request, 'content/chapters/edit.html', {
 		'chapter': chapter,
 		'course': course,
+		'project': project,
 		'breadcrumbs': breadcrumbs,
 		'form': edit_form,
 	})
 
 
 @staff_member_required
-def chapter_new(request: HttpRequest, course_id: str) -> HttpResponse:
+def chapter_new(request: HttpRequest, course_id: str, project_id: int) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
+	project = get_project_by_id(project_id, course.database)
+	if project == None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
-		edit_form = ChapterEditForm(request.POST, db=course.database)
+		edit_form = ChapterEditForm(request.POST, db=course.database, project_db=project.database)
 		if edit_form.is_valid():
-			lesson = get_lesson_unique_no(edit_form.cleaned_data['lesson'], course.database)
-			if exists_chapter(course.database, edit_form.cleaned_data['no'], str(lesson.project), edit_form.cleaned_data['lesson']):
-				edit_form.add_error('no', 'This number already exists in the database. Must be unique.')
-			else:
-				edit_form.cleaned_data['_id'] = ObjectId()
-				edit_form.cleaned_data[''] = ObjectId()
-				edit_form.cleaned_data['project'] = lesson.project #type: ignore
-				chapter_data = ChapterDataSerializer.from_dict(edit_form.cleaned_data)
-				create_chapter(chapter_data, course.database)
-				messages.success(request, 'Chapter has been created')
-				return  redirect('admin_chapter_edit', course_id=course_id, project_no=lesson.project, lesson_no=lesson.no, chapter_no=chapter_data.no)#type: ignore
+			edit_form.cleaned_data['_id'] = get_next_valid_id(course.database, project.database)
+			chapter_data = ChapterDataSerializer.from_dict(edit_form.cleaned_data)
+			create_chapter(chapter_data, course.database, project.database)
+			messages.success(request, 'Chapter has been created')
+			return  redirect('admin_chapter_edit', course_id=course_id, project_id=project.id, lesson_id=chapter_data.lesson_id, chapter_id=chapter_data.id)
 	else:
-		edit_form = ChapterEditForm(db=course.database)
+		edit_form = ChapterEditForm(db=course.database, project_db=project.database)
 
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'New Chapter': '#'}]
 	return render(request, 'content/chapters/edit.html', {
 		'breadcrumbs': breadcrumbs,
 		'form': edit_form,
 		'course': course,
+		'project': project,
 	})
 
 
 @staff_member_required
-def chapter_delete(request: HttpRequest, course_id: str, project_no: str, lesson_no: str, chapter_no: str) -> HttpResponse:
+def chapter_delete(request: HttpRequest, course_id: str, project_id: int, lesson_id: int, chapter_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
-	lesson = get_lesson(lesson_no, project_no, course.database)
-	if lesson == None: return  redirect('admin_course_overview')
+	project = get_project_by_id(project_id, course.database)
+	if project == None: return  redirect('admin_course_overview')
+	chapter = get_chapter(chapter_id, lesson_id, course.database, project.database)
+	if chapter == None: return  redirect('admin_course_overview')
 
-	delete_lesson(course.database, lesson.id)
-	return redirect('admin_lesson_overview', course_id=course_id);
+	delete_chapter(course.database, project.database, chapter.id, chapter.lesson_id)
+	messages.success(request, 'Chapter has been deleted')
+	return redirect('admin_chapter_overview', course_id=course_id, project_id=project.id);

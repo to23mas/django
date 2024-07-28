@@ -3,3 +3,4 @@ from .projects import *
 from .lessons import *
 from .chapters import *
 from .tests import *
+from .blocks import *

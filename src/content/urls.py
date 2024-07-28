@@ -25,6 +25,10 @@ urlpatterns = [
 	path('course/<str:course_id>-<int:project_id>-<int:lesson_id>-<int:chapter_id>/chapters/edit', chapter_edit, name='admin_chapter_edit'),
 	path('course/<str:course_id>-<int:project_id>-<int:lesson_id>-<int:chapter_id>/chapters/delete', chapter_delete, name='admin_chapter_delete'),
 
+	path('course/<str:course_id>-<int:project_id>-<int:lesson_id>-<int:chapter_id>/block/new', block_new, name='admin_block_new'),
+	path('course/<str:course_id>-<int:project_id>-<int:lesson_id>-<int:chapter_id>-<int:block_id>/block/edit', block_edit, name='admin_block_edit'),
+	path('course/<str:course_id>-<int:project_id>-<int:lesson_id>-<int:chapter_id>-<int:block_id>/block/delete', block_delete, name='admin_block_delete'),
+
 	path('course/<str:course_id>/tests', test_overview, name='admin_test_overview'),
 	path('course/<str:course_id>/tests', test_overview, name='admin_test_overview'),
 	path('course/<str:course_id>/tests/new', test_new, name='admin_test_new'),

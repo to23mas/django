@@ -24,8 +24,8 @@
 - [ ] delete course should delete all the lessons and chapters inside
 - [x] come up with better id system
 - [x] courses
-- [ ] projects
-- [ ] lessons
+- [x] projects
+- [x] lessons
 - [ ] chapters
 - [x] tests
 - [ ] users

@@ -6,6 +6,8 @@
 	"unlock_id": 1,
 	"blocks": [
 		{
+			"id": 1,
+			"order": 1,
 			"title": "napis",
 			"text": [
 				{"p": "A - I. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."},
@@ -39,6 +41,8 @@
 				"sudo poweroff"
 			]
 		},{
+			"id": 2,
+			"order": 1,
 			"title": "napis 2",
 			"text": [
 				{"p": "B - I. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."},
