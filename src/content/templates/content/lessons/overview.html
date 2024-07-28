@@ -72,7 +72,7 @@
 	let edges_parsed = [];
 	{% for lesson in lessons %}
 		{% for to in lesson.to %}
-			edges_parsed.push({ from: {{ lesson.id }} , to: {{ to }} });
+			edges_parsed.push({ from: {{ lesson.id }} , to: {{ to }}, arrows: 'to' });
 		{% endfor %}
 	{% endfor %}
 

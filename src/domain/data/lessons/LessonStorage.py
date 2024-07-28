@@ -44,9 +44,25 @@ def exists_lesson(db: str, lesson_no: str) -> bool:
 	return True if res != None else False
 
 
-def create_lesson(lesson_data: LessonData, db: str) -> None:
-	MongoStorage().database[db].lessons.insert_one(LessonDataSerializer.to_dict(lesson_data))
+def create_lesson(lesson_data: LessonData, db: str, project_db: str) -> None:
+	MongoStorage().database[db].project[project_db].lessons.insert_one(
+		LessonDataSerializer.to_dict(lesson_data)
+	)
 
 
-def delete_lesson(db: str, lesson_id: ObjectId) -> None:
-	MongoStorage().database[db].lessons.delete_one({'_id': lesson_id})
+def delete_lesson(db: str, project_db: str, lesson_id: int) -> None:
+	MongoStorage().database[db].project[project_db].lessons.delete_one({'_id': lesson_id})
+
+
+def get_next_valid_id(db: str, project_db: str) -> int:
+	document = MongoStorage().database[db].project[project_db].lessons.find_one(sort=[('_id', -1)])
+	match document:
+		case None: return 1
+		case _: return document['_id'] + 1
+
+
+def update_lesson(lesson_data: LessonData, db: str, project_db: str) -> None:
+	MongoStorage().database[db].project[project_db].lessons.update_one(
+		{'_id': lesson_data.id},
+		{'$set': LessonDataSerializer.to_dict(lesson_data)}
+	)

@@ -1,59 +1,63 @@
 {% extends "content/base.html" %}
 	{% block content %}
 <style>
-	input:disabled, textarea:disabled, select:disabled {
-		background-color: #e0e0e0; /* Light grey background color */
-		color: #666; /* Optional: change text color for better contrast */
-	}
+input[readonly] {
+	background-color: #e0e0e0; /* Light grey background color */
+	color: #666; /* Optional: change text color for better contrast */
+	cursor: not-allowed;
+}
 </style>
-	<div class="main shifted" id="main">
-		{% include 'content/sidebar.html' %}
-		<main id="content-start" class="content" tabindex="-1">
-			<div id="content" class="colM">
-				<div id="content-main">
-					{% if lesson %}
-						<h1>Editing lesson - {{lesson.title}}</h1>
-					{% else %}
-						<h1>Creating new lesson</h1>
-					{% endif %}
-					<form method="post" id="user_form" novalidate="">
-						{% csrf_token %}
-						<div>
-							<fieldset class="module aligned wide">
-								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Title:</label>
-									{{form.title}}
-									{% if form.title.errors %} <div class="form-errors">{{ form.title.errors }}</div> {% endif %}
-								</div></div></div>
-								<div class="form-row"><div><div class="flex-container">
-									<label class="required">No:</label>
-									{{form.no}}
-									{% if form.no.errors %} <div class="form-errors">{{ form.no.errors }}</div> {% endif %}
-								</div></div></div>
-								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Project:</label>
-									{{form.project}}
-									{% if form.project.errors %} <div class="form-errors">{{ form.project.errors }}</div> {% endif %}
-								</div></div></div>
-							</fieldset>
-							<div class="submit-row">
-								<input type="submit" value="Save" class="default" name="_save">
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
+<div class="main shifted" id="main">
+	{% include 'content/sidebar.html' %}
+	<main id="content-start" class="content" tabindex="-1">
+		<div id="content" class="colM">
+			<div id="content-main">
+				{% if lesson %}
+				<h1>Editing lesson - {{lesson.title}}</h1>
+				{% else %}
+				<h1>Creating new lesson</h1>
+				{% endif %}
+				<form method="post" id="user_form" novalidate="">
+					{% csrf_token %}
+					<div>
+						<fieldset class="module aligned wide">
 
-			<br class="clear">
-			<br class="clear">
-			<br class="clear">
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">ID:</label>
+								{{form.id}}
+							</div></div></div>
+
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Title:</label>
+								{{form.title}}
+								{% if form.title.errors %} <div class="form-errors">{{ form.title.errors }}</div> {% endif %}
+							</div></div></div>
+
+							<div class="form-row"><div><div class="flex-container">
+								<label class="required">Progress TO:</label>
+								{{form.to}}
+								{% if form.to.errors %} <div class="form-errors">{{ form.to.errors }}</div> {% endif %}
+							</div></div></div>
+
+						</fieldset>
+						<div class="submit-row">
+							<input type="submit" value="Save" class="default" name="_save">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<br class="clear">
+		<br class="clear">
+		<br class="clear">
 
 		{% if lesson %}
-			<div id="content" class="content">
-			<h2> Chapters </h2>
-				<div id="content-main">
-					<ul class="object-tools">
-						<li><a href="{% url 'admin_lesson_new' course_id=course.id %}" class="addlink">New chapter</a></li>
+		<div id="content" class="content">
+		<h2> Chapters </h2>
+			<div id="content-main">
+				<ul class="object-tools">
+						<li><a href="{% url 'admin_lesson_new' course_id=course.id project_id=project.id %}" class="addlink">New chapter</a></li>
 					</ul>
 					<div class="module filtered" id="changelist">
 						<table id="result_list">
