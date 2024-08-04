@@ -6,6 +6,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
 from content.forms.CourseEditForm import CourseEditForm
+from content.forms.CourseUploadForm import CourseUploadForm
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
 from domain.data.courses.CourseStorage import create_course, delete_course, find_courses, get_course_by_id, get_next_valid_id, update_course
 
@@ -88,10 +89,26 @@ def course_new(request: HttpRequest) -> HttpResponse:
 def course_overview(request: HttpRequest) -> HttpResponse:
 	"""list all courses"""
 	courses = find_courses()
+	if request.method == 'POST':
+		form = CourseUploadForm(request.POST, request.FILES)
+		if form.is_valid():
+			file = request.FILES['file']
+			file_data = json.load(file) #type: ignore
+			print(CourseDataSerializer.from_dict(file_data))
+			try:
+				create_course(CourseDataSerializer.from_dict(file_data))
+				return redirect('admin_course_overview');
+			except Exception as e:
+				messages.warning(request, f'Problem occurred during uploading file data: {str(e)}')
+	else:
+		form = CourseUploadForm()
+
+
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '#'}]
 
 	return render(request, 'content/courses/overview.html', {
 		'courses': courses,
+		'form': form,
 		'breadcrumbs': breadcrumbs,
 	})
 

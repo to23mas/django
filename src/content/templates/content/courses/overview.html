@@ -5,85 +5,90 @@
 	th { padding: 5px !important;}
 </style>
 
-	<main id="content-start" class="content" tabindex="-1">
-		<!-- Content -->
-		<div id="content" class="">
+<main id="content-start" class="content" tabindex="-1">
+	<!-- Content -->
+	<div id="content" class="">
 		<h1>List of courses</h1>
-			<div id="content-main">
-				<ul class="object-tools">
-					<li>
+		<div id="content-main">
+			<ul class="object-tools">
+				<li>
 					<a href={% url 'admin_course_new' %} class="addlink">
-							New course
-						</a>
-					</li>
-					<li>
+						New course
+					</a>
+				</li>
+				<li>
 					<a href={% url 'admin_course_download_all' %} class="deletelink">
-							Download all
-						</a>
-					</li>
-				</ul>
-				<div class="module filtered" id="changelist">
-					<div class="changelist-form-container">
-						<div class="results">
-							<table id="result_list">
-								<thead>
-									<tr>
-										<th scope="col">
-											<div class="text">ID</div>
-											<div class="clear"></div>
-										</th>
-										<th scope="col">
-											<div class="text">Order</div>
-											<div class="clear"></div>
-										</th>
-										<th scope="col">
-											<div class="text">Title</div>
-											<div class="clear"></div>
-										</th>
-										<th scope="col">
-											<div class="text">Database</div>
-											<div class="clear"></div>
-										</th>
-										<th scope="col">
-											<div class="text">Visible</div>
-											<div class="clear"></div>
-										</th>
-										<th scope="col">
-											<div class="text">Open</div>
-											<div class="clear"></div>
-										</th>
-										<th scope="col">
-											<div class="text">Actions</div>
-											<div class="clear"></div>
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for course in courses %}
-									<tr>
-										<td>{{course.id}}</td>
-										<td>{{course.order}}</td>
-										<td>{{course.title}}</td>
-										<td>{{course.database}}</td>
-										<td>{% if course.visible %} <img src="/public/admin/img/icon-yes.svg" alt="True"> {% else %}<img src="/public/admin/img/icon-no.svg" alt="False"> {% endif %}</td>
-										<td>{% if course.open %} <img src="/public/admin/img/icon-yes.svg" alt="True"> {% else %}<img src="/public/admin/img/icon-no.svg" alt="False"> {% endif %}</td>
-										<td style="width: 10%;">
-											<a style="margin-right: 20px;" href="{% url 'admin_course_edit' course_id=course.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
-											<a style="margin-right: 20px;" href="{% url 'admin_course_download' course_id=course.id %}"><img src="/public/admin/img/icon-download.svg" height="14xp" alt="False"></a>
-											<a href="{% url 'admin_course_delete' course_id=course.id %}" onclick="if (!confirm('Are you sure you want to delete this project?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
-										</td>
-									</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
+						Download all
+					</a>
+				</li>
+			</ul>
+			<div class="module filtered" id="changelist">
+				<div class="changelist-form-container">
+					<div class="results">
+						<table id="result_list">
+							<thead>
+								<tr>
+									<th scope="col">
+										<div class="text">ID</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Order</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Title</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Database</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Visible</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Open</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Actions</div>
+										<div class="clear"></div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for course in courses %}
+								<tr>
+									<td>{{course.id}}</td>
+									<td>{{course.order}}</td>
+									<td>{{course.title}}</td>
+									<td>{{course.database}}</td>
+									<td>{% if course.visible %} <img src="/public/admin/img/icon-yes.svg" alt="True"> {% else %}<img src="/public/admin/img/icon-no.svg" alt="False"> {% endif %}</td>
+									<td>{% if course.open %} <img src="/public/admin/img/icon-yes.svg" alt="True"> {% else %}<img src="/public/admin/img/icon-no.svg" alt="False"> {% endif %}</td>
+									<td style="width: 10%;">
+										<a style="margin-right: 20px;" href="{% url 'admin_course_edit' course_id=course.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+										<a style="margin-right: 20px;" href="{% url 'admin_course_download' course_id=course.id %}"><img src="/public/admin/img/icon-download.svg" height="14xp" alt="False"></a>
+										<a href="{% url 'admin_course_delete' course_id=course.id %}" onclick="if (!confirm('Are you sure you want to delete this project?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
-			<br class="clear">
+			<form method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{ form.as_p }}
+				<button type="submit" class="default">Upload</button>
+			</form>
 		</div>
-		<!-- END Content -->
-		<div id="footer"></div>
-	</main>
-	<!-- END Container -->
+		<br class="clear">
+	</div>
+	<!-- END Content -->
+	<div id="footer"></div>
+</main>
+<!-- END Container -->
 {% endblock %}
