@@ -12,6 +12,12 @@ def clear_database(db):
 	db.django.progress.delete_many({})
 	db.django.tests.delete_many({})
 
+	db.django_testing.projects.delete_many({})
+	db.django_testing.project.project_1.chapters.delete_many({})
+	db.django_testing.project.project_1.lessons.delete_many({})
+	db.django_testing.progress.delete_many({})
+	db.django_testing.tests.delete_many({})
+
 
 def list_files(directory):
     file_list = []
@@ -51,22 +57,22 @@ if __name__ == "__main__":
     ## projects
     migrate(
         list_files('/usr/src/db/migrations/documents/courses/django/projects/'),
-        db.django.projects)
+        db.django_testing.projects)
     ## lessons
     migrate(
         list_files('/usr/src/db/migrations/documents/courses/django/lessons/1/'),
-        db.django.project.project_1.lessons)
+        db.django_testing.project.project_1.lessons)
     ## chapters
     migrate(
         list_files('/usr/src/db/migrations/documents/courses/django/chapters/1/'),
-        db.django.project.project_1.chapters)
+        db.django_testing.project.project_1.chapters)
     ## user progress
     migrate_one_file(
         '/usr/src/db/migrations/documents/user/admin-django-progress.json',
-        db.django.progress)
+        db.django_testing.progress)
     ## tests
     migrate(
         list_files('/usr/src/db/migrations/documents/courses/django/tests/1/'),
-        db.django.tests)
+        db.django_testing.tests)
     ## user progress
     client.close()

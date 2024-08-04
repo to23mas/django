@@ -1,4 +1,6 @@
 """views.py"""
+import json
+from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
@@ -31,6 +33,32 @@ def course_edit(request: HttpRequest, course_id: str) -> HttpResponse:
 		'breadcrumbs': breadcrumbs,
 		'form': edit_form,
 	})
+
+
+@staff_member_required
+def course_download(request: HttpRequest, course_id: str) -> HttpResponse:
+	"""list all courses"""
+	course = get_course_by_id(course_id)
+	if course == None: return  redirect('admin_course_overview')
+
+	response = HttpResponse(json.dumps(CourseDataSerializer.to_dict(course)), content_type='application/json') #type: ignore
+	response['Content-Disposition'] = f'attachment; filename={course.title}.json'
+	return response
+
+
+@staff_member_required
+def course_download_all(request: HttpRequest) -> HttpResponse:
+	"""list all courses"""
+	courses = find_courses()
+	if courses == None:
+		messages.warning(request, 'There are no document for download')
+		return  redirect('admin_course_overview')
+
+	serialized_documents = [CourseDataSerializer.to_dict(course) for course in courses]
+
+	response = HttpResponse(json.dumps(serialized_documents), content_type='application/json') #type: ignore
+	response['Content-Disposition'] = f'attachment; filename=all.json'
+	return response
 
 
 @staff_member_required
