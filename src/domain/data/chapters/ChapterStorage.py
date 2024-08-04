@@ -17,7 +17,7 @@ def get_chapter(chapter_id: int, lesson_id: int,  db: str, project_db: str) -> C
 		case _: return ChapterDataSerializer.from_dict(chapter)
 
 
-def find_chapter(db: str, project_db: str, query: Dict = {}) -> List[ChapterData] | None:
+def find_chapters(db: str, project_db: str, query: Dict = {}) -> List[ChapterData] | None:
 	chapters = MongoStorage().database[db].project[project_db].chapters.find(query).sort(ChaptersTable.ID.value)
 	match chapters:
 		case None: return chapters

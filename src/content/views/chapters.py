@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from content.forms.ChapterEditForm import ChapterEditForm
 from content.forms.ChapterFilterForm import ChapterFilterForm
 from domain.data.chapters.ChapterDataSerializer import ChapterDataSerializer
-from domain.data.chapters.ChapterStorage import create_chapter, delete_chapter, find_chapter, get_chapter, get_next_valid_id, update_chapter
+from domain.data.chapters.ChapterStorage import create_chapter, delete_chapter, find_chapters, get_chapter, get_next_valid_id, update_chapter
 from domain.data.courses.CourseStorage import get_course_by_id
 from domain.data.projects.ProjectStorage import get_project_by_id
 
@@ -24,11 +24,11 @@ def chapter_overview(request: HttpRequest, course_id: str, project_id: int) -> H
 	if request.method == 'POST':
 		filter = ChapterFilterForm(request.POST, db=course.database, project_db=project.database)
 		if filter.is_valid():
-			chapters = find_chapter(course.database, project.database, filter.cleaned_data)
+			chapters = find_chapters(course.database, project.database, filter.cleaned_data)
 		else:
-			chapters = find_chapter(course.database, project.database)
+			chapters = find_chapters(course.database, project.database)
 	else:
-		chapters = find_chapter(course.database, project.database)
+		chapters = find_chapters(course.database, project.database)
 
 
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Chapters': '#'}]
