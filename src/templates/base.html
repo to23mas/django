@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    {% include 'head/head.html' %}
-  </head>
+	<head>
+		{% include 'head/head.html' %}
+	</head>
 
-  <body>
-    <div class="h-15">
-      {% if user.is_authenticated %}
-        {% include 'navbar/navbar.html' %}
-      {% endif %}
-    </div>
+	<body>
+		<div class="h-15">
+			{% if user.is_authenticated %}
+			{% include 'navbar/navbar.html' %}
+			{% endif %}
+		</div>
 
-    {% if messages %}
-        {% include 'messages/flash_messages.html' %}
-    {% endif %}
+		{% if messages %}
+			{% include 'messages/flash_messages.html' %}
+		{% endif %}
 
-    <div class="h-full">
-      {% block content %} {% endblock %}
-    </div>
-  </body>
+		<div class="h-full">
+			{% block content %} {% endblock %}
+		</div>
+	</body>
 
 </html>

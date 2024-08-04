@@ -9,8 +9,6 @@ urlpatterns = [
 	# admin
 	path('admin/content/', include('content.urls')),
 	path('admin/', admin.site.urls),
-	# path('admin/', TemplateView.as_view(template_name='admin/custom.html')),
-
 
 	# projects
 	path('projects/', include('projects.urls')),
@@ -18,8 +16,8 @@ urlpatterns = [
 	#tests
 	path('tests/', include('tests.urls')),
 
-	#accounts
-	path('accounts/login/', LoginView.as_view(redirect_authenticated_user=True)),
+	#users
+	path('users/', include('users.urls')),
 	path('logout/', LogoutView.as_view(), name='logout'),
 
 	#courses
