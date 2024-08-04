@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 	'projects.apps.ProjectsConfig',
 	'courses.apps.CoursesConfig',
 	'tests.apps.TestsConfig',
-	'content'
+	'content',
+	'users'
 ]
 
 MIDDLEWARE = [
@@ -148,4 +149,4 @@ STATIC_ROOT = BASE_DIR / 'public' / 'root'
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/accounts/login/"
+LOGOUT_REDIRECT_URL = "/users/login/"

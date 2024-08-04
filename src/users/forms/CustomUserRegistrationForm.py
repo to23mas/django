@@ -7,14 +7,10 @@ class CustomUserCreationForm(UserCreationForm):
 		model = User
 		fields = (
 			'username',
-			# 'email',
+			'email',
 			'password1',
 			'password2'
 		)
-		labels = {
-			# 'username': 'Custom Username Title',
-			# 'email': 'Custom Email Title',
-		}
 		help_texts = {
 			# 'username': 'Custom help text for username.',
 			# 'email': 'Custom help text for email.',
@@ -46,8 +42,12 @@ class CustomUserCreationForm(UserCreationForm):
 		super(CustomUserCreationForm, self).__init__(*args, **kwargs)
 		self.fields['username'].label = 'Uživatelské jméno'
 		self.fields['username'].help_text = ''
-		# self.fields['email'].label = ''
+
+		self.fields['email'].label = 'Email'
+		self.fields['email'].help_text = ''
+
 		self.fields['password1'].label = 'Heslo'
 		self.fields['password1'].help_text = ''
+
 		self.fields['password2'].label = 'Heslo znovu'
 		self.fields['password2'].help_text = ''

@@ -6,9 +6,9 @@ from domain.data.courses_storage import find_courses
 
 @login_required
 def overview(request: HttpRequest) -> HttpResponse:
-    """list all courses"""
+	"""list all courses"""
 
-    return render(request, 'courses/overview.html', {
-        'courses': find_courses(),
-        'courses_overview': True,
-    })
+	return render(request, 'courses/overview.html', {
+		'courses': find_courses(),
+		'courses_overview': True,
+	})
