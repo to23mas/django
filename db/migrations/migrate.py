@@ -20,11 +20,11 @@ def clear_database(db):
 
 
 def list_files(directory):
-    file_list = []
-    for root, _, files in walk(directory):
-        for filename in files:
-            file_list.append(path.join(root, filename))
-    return file_list
+	file_list = []
+	for root, _, files in walk(directory):
+		for filename in files:
+			file_list.append(path.join(root, filename))
+	return file_list
 
 
 def migrate(files, collection):
@@ -45,34 +45,33 @@ def migrate_one_file(file, collection):
 		print(f'{filename} -> migrated')
 
 if __name__ == "__main__":
-    client = MongoClient('mongodb', 27017)
-    db = client.inpv
+	client = MongoClient('mongodb', 27017)
+	db = client.inpv
 
-    clear_database(db)
-
-    #django course
-    django_course = migrate_one_file(
-        '/usr/src/db/migrations/documents/courses/django/django.json',
-        db.courses)
-    ## projects
-    migrate(
-        list_files('/usr/src/db/migrations/documents/courses/django/projects/'),
-        db.django_testing.projects)
-    ## lessons
-    migrate(
-        list_files('/usr/src/db/migrations/documents/courses/django/lessons/1/'),
-        db.django_testing.project.project_1.lessons)
-    ## chapters
-    migrate(
-        list_files('/usr/src/db/migrations/documents/courses/django/chapters/1/'),
-        db.django_testing.project.project_1.chapters)
-    ## user progress
-    migrate_one_file(
-        '/usr/src/db/migrations/documents/user/admin-django-progress.json',
-        db.django_testing.progress)
-    ## tests
-    migrate(
-        list_files('/usr/src/db/migrations/documents/courses/django/tests/1/'),
-        db.django_testing.tests)
-    ## user progress
-    client.close()
+	clear_database(db)
+	#django course
+	django_course = migrate_one_file(
+		'/usr/src/db/migrations/documents/courses/django/django.json',
+		db.courses)
+	## projects
+	migrate(
+		list_files('/usr/src/db/migrations/documents/courses/django/projects/'),
+		db.django_testing.projects)
+	## lessons
+	migrate(
+		list_files('/usr/src/db/migrations/documents/courses/django/lessons/1/'),
+		db.django_testing.project.project_1.lessons)
+	## chapters
+	migrate(
+		list_files('/usr/src/db/migrations/documents/courses/django/chapters/1/'),
+		db.django_testing.project.project_1.chapters)
+	## user progress
+	migrate_one_file(
+		'/usr/src/db/migrations/documents/user/admin-django-progress.json',
+		db.django_testing.progress)
+	## tests
+	migrate(
+		list_files('/usr/src/db/migrations/documents/courses/django/tests/1/'),
+		db.django_testing.tests)
+	## user progress
+	client.close()

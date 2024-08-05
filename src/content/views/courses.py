@@ -11,7 +11,7 @@ from domain.data.chapters.ChapterDataSerializer import ChapterDataSerializer
 from domain.data.chapters.ChapterStorage import find_chapters
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
 from domain.data.courses.CourseStorage import create_course, delete_course, find_courses, get_course_by_id, get_next_valid_id, update_course
-from domain.data.database_backup.BackUpStorage import delete_all, upload_from_json
+from domain.data.database_backup.BackUpStorage import delete_all, download_json, upload_from_json
 from domain.data.lessons.LessonDataSerializer import LessonDataSerializer
 from domain.data.lessons.LessonStorage import find_lessons
 from domain.data.projects.ProjectDataSerializer import ProjectDataSerializer
@@ -49,39 +49,10 @@ def course_edit(request: HttpRequest, course_id: str) -> HttpResponse:
 @staff_member_required
 def course_download(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
-	#COURSE
+	json_result = download_json(course_id)
+	if json_result == None: return redirect('admin_course_overview')
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
-	json_result = {'course': CourseDataSerializer.to_dict(course)}
-
-	#PROJECTS LESSONS CHAPTERS
-	projects = find_projects(course.database)
-	json_result['projects'] = [] #type: ignore
-	for project in projects:
-		project_dict = ProjectDataSerializer.to_dict(project)
-
-		lessons = find_lessons(course.database, project.database)
-		if lessons == None:
-			json_result['projects'].append(project_dict)
-			continue
-		project_dict['lessons'] = [LessonDataSerializer.to_dict(lesson) for lesson in lessons] #type: ignore
-
-		chapters = find_chapters(course.database, project.database)
-		if chapters == None:
-			continue
-		project_dict['chapters'] = [ChapterDataSerializer.to_dict(chapter) for chapter in chapters] #type: ignore
-		json_result['projects'].append(project_dict)
-
-	#TESTS
-	tests = find_tests(course.database)
-	json_result['tests'] = [] #type: ignore
-	if tests != None:
-		for t in tests:
-			_, questions = get_test(course.database, t.id)
-			test_dict = TestDataSerializer.to_dict(t)
-			if questions != None:
-				test_dict['questions'] = [QuestionDataSerializer.to_dict(question) for question in questions] #type: ignore
-			json_result['tests'].append(test_dict)
+	if course == None: return redirect('admin_course_overview')
 
 	response = HttpResponse(json.dumps(json_result), content_type='application/json') #type: ignore
 	response['Content-Disposition'] = f'attachment; filename={course.title}.json'
@@ -139,5 +110,4 @@ def course_overview(request: HttpRequest) -> HttpResponse:
 @staff_member_required
 def course_delete(request: HttpRequest, course_id: str) -> HttpResponse:
 	delete_all(course_id)
-	delete_course(course_id)
 	return redirect('admin_course_overview');
