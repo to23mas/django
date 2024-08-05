@@ -11,6 +11,7 @@ from domain.data.chapters.ChapterDataSerializer import ChapterDataSerializer
 from domain.data.chapters.ChapterStorage import find_chapters
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
 from domain.data.courses.CourseStorage import create_course, delete_course, find_courses, get_course_by_id, get_next_valid_id, update_course
+from domain.data.database_backup.BackUpStorage import delete_all, upload_from_json
 from domain.data.lessons.LessonDataSerializer import LessonDataSerializer
 from domain.data.lessons.LessonStorage import find_lessons
 from domain.data.projects.ProjectDataSerializer import ProjectDataSerializer
@@ -69,9 +70,9 @@ def course_download(request: HttpRequest, course_id: str) -> HttpResponse:
 		if chapters == None:
 			continue
 		project_dict['chapters'] = [ChapterDataSerializer.to_dict(chapter) for chapter in chapters] #type: ignore
-
 		json_result['projects'].append(project_dict)
 
+	#TESTS
 	tests = find_tests(course.database)
 	json_result['tests'] = [] #type: ignore
 	if tests != None:
@@ -82,7 +83,6 @@ def course_download(request: HttpRequest, course_id: str) -> HttpResponse:
 				test_dict['questions'] = [QuestionDataSerializer.to_dict(question) for question in questions] #type: ignore
 			json_result['tests'].append(test_dict)
 
-	__import__('pprint').pprint(json_result)
 	response = HttpResponse(json.dumps(json_result), content_type='application/json') #type: ignore
 	response['Content-Disposition'] = f'attachment; filename={course.title}.json'
 	return response
@@ -91,8 +91,6 @@ def course_download(request: HttpRequest, course_id: str) -> HttpResponse:
 @staff_member_required
 def course_new(request: HttpRequest) -> HttpResponse:
 	"""list all courses"""
-
-	# UPLOADING migration files
 	if request.method == 'POST':
 		edit_form = CourseEditForm(request.POST)
 		if edit_form.is_valid():
@@ -120,20 +118,17 @@ def course_overview(request: HttpRequest) -> HttpResponse:
 	if request.method == 'POST':
 		form = CourseUploadForm(request.POST, request.FILES)
 		if form.is_valid():
-			file = request.FILES['file']
-			file_data = json.load(file) #type: ignore
-			print(CourseDataSerializer.from_dict(file_data))
-			try:
-				create_course(CourseDataSerializer.from_dict(file_data))
+			upload_result = upload_from_json(json.load(request.FILES['file'])) #type: ignore
+			if upload_result == None:
+				messages.success(request, 'Course successfully uploaded')
 				return redirect('admin_course_overview');
-			except Exception as e:
-				messages.warning(request, f'Problem occurred during uploading file data: {str(e)}')
+			else:
+				messages.warning(request, f'Problem occurred during uploading file data: {str(upload_result)}')
+				return redirect('admin_course_overview');
 	else:
 		form = CourseUploadForm()
 
-
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '#'}]
-
 	return render(request, 'content/courses/overview.html', {
 		'courses': courses,
 		'form': form,
@@ -143,5 +138,6 @@ def course_overview(request: HttpRequest) -> HttpResponse:
 
 @staff_member_required
 def course_delete(request: HttpRequest, course_id: str) -> HttpResponse:
+	delete_all(course_id)
 	delete_course(course_id)
 	return redirect('admin_course_overview');
