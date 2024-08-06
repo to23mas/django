@@ -4,7 +4,9 @@
 @import '@fortawesome/fontawesome-free/css/brands.css';
 
 @import "components/login.css";
+@import "components/courses.css";
 @import "components/base.css";
+@import "atoms/buttons.css";
 
 @tailwind base;
 @tailwind components;

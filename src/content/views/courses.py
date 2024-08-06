@@ -7,18 +7,9 @@ from django.shortcuts import redirect, render
 
 from content.forms.CourseEditForm import CourseEditForm
 from content.forms.CourseUploadForm import CourseUploadForm
-from domain.data.chapters.ChapterDataSerializer import ChapterDataSerializer
-from domain.data.chapters.ChapterStorage import find_chapters
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
-from domain.data.courses.CourseStorage import create_course, delete_course, find_courses, get_course_by_id, get_next_valid_id, update_course
+from domain.data.courses.CourseStorage import create_course, find_courses, get_course_by_id, get_next_valid_id, update_course
 from domain.data.database_backup.BackUpStorage import delete_all, download_json, upload_from_json
-from domain.data.lessons.LessonDataSerializer import LessonDataSerializer
-from domain.data.lessons.LessonStorage import find_lessons
-from domain.data.projects.ProjectDataSerializer import ProjectDataSerializer
-from domain.data.projects.ProjectStorage import find_projects
-from domain.data.tests.QuestionDataSerializer import QuestionDataSerializer
-from domain.data.tests.TestDataSerializer import TestDataSerializer
-from domain.data.tests.TestStorage import find_tests, get_test
 
 
 @staff_member_required

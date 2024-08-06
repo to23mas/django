@@ -1,10 +1,11 @@
 from django.urls import path
 
-from . import views
+from .views import *
 
 app_name = 'courses'
 
 urlpatterns = [
-	path("", views.overview, name="overview"),
+	path("", overview, name="overview"),
+	path("unlock/<int:course_id>", enroll, name="enroll"),
 ]
 

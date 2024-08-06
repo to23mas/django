@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from domain.data.chapters_storage import chapter_is_accessible_and_done, get_chapter, is_chapter_open, is_chapter_open_or_done
-from domain.data.progress_storage import finish_chapter, unlock_chapter
+from domain.data.progress.ProgressStorage import finish_chapter, unlock_chapter
 
 
 @login_required

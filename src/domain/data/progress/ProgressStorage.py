@@ -1,12 +1,24 @@
 """storage for progress"""
-from pymongo.cursor import Cursor
 from domain.Mongo import MongoStorage
 from domain.data.tests.enum.TestState import TestState
 
 
 def get_user_progress_by_course(username: str, course: str) -> dict | None:
-    ms = MongoStorage()
-    return ms.database[course].progress.find_one({"_id": username})
+	return MongoStorage().database[course].progress.find_one({"_id": username})
+
+
+def enroll_course(username: str, db: str) -> bool:
+	try:
+		MongoStorage().database[db].progress.insert_one({
+			"_id": username,
+			"projects": {},
+			"lessons": {},
+			"chapters": {},
+			"tests": [],
+			})
+		return True
+	except:
+		return False
 
 
 def get_lesson_progress(username: str, project_no: int, course: str) -> dict | None:

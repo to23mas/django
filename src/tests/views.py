@@ -7,7 +7,7 @@ from django.views import View
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 
-from domain.data.progress_storage import find_available_tests
+from domain.data.progress.ProgressStorage import find_available_tests
 from domain.data.tests.TestResultSerializer import TestResultSerializer
 from domain.data.tests.TestStorage import find_tests_for_overview, get_test
 

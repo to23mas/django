@@ -1,36 +1,45 @@
 {% extends "base.html" %}
 {% load static %}
+{% load progress %}
 
-	{% block content %}
-<div class="w-full mx-auto md:w-4/6 mt-10">
-	<div class="grid grid-cols-3 gap-4">
+{% block content %}
+
+<div class="courses">
+	<div class="courses_grid">
 		{% for course in courses %}
+		{% get_course_progress course.database username as course_is_enrolled %}
 		{% if course.visible %}
-		{% if course.open %} <a href="{% url 'projects:overview' course=course.database sort_type='all' %}"> {% endif %}
-			<div class="relative max-w-sm rounded overflow-hidden shadow-lg content-center">
-				{% if not course.open %}<div class="blur-sm"> {% endif %}
-					<div class="px-6 py-4">
-						<div class="font-bold text-xl mb-2 ">{{ course.title }}</div>
-						<p class="text-gray-700 text-base ">
-							{{course.description}}
-						</p>
-						<div class="pt-4 pb-2">
-							{% for tag in course.tags %}
-							<span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#{{tag}}</span>
-							{% endfor %}
+		<div class="course_card">
+			{% if not course.open %}<div class="blur-sm"> {% endif %}
+				<div class="px-6 mt-6">
+					<div class="font-bold text-xl mb-2 ">{{ course.title }}</div>
+					<p class="text-gray-700 text-base ">
+						{{course.description}}
+					</p>
+					<div class="pt-4 pb-2">
+						{% for tag in course.tags %}
+						<span class="course_tag">#{{tag}}</span>
+						{% endfor %}
+						<br>
+						<div class="mt-5 mb-5">
+							{% if course_is_enrolled %}
+								<a class="green_button" href="{% url 'projects:overview' course=course.database sort_type='all' %}">Přejít do kurzu</a>
+							{% else %}
+								<a class="blue_button" href="{% url 'courses:enroll' course_id=course.id %}">Zapsat se</a>
+							{% endif %}
 						</div>
 					</div>
-					{% if not course.open %}
 				</div>
-				<svg class="absolute top-32 w-full h-64 !blur-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-					<path class="blur-none" d="M18 10v-4c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-3zm-5 7.723v2.277h-2v-2.277c-.595-.347-1-.984-1-1.723 0-1.104.896-2 2-2s2 .896 2 2c0 .738-.404 1.376-1 1.723zm-5-7.723v-4c0-2.206 1.794-4 4-4 2.205 0 4 1.794 4 4v4h-8z"/>
-				</svg>
-				{% endif %}
+				{% if not course.open %}
 			</div>
-			{% if course.open %} </a> {% endif %}
+			<svg class="absolute top-32 w-full h-64 !blur-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+				<path class="blur-none" d="M18 10v-4c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-3zm-5 7.723v2.277h-2v-2.277c-.595-.347-1-.984-1-1.723 0-1.104.896-2 2-2s2 .896 2 2c0 .738-.404 1.376-1 1.723zm-5-7.723v-4c0-2.206 1.794-4 4-4 2.205 0 4 1.794 4 4v4h-8z"/>
+			</svg>
+			{% endif %}
+		</div>
 		{% endif %}
 		{% endfor %}
 	</div>
 </div>
-{% endblock %}
 
+{% endblock %}

@@ -4,8 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from domain.data.content_progress.ContentProgressStorage import get_content_progress
-from domain.data.progress_storage import get_lesson_progress, get_user_progress_by_course
-from domain.data.projects.ProjectStorage import find_projects, find_projects_by_course_and_ids, get_project
+from domain.data.projects.ProjectStorage import find_projects, find_projects_by_course_and_ids, get_project, get_project_by_id
 
 
 @login_required
@@ -37,7 +36,7 @@ def detail(request: HttpRequest, course: str, project_no: int) -> HttpResponse:
 
 	username = request.user.username #type: ignore
 	project_progress = get_content_progress(course, username, 'projects')
-	project, lessons_graph_data = get_project(project_no, course)
+	project, lessons_graph_data = get_project_by_id(project_no, course)
 
 	# non exissting project
 	if project == None or lessons_graph_data == None:

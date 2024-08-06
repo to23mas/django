@@ -7,7 +7,6 @@ from django.contrib import messages
 from domain.data.chapters_storage import get_chapter
 from domain.data.content_progress.ContentProgressStorage import get_content_progress
 from domain.data.lessons.LessonStorage import get_lesson
-from domain.data.progress_storage import get_user_progress_by_course
 
 
 @login_required
