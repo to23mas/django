@@ -1,0 +1,27 @@
+@layer base {
+	div.project_overview_card {
+		@apply w-full border border-gray-200 rounded-lg shadow  mx-auto md:w-4/6 mt-10;
+	}
+
+	ul.project_overview_card_tabs {
+		@apply flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-50;
+	}
+
+	div.project_overview_card_tab_spacer {
+		@apply flex-grow flex justify-end overflow-visible relative;
+	}
+
+	h2.card_title {
+		@apply mb-3 text-3xl font-extrabold tracking-tight text-gray-900;
+	}
+
+	p.card_description {
+		@apply mb-3 text-gray-500;
+	}
+
+	a.to_course_link {
+		@apply inline-flex items-center font-medium text-blue-600 hover:text-blue-800;
+	}
+
+}
+

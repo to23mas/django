@@ -13,13 +13,13 @@ def get_content_progress(course: str, username: str, content: str) -> Dict :
 
 
 """PROJECTS"""
-def get_project_state(course: str, username: str, project_no: str) -> str :
+def get_project_state(course: str, username: str, project_id: int) -> str :
 	result = MongoStorage().database[course].progress.find_one(
-		{"_id": username },{ f"projects.{project_no}": 1, "_id": 0 }
+		{"_id": username },{ f"projects.{str(project_id)}": 1, "_id": 0 }
 	)
 	if result == None: raise UnexpectedNoneValueException
 
-	return result['projects'][str(project_no)]
+	return result['projects'][str(project_id)]
 
 
 def unlock_project(username: str, project_id: int) -> None:

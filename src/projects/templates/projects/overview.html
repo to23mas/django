@@ -1,21 +1,21 @@
 {% extends "base.html" %}
-{% load progress %}
+{% load project_progress %}
 
 {% block content %}
 {% for project in projects %}
-		{% get_project_state_tag course_name username project.no as project_state %}
+		{% get_project_state_tag course_name username project.id as project_state %}
 			{% if project_state == 'open' %}
-			<div class="w-full border border-gray-200 rounded-lg shadow  mx-auto md:w-4/6 mt-10">
-				<ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 rounded-t-lg bg-gray-50" id="defaultTab" data-tabs-toggle="#defaultTabContent" role="tablist">
+			<div class="project_overview_card">
+				<ul class="project_overview_card_tabs" id="defaultTab" data-tabs-toggle="#defaultTabContent" role="tablist">
 					<li class="me-2">
-						<button id="about-tab" data-tabs-target="#about{{project.no}}" type="button" role="tab" aria-controls="about" aria-selected="true"
+						<button id="about-tab" data-tabs-target="#about{{project.id}}" type="button" role="tab" aria-controls="about" aria-selected="true"
 							class="inline-block p-4 text-blue-600 rounded-ss-lg hover:bg-gray-100">Project</button>
 					</li>
 					<li class="me-2">
-						<button id="services-tab" data-tabs-target="#services{{project.no}}" type="button" role="tab" aria-controls="services" aria-selected="false"
+						<button id="services-tab" data-tabs-target="#services{{project.id}}" type="button" role="tab" aria-controls="services" aria-selected="false"
 							class="inline-block p-4 hover:text-gray-600 hover:bg-gray-100">Prerekvizity</button>
 					</li>
-					<div class="flex-grow flex justify-end overflow-visible relative">
+					<div class="project_overview_card_tab_spacer">
 						<div class="absolute" style="top: -15px; right: -15px;">
 							<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24">
 								<path d="M8 10v-4c0-2.206 1.795-4 4-4s4 1.794 4 4v1h2v-1c0-3.313-2.687-6-6-6s-6 2.687-6 6v4h-3v14h18v-14h-13zm11 12h-14v-10h14v10z"/>
@@ -24,18 +24,18 @@
 					</div>
 				</ul>
 				<div id="defaultTabContent" class="">
-					<div class="bg-white hidden p-4 rounded-lg md:p-8" id="about{{project.no}}" role="tabpanel" aria-labelledby="1about-tab">
-						<h2 class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900">{{project.title}}</h2>
-						<p class="mb-3 text-gray-500 ">{{project.description}}</p>
-						<a href="{% url 'projects:detail' course=course_name project_no=project.no %}" class="inline-flex items-center font-medium text-blue-600 hover:text-blue-800">
+					<div class="bg-white hidden p-4 rounded-lg md:p-8" id="about{{project.id}}" role="tabpanel" aria-labelledby="1about-tab">
+						<h2 class="card_title">{{project.title}}</h2>
+						<p class="card_description">{{project.description}}</p>
+						<a href="{% url 'projects:detail' course=course_name project_id=project.id %}" class="to_course_link">
 							Přejít k lekci
 							<svg class=" w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
 								<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
 							</svg>
 						</a>
 					</div>
-					<div class="bg-white hidden p-4 rounded-lg md:p-8 " id="services{{project.no}}" role="tabpanel" aria-labelledby="services-tab">
-						<h2 class="mb-5 text-2xl font-extrabold tracking-tight text-gray-900">Nadpis !!!!!!</h2>
+					<div class="bg-white hidden p-4 rounded-lg md:p-8" id="services{{project.id}}" role="tabpanel" aria-labelledby="services-tab">
+						<h2 class="card_title">Nadpis !!!!!!</h2>
 						<!-- List -->
 						<ul role="list" class="space-y-4 text-gray-500">
 							{% for item in project.todo %}
@@ -52,14 +52,14 @@
 			</div>
 			{% endif %}
 			{% if project_state == 'done' %}
-			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10 overflow-visible">
+			<div class="project_overview_card">
 				<ul class="flex flex-wrap bg-emerald-400 text-sm font-medium text-center border-b border-green-200 rounded-t-lg overflow-visible" id="defaultTab" data-tabs-toggle="#defaultTabContent" role="tablist">
 					<li class="me-2">
-						<button id="about-tab" data-tabs-target="#about{{project.no}}" type="button" role="tab" aria-controls="about" aria-selected="true"
+						<button id="about-tab" data-tabs-target="#about{{project.id}}" type="button" role="tab" aria-controls="about" aria-selected="true"
 							class="inline-block p-4 text-blue-100 rounded-ss-lg hover:bg-green-300">Project</button>
 					</li>
 					<li class="me-2">
-						<button id="services-tab" data-tabs-target="#services{{project.no}}" type="button" role="tab" aria-controls="services" aria-selected="false"
+						<button id="services-tab" data-tabs-target="#services{{project.id}}" type="button" role="tab" aria-controls="services" aria-selected="false"
 							class="inline-block p-4 hover:text-gray-600 hover:bg-green-300">Prerekvizity</button>
 					</li>
 					<div class="flex-grow flex justify-end overflow-visible relative">
@@ -71,17 +71,17 @@
 					</div>
 				</ul>
 				<div id="defaultTabContent" class="bg-green-200 rounded-b-lg">
-					<div class="bg-green-200 hidden p-4 rounded-lg md:p-8" id="about{{project.no}}" role="tabpanel" aria-labelledby="1about-tab">
+					<div class="bg-green-200 hidden p-4 rounded-lg md:p-8" id="about{{project.id}}" role="tabpanel" aria-labelledby="1about-tab">
 						<h2 class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900">{{project.title}}</h2>
 						<p class="mb-3 text-gray-500 ">{{project.description}}</p>
-						<a href="{% url 'projects:detail' course=course_name project_no=project.no %}" class="inline-flex items-center font-medium text-blue-600 hover:text-blue-800">
+						<a href="{% url 'projects:detail' course=course_name project_id=project.id %}" class="inline-flex items-center font-medium text-blue-600 hover:text-blue-800">
 							Přejít k lekci
 							<svg class=" w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
 								<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
 							</svg>
 						</a>
 					</div>
-					<div class="bg-green-200 hidden p-4 rounded-lg md:p-8 " id="services{{project.no}}" role="tabpanel" aria-labelledby="services-tab">
+					<div class="bg-green-200 hidden p-4 rounded-lg md:p-8 " id="services{{project.id}}" role="tabpanel" aria-labelledby="services-tab">
 						<h2 class="mb-5 text-2xl font-extrabold tracking-tight text-gray-900">Nadpis !!!!!!</h2>
 						<!-- List -->
 						<ul role="list" class="space-y-4 text-gray-500 d">
@@ -99,14 +99,14 @@
 			</div>
 			{% endif %}
 			{% if project_state == 'lock' %}
-			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10 overflow-visible">
+			<div class="project_overview_card">
 				<ul class="flex flex-wrap bg-gray-300 text-sm font-medium text-center border-b border-gray-300 rounded-t-lg overflow-visible" id="defaultTab" data-tabs-toggle="#defaultTabContent" role="tablist">
 					<li class="me-2">
-						<button id="about-tab" data-tabs-target="#about{{project.no}}" type="button" role="tab" aria-controls="about" aria-selected="true"
+						<button id="about-tab" data-tabs-target="#about{{project.id}}" type="button" role="tab" aria-controls="about" aria-selected="true"
 							class="inline-block p-4 text-blue-100 rounded-ss-lg hover:bg-gray-400">Project</button>
 					</li>
 					<li class="me-2">
-						<button id="services-tab" data-tabs-target="#services{{project.no}}" type="button" role="tab" aria-controls="services" aria-selected="false"
+						<button id="services-tab" data-tabs-target="#services{{project.id}}" type="button" role="tab" aria-controls="services" aria-selected="false"
 							class="inline-block p-4 hover:text-gray-600 hover:bg-gray-400">Prerekvizity</button>
 					</li>
 					<div class="flex-grow flex justify-end overflow-visible relative">
@@ -118,11 +118,11 @@
 					</div>
 				</ul>
 				<div id="defaultTabContent" class="bg-gray-500 rounded-b-lg">
-					<div class="bg-gray-500 hidden p-4 rounded-lg md:p-8" id="about{{project.no}}" role="tabpanel" aria-labelledby="1about-tab">
+					<div class="bg-gray-500 hidden p-4 rounded-lg md:p-8" id="about{{project.id}}" role="tabpanel" aria-labelledby="1about-tab">
 						<h2 class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900">{{project.title}}</h2>
 						<p class="mb-3 text-gray-800 ">{{project.description}}</p>
 					</div>
-					<div class="bg-gray-500 hidden p-4 rounded-lg md:p-8 " id="services{{project.no}}" role="tabpanel" aria-labelledby="services-tab">
+					<div class="bg-gray-500 hidden p-4 rounded-lg md:p-8 " id="services{{project.id}}" role="tabpanel" aria-labelledby="services-tab">
 						<h2 class="mb-5 text-2xl font-extrabold tracking-tight text-gray-900">Nadpis !!!!!!</h2>
 						<!-- List -->
 						<ul role="list" class="space-y-4 text-gray-800 d">

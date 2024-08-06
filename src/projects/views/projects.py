@@ -10,7 +10,6 @@ from domain.data.projects.ProjectStorage import find_projects, find_projects_by_
 @login_required
 def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
 	"""list all projects"""
-
 	username = request.user.username #type: ignore
 
 	if sort_type == 'all':
