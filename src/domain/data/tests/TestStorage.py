@@ -1,4 +1,5 @@
 """storage for tests and its data. data about tests"""
+from domain.data.tests.tableDefinition.TableDefinitions import TestsTable
 import pymongo
 from typing import Tuple, List
 from domain.Mongo import MongoStorage
@@ -14,7 +15,8 @@ from domain.data.tests.TestData import TestData
 def find_tests_for_overview(db: str, open_tests: list = []) -> List[TestData]:
 	"""returns all test"""
 	tests = MongoStorage().database[db].tests.find(
-		{'no': {'$in': open_tests}}).sort('no', pymongo.DESCENDING)
+		{TestsTable.ID.value: {'$in': open_tests}}
+	).sort(TestsTable.ID.value, pymongo.DESCENDING)
 
 	if tests == None: raise DataNotFoundException
 

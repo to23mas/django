@@ -3,12 +3,12 @@ from domain.data.tests_progress.tableDefinition.TableDefinition import TestProgr
 
 
 class TestProgressDataSerializer:
-    @staticmethod
-    def from_array(progressData: dict) -> TestProgressData:
-        return TestProgressData(
-            test_no=progressData[TestProgressTable.TEST_NO.value],
-            attempts=progressData[TestProgressTable.ATTEMPTS.value],
-            state=progressData[TestProgressTable.STATE.value],
-            score=progressData[TestProgressTable.SCORE.value],
-        )
+	@staticmethod
+	def from_dict(progressData: dict) -> TestProgressData:
+		return TestProgressData(
+			test_no=progressData[TestProgressTable.TEST_ID.value],
+			attempts=progressData[TestProgressTable.ATTEMPTS.value],
+			state=progressData[TestProgressTable.STATE.value],
+			score=progressData[TestProgressTable.SCORE.value],
+		)
 

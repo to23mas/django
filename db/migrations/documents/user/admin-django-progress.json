@@ -19,27 +19,27 @@
 		"4": "lock"
 	},
 	"tests": [{
-			"test_no": 1,
+			"test_id": 1,
 			"attempts": 0,
 			"state": "finish",
 			"score": []
 		},{
-			"test_no": 2,
+			"test_id": 2,
 			"attempts": 2,
 			"state": "fail",
 			"score": []
 		},{
-			"test_no": 3,
+			"test_id": 3,
 			"attempts": 0,
 			"state": "open",
 			"score": []
 		},{
-			"test_no": 4,
+			"test_id": 4,
 			"attempts": 0,
 			"state": "success",
 			"score": []
 		},{
-			"test_no": 5,
+			"test_id": 5,
 			"attempts": 0,
 			"state": "close",
 			"score": []

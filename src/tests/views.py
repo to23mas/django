@@ -22,6 +22,7 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 
 	username = request.user.username #type: ignore
 	user_available = find_available_tests(course, username)
+	print(user_available)
 
 	if user_available == None or len(user_available) == 0:
 		messages.success(request, 'V tuto chvíli nemáš žádné dostupné testy')
@@ -30,6 +31,7 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 		})
 
 	available_tests = find_tests_for_overview(course, user_available)
+	print(available_tests)
 
 	return render(request, 'tests/overview.html', {
 		'tests': available_tests,

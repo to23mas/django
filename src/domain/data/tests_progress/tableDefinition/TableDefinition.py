@@ -2,7 +2,7 @@ from enum import Enum
 
 
 class TestProgressTable(Enum):
-    TEST_NO = 'test_no'
+    TEST_ID = 'test_id'
     ATTEMPTS = 'attempts'
     STATE = 'state'
     SCORE = 'score'

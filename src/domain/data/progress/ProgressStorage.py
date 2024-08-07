@@ -70,13 +70,13 @@ def finish_chapter(username: str, course: str, lesson_no: str, chapter_no: str) 
          '$pull': {f'chapters.{str(lesson_no)}.open': int(chapter_no)}})
 
 
-def find_tests_progress(course: str, username: str) -> dict | None:
-    """return user's all tests progress"""
-    result = MongoStorage().database[course].progress.find_one({'_id': username}, {'tests': 1})
-    if result == None: return None
-    return result['tests']
+def find_tests_progress(db: str, username: str) -> dict | None:
+	"""return user's all tests progress"""
+	result = MongoStorage().database[db].progress.find_one({'_id': username}, {'tests': 1})
+	if result == None: return None
+	return result['tests']
 
-def get_test_progress(course: str, username: str, test_no: str) -> dict | None:
+def get_test_progress(course: str, username: str, test_id: str) -> dict | None:
     """return user's all tests progress"""
     result = MongoStorage().database[course].progress.find_one({'_id': username}, {'tests': 1})
     if result == None: return None
@@ -84,14 +84,13 @@ def get_test_progress(course: str, username: str, test_no: str) -> dict | None:
 
 
 def find_available_tests(course: str, username: str) -> list | None:
-    """return nos of displayable tests (all except closed) tests"""
-    all_tests = find_tests_progress(course, username)
+	"""return nos of displayable tests (all except closed) tests"""
+	all_tests = find_tests_progress(course, username)
+	if all_tests == None: return None
 
-    if all_tests == None: return None
+	available_tests_nos = []
+	for test in all_tests:
+		if not test['state'] == TestState.CLOSE.value:
+			available_tests_nos.append(test['test_id'])
 
-    available_tests_nos = []
-    for test in all_tests:
-        if not test['state'] == TestState.CLOSE.value:
-            available_tests_nos.append(test['test_no'])
-
-    return available_tests_nos
+	return available_tests_nos
