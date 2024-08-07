@@ -18,19 +18,19 @@
 		<div class="py-4 mt-4 overflow-y-auto">
 			<ul class="space-y-2">
 				{% for chapter in lesson.chapters %}
-				{% get_status sidebar_progress chapter.no as progress %}
+				{% get_chapter_status course_name username chapter.id as chapter_progress %}
 				<li>
-					{% if progress == 'done' %}
+					{% if chapter_progress == 'done' %}
 					<a
 						href="{% url 'projects:lesson' course=course_name project_no=project_no lesson_no=lesson.no chapter_no=forloop.counter %}"
-						class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_no == chapter.no %} bg-blue-100 {% endif %}">
+						class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_id == chapter.id %} bg-blue-100 {% endif %}">
 						<i class="fa-solid fa-check"></i>
 						<span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.label }}</span>
 					</a>
-					{% elif progress == 'open' %}
+					{% elif chapter_progress == 'open' %}
 					<a
-						href="{% url 'projects:lesson' course=course_name project_no=project_no lesson_no=lesson.no chapter_no=forloop.counter %}"
-						class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_no == chapter.no %} bg-blue-100 {% endif %}">
+						href="{% url 'projects:lesson' course=course_name project_id=project_id lesson_id=lesson.id chapter_id=forloop.counter %}"
+						class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_id == chapter.id %} bg-blue-100 {% endif %}">
 						<i class="fa-solid fa-lock-open"></i>
 						<span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.label }}</span>
 					</a>

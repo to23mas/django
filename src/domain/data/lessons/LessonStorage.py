@@ -1,7 +1,6 @@
 """storage for lessons"""
 from typing import List
 
-from bson.objectid import ObjectId
 from domain.Mongo import MongoStorage
 from domain.data.lessons.LessonData import LessonData
 from domain.data.lessons.LessonDataCollection import LessonDataCollection
