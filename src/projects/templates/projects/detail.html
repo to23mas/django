@@ -1,92 +1,85 @@
 {% extends "base.html" %}
-{% block content %}
 {% load tags %}
 
-  <h1 class="mb-4 mt-20 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl text-center">
-    {{project.title}}
-  </h1>
-  <p class="text-center mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48">
-    {{project.description}}
-	{{lessons_graph_data}}
-  </p>
+	{% block content %}
+	<h1 class="mb-4 mt-20 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl text-center">
+		{{project.title}}
+	</h1>
+	<p class="text-center mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48">
+		{{project.description}}
+	</p>
+	<div style="height: 50vh; margin-left: auto; margin-right: auto;" class="cursor-grabbing border mt-10 w-3/4" id="projectNetwork"></div>
 
 
-   <div style="height: 110vh;" class="cursor-grabbing" id="projectNetwork"></div>
+	<script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+	<script type="text/javascript">
 
 
-   <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-   <script type="text/javascript">
+	// NODES
+	let nodes_parsed = [];
+	{% for lesson in lessons %}
+	{% get_lesson_status course_name lesson.id username as lesson_status %}
 
-   // NODES
-   let nodes_parsed = [];
-   {% for lesson in lessons_graph_data %}
-    {% get_status lessons_progress lesson.no as lesson_status %}
-      nodes_parsed.push({
-        id: {{ lesson.no }},
-        label: '{{ lesson.label }}',
-        url: {% if lesson_status == 'open' or lesson_status == 'done' %}
-               "{% url 'projects:lesson' course=course_name project_no=project.no lesson_no=lesson.no chapter_no=1 %}"
-             {% else %}
-               '#'
-             {% endif %},
-        color: {% if lesson_status == 'done' %} '#34eb40' {% elif lesson_status == 'open' %} '#34c6eb' {% else %} '#cccccc' {%endif %}
-        });
-   {% endfor %}
+	nodes_parsed.push({
+		id: {{ lesson.id }},
+		label: '{{ lesson.title }}',
+		url:  {% if lesson_status == 'open' or lesson_status == 'done' %}
+						"{% url 'projects:lesson' course=course_name project_id=project.id lesson_id=lesson.id chapter_id=1 %}"
+					{% else %}
+						'#'
+					{% endif %},
+		color: {% if lesson_status == 'done' %} '#34eb40' {% elif lesson_status == 'open' %} '#34c6eb' {% else %} '#cccccc' {%endif %}
+	});
+	{% endfor %}
 
-   var nodes = new vis.DataSet(
-     nodes_parsed
-   );
+	var nodes = new vis.DataSet(nodes_parsed);
 
-   // EDGES
-   let edges_parsed = [];
-   {% for lesson in lessons_graph_data %}
-     {% for to in lesson.to %}
-       edges_parsed.push({ from: {{ lesson.no }} , to: {{ to }} });
-     {% endfor %}
-   {% endfor %}
+	// EDGES
+	let edges_parsed = [];
+	{% for lesson in lessons %}
+		{% for to in lesson.to %}
+			edges_parsed.push({ from: {{ lesson.id }} , to: {{ to }}});
+		{% endfor %}
+	{% endfor %}
 
-   var edges = new vis.DataSet(
-     edges_parsed
-   );
+	 var edges = new vis.DataSet(edges_parsed);
 
+	 var network = new vis.Network(
+		 document.getElementById("projectNetwork"),
+		 {nodes: nodes, edges: edges},
+		 {
+			edges: {
+					arrows: { to: {enabled: true} },
+					color: { color: '#cccccc' },
+					chosen: false,
+			 },
+			nodes: {
+				 font: {
+					 size: 20
+				 },
+				 fixed: {
+					 x: true,
+					 y: true
+				 },
+				 shape: 'ellipse'
+			 },
+			layout: {
+				 randomSeed: 1
+			},
+		 }
+	 );
+	 network.on("selectNode", function (params) {
+		 if (params.nodes.length === 1) {
+			var node = nodes.get(params.nodes[0]);
+			if (node.url !== '#') {
+					window.location.href = node.url;
+			}
+		}});
 
-   var network = new vis.Network(
-     document.getElementById("projectNetwork"),
-     {nodes: nodes, edges: edges},
-     {
-       edges: {
-          arrows: { to: {enabled: true} },
-          color: { color: '#cccccc' },
-          chosen: false
-       },
-       nodes: {
-         font: {
-           size: 30
-         },
-         fixed: {
-           x: true,
-           y: true
-         },
-         shape: 'ellipse'
-       },
-       layout: {
-         randomSeed: 1
-       }
-     }
-   );
+	// moving all items upwards
+	//const canvas = network.canvas.frame.canvas;
+	//canvas.style.top = parseInt(canvas.style.top || 0) - 20 + "%";
+	</script>
 
-
-   network.on("selectNode", function (params) {
-     if (params.nodes.length === 1) {
-       var node = nodes.get(params.nodes[0]);
-       if (node.url !== '#') {
-          window.location.href = node.url;
-       }
-     }});
-
-    const canvas = network.canvas.frame.canvas;
-    canvas.style.top = parseInt(canvas.style.top || 0) - 20 + "%";
-   </script>
-
-   {% endblock %}
+	{% endblock %}
 

@@ -10,7 +10,7 @@ from domain.data.lessons.LessonStorage import get_lesson
 
 
 @login_required
-def lesson(request: HttpRequest, course: str, project_no: str, lesson_no: str, chapter_no: str) -> HttpResponse:
+def lesson(request: HttpRequest, course: str, project_id: str, lesson_id: str, chapter_id: str) -> HttpResponse:
 	"""display lesson"""
 
 	#TODO fix progress because of the data refactor

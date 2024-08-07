@@ -45,13 +45,20 @@ def finish_project(username: str, project_id: int) -> None:
 
 
 """LESSONS"""
+def get_lesson_state(db: str, username: str, lesson_id: int) -> str :
+	result = MongoStorage().database[db].progress.find_one(
+		{"_id": username },{ f"lessons.{str(lesson_id)}": 1, "_id": 0 }
+	)
+	if result == None: raise UnexpectedNoneValueException
+
+	return result['lessons'][str(lesson_id)]
 
 def unlock_lesson(username: str, course: str, project_no: str, lesson_no: str) -> None:
 	MongoStorage().database[course].progress.update_one({
 		'_id': username
 	}, {
 		'$push': {f'lessons.{str(project_no)}.open': int(lesson_no)},
-		 '$pull': {f'lessons.{str(project_no)}.lock': int(lesson_no)}
+		'$pull': {f'lessons.{str(project_no)}.lock': int(lesson_no)}
 	})
 
 
