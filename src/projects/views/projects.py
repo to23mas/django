@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from domain.data.content_progress.ContentProgressStorage import get_content_progress
-from domain.data.projects.ProjectStorage import find_projects, find_projects_by_course_and_ids, get_project, get_project_by_id
+from domain.data.projects.ProjectStorage import find_projects, find_projects_by_course_and_ids, get_project_by_id
 
 
 @login_required

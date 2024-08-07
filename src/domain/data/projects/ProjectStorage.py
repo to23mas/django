@@ -11,13 +11,12 @@ from domain.data.projects.exception.UniqueDatabaseException import UniqueDatabas
 
 def find_projects(db: str) -> List[ProjectData]:
 	projects = MongoStorage().database[db].projects.find().sort('_id')
-	return ProjectDataCollection.from_array(projects)
+	return ProjectDataCollection.from_dict(projects)
 
 
 def find_projects_by_course_and_ids(ids: list, db: str) -> List[ProjectData]:
-	projects = MongoStorage().database[db].projects.find({"no": {"$in": ids}}).sort('_id')
-
-	return ProjectDataCollection.from_array(projects)
+	projects = MongoStorage().database[db].projects.find({"_id": {"$in": ids}}).sort('_id')
+	return ProjectDataCollection.from_dict(projects)
 
 
 def get_project_by_id(project_id: int, db: str) -> ProjectData | None:
@@ -25,7 +24,6 @@ def get_project_by_id(project_id: int, db: str) -> ProjectData | None:
 	match project:
 		case None: return None
 		case _: return ProjectDataSerializer.from_dict(project)
-	# return (ProjectDataSerializer.from_dict(project), project.get('lessons'))
 
 
 def get_project(db: str, filter: Dict = {}) -> ProjectData | None:

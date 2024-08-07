@@ -4,8 +4,8 @@ from domain.data.exception.UnexpectedNoneResultException import UnexpectedNoneVa
 
 
 """ALL"""
-def get_content_progress(course: str, username: str, content: str) -> Dict :
-	result = MongoStorage().database[course].progress.find(
+def get_content_progress(db: str, username: str, content: str) -> Dict :
+	result = MongoStorage().database[db].progress.find(
 		{ '_id': username },
 		{ f'{content}': 1, '_id': 0 })
 
