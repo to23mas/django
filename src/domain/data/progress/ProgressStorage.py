@@ -1,5 +1,11 @@
 """storage for progress"""
 from domain.Mongo import MongoStorage
+from domain.data.chapters.ChapterStorage import find_chapters
+from domain.data.content_progress.enum.ContentProgressState import ContentProgressState
+from domain.data.courses.CourseStorage import get_course
+from domain.data.lessons.LessonStorage import find_lessons
+from domain.data.projects.ProjectStorage import find_projects
+from domain.data.tests.TestStorage import find_tests
 from domain.data.tests.enum.TestState import TestState
 
 
@@ -8,14 +14,47 @@ def get_user_progress_by_course(username: str, course: str) -> dict | None:
 
 
 def enroll_course(username: str, db: str) -> bool:
-	try:
-		MongoStorage().database[db].progress.insert_one({
-			"_id": username,
-			"projects": {},
-			"lessons": {},
-			"chapters": {},
-			"tests": [],
+	course = get_course({'database': db})
+	if course == None: return False
+	result_document = {
+		"_id": username,
+		"projects": {},
+		"lessons": {},
+		"chapters": {},
+		"tests": [],
+	}
+
+	projects = find_projects(course.database)
+	i = 0
+	for project in projects:
+		result_document['projects'][str(project.id)] = ContentProgressState.OPEN.value if i == 0 else ContentProgressState.LOCK.value
+		lessons = find_lessons(course.database, project.database)
+		j = 0
+		if lessons != None:
+			for lesson in lessons:
+				result_document['lessons'][str(lesson.id)] = ContentProgressState.OPEN.value if j == 0 and i == 0 else ContentProgressState.LOCK.value
+				j += 1
+
+		chapters = find_chapters(course.database, project.database)
+		k = 0
+		if chapters != None:
+			for chapter in chapters:
+				result_document['chapters'][str(chapter.id)] = ContentProgressState.OPEN.value if i == 0 and k == 0 else ContentProgressState.LOCK.value
+				k += 1
+		i += 1
+
+	tests = find_tests(course.database)
+	if tests != None:
+		for t in tests:
+			result_document['tests'].append({
+				"test_id": t.id,
+				"attempts": t.attempts,
+				"state": "close",
+				"score": [],
 			})
+
+	try:
+		MongoStorage().database[course.database].progress.insert_one(result_document)
 		return True
 	except:
 		return False

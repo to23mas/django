@@ -24,7 +24,7 @@
 						<div class="mt-5 mb-5">
 							{% if course_is_enrolled %}
 								<a class="green_button" href="{% url 'projects:overview' course=course.database sort_type='all' %}">Přejít do kurzu</a>
-							{% else %}
+							{% elif course.open %}
 								<a class="blue_button" href="{% url 'courses:enroll' course_id=course.id %}">Zapsat se</a>
 							{% endif %}
 						</div>

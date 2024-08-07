@@ -4,13 +4,8 @@ import json
 
 
 def clear_database(db):
-	db.courses.delete_many({})
-	#django
-	db.django.projects.delete_many({})
-	db.django.project.project_1.chapters.delete_many({})
-	db.django.project.project_1.lessons.delete_many({})
-	db.django.progress.delete_many({})
-	db.django.tests.delete_many({})
+	db.courses.delete_one({'_id': 1})
+	db.courses.delete_one({'_id': 2})
 
 	db.django_testing.projects.delete_many({})
 	db.django_testing.project.project_1.chapters.delete_many({})
@@ -66,9 +61,9 @@ if __name__ == "__main__":
 		list_files('/usr/src/db/migrations/documents/courses/django/chapters/1/'),
 		db.django_testing.project.project_1.chapters)
 	## user progress
-	migrate_one_file(
-		'/usr/src/db/migrations/documents/user/admin-django-progress.json',
-		db.django_testing.progress)
+	# migrate_one_file(
+	# 	'/usr/src/db/migrations/documents/user/admin-django-progress.json',
+	# 	db.django_testing.progress)
 	## tests
 	migrate(
 		list_files('/usr/src/db/migrations/documents/courses/django/tests/1/'),
