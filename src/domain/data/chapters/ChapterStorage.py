@@ -21,7 +21,7 @@ def find_chapters(db: str, project_db: str, query: Dict = {}) -> List[ChapterDat
 	chapters = MongoStorage().database[db].project[project_db].chapters.find(query).sort(ChaptersTable.ID.value)
 	match chapters:
 		case None: return chapters
-		case _: return ChapterDataCollection.from_array(chapters)
+		case _: return ChapterDataCollection.from_dict(chapters)
 
 
 def exists_chapter(db: str, chapter_id: str, project_id: str, lesson_id: str) -> bool:

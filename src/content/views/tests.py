@@ -127,11 +127,9 @@ def test_edit_question(request: HttpRequest, course_id: str, test_id: int, quest
 
 	if request.method == 'POST':
 		edit_form = QuestionEditForm(request.POST)
-		print(edit_form.errors)
 		if edit_form.is_valid():
 			edit_form.cleaned_data['_id'] = question_data.id
 			question_data = QuestionDataSerializer.from_dict(edit_form.cleaned_data)
-			print(question_data)
 			update_question(question_data, course.database, test.id)
 			messages.success(request, 'Question edited successfully')
 			return  redirect('admin_test_edit_question', course_id=course.id, test_id=test.id ,question_id=question_id)

@@ -8,7 +8,7 @@ from domain.data.chapters.ChapterDataSerializer import ChapterDataSerializer
 class ChapterDataCollection:
 
 	@staticmethod
-	def from_array(chapter_data: dict|Cursor) -> List[ChapterData]:
+	def from_dict(chapter_data: dict|Cursor) -> List[ChapterData]:
 		collection = []
 		for chapter in chapter_data:
 			collection.append(ChapterDataSerializer.from_dict(chapter))

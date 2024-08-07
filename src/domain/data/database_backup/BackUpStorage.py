@@ -75,7 +75,6 @@ def upload_from_json(file_data: Dict) -> Exception | None:
 				create_test(test_data, course_data.database)
 				for question in test['questions']:
 					question_data = QuestionDataSerializer.from_dict(question)
-					print(question_data)
 					create_question(question_data, test_data.id, course_data.database)
 
 			session.commit_transaction()
