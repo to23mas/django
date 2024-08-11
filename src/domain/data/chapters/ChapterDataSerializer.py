@@ -19,11 +19,14 @@ class ChapterDataSerializer:
 
 
 	@staticmethod
-	def from_dict(chapter_data: dict) -> ChapterData:
+	def from_dict(chapter_data: dict, ch_with_blocks: ChapterData|None = None) -> ChapterData:
 		try:
 			blocks = chapter_data[ChaptersTable.BLOCKS.value]
 		except:
 			blocks = []
+
+		if ch_with_blocks != None:
+			blocks = ch_with_blocks.blocks
 
 		return ChapterData(
 			id=chapter_data[ChaptersTable.ID.value],

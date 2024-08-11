@@ -4,11 +4,15 @@
 	}
 
 	div.courses_grid {
-		@apply grid grid-cols-3 gap-4;
+		@apply grid grid-cols-3 gap-4 auto-rows-min;
 	}
 
 	div.course_card {
-		@apply relative max-w-sm rounded overflow-hidden shadow-lg content-center;
+		@apply relative max-w-sm content-center;
+	}
+
+	div.course_content {
+		@apply px-6 mt-6 shadow-lg rounded;
 	}
 
 	span.course_tag {

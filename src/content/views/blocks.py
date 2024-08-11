@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 
 from content.forms.BlockEditForm import BlockEditForm
 from domain.data.chapters.ChapterDataSerializer import ChapterDataSerializer
-from domain.data.chapters.ChapterStorage import create_block, delete_block, get_chapter, get_next_valid_block_id, update_chapter
+from domain.data.chapters.ChapterStorage import create_block, delete_block, get_chapter, get_next_valid_block_id, update_block, update_chapter
 from domain.data.courses.CourseStorage import get_course_by_id
 from domain.data.projects.ProjectStorage import get_project_by_id
 
@@ -23,15 +23,12 @@ def block_edit(request: HttpRequest, course_id: str, project_id: int, lesson_id:
 
 	block = [ b for b in chapter.blocks if b['id'] == block_id ][0] #type: ignore
 
-	# TODO  unfinished add wysiwyg
 	if request.method == 'POST':
 		edit_form = BlockEditForm(request.POST)
 		if edit_form.is_valid():
-			edit_form.cleaned_data['_id'] = edit_form.cleaned_data['id']
-			chapter_data = ChapterDataSerializer.from_dict(edit_form.cleaned_data)
-			update_chapter(chapter_data, course.database, project.database, chapter.lesson_id)
-			messages.success(request, 'Chapter has been updated')
-			return  redirect('admin_chapter_edit', course_id=course_id, project_id=project.id, lesson_id=chapter_data.lesson_id, chapter_id=chapter_data.id)
+			update_block(chapter, course.database, project.database, block_id, edit_form.cleaned_data)
+			messages.success(request, 'Block has been updated')
+			return  redirect('admin_block_edit', course_id=course_id, project_id=project.id, lesson_id=chapter.lesson_id, chapter_id=chapter.id, block_id=block_id)
 	else:
 		edit_form = BlockEditForm(initial=block)
 

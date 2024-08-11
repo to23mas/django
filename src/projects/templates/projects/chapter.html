@@ -1,5 +1,10 @@
 {% load to_code %}
 
+<style>
+pre {
+    white-space: pre-wrap !important;
+}
+</style>
 <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/atom-one-dark.min.css">
 <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
@@ -7,21 +12,9 @@
 <h2 class="text-4xl font-extrabold mx-auto md:w-4/6">{{ chapter.title }}</h2>
 
 {% for block  in chapter.blocks %}
-  <div class="p-6 bg-white border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
-    {% for block_type, block_val  in block.items %}
-      {% if block_type == 'text' %}
-        {% include 'projects/text_card.html' %}
-      {% endif %}
-
-      {% if block_type == 'python' %}
-        <br><pre><code class="rounded-lg shadow">{{ block_val | to_code }}</code></pre>
-      {% endif %}
-
-      {% if block_type == 'cli' %}
-        <br><pre><code class="rounded-lg shadow language-bash">{{ block_val | to_code }}</code></pre>
-      {% endif %}
-
-    {% endfor %}
-  </div>
-
+<div class="text-block p-6 bg-white border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
+	<h3>{{block.title}}</h3>
+	<br>
+	{{ block.text | safe }}
+</div>
 {% endfor %}

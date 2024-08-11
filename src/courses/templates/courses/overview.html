@@ -11,8 +11,8 @@
 		{% if course.visible %}
 		<div class="course_card">
 			{% if not course.open %}<div class="blur-sm"> {% endif %}
-				<div class="px-6 mt-6">
-					<div class="font-bold text-xl mb-2 ">{{ course.title }}</div>
+				<div class="px-6 mt-6 shadow-lg">
+					<div class="font-bold text-xl pt-4 mb-2 ">{{ course.title }}</div>
 					<p class="text-gray-700 text-base ">
 						{{course.description}}
 					</p>
@@ -23,9 +23,9 @@
 						<br>
 						<div class="mt-5 mb-5">
 							{% if course_is_enrolled %}
-								<a class="green_button" href="{% url 'projects:overview' course=course.database sort_type='all' %}">Přejít do kurzu</a>
+							<a class="green_button" href="{% url 'projects:overview' course=course.database sort_type='all' %}">Přejít do kurzu</a>
 							{% elif course.open %}
-								<a class="blue_button" href="{% url 'courses:enroll' course_id=course.id %}">Zapsat se</a>
+							<a class="blue_button" href="{% url 'courses:enroll' course_id=course.id %}">Zapsat se</a>
 							{% endif %}
 						</div>
 					</div>

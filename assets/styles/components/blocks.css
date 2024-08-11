@@ -1,0 +1,15 @@
+@layer base {
+	h3 {
+		@apply text-2xl font-bold;
+	}
+	.b-info {
+		@apply flex items-center p-4 border-l-4 border-gray-800 bg-gray-50;
+	}
+	.b-info-t {
+		@apply ms-3 text-xs text-gray-600;
+	}
+	.text-block a {
+		@apply underline text-blue-500;
+	}
+}
+

@@ -34,7 +34,10 @@ def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
 def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 	"""detail view for projects"""
 	username = request.user.username #type: ignore
+	print(course)
+	print(project_id)
 	project_progress = get_content_progress(course, username, 'projects')
+	print(project_progress)
 	project = get_project_by_id(project_id, course)
 
 	# non exissting project

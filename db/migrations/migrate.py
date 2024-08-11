@@ -7,11 +7,11 @@ def clear_database(db):
 	db.courses.delete_one({'_id': 1})
 	db.courses.delete_one({'_id': 2})
 
-	db.django_testing.projects.delete_many({})
-	db.django_testing.project.project_1.chapters.delete_many({})
-	db.django_testing.project.project_1.lessons.delete_many({})
-	db.django_testing.progress.delete_many({})
-	db.django_testing.tests.delete_many({})
+	db.django.projects.delete_many({})
+	db.django.project.project_1.chapters.delete_many({})
+	db.django.project.project_1.lessons.delete_many({})
+	db.django.progress.delete_many({})
+	db.django.tests.delete_many({})
 
 
 def list_files(directory):
@@ -51,15 +51,15 @@ if __name__ == "__main__":
 	## projects
 	migrate(
 		list_files('/usr/src/db/migrations/documents/courses/django/projects/'),
-		db.django_testing.projects)
+		db.django.projects)
 	## lessons
 	migrate(
 		list_files('/usr/src/db/migrations/documents/courses/django/lessons/1/'),
-		db.django_testing.project.project_1.lessons)
+		db.django.project.project_1.lessons)
 	## chapters
 	migrate(
 		list_files('/usr/src/db/migrations/documents/courses/django/chapters/1/'),
-		db.django_testing.project.project_1.chapters)
+		db.django.project.project_1.chapters)
 	## user progress
 	# migrate_one_file(
 	# 	'/usr/src/db/migrations/documents/user/admin-django-progress.json',
@@ -67,6 +67,6 @@ if __name__ == "__main__":
 	## tests
 	migrate(
 		list_files('/usr/src/db/migrations/documents/courses/django/tests/1/'),
-		db.django_testing.tests)
+		db.django.tests)
 	## user progress
 	client.close()

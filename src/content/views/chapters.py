@@ -54,7 +54,7 @@ def chapter_edit(request: HttpRequest, course_id: str, project_id: int, lesson_i
 		edit_form = ChapterEditForm(request.POST, db=course.database, project_db=project.database)
 		if edit_form.is_valid():
 			edit_form.cleaned_data['_id'] = edit_form.cleaned_data['id']
-			chapter_data = ChapterDataSerializer.from_dict(edit_form.cleaned_data)
+			chapter_data = ChapterDataSerializer.from_dict(edit_form.cleaned_data, chapter)
 			update_chapter(chapter_data, course.database, project.database, chapter.lesson_id)
 			messages.success(request, 'Chapter has been updated')
 			return  redirect('admin_chapter_edit', course_id=course_id, project_id=project.id, lesson_id=chapter_data.lesson_id, chapter_id=chapter_data.id)

@@ -54,6 +54,15 @@ def create_block(chapter_data: ChapterData, db: str, project_db: str, block_data
 		},{'$push': {'blocks': block_data}})
 
 
+def update_block(chapter_data: ChapterData, db: str, project_db: str, block_id: int, updated_data: Dict) -> None:
+	MongoStorage().database[db].project[project_db].chapters.update_one({
+		ChaptersTable.ID.value: chapter_data.id,
+		ChaptersTable.LESSON_ID.value: chapter_data.lesson_id,
+		'blocks.id': block_id
+	}, {
+		'$set': {f'blocks.$.{key}': value for key, value in updated_data.items()}
+	})
+
 def get_next_valid_id(db: str, project_db: str) -> int:
 	document = MongoStorage().database[db].project[project_db].chapters.find_one(
 		sort=[(ChaptersTable.ID.value, -1)]

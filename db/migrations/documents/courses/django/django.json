@@ -1,16 +1,15 @@
 {
 	"_id": 1,
-	"order": 2,
-	"title": "Django Testing Purposes",
-	"database": "django_testing",
+	"order": 1,
+	"title": "Django",
+	"database": "django",
 	"visible": true,
 	"open": true,
-	"description": "Objevte sílu Django, jednoho z nejpopulárnějších webových frameworků postavených na Pythonu. Tento kurz vás provede od základů až po pokročilé techniky, které vám umožní vytvořit robustní a škálovatelné webové aplikace. Naučíte se, jak efektivně využívat modely, pohledy a šablony, pracovat s databázemi, spravovat autentizaci uživatelů a zabezpečení aplikací. Kurz je ideální pro začátečníky i pokročilé vývojáře, kteří chtějí rozšířit své dovednosti a zvýšit svou produktivitu v prostředí Django",
+	"description": "Tvorba webových aplikací pomocí frameworku Django vás naučí vytvářet moderní a škálovatelné aplikace v Pythonu. Kurz pokrývá integraci JavaScriptu pomocí Vite, Tailwind CSS a základy Dockeru.",
 	"tags": [
-		"django",
-		"tailwind",
-		"docker",
-		"vite",
-		"postrges"
+		"Django",
+		"Vite",
+		"Tailwind",
+		"Docker"
 	]
 }

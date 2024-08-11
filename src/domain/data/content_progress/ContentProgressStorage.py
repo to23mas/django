@@ -9,7 +9,10 @@ def get_content_progress(db: str, username: str, content: str) -> Dict :
 		{ '_id': username },
 		{ f'{content}': 1, '_id': 0 })
 
-	return list(result)[0][content]
+	ret_res = list(result)
+	if ret_res == []:
+		return {}
+	return ret_res[0][content]
 
 
 """PROJECTS"""

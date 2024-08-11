@@ -14,7 +14,8 @@ class LessonEditForm(forms.Form):
 		initial = kwargs.get('initial', {})
 		kwargs['initial'] = initial
 		if 'to' in initial and isinstance(initial['to'], list):
-			initial['to'] = ', '.join(initial['to'])
+			if (len(initial['to']) >= 2):
+				initial['to'] = ', '.join(initial['to'])
 		super(LessonEditForm, self).__init__(*args, **kwargs)
 
 		if initial:

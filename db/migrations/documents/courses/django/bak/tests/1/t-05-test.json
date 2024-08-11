@@ -1,0 +1,44 @@
+{
+	"_id": 5,
+	"title": "CLOSED",
+	"time": 150,
+	"description": "last první test který blablabla",
+	"target_type": "chapter",
+	"target_id": 2,
+	"source_id": 1,
+	"attempts": 3,
+	"success_score": 70,
+	"questions": [
+		{
+			"_id": 1,
+			"question": "who is smarter",
+			"type": "single",
+			"points": 5,
+			"answers" : {
+				"1": "first",
+				"2": "second",
+				"3": "third",
+				"4": "fourth"
+			},
+			"correct": ["4"]
+		},{
+			"_id": 2,
+			"question": "second questino multiple choice",
+			"type": "multiple",
+			"points": 5,
+			"answers": {
+				"1": "one",
+				"2": "two",
+				"3": "three",
+				"4": "four"
+			},
+			"correct": ["1", "2", "3"]
+		},{
+			"_id": 3,
+			"question": "say something!",
+			"type": "open",
+			"points": 5,
+			"correct": ["ahoj", "nazdar", "bazar"]
+		}
+	]
+}
