@@ -43,11 +43,11 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 	return render(request, 'projects/lesson.html', {
 		'project_id': project_id,
 		'lesson': lesson,
+		'project': project,
 		'lesson_chapters': lesson_chapters,
 		'chapter': chapter,
 		'chapter_finished': chapter_progress[str(chapter_id)] == 'done',
 		'sidebar_progress': chapter_progress,
-		# 'sidebar_progress': progress['chapters'][str(lesson_no)],
 		'chapter_id': chapter_id,
 		'course_name': course,
 		'username': username,

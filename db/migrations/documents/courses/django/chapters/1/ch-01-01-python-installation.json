@@ -1,0 +1,17 @@
+{
+	"_id": 1,
+	"lesson_id": 1,
+	"title": "Instalace pythonu",
+	"unlock_type": "button",
+	"unlock_id": 2,
+	"is_last": true,
+	"blocks": [
+		{
+			"id": 1,
+			"order": 1,
+			"title": "Python",
+			"text": "<div>Django je framework pro tworbu webových aplikací v jazyce Python.Než začneme vytvářet webové aplikace, je potřeba nejříve Python nainstalovat.</div><div><br></div><div>Následujícím příkazem ověříme, jestli je Python nainstalovaný a pokud ano, tak dostaneme nainstalovanou verzi.<br></div><div><div><br></div></div><div><pre style=\"font-size: 11.375px;\"><code class=\"rounded-lg shadow language-bash\">​python --v</code></pre></div><pre><br></pre><div class=\"b-info\" role=\"alert\"><div class=\"b-info-t\">​​3.11.x &lt;= verze pythonu &lt;= 3.12</div></div><p><br></p><p>Pokud Python nemáme je potřeba jej nainstalovat. Všechny pořebné informance pro instalaci jsou dostupné&nbsp;<a href=\"https://www.python.org/downloads/\" target=\"_blank\">zde.</a><br></p>"
+		}
+	]
+}
+

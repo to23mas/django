@@ -1,7 +1,7 @@
 {
   "course": {
-    "_id": 1,
-    "database": "django",
+    "_id": 2,
+    "database": "django-1",
     "order": 1,
     "title": "Django",
     "visible": true,

@@ -9,4 +9,5 @@ class ChapterData():
 	title: str
 	unlock_type: str
 	unlock_id: int
+	is_last: bool
 	blocks: List[Dict]

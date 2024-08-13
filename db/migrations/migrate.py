@@ -60,6 +60,9 @@ if __name__ == "__main__":
 	migrate(
 		list_files('/usr/src/db/migrations/documents/courses/django/chapters/1/'),
 		db.django.project.project_1.chapters)
+	migrate(
+		list_files('/usr/src/db/migrations/documents/courses/django/chapters/2/'),
+		db.django.project.project_1.chapters)
 	## user progress
 	# migrate_one_file(
 	# 	'/usr/src/db/migrations/documents/user/admin-django-progress.json',

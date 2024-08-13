@@ -9,7 +9,10 @@ pre {
 <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
 <script>hljs.highlightAll();</script>
 
-<h2 class="text-4xl font-extrabold mx-auto md:w-4/6">{{ chapter.title }}</h2>
+<div class="flex justify-between items-center mx-auto md:w-4/6">
+	<h2 class="text-4xl font-extrabold">{{ chapter.title }}</h2>
+	<a href="{% url 'projects:detail' course=course_name project_id=project.id %}" class="text-blue-500 hover:underline">Zpět na seznam lekcí</a>
+</div>
 
 {% for block  in chapter.blocks %}
 <div class="text-block p-6 bg-white border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">

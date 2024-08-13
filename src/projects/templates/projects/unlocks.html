@@ -1,32 +1,30 @@
 {% load get_mongo_id %}
 
 <div class="mx-auto lg:w-4/6 pt-3">
-  {% if chapter_finished  %}
-    <form action="{% url 'projects:next_chapter' %}" class="float-end" method="post">
-        {% csrf_token %}
-        <input type="hidden" name="chapter_no" value="{{ chapter_no }}">
-        <input type="hidden" name="lesson_no" value="{{ lesson.no }}">
-        <input type="hidden" name="project_no" value="{{ project_no }}">
-        <input type="hidden" name="course" value="{{ course_name }}">
-
-        <button type="submit" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 shadow-lg shadow-green-500/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-          Další
-        </button>
-    </form>
-  {% else %}
-    {% if chapter.unlocks.type  == 'button' %}
-        <form action="{% url 'projects:unlock_chapter' %}" class="float-end" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="chapter_no" value="{{ chapter_no }}">
-            <input type="hidden" name="lesson_no" value="{{ lesson.no }}">
-            <input type="hidden" name="project_no" value="{{ project_no }}">
-            <input type="hidden" name="course" value="{{ course_name }}">
-
-            <button type="submit"
-                    class="text text-white bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 shadow-lg shadow-blue-500/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-              Udemknout další kapitolu
-            </button>
-        </form>
-    {% endif %}
-  {% endif %}
+	{% if chapter_finished  %}
+	<form action="{% url 'projects:next_chapter' %}" class="float-end" method="post">
+		{% csrf_token %}
+		<input type="hidden" name="chapter_id" value="{{ chapter.id }}">
+		<input type="hidden" name="lesson_id" value="{{ chapter.lesson_id }}">
+		<input type="hidden" name="project_id" value="{{ project.id }}">
+		<input type="hidden" name="course" value="{{ course_name }}">
+		<button type="submit" class="green_button">
+			Další
+		</button>
+	</form>
+	{% else %}
+		{% if chapter.unlock_type  == 'button' %}
+		<form action="{% url 'projects:unlock_chapter' %}" class="float-end" method="post">
+			{% csrf_token %}
+			<input type="hidden" name="chapter_id" value="{{ chapter.id }}">
+			<input type="hidden" name="lesson_id" value="{{ chapter.lesson_id }}">
+			<input type="hidden" name="project_id" value="{{ project.id }}">
+			<input type="hidden" name="course" value="{{ course_name }}">
+			<button type="submit"
+				class="blue_button">
+				Udemknout další kapitolu
+			</button>
+		</form>
+		{% endif %}
+	{% endif %}
 </div>

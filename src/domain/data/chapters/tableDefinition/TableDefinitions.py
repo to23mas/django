@@ -7,4 +7,5 @@ class ChaptersTable(Enum):
 	TITLE = "title"
 	UNLOCK_TYPE = "unlock_type"
 	UNLOCK_ID = "unlock_id"
+	IS_LAST = "is_last"
 	BLOCKS = "blocks"

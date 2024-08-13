@@ -1,5 +1,7 @@
 {% load static %}
 {% load tags %}
+
+{% if lesson_chapters.count > 1 %}
 <div class="">
 	<button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-200 rounded-full px-5 py-2.5 focus:outline-none m-5"
 		type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation">
@@ -44,3 +46,6 @@
 		</div>
 	</div>
 </div>
+{% else %}
+<br><br><br>
+{% endif %}

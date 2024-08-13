@@ -57,22 +57,8 @@ def get_lesson_state(db: str, username: str, lesson_id: int) -> str :
 	return result['lessons'][str(lesson_id)]
 
 
-def unlock_lesson(username: str, course: str, project_no: str, lesson_no: str) -> None:
-	MongoStorage().database[course].progress.update_one({
-		'_id': username
-	}, {
-		'$push': {f'lessons.{str(project_no)}.open': int(lesson_no)},
-		'$pull': {f'lessons.{str(project_no)}.lock': int(lesson_no)}
-	})
 
 
-def finish_lesson(username: str, course: str, project_no: str, lesson_no: str) -> None:
-    ms = MongoStorage()
-
-    ms.database[course].progress.update_one(
-        {'_id': username},
-        {'$push': {f'lessons.{str(project_no)}.open': int(lesson_no)},
-         '$pull': {f'lessons.{str(project_no)}.lock': int(lesson_no)}})
 
 
 """Chapters"""
