@@ -9,6 +9,7 @@ class ChapterEditForm(forms.Form):
 	id = forms.IntegerField(required=False)
 	lesson_id = forms.ChoiceField(widget=forms.Select)
 	title = forms.CharField()
+	is_last = forms.BooleanField(required=False, initial=False)
 	unlock_type = forms.ChoiceField(widget=forms.Select)
 	unlock_id = forms.IntegerField()
 

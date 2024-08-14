@@ -4,6 +4,7 @@
 
 p {
 	margin-left: 0 !important;
+	margin-bottom: 0 !important;
 	padding-left: 5px !important;
 }
 .note-editor .note-editable * {
@@ -73,10 +74,10 @@ input[readonly] {
 									{% if form.title.errors %} <div class="form-errors">{{ form.title.errors }}</div> {% endif %}
 								</div></div></div>
 
-								<div class="form-row"><div><div class="flex-container">
+								<div class="flex-none">
 									<label class="required">Text:</label>
 									{{form.text}}
-								</div></div></div>
+								</div>
 
 						</fieldset>
 						<div class="submit-row">
@@ -130,6 +131,7 @@ var cli = function (context) {
 
 $(document).ready(function() {
 	$('#summernote').summernote({
+		height: 500,
 		toolbar: [
 			['style', ['style']],
 			['style', ['bold', 'italic', 'underline', 'clear']],
