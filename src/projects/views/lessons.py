@@ -8,6 +8,7 @@ from domain.data.chapters.ChapterStorage import find_chapters, get_chapter
 from domain.data.content_progress.ContentProgressStorage import get_content_progress
 from domain.data.lessons.LessonStorage import get_lesson
 from domain.data.projects.ProjectStorage import get_project_by_id
+from projects.views.enum.UnknownChapterId import UnknownChapterId
 
 
 @login_required
@@ -29,13 +30,22 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		messages.warning(request, 'Lekce ještě není odemčena!')
 		return redirect('projects:overview', course=course, sort_type='all')
 
-	chapter = get_chapter(chapter_id, lesson_id, course , project.database)
+	if chapter_id == UnknownChapterId.ID.value:
+		# vis js does not know what is the first chapter in lesson. Have to figure it out here
+		chapters = find_chapters(course, project.database, {'lesson_id': lesson.id})
+		if chapters == None:
+			chapter = None
+		else:
+			chapter = chapters[0]
+
+	else:
+		chapter = get_chapter(chapter_id, lesson_id, course , project.database)
 	if chapter == None:
 		messages.error(request, 'Pokus o vstup k neexistující kapitole!')
 		return redirect('projects:overview', course=course, sort_type='all')
 
 	chapter_progress = get_content_progress(course, username, 'chapters')
-	if chapter_progress[str(chapter_id)] == 'lock':
+	if chapter_progress[str(chapter.id)] == 'lock':
 		messages.warning(request, 'Kapitola ještě není odemčena!')
 		return redirect('projects:overview', course=course, sort_type='all')
 
@@ -46,7 +56,7 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		'project': project,
 		'lesson_chapters': lesson_chapters,
 		'chapter': chapter,
-		'chapter_finished': chapter_progress[str(chapter_id)] == 'done',
+		'chapter_finished': chapter_progress[str(chapter.id)] == 'done',
 		'sidebar_progress': chapter_progress,
 		'chapter_id': chapter_id,
 		'course_name': course,

@@ -130,18 +130,20 @@ def find_available_tests(course: str, username: str) -> list | None:
 	return available_tests_nos
 
 
-def chapter_is_accessible_and_done(username: str, db: str, project_id: int, lesson_id: int, chapter_id: int) -> bool:
-	return MongoStorage().database[db].progress.count_documents({
-		'_id': username,
-		'$or': [{"projects.done": project_id},
-			 {"projects.open": project_id}],
-		'$or': [{f"lessons.{lesson_id}.done": lesson_id},
-			 {f"lessons.{project_id}.open": lesson_id}],
-		f"chapters.{chapter_id}.done": chapter_id}) == 1
+def is_chapter_done(username: str, db: str, chapter_id: int) -> bool:
+	return MongoStorage().database[db].progress.count_documents(
+		{'_id': username, f'chapters.{chapter_id}': 'done'}
+	) == 1
 
+def is_chapter_open_or_done(username: str, db: str, chapter_id: int) -> bool:
+	return MongoStorage().database[db].progress.count_documents(
+		{'_id': username,
+		 '$or': [
+			{f'chapters.{chapter_id}': 'done'},
+			{f'chapters.{chapter_id}': 'open'},
+		]}) == 1
 
 def is_chapter_open(username: str, db: str, project_id: int, lesson_id: int, chapter_id: int) -> bool:
-	print(chapter_id)
 	return MongoStorage().database[db].progress.count_documents({
 		'_id': username,
 		f'projects.{project_id}': 'open',

@@ -24,7 +24,7 @@
 		id: {{ lesson.id }},
 		label: '{{ lesson.title }}',
 		url:  {% if lesson_status == 'open' or lesson_status == 'done' %}
-						"{% url 'projects:lesson' course=course_name project_id=project.id lesson_id=lesson.id chapter_id=1 %}"
+						"{% url 'projects:lesson' course=course_name project_id=project.id lesson_id=lesson.id chapter_id=666 %}"
 					{% else %}
 						'#'
 					{% endif %},
