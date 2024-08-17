@@ -33,6 +33,7 @@ if __name__ == "__main__":
 	database = client.inpv
 	client.drop_database("inpv")
 
+	print('[ ] - Migrating Django Course')
 	with open('/usr/src/db/migrations/documents/courses/django/Django.json') as f:
 		file_data = json.load(f)
 		course_data = file_data['course']
@@ -52,6 +53,7 @@ if __name__ == "__main__":
 					{'_id': test['_id']},
 					{'$push': {'questions': question}})
 	client.close()
+	print('[x] - Migration DONE')
 
 	# #django course
 	# django_course = migrate_one_file(
