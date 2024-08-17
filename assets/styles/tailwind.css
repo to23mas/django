@@ -5,10 +5,12 @@
 
 @import "components/login.css";
 @import "components/courses.css";
+@import "components/chapters.css";
 @import "components/blocks.css";
 @import "components/projects.css";
 @import "components/base.css";
 @import "atoms/buttons.css";
+@import "atoms/lists.css";
 
 @tailwind base;
 @tailwind components;

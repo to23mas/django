@@ -1,0 +1,7 @@
+@layer base {
+	div.chapter_block {
+		@apply text-block p-6 bg-white border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10;
+	}
+
+}
+

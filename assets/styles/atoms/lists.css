@@ -1,0 +1,5 @@
+@layer base {
+	.chapter_block ul li {
+		@apply list-disc ml-6;
+	}
+}
