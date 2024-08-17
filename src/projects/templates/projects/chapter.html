@@ -1,9 +1,13 @@
 {% load to_code %}
 
 <style>
-pre {
-    white-space: pre-wrap !important;
-}
+	pre {
+		white-space: pre-wrap !important;
+	}
+	img {
+		margin-left: 25px !important;
+		 object-fit: cover !important;
+	}
 </style>
 <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/atom-one-dark.min.css">
 <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
@@ -15,7 +19,7 @@ pre {
 </div>
 
 {% for block  in chapter.blocks %}
-<div class="text-block p-6 bg-white border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
+<div class="chapter_block">
 	<h3>{{block.title}}</h3>
 	<br>
 	{{ block.text | safe }}

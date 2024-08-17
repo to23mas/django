@@ -30,7 +30,6 @@ def chapter_overview(request: HttpRequest, course_id: str, project_id: int) -> H
 	else:
 		chapters = find_chapters(course.database, project.database)
 
-
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Chapters': '#'}]
 	return render(request, 'content/chapters/overview.html', {
 		'course': course,
