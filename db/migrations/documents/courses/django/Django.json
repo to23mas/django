@@ -1,609 +1,402 @@
 {
-  "course": {
-    "_id": 2,
-    "database": "django-1",
-    "order": 1,
-    "title": "Django",
-    "visible": true,
-    "open": true,
-    "description": "Tvorba webových aplikací pomocí frameworku Django vás naučí vytvářet moderní a škálovatelné aplikace v Pythonu. Kurz pokrývá integraci JavaScriptu pomocí Vite, Tailwind CSS a základy Dockeru.",
-    "tags": [
-      "Django",
-      "Vite",
-      "Tailwind",
-      "Docker"
-    ]
-  },
-  "projects": [
-    {
-      "_id": 1,
-      "database": "project_1",
-      "title": "Hello World! (Django)",
-      "description": "...",
-      "todo": [
-        "Instalace pythonu",
-        "Instalace frameworku django",
-        "Vývojová prostředí (IDE)"
-      ],
-      "lessons": [
-        {
-          "_id": 1,
-          "title": "Instalace",
-          "to": [
-            2
-          ]
-        },
-        {
-          "_id": 2,
-          "title": "IDE",
-          "to": [
-            3
-          ]
-        },
-        {
-          "_id": 3,
-          "title": "Hello world!",
-          "to": []
-        }
-      ],
-      "chapters": [
-        {
-          "_id": 1,
-          "title": "Instalace",
-          "lesson_id": 1,
-          "unlock_type": "button",
-          "unlock_id": 2,
-          "blocks": [
-            {
-              "id": 1,
-              "order": 1,
-              "title": "Python",
-              "text": "<div>Django je framework pro tworbu webových aplikací v jazyce Python.Než začneme vytvářet webové aplikace, je potřeba nejříve Python nainstalovat.</div><div><br></div><div>Následujícím příkazem ověříme, jestli je Python nainstalovaný a pokud ano, tak dostaneme nainstalovanou verzi.<br></div><div><div><br></div></div><div><pre style=\"font-size: 11.375px;\"><code class=\"rounded-lg shadow language-bash\">​python --v</code></pre></div><pre><br></pre><div class=\"b-info\" role=\"alert\"><div class=\"b-info-t\">​​3.11.x &lt;= verze pythonu &lt;= 3.12</div></div><p><br></p><p>Pokud Python nemáme je potřeba jej nainstalovat. Všechny pořebné informance pro instalaci jsou dostupné&nbsp;<a href=\"https://www.python.org/downloads/\" target=\"_blank\">zde.</a><br></p>"
-            },
-            {
-              "id": 2,
-              "order": 1,
-              "title": "Djnago",
-              "text": ""
-            }
-          ]
-        },
-        {
-          "_id": 2,
-          "title": "Terminal",
-          "lesson_id": 1,
-          "unlock_type": "button",
-          "unlock_id": 1,
-          "blocks": [
-            {
-              "id": 1,
-              "order": 1,
-              "title": "napis",
-              "text": [
-                {
-                  "p": "A - I. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "p": "A - II. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "ul": [
-                    "somthing one",
-                    "somthing two",
-                    "somthing three",
-                    "somthing four",
-                    "somthing five"
-                  ]
-                },
-                {
-                  "p": "A - III. <strong>Lorem ipsum dolor sit</strong> amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                }
-              ],
-              "python": [
-                "from django import template",
-                "",
-                "",
-                "register = template.Library()",
-                "",
-                "@register.filter('to_code')",
-                "def to_code(lines):",
-                "    result = ''",
-                "    for line in lines:",
-                "        result += line + '\\n'",
-                "",
-                "    return result"
-              ],
-              "cli": [
-                "sudo apt update",
-                "sudo apt upgrade",
-                "sudo poweroff"
-              ]
-            },
-            {
-              "id": 2,
-              "order": 1,
-              "title": "napis 2",
-              "text": [
-                {
-                  "p": "B - I. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "p": "B - II. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "p": "B - III. *Lorem ipsum dolor sit* amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                }
-              ],
-              "python": [
-                "from p import p1",
-                "\n",
-                "if __name__ == '__main__':",
-                "    for i in range(5):",
-                "        print('Hello world!')"
-              ],
-              "cli": [
-                "python3 install django",
-                "python3 install somethingElse",
-                "echo $variable"
-              ]
-            }
-          ]
-        },
-        {
-          "_id": 3,
-          "title": "Editor",
-          "lesson_id": 1,
-          "unlock_type": "button",
-          "unlock_id": 1,
-          "blocks": [
-            {
-              "id": 1,
-              "title": "napis",
-              "order": 1,
-              "text": [
-                {
-                  "p": "A - I. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "p": "A - II. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "ul": [
-                    "somthing one",
-                    "somthing two",
-                    "somthing three",
-                    "somthing four",
-                    "somthing five"
-                  ]
-                },
-                {
-                  "p": "A - III. <strong>Lorem ipsum dolor sit</strong> amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                }
-              ],
-              "python": [
-                "from django import template",
-                "",
-                "",
-                "register = template.Library()",
-                "",
-                "@register.filter('to_code')",
-                "def to_code(lines):",
-                "    result = ''",
-                "    for line in lines:",
-                "        result += line + '\\n'",
-                "",
-                "    return result"
-              ],
-              "cli": [
-                "sudo apt update",
-                "sudo apt upgrade",
-                "sudo poweroff"
-              ]
-            },
-            {
-              "id": 2,
-              "order": 1,
-              "title": "napis 2",
-              "text": [
-                {
-                  "p": "B - I. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "p": "B - II. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "p": "B - III. *Lorem ipsum dolor sit* amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                }
-              ],
-              "python": [
-                "from p import p1",
-                "\n",
-                "if __name__ == '__main__':",
-                "    for i in range(5):",
-                "        print('Hello world!')"
-              ],
-              "cli": [
-                "python3 install django",
-                "python3 install somethingElse",
-                "echo $variable"
-              ]
-            }
-          ]
-        },
-        {
-          "_id": 4,
-          "title": "Terminal",
-          "lesson_id": 1,
-          "unlock_type": "button",
-          "unlock_id": 1,
-          "blocks": [
-            {
-              "id": 1,
-              "title": "napis",
-              "order": 1,
-              "text": [
-                {
-                  "p": "A - I. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "p": "A - II. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "ul": [
-                    "somthing one",
-                    "somthing two",
-                    "somthing three",
-                    "somthing four",
-                    "somthing five"
-                  ]
-                },
-                {
-                  "p": "A - III. <strong>Lorem ipsum dolor sit</strong> amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                }
-              ],
-              "python": [
-                "from django import template",
-                "",
-                "",
-                "register = template.Library()",
-                "",
-                "@register.filter('to_code')",
-                "def to_code(lines):",
-                "    result = ''",
-                "    for line in lines:",
-                "        result += line + '\\n'",
-                "",
-                "    return result"
-              ],
-              "cli": [
-                "sudo apt update",
-                "sudo apt upgrade",
-                "sudo poweroff"
-              ]
-            },
-            {
-              "id": 2,
-              "title": "napis 2",
-              "order": 1,
-              "text": [
-                {
-                  "p": "B - I. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "p": "B - II. Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                },
-                {
-                  "p": "B - III. *Lorem ipsum dolor sit* amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-                }
-              ],
-              "python": [
-                "from p import p1",
-                "\n",
-                "if __name__ == '__main__':",
-                "    for i in range(5):",
-                "        print('Hello world!')"
-              ],
-              "cli": [
-                "python3 install django",
-                "python3 install somethingElse",
-                "echo $variable"
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "tests": [
-    {
-      "_id": 1,
-      "title": "Finished (not 100%)",
-      "time": 15,
-      "description": "první test který blablabla",
-      "target_type": "chapter",
-      "target_id": 2,
-      "source_id": 1,
-      "attempts": 3,
-      "success_score": 70,
-      "total_points": 15,
-      "questions": [
-        {
-          "_id": 1,
-          "question": "who is smarter",
-          "type": "single",
-          "answers": {
-            "1": "first",
-            "2": "second",
-            "3": "third",
-            "4": "fourth"
-          },
-          "correct": [
-            "4"
-          ],
-          "points": 5
-        },
-        {
-          "_id": 2,
-          "question": "second questino multiple choice",
-          "type": "multiple",
-          "answers": {
-            "1": "one",
-            "2": "two",
-            "3": "three",
-            "4": "four"
-          },
-          "correct": [
-            "1",
-            "2",
-            "3"
-          ],
-          "points": 5
-        },
-        {
-          "_id": 3,
-          "question": "say something!",
-          "type": "open",
-          "answers": null,
-          "correct": [
-            "ahoj",
-            "nazdar",
-            "bazar"
-          ],
-          "points": 5
-        }
-      ]
-    },
-    {
-      "_id": 2,
-      "title": "Failed",
-      "time": 15,
-      "description": "second test který blablabla",
-      "target_type": "chapter",
-      "target_id": 2,
-      "source_id": 1,
-      "attempts": 3,
-      "success_score": 60,
-      "total_points": 15,
-      "questions": [
-        {
-          "_id": 1,
-          "question": "who is smarter",
-          "type": "single",
-          "answers": {
-            "1": "first",
-            "2": "second",
-            "3": "third",
-            "4": "fourth"
-          },
-          "correct": [
-            "4"
-          ],
-          "points": 5
-        },
-        {
-          "_id": 2,
-          "question": "second questino multiple choice",
-          "type": "multiple",
-          "answers": {
-            "1": "one",
-            "2": "two",
-            "3": "three",
-            "4": "four"
-          },
-          "correct": [
-            "1",
-            "2",
-            "3"
-          ],
-          "points": 5
-        },
-        {
-          "_id": 3,
-          "question": "say something!",
-          "type": "open",
-          "answers": null,
-          "correct": [
-            "ahoj",
-            "nazdar",
-            "bazar"
-          ],
-          "points": 5
-        }
-      ]
-    },
-    {
-      "_id": 3,
-      "title": "OPEN test title",
-      "time": 35,
-      "description": "third test který blablabla",
-      "target_type": "chapter",
-      "target_id": 2,
-      "source_id": 1,
-      "attempts": 3,
-      "success_score": 100,
-      "total_points": 20,
-      "questions": [
-        {
-          "_id": 1,
-          "question": "who is smarter",
-          "type": "single",
-          "answers": {
-            "1": "first",
-            "2": "second",
-            "3": "third",
-            "4": "fourth"
-          },
-          "correct": [
-            "4"
-          ],
-          "points": 5
-        },
-        {
-          "_id": 2,
-          "question": "second questino multiple choice",
-          "type": "multiple",
-          "answers": {
-            "1": "one",
-            "2": "two",
-            "3": "three",
-            "4": "four"
-          },
-          "correct": [
-            "1",
-            "2",
-            "3"
-          ],
-          "points": 5
-        },
-        {
-          "_id": 3,
-          "question": "say something!",
-          "type": "open",
-          "answers": null,
-          "correct": [
-            "ahoj",
-            "nazdar",
-            "bazar"
-          ],
-          "points": 10
-        }
-      ]
-    },
-    {
-      "_id": 4,
-      "title": "SUCCESS 100%",
-      "time": 5,
-      "description": "první test který blablabla",
-      "target_type": "chapter",
-      "target_id": 2,
-      "source_id": 1,
-      "attempts": 3,
-      "success_score": 1,
-      "total_points": 15,
-      "questions": [
-        {
-          "_id": 1,
-          "question": "who is smarter",
-          "type": "single",
-          "answers": {
-            "1": "first",
-            "2": "second",
-            "3": "third",
-            "4": "fourth"
-          },
-          "correct": [
-            "4"
-          ],
-          "points": 5
-        },
-        {
-          "_id": 2,
-          "question": "second questino multiple choice",
-          "type": "multiple",
-          "answers": {
-            "1": "one",
-            "2": "two",
-            "3": "three",
-            "4": "four"
-          },
-          "correct": [
-            "1",
-            "2",
-            "3"
-          ],
-          "points": 5
-        },
-        {
-          "_id": 3,
-          "question": "say something!",
-          "type": "open",
-          "answers": null,
-          "correct": [
-            "ahoj",
-            "nazdar",
-            "bazar"
-          ],
-          "points": 5
-        }
-      ]
-    },
-    {
-      "_id": 5,
-      "title": "CLOSED",
-      "time": 150,
-      "description": "last první test který blablabla",
-      "target_type": "chapter",
-      "target_id": 2,
-      "source_id": 1,
-      "attempts": 3,
-      "success_score": 70,
-      "total_points": 15,
-      "questions": [
-        {
-          "_id": 1,
-          "question": "who is smarter",
-          "type": "single",
-          "answers": {
-            "1": "first",
-            "2": "second",
-            "3": "third",
-            "4": "fourth"
-          },
-          "correct": [
-            "4"
-          ],
-          "points": 5
-        },
-        {
-          "_id": 2,
-          "question": "second questino multiple choice",
-          "type": "multiple",
-          "answers": {
-            "1": "one",
-            "2": "two",
-            "3": "three",
-            "4": "four"
-          },
-          "correct": [
-            "1",
-            "2",
-            "3"
-          ],
-          "points": 5
-        },
-        {
-          "_id": 3,
-          "question": "say something!",
-          "type": "open",
-          "answers": null,
-          "correct": [
-            "ahoj",
-            "nazdar",
-            "bazar"
-          ],
-          "points": 5
-        }
-      ]
-    }
-  ]
+	"course": {
+		"_id": 1,
+		"database": "django",
+		"order": 1,
+		"title": "Django",
+		"visible": true,
+		"open": true,
+		"description": "Tvorba webových aplikací pomocí frameworku Django vás naučí vytvářet moderní a škálovatelné aplikace v Pythonu. Kurz pokrývá integraci JavaScriptu pomocí Vite, Tailwind CSS a základy Dockeru.",
+		"tags": [
+			"Django",
+			"Vite",
+			"Tailwind",
+			"Docker"
+		]
+	},
+	"projects": [
+		{
+			"_id": 1,
+			"database": "project_1",
+			"title": "Hello World! (Django)",
+			"description": "...",
+			"todo": [
+				"Instalace pythonu",
+				"Instalace frameworku django",
+				"Vývojová prostředí (IDE)"
+			],
+			"lessons": [
+				{
+					"_id": 1,
+					"title": "Příprava vývojového prostředí",
+					"to": [
+						2
+					]
+				},
+				{
+					"_id": 2,
+					"title": "Instalace Pythonu",
+					"to": [
+						3
+					]
+				},
+				{
+					"_id": 3,
+					"title": "Instalace Djanga",
+					"to": [
+						4
+					]
+				},
+				{
+					"_id": 4,
+					"title": "Hello world!",
+					"to": []
+				}
+			],
+			"chapters": [
+				{
+					"_id": 1,
+					"title": "IDE",
+					"lesson_id": 1,
+					"unlock_type": "button",
+					"unlock_id": 3,
+					"is_last": true,
+					"blocks": [
+						{
+							"id": 1,
+							"order": 1,
+							"title": "Vývojová prostředí",
+							"text": ""
+						},
+						{
+							"id": 2,
+							"order": 2,
+							"title": "Pycharm",
+							"text": ""
+						},
+						{
+							"id": 3,
+							"order": 3,
+							"title": "Visual Studio Code",
+							"text": ""
+						},
+						{
+							"id": 4,
+							"order": 4,
+							"title": "Neovim",
+							"text": ""
+						}
+					]
+				},
+				{
+					"_id": 2,
+					"title": "Instalace pythonu",
+					"lesson_id": 2,
+					"unlock_type": "button",
+					"unlock_id": 2,
+					"is_last": true,
+					"blocks": [
+						{
+							"id": 1,
+							"order": 1,
+							"title": "Python",
+							"text": "<div>Django je framework pro tworbu webových aplikací v jazyce Python.Než začneme vytvářet webové aplikace, je potřeba nejříve Python nainstalovat.</div><div><br></div><div>Následujícím příkazem ověříme, jestli je Python nainstalovaný a pokud ano, tak dostaneme nainstalovanou verzi.<br></div><div><div><br></div></div><div><pre style=\"font-size: 11.375px;\"><code class=\"rounded-lg shadow language-bash\">​python --v</code></pre></div><pre><br></pre><div class=\"b-info\" role=\"alert\"><div class=\"b-info-t\">​​3.11.x &lt;= verze pythonu &lt;= 3.12</div></div><p><br></p><p>Pokud Python nemáme je potřeba jej nainstalovat. Všechny pořebné informance pro instalaci jsou dostupné&nbsp;<a href=\"https://www.python.org/downloads/\" target=\"_blank\">zde.</a><br></p>"
+						}
+					]
+				}
+			]
+		}
+	],
+	"tests": [
+		{
+			"_id": 1,
+			"title": "Finished (not 100%)",
+			"time": 15,
+			"description": "první test který blablabla",
+			"target_type": "chapter",
+			"target_id": 2,
+			"source_id": 1,
+			"attempts": 3,
+			"success_score": 70,
+			"total_points": 15,
+			"questions": [
+				{
+					"_id": 1,
+					"question": "who is smarter",
+					"type": "single",
+					"answers": {
+						"1": "first",
+						"2": "second",
+						"3": "third",
+						"4": "fourth"
+					},
+					"correct": [
+						"4"
+					],
+					"points": 5
+				},
+				{
+					"_id": 2,
+					"question": "second questino multiple choice",
+					"type": "multiple",
+					"answers": {
+						"1": "one",
+						"2": "two",
+						"3": "three",
+						"4": "four"
+					},
+					"correct": [
+						"1",
+						"2",
+						"3"
+					],
+					"points": 5
+				},
+				{
+					"_id": 3,
+					"question": "say something!",
+					"type": "open",
+					"answers": null,
+					"correct": [
+						"ahoj",
+						"nazdar",
+						"bazar"
+					],
+					"points": 5
+				}
+			]
+		},
+		{
+			"_id": 2,
+			"title": "Failed",
+			"time": 15,
+			"description": "second test který blablabla",
+			"target_type": "chapter",
+			"target_id": 2,
+			"source_id": 1,
+			"attempts": 3,
+			"success_score": 60,
+			"total_points": 15,
+			"questions": [
+				{
+					"_id": 1,
+					"question": "who is smarter",
+					"type": "single",
+					"answers": {
+						"1": "first",
+						"2": "second",
+						"3": "third",
+						"4": "fourth"
+					},
+					"correct": [
+						"4"
+					],
+					"points": 5
+				},
+				{
+					"_id": 2,
+					"question": "second questino multiple choice",
+					"type": "multiple",
+					"answers": {
+						"1": "one",
+						"2": "two",
+						"3": "three",
+						"4": "four"
+					},
+					"correct": [
+						"1",
+						"2",
+						"3"
+					],
+					"points": 5
+				},
+				{
+					"_id": 3,
+					"question": "say something!",
+					"type": "open",
+					"answers": null,
+					"correct": [
+						"ahoj",
+						"nazdar",
+						"bazar"
+					],
+					"points": 5
+				}
+			]
+		},
+		{
+			"_id": 3,
+			"title": "OPEN test title",
+			"time": 35,
+			"description": "third test který blablabla",
+			"target_type": "chapter",
+			"target_id": 2,
+			"source_id": 1,
+			"attempts": 3,
+			"success_score": 100,
+			"total_points": 20,
+			"questions": [
+				{
+					"_id": 1,
+					"question": "who is smarter",
+					"type": "single",
+					"answers": {
+						"1": "first",
+						"2": "second",
+						"3": "third",
+						"4": "fourth"
+					},
+					"correct": [
+						"4"
+					],
+					"points": 5
+				},
+				{
+					"_id": 2,
+					"question": "second questino multiple choice",
+					"type": "multiple",
+					"answers": {
+						"1": "one",
+						"2": "two",
+						"3": "three",
+						"4": "four"
+					},
+					"correct": [
+						"1",
+						"2",
+						"3"
+					],
+					"points": 5
+				},
+				{
+					"_id": 3,
+					"question": "say something!",
+					"type": "open",
+					"answers": null,
+					"correct": [
+						"ahoj",
+						"nazdar",
+						"bazar"
+					],
+					"points": 10
+				}
+			]
+		},
+		{
+			"_id": 4,
+			"title": "SUCCESS 100%",
+			"time": 5,
+			"description": "první test který blablabla",
+			"target_type": "chapter",
+			"target_id": 2,
+			"source_id": 1,
+			"attempts": 3,
+			"success_score": 1,
+			"total_points": 15,
+			"questions": [
+				{
+					"_id": 1,
+					"question": "who is smarter",
+					"type": "single",
+					"answers": {
+						"1": "first",
+						"2": "second",
+						"3": "third",
+						"4": "fourth"
+					},
+					"correct": [
+						"4"
+					],
+					"points": 5
+				},
+				{
+					"_id": 2,
+					"question": "second questino multiple choice",
+					"type": "multiple",
+					"answers": {
+						"1": "one",
+						"2": "two",
+						"3": "three",
+						"4": "four"
+					},
+					"correct": [
+						"1",
+						"2",
+						"3"
+					],
+					"points": 5
+				},
+				{
+					"_id": 3,
+					"question": "say something!",
+					"type": "open",
+					"answers": null,
+					"correct": [
+						"ahoj",
+						"nazdar",
+						"bazar"
+					],
+					"points": 5
+				}
+			]
+		},
+		{
+			"_id": 5,
+			"title": "CLOSED",
+			"time": 150,
+			"description": "last první test který blablabla",
+			"target_type": "chapter",
+			"target_id": 2,
+			"source_id": 1,
+			"attempts": 3,
+			"success_score": 70,
+			"total_points": 15,
+			"questions": [
+				{
+					"_id": 1,
+					"question": "who is smarter",
+					"type": "single",
+					"answers": {
+						"1": "first",
+						"2": "second",
+						"3": "third",
+						"4": "fourth"
+					},
+					"correct": [
+						"4"
+					],
+					"points": 5
+				},
+				{
+					"_id": 2,
+					"question": "second questino multiple choice",
+					"type": "multiple",
+					"answers": {
+						"1": "one",
+						"2": "two",
+						"3": "three",
+						"4": "four"
+					},
+					"correct": [
+						"1",
+						"2",
+						"3"
+					],
+					"points": 5
+				},
+				{
+					"_id": 3,
+					"question": "say something!",
+					"type": "open",
+					"answers": null,
+					"correct": [
+						"ahoj",
+						"nazdar",
+						"bazar"
+					],
+					"points": 5
+				}
+			]
+		}
+	]
 }

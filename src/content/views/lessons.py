@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 
 from content.forms.LessonEditForm import LessonEditForm
+from domain.data.chapters.ChapterStorage import find_chapters
 from domain.data.courses.CourseStorage import get_course_by_id
 from domain.data.lessons.LessonDataSerializer import LessonDataSerializer
 from domain.data.lessons.LessonStorage import create_lesson, delete_lesson, find_lessons, get_lesson, get_next_valid_id, update_lesson
@@ -39,6 +40,8 @@ def lesson_edit(request: HttpRequest, course_id: str, project_id: int, lesson_id
 	lesson = get_lesson(lesson_id, course.database, project.database)
 	if lesson == None: return redirect('admin_course_overview')
 
+	chapters = find_chapters(course.database, project.database, {'lesson_id': lesson.id})
+
 	if request.method == 'POST':
 		edit_form = LessonEditForm(request.POST)
 		if edit_form.is_valid():
@@ -52,6 +55,7 @@ def lesson_edit(request: HttpRequest, course_id: str, project_id: int, lesson_id
 
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {'Edit Lesson': '#'}]
 	return render(request, 'content/lessons/edit.html', {
+		'chapters': chapters,
 		'lesson': lesson,
 		'course': course,
 		'breadcrumbs': breadcrumbs,
