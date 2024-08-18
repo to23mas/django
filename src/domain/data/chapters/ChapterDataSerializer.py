@@ -14,6 +14,7 @@ class ChapterDataSerializer:
 			'lesson_id': chapter_data.lesson_id,
 			'unlock_type': chapter_data.unlock_type,
 			'unlock_id': chapter_data.unlock_id,
+			'unlocker_id': chapter_data.unlocker_id,
 			'is_last': chapter_data.is_last,
 			'blocks': chapter_data.blocks,
 		}
@@ -35,6 +36,7 @@ class ChapterDataSerializer:
 			lesson_id=chapter_data[ChaptersTable.LESSON_ID.value],
 			unlock_type=chapter_data[ChaptersTable.UNLOCK_TYPE.value],
 			unlock_id=int(chapter_data[ChaptersTable.UNLOCK_ID.value]),
+			unlocker_id=chapter_data[ChaptersTable.UNLOCKER_ID.value],
 			is_last=bool(chapter_data[ChaptersTable.IS_LAST.value]),
 			blocks=blocks
 		)

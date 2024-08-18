@@ -70,6 +70,7 @@ def block_new(request: HttpRequest, course_id: str, project_id: int, lesson_id: 
 		'form': edit_form,
 		'course': course,
 		'project': project,
+		'chapter': chapter,
 	})
 
 

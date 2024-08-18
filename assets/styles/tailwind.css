@@ -11,6 +11,7 @@
 @import "components/base.css";
 @import "atoms/buttons.css";
 @import "atoms/lists.css";
+@import "atoms/headings.css";
 
 @tailwind base;
 @tailwind components;

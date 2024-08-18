@@ -52,6 +52,10 @@ if __name__ == "__main__":
 				database['django'].tests.update_one(
 					{'_id': test['_id']},
 					{'$push': {'questions': question}})
+
+		for blockly in file_data['blockly']:
+			database['django'].blockly.insert_one(blockly)
+
 	client.close()
 	print('[x] - Migration DONE')
 

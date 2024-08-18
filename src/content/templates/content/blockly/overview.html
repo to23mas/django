@@ -1,0 +1,61 @@
+{% extends "content/base.html" %}
+{% block content %}
+	<div class="main shifted" id="main">
+		{% include 'content/sidebar.html' %}
+		<main id="content-start" class="content" tabindex="-1">
+			<!-- Content -->
+			<div id="content" class="">
+				<h1>List of blockly tests and configs</h1>
+				<div id="content-main">
+					<ul class="object-tools">
+						<li>
+							<a href="{% url 'admin_blockly_new' course_id=course.id %}" class="addlink">
+								New Blockly
+							</a>
+						</li>
+					</ul>
+					<div class="module filtered" id="changelist">
+						<div class="changelist-form-container">
+							<div class="results">
+								<table id="result_list">
+									<thead>
+										<tr>
+											<th scope="col">
+												<div class="text">ID</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Title</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
+												<div class="text">Actions</div>
+												<div class="clear"></div>
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for b in blocklys %}
+										<tr>
+											<td>{{b.id}}</td>
+											<td>{{b.title}}</td>
+										<td>
+											<a href="{% url 'admin_blockly_edit' course_id=course.id blockly_id=b.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
+											<a href="{% url 'admin_blockly_delete' course_id=course.id blockly_id=b.id %}" onclick="if (!confirm('Are you sure you want to delete this blockly?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
+										</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br class="clear">
+			</div>
+			<!-- END Content -->
+			<div id="footer"></div>
+		</main>
+		<!-- END Container -->
+	</div>
+	{% endblock %}

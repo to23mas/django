@@ -2,6 +2,7 @@
 from typing import Dict
 
 from domain.Mongo import MongoStorage
+from domain.data.blockly.BlocklyStorage import create_blockly, find_blockly
 from domain.data.chapters.ChapterDataSerializer import ChapterDataSerializer
 from domain.data.chapters.ChapterStorage import create_chapter, find_chapters
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
@@ -12,6 +13,7 @@ from domain.data.projects.ProjectDataSerializer import ProjectDataSerializer
 from domain.data.projects.ProjectStorage import create_project, find_projects
 from domain.data.tests.QuestionDataSerializer import QuestionDataSerializer
 from domain.data.tests.TestDataSerializer import TestDataSerializer
+from domain.data.blockly.BlocklyDataSerializer import BlocklyDataSerializer
 from domain.data.tests.TestStorage import create_question, create_test, find_tests, get_test
 
 
@@ -49,6 +51,13 @@ def download_json(course_id: str) -> Dict | None:
 				test_dict['questions'] = [QuestionDataSerializer.to_dict(question) for question in questions] #type: ignore
 			json_result['tests'].append(test_dict)
 
+	blocklys = find_blockly(course.database)
+	json_result['blockly'] = [] #type: ignore
+	if blocklys != None:
+		for b in blocklys:
+			b_dict = BlocklyDataSerializer.to_dict(b)
+			json_result['blockly'].append(b_dict)
+
 	return json_result
 
 
@@ -76,6 +85,10 @@ def upload_from_json(file_data: Dict) -> Exception | None:
 				for question in test['questions']:
 					question_data = QuestionDataSerializer.from_dict(question)
 					create_question(question_data, test_data.id, course_data.database)
+
+			for blockly in file_data['blockly']:
+				blockly_data = BlocklyDataSerializer.from_dict(blockly)
+				create_blockly(blockly_data, course_data.database)
 
 			session.commit_transaction()
 			return None

@@ -1,9 +1,12 @@
 """views.py"""
+import json
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+from domain.data.blockly.BlocklyDataSerializer import BlocklyDataSerializer
+from domain.data.blockly.BlocklyStorage import get_blockly
 from domain.data.chapters.ChapterStorage import find_chapters, get_chapter
 from domain.data.content_progress.ContentProgressStorage import get_content_progress
 from domain.data.lessons.LessonStorage import get_lesson
@@ -49,8 +52,13 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		messages.warning(request, 'Kapitola ještě není odemčena!')
 		return redirect('projects:overview', course=course, sort_type='all')
 
+	if chapter.unlock_type == 'blockly':
+		blockly = get_blockly(course, chapter.unlocker_id) #type: ignore
+	else: blockly = None
+
 	lesson_chapters = find_chapters(course, project.database, {"lesson_id": lesson_id})
 	return render(request, 'projects/lesson.html', {
+		'blockly': blockly,
 		'project_id': project_id,
 		'lesson': lesson,
 		'project': project,

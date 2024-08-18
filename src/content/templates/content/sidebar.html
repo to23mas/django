@@ -20,6 +20,10 @@
 					<th scope="row"><a href="{% url 'admin_test_overview' course_id=course.id %}">Tests</a></th>
 					<td><a href="{% url 'admin_test_new' course_id=course.id %}" class="addlink">Add</a></td>
 				</tr>
+				<tr class="model-group">
+					<th scope="row"><a href="{% url 'admin_blockly_overview' course_id=course.id %}">Blockly</a></th>
+					<td><a href="{% url 'admin_blockly_new' course_id=course.id %}" class="addlink">Add</a></td>
+				</tr>
 			</tbody>
 		</table>
 		{% endif %}

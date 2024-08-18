@@ -31,10 +31,14 @@ urlpatterns = [
 	path('course/<str:course_id>-<int:project_id>-<int:lesson_id>-<int:chapter_id>-<int:block_id>/block/delete', block_delete, name='admin_block_delete'),
 
 	path('course/<str:course_id>/tests', test_overview, name='admin_test_overview'),
-	path('course/<str:course_id>/tests', test_overview, name='admin_test_overview'),
 	path('course/<str:course_id>/tests/new', test_new, name='admin_test_new'),
 	path('course/<str:course_id>-<int:test_id>/test/edit', test_edit, name='admin_test_edit'),
 	path('course/<str:course_id>-<int:test_id>/test/delete', test_delete, name='admin_test_delete'),
+
+	path('course/<str:course_id>/blockly', blockly_overview, name='admin_blockly_overview'),
+	path('course/<str:course_id>/blockly/new', blockly_new, name='admin_blockly_new'),
+	path('course/<str:course_id>-<int:blockly_id>/blockly/edit', blockly_edit, name='admin_blockly_edit'),
+	path('course/<str:course_id>-<int:blockly_id>/blockly/delete', blockly_delete, name='admin_blockly_delete'),
 
 	path('course/<str:course_id>-<int:test_id>/test/new-question', test_new_question, name='admin_test_new_question'),
 	path('course/<str:course_id>-<int:test_id>-<int:question_id>/test/delete-question', test_delete_question, name='admin_test_delete_question'),

@@ -8,7 +8,7 @@
 		<input type="hidden" name="lesson_id" value="{{ chapter.lesson_id }}">
 		<input type="hidden" name="project_id" value="{{ project.id }}">
 		<input type="hidden" name="course" value="{{ course_name }}">
-		<button type="submit" class="green_button">
+		<button type="submit" class="green_button mb-6">
 			Další
 		</button>
 	</form>
@@ -25,6 +25,18 @@
 				Odemknout další kapitolu
 			</button>
 		</form>
-		{% endif %}
+		{% elif chapter.unlock_type  == 'blockly' %}
+
+		<div class="chapter_block">
+			<div id="blocklyDiv" style="height: 480px" class="mt-5"></div>
+			<h4 class="mt-5">Generated Python Code:</h4>
+			<pre id="blocklyPythonCode"> </pre>
+		</div>
+
+		<script type="text/javascript">
+			window.blocklyToolboxConfig = {{ blockly.toolbox | safe }};
+		</script>
+	{% endif %}
+
 	{% endif %}
 </div>

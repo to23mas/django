@@ -1,0 +1,9 @@
+@layer base {
+	h3 {
+		@apply text-2xl font-bold;
+	}
+
+	h4 {
+		@apply text-xl font-bold;
+	}
+}
