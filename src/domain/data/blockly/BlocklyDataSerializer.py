@@ -17,8 +17,6 @@ class BlocklyDataSerializer:
 
 	@staticmethod
 	def from_dict(blockly_data: dict) -> BlocklyData:
-		print(blockly_data)
-
 		return BlocklyData(
 			id=blockly_data[BlocklyTable.ID.value],
 			title=blockly_data[BlocklyTable.TITLE.value],

@@ -1,18 +1,15 @@
 <h3 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ block.title }}</h5><br>
-  {% for text_blocks in block_val %}
-      {% for tag, text in text_blocks.items %}
-        {% if tag == 'ul' %}
-
-          <ul class="list-outside list-disc ml-5 pl-2">
-            {% for li in text %}
-              <li class="text-gray-700">{{ li }}</li>
-            {% endfor %}
-          </ul>
-          <br>
-
-        {% else %}
-          {% autoescape off %} <{{ tag }} class="mb-3 font-normal text-gray-700">{{ text }}</{{ tag }}> {% endautoescape %}
-        {% endif %}
-
-      {% endfor %}
-  {% endfor %}
+{% for text_blocks in block_val %}
+	{% for tag, text in text_blocks.items %}
+		{% if tag == 'ul' %}
+			<ul class="list-outside list-disc ml-5 pl-2">
+				{% for li in text %}
+					<li class="text-gray-700">{{ li }}</li>
+				{% endfor %}
+			</ul>
+			<br>
+		{% else %}
+			{% autoescape off %} <{{ tag }} class="mb-3 font-normal text-gray-700">{{ text }}</{{ tag }}> {% endautoescape %}
+		{% endif %}
+	{% endfor %}
+{% endfor %}

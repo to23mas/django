@@ -30,13 +30,35 @@
 		<div class="chapter_block">
 			<div id="blocklyDiv" style="height: 480px" class="mt-5"></div>
 			<h4 class="mt-5">Generated Python Code:</h4>
-			<pre id="blocklyPythonCode"> </pre>
-		</div>
+			<div id="blocklyPythonCode"> </div>
+			<meta name="csrf-token" content="{{ csrf_token }}">
+			<button id="validateButton" class="gray_button mt-3">Validate Python Code</button>
+
+	</div>
 
 		<script type="text/javascript">
 			window.blocklyToolboxConfig = {{ blockly.toolbox | safe }};
 		</script>
 	{% endif %}
 
-	{% endif %}
+{% endif %}
+
+<link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/atom-one-dark.min.css">
+<script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+<script>
+	hljs.highlightAll();
+	document.addEventListener('DOMContentLoaded', () => {
+		const targetNode = document.getElementById('blocklyPythonCode');
+		if (targetNode) {
+			const observer = new MutationObserver((mutationsList) => {
+				hljs.highlightAll()
+			});
+
+			observer.observe(targetNode, {
+				childList: true,   // Observe direct children
+				subtree: true      // Observe all descendants
+			});
+		}
+	});
+	</script>
 </div>

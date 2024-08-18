@@ -1,9 +1,8 @@
 import * as Blockly from 'blockly';
 import { pythonGenerator } from 'blockly/python';
 
-import 'blockly/python';
-
 document.addEventListener('DOMContentLoaded', () => {
+	console.log('toolbox', (window as any).blocklyToolboxConfig);
 	const workspace = Blockly.inject('blocklyDiv', {
 		toolbox: (window as any).blocklyToolboxConfig,
 		grid: { spacing: 20, length: 2, snap: true },
@@ -23,19 +22,53 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (workspace.isDragging() || !supportedEvents.has(event.type)) return;
 
 		const pythonCode = pythonGenerator.workspaceToCode(workspace);
-		const preElement = document.getElementById('blocklyPythonCode');
-		if (!preElement) return;
-		preElement.innerHTML = '';
+		const divElement = document.getElementById('blocklyPythonCode');
+		if (!divElement) return;
+		divElement.innerHTML = '';
 
 		if (pythonCode !== '') {
+			const preElement = document.createElement('pre');
 			const codeElement = document.createElement('code');
 			codeElement.className = 'rounded-lg shadow language-python';
-			codeElement.setAttribute('data-highlighted', 'yes');
 			codeElement.textContent = pythonCode;
 
 			preElement.appendChild(codeElement);
+			divElement.appendChild(preElement);
 		}
 	};
 
 	workspace.addChangeListener(updateCode);
+
+
+	document.getElementById('validateButton').addEventListener('click', () => {
+		const pythonCode = pythonGenerator.workspaceToCode(workspace);
+		sendPythonCodeToServer(pythonCode);
+	});
 });
+
+async function sendPythonCodeToServer(code: string) {
+	const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+	if (!csrfToken) {
+		alert('Error csrf-forgery\n');
+		return;
+	}
+	try {
+		const response = await fetch('/projects/lesson/validate-python', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'X-CSRFToken': csrfToken
+			},
+			body: new URLSearchParams({ code })
+		});
+		const result = await response.json();
+		if (result.error) {
+			alert('Error:\n' + result.error);
+		} else {
+			alert('Code received:\n' + result.received_code);
+		}
+	} catch (error) {
+		console.error('Error:', error);
+		alert('An error occurred while sending the Python code.');
+	}
+}

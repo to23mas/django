@@ -19,7 +19,6 @@ def course_edit(request: HttpRequest, course_id: str) -> HttpResponse:
 	if course == None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
-		print(request.POST)
 		edit_form = CourseEditForm(request.POST, database=course.database)
 		if edit_form.is_valid():
 			edit_form.cleaned_data['_id'] = course.id

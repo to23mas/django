@@ -93,9 +93,9 @@
 					"_id": 2,
 					"title": "Instalace pythonu",
 					"lesson_id": 2,
-					"unlock_type": "button",
-					"unlocker_id": "",
-					"unlock_id": 1,
+					"unlock_type": "blockly",
+					"unlocker_id": 1,
+					"unlock_id": 3,
 					"is_last": true,
 					"blocks": [
 						{
@@ -118,7 +118,21 @@
 				"kind": "flyoutToolbox",
 				"contents": [
 					{"kind": "block", "type": "controls_if"},
-					{"kind": "block", "type": "logic_compare"}
+					{"kind": "block", "type": "logic_compare"},
+					{
+						"kind": "category",
+						"name": "Variables",
+						"contents": [
+							{"kind": "block", "type": "variables_set"},
+							{"kind": "block", "type": "variables_get"}
+						]
+					}, {
+						"kind": "category",
+						"name": "Text",
+						"contents": [
+							{"kind": "block", "type": "text_print"}
+						]
+					}
 				]
 			}
 		}
