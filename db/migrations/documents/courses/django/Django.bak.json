@@ -59,8 +59,8 @@
 					"title": "IDE",
 					"lesson_id": 1,
 					"unlock_type": "button",
-					"unlock_id": 2,
 					"unlocker_id": "",
+					"unlock_id": 2,
 					"is_last": true,
 					"blocks": [
 						{
@@ -94,8 +94,8 @@
 					"title": "Instalace pythonu",
 					"lesson_id": 2,
 					"unlock_type": "blockly",
-					"unlock_id": 3,
 					"unlocker_id": 1,
+					"unlock_id": 3,
 					"is_last": true,
 					"blocks": [
 						{
@@ -109,6 +109,34 @@
 			]
 		}
 	],
+	"blockly": [
+		{
+			"_id": 1,
+			"title": "python test",
+			"language": "python",
+			"toolbox": {
+				"kind": "flyoutToolbox",
+				"contents": [
+					{"kind": "block", "type": "controls_if"},
+					{"kind": "block", "type": "logic_compare"},
+					{
+						"kind": "category",
+						"name": "Variables",
+						"contents": [
+							{"kind": "block", "type": "variables_set"},
+							{"kind": "block", "type": "variables_get"}
+						]
+					}, {
+						"kind": "category",
+						"name": "Text",
+						"contents": [
+							{"kind": "block", "type": "text_print"}
+						]
+					}
+				]
+			}
+		}
+	],
 	"tests": [
 		{
 			"_id": 1,
@@ -120,96 +148,8 @@
 			"source_id": 1,
 			"attempts": 3,
 			"success_score": 70,
-			"total_points": 60,
+			"total_points": 30,
 			"questions": [
-				{
-					"_id": 1,
-					"question": "who is smarter",
-					"type": "single",
-					"answers": {
-						"1": "first",
-						"2": "second",
-						"3": "third",
-						"4": "fourth"
-					},
-					"correct": [
-						"4"
-					],
-					"points": 5
-				},
-				{
-					"_id": 2,
-					"question": "second questino multiple choice",
-					"type": "multiple",
-					"answers": {
-						"1": "one",
-						"2": "two",
-						"3": "three",
-						"4": "four"
-					},
-					"correct": [
-						"1",
-						"2",
-						"3"
-					],
-					"points": 5
-				},
-				{
-					"_id": 3,
-					"question": "say something!",
-					"type": "open",
-					"answers": null,
-					"correct": [
-						"ahoj",
-						"nazdar",
-						"bazar"
-					],
-					"points": 5
-				},
-				{
-					"_id": 1,
-					"question": "who is smarter",
-					"type": "single",
-					"answers": {
-						"1": "first",
-						"2": "second",
-						"3": "third",
-						"4": "fourth"
-					},
-					"correct": [
-						"4"
-					],
-					"points": 5
-				},
-				{
-					"_id": 2,
-					"question": "second questino multiple choice",
-					"type": "multiple",
-					"answers": {
-						"1": "one",
-						"2": "two",
-						"3": "three",
-						"4": "four"
-					},
-					"correct": [
-						"1",
-						"2",
-						"3"
-					],
-					"points": 5
-				},
-				{
-					"_id": 3,
-					"question": "say something!",
-					"type": "open",
-					"answers": null,
-					"correct": [
-						"ahoj",
-						"nazdar",
-						"bazar"
-					],
-					"points": 5
-				},
 				{
 					"_id": 1,
 					"question": "who is smarter",
@@ -310,96 +250,8 @@
 			"source_id": 1,
 			"attempts": 3,
 			"success_score": 60,
-			"total_points": 60,
+			"total_points": 30,
 			"questions": [
-				{
-					"_id": 1,
-					"question": "who is smarter",
-					"type": "single",
-					"answers": {
-						"1": "first",
-						"2": "second",
-						"3": "third",
-						"4": "fourth"
-					},
-					"correct": [
-						"4"
-					],
-					"points": 5
-				},
-				{
-					"_id": 2,
-					"question": "second questino multiple choice",
-					"type": "multiple",
-					"answers": {
-						"1": "one",
-						"2": "two",
-						"3": "three",
-						"4": "four"
-					},
-					"correct": [
-						"1",
-						"2",
-						"3"
-					],
-					"points": 5
-				},
-				{
-					"_id": 3,
-					"question": "say something!",
-					"type": "open",
-					"answers": null,
-					"correct": [
-						"ahoj",
-						"nazdar",
-						"bazar"
-					],
-					"points": 5
-				},
-				{
-					"_id": 1,
-					"question": "who is smarter",
-					"type": "single",
-					"answers": {
-						"1": "first",
-						"2": "second",
-						"3": "third",
-						"4": "fourth"
-					},
-					"correct": [
-						"4"
-					],
-					"points": 5
-				},
-				{
-					"_id": 2,
-					"question": "second questino multiple choice",
-					"type": "multiple",
-					"answers": {
-						"1": "one",
-						"2": "two",
-						"3": "three",
-						"4": "four"
-					},
-					"correct": [
-						"1",
-						"2",
-						"3"
-					],
-					"points": 5
-				},
-				{
-					"_id": 3,
-					"question": "say something!",
-					"type": "open",
-					"answers": null,
-					"correct": [
-						"ahoj",
-						"nazdar",
-						"bazar"
-					],
-					"points": 5
-				},
 				{
 					"_id": 1,
 					"question": "who is smarter",
@@ -500,96 +352,8 @@
 			"source_id": 1,
 			"attempts": 3,
 			"success_score": 100,
-			"total_points": 80,
+			"total_points": 40,
 			"questions": [
-				{
-					"_id": 1,
-					"question": "who is smarter",
-					"type": "single",
-					"answers": {
-						"1": "first",
-						"2": "second",
-						"3": "third",
-						"4": "fourth"
-					},
-					"correct": [
-						"4"
-					],
-					"points": 5
-				},
-				{
-					"_id": 2,
-					"question": "second questino multiple choice",
-					"type": "multiple",
-					"answers": {
-						"1": "one",
-						"2": "two",
-						"3": "three",
-						"4": "four"
-					},
-					"correct": [
-						"1",
-						"2",
-						"3"
-					],
-					"points": 5
-				},
-				{
-					"_id": 3,
-					"question": "say something!",
-					"type": "open",
-					"answers": null,
-					"correct": [
-						"ahoj",
-						"nazdar",
-						"bazar"
-					],
-					"points": 10
-				},
-				{
-					"_id": 1,
-					"question": "who is smarter",
-					"type": "single",
-					"answers": {
-						"1": "first",
-						"2": "second",
-						"3": "third",
-						"4": "fourth"
-					},
-					"correct": [
-						"4"
-					],
-					"points": 5
-				},
-				{
-					"_id": 2,
-					"question": "second questino multiple choice",
-					"type": "multiple",
-					"answers": {
-						"1": "one",
-						"2": "two",
-						"3": "three",
-						"4": "four"
-					},
-					"correct": [
-						"1",
-						"2",
-						"3"
-					],
-					"points": 5
-				},
-				{
-					"_id": 3,
-					"question": "say something!",
-					"type": "open",
-					"answers": null,
-					"correct": [
-						"ahoj",
-						"nazdar",
-						"bazar"
-					],
-					"points": 10
-				},
 				{
 					"_id": 1,
 					"question": "who is smarter",
@@ -690,96 +454,8 @@
 			"source_id": 1,
 			"attempts": 3,
 			"success_score": 1,
-			"total_points": 60,
+			"total_points": 30,
 			"questions": [
-				{
-					"_id": 1,
-					"question": "who is smarter",
-					"type": "single",
-					"answers": {
-						"1": "first",
-						"2": "second",
-						"3": "third",
-						"4": "fourth"
-					},
-					"correct": [
-						"4"
-					],
-					"points": 5
-				},
-				{
-					"_id": 2,
-					"question": "second questino multiple choice",
-					"type": "multiple",
-					"answers": {
-						"1": "one",
-						"2": "two",
-						"3": "three",
-						"4": "four"
-					},
-					"correct": [
-						"1",
-						"2",
-						"3"
-					],
-					"points": 5
-				},
-				{
-					"_id": 3,
-					"question": "say something!",
-					"type": "open",
-					"answers": null,
-					"correct": [
-						"ahoj",
-						"nazdar",
-						"bazar"
-					],
-					"points": 5
-				},
-				{
-					"_id": 1,
-					"question": "who is smarter",
-					"type": "single",
-					"answers": {
-						"1": "first",
-						"2": "second",
-						"3": "third",
-						"4": "fourth"
-					},
-					"correct": [
-						"4"
-					],
-					"points": 5
-				},
-				{
-					"_id": 2,
-					"question": "second questino multiple choice",
-					"type": "multiple",
-					"answers": {
-						"1": "one",
-						"2": "two",
-						"3": "three",
-						"4": "four"
-					},
-					"correct": [
-						"1",
-						"2",
-						"3"
-					],
-					"points": 5
-				},
-				{
-					"_id": 3,
-					"question": "say something!",
-					"type": "open",
-					"answers": null,
-					"correct": [
-						"ahoj",
-						"nazdar",
-						"bazar"
-					],
-					"points": 5
-				},
 				{
 					"_id": 1,
 					"question": "who is smarter",
@@ -880,96 +556,8 @@
 			"source_id": 1,
 			"attempts": 3,
 			"success_score": 70,
-			"total_points": 60,
+			"total_points": 30,
 			"questions": [
-				{
-					"_id": 1,
-					"question": "who is smarter",
-					"type": "single",
-					"answers": {
-						"1": "first",
-						"2": "second",
-						"3": "third",
-						"4": "fourth"
-					},
-					"correct": [
-						"4"
-					],
-					"points": 5
-				},
-				{
-					"_id": 2,
-					"question": "second questino multiple choice",
-					"type": "multiple",
-					"answers": {
-						"1": "one",
-						"2": "two",
-						"3": "three",
-						"4": "four"
-					},
-					"correct": [
-						"1",
-						"2",
-						"3"
-					],
-					"points": 5
-				},
-				{
-					"_id": 3,
-					"question": "say something!",
-					"type": "open",
-					"answers": null,
-					"correct": [
-						"ahoj",
-						"nazdar",
-						"bazar"
-					],
-					"points": 5
-				},
-				{
-					"_id": 1,
-					"question": "who is smarter",
-					"type": "single",
-					"answers": {
-						"1": "first",
-						"2": "second",
-						"3": "third",
-						"4": "fourth"
-					},
-					"correct": [
-						"4"
-					],
-					"points": 5
-				},
-				{
-					"_id": 2,
-					"question": "second questino multiple choice",
-					"type": "multiple",
-					"answers": {
-						"1": "one",
-						"2": "two",
-						"3": "three",
-						"4": "four"
-					},
-					"correct": [
-						"1",
-						"2",
-						"3"
-					],
-					"points": 5
-				},
-				{
-					"_id": 3,
-					"question": "say something!",
-					"type": "open",
-					"answers": null,
-					"correct": [
-						"ahoj",
-						"nazdar",
-						"bazar"
-					],
-					"points": 5
-				},
 				{
 					"_id": 1,
 					"question": "who is smarter",
@@ -1059,13 +647,6 @@
 					"points": 5
 				}
 			]
-		}
-	],
-	"blockly": [
-		{
-			"_id": 1,
-			"title": "python test",
-			"toolbox": "{\r\n  \"kind\": \"flyoutToolbox\",\r\n  \"contents\": [\r\n    {\"kind\": \"block\", \"type\": \"controls_if\"},\r\n    {\"kind\": \"block\", \"type\": \"logic_compare\"},\r\n    {\"kind\": \"block\", \"type\": \"text_print\"},  \r\n    {\"kind\": \"block\", \"type\": \"variables_set\"},\r\n    {\"kind\": \"block\", \"type\": \"variables_get\"},\r\n    {type: 'text',  kind: 'block'}\r\n  ]\r\n}"
 		}
 	]
 }

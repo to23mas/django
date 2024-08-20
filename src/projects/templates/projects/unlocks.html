@@ -38,6 +38,8 @@
 
 		<script type="text/javascript">
 			window.blocklyToolboxConfig = {{ blockly.toolbox | safe }};
+			window.blocklyId = {{ blockly.id | safe }};
+			window.courseName = "{{ course_name }}";
 		</script>
 	{% endif %}
 

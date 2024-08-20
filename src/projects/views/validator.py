@@ -1,35 +1,50 @@
-import subprocess
+from RestrictedPython.PrintCollector import PrintCollector
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
+
+from RestrictedPython import compile_restricted
+from RestrictedPython.Guards import safe_builtins
+
+from domain.data.blockly.BlocklyStorage import get_blockly
+
 
 
 @login_required
 def validate_python(request: HttpRequest) -> HttpResponse:
 	"""list all projects"""
 	username = request.user.username #type: ignore
-	try:
-		# Write the code to a temporary file
-		code = str(request.POST.get('code', ''))
-		expected_output = "print('Hello World')"
 
-		# TODO
-		exec(code, {});
-		with open('temp_script.py', 'w') as f:
-			f.write(code)
-			print(code)
+	code = str(request.POST.get('code', ''))
+	blockly_id = str(request.POST.get('blockly_id', ''))
+	course_db = str(request.POST.get('course_db', ''))
 
-			# Execute the code and capture the output
-			result = subprocess.run(['python3', 'temp_script.py'], capture_output=True, text=True)
+	print(request.POST)
+	blockly = get_blockly(course_db, int(blockly_id))
 
-			print(result.stdout);
-			print(result);
-			# Check if the output matches the expected output
-			if result.stdout.strip() == expected_output:
-				return JsonResponse({'status': 'success', 'message': 'Code is correct!'})
-			else:
-				return JsonResponse({'status': 'error', 'message': 'Code is incorrect!', 'output': result.stdout})
-	except Exception as e:
-		return JsonResponse({'status': 'error', 'message': str(e)})
+	if blockly == None:
+		pass # sent error
+
+	print(course_db)
+	print(blockly_id)
+	print(blockly)
+	# TODO add valid result to blockly definition
+	code_print_result = validate_python_code_print_safe(code)
 
 	return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
 
+
+def validate_python_code_print_safe(code):
+	print_result = 'printed_result_validation_string_collection_grabber'
+	code += f'\n{print_result} = printed'
+	restricted_locals = {}
+	restricted_globals = {
+		"__builtins__": safe_builtins,
+		"_print_": PrintCollector,
+		"_getattr_":  getattr,
+	}
+
+	byte_code = compile_restricted(code, '<string>', 'exec')
+	exec(byte_code, restricted_globals, restricted_locals)
+	output = restricted_locals[print_result]
+
+	return output

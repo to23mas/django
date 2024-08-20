@@ -3,6 +3,8 @@ import { pythonGenerator } from 'blockly/python';
 
 document.addEventListener('DOMContentLoaded', () => {
 	console.log('toolbox', (window as any).blocklyToolboxConfig);
+	const course_db  = (window as any).courseName;
+	const blockly_id = (window as any).blocklyId;
 	const workspace = Blockly.inject('blocklyDiv', {
 		toolbox: (window as any).blocklyToolboxConfig,
 		grid: { spacing: 20, length: 2, snap: true },
@@ -38,15 +40,17 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 
 	workspace.addChangeListener(updateCode);
-
+	console.log(course_db);
 
 	document.getElementById('validateButton').addEventListener('click', () => {
 		const pythonCode = pythonGenerator.workspaceToCode(workspace);
-		sendPythonCodeToServer(pythonCode);
+		console.log(course_db);
+		sendPythonCodeToServer(pythonCode, blockly_id, course_db);
 	});
 });
 
-async function sendPythonCodeToServer(code: string) {
+async function sendPythonCodeToServer(code: string, blockly_id: string, course_db: string) {
+	console.log(course_db);
 	const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	if (!csrfToken) {
 		alert('Error csrf-forgery\n');
@@ -59,7 +63,7 @@ async function sendPythonCodeToServer(code: string) {
 				'Content-Type': 'application/x-www-form-urlencoded',
 				'X-CSRFToken': csrfToken
 			},
-			body: new URLSearchParams({ code })
+			body: new URLSearchParams({ code, blockly_id, course_db })
 		});
 		const result = await response.json();
 		if (result.error) {
