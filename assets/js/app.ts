@@ -1,6 +1,6 @@
 import * as Blockly from 'blockly';
 import { pythonGenerator } from 'blockly/python';
-import { addBlocklyFlashMessage } from './flash_messages'
+import { addBlocklyFlashMessage, clearBlocklyFlashMessage } from './flash_messages'
 
 document.addEventListener('DOMContentLoaded', () => {
 	const course_db  = (window as any).courseName;
@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const updateCode = (event: Blockly.Events.Abstract) => {
 		if (workspace.isDragging() || !supportedEvents.has(event.type)) return;
 
+		clearBlocklyFlashMessage();
 		const pythonCode = pythonGenerator.workspaceToCode(workspace);
 		const divElement = document.getElementById('blocklyPythonCode');
 		if (!divElement) return;
@@ -47,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function sendPythonCodeToServer(code: string, blockly_id: string, course_db: string) {
-	console.log(course_db);
 	const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 	if (!csrfToken) {
 		alert('Error csrf-forgery\n');
@@ -64,10 +64,9 @@ async function sendPythonCodeToServer(code: string, blockly_id: string, course_d
 		});
 		const result = await response.json();
 		if (result.status == 'error') {
-			addBlocklyFlashMessage('fudsjakl fjdskal fjdsakl');
-			alert('Nesprávná opověď');
+			addBlocklyFlashMessage('Nesprávná odpověď.');
 		} else {
-			alert('SUCCESS')
+			addBlocklyFlashMessage('Správně.', true);
 		}
 	} catch (error) {
 		alert('Problém na straně serveru. zkuste tuto akci prosím později.');
