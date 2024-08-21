@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		Blockly.Events.BLOCK_CREATE,
 		Blockly.Events.BLOCK_DELETE,
 		Blockly.Events.BLOCK_MOVE,
+		Blockly.Events.CLICK,
 	]);
 
 	const updateCode = (event: Blockly.Events.Abstract) => {
@@ -41,14 +42,22 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 	workspace.addChangeListener(updateCode);
 
-	document.getElementById('validateButton').addEventListener('click', () => {
-		const pythonCode = pythonGenerator.workspaceToCode(workspace);
-		sendPythonCodeToServer(pythonCode, blockly_id, course_db);
-	});
+	const sendCodeButton = document.getElementById('validateButton');
+	if (sendCodeButton) {
+		sendCodeButton.addEventListener('click', () => {
+			const pythonCode = pythonGenerator.workspaceToCode(workspace);
+			sendPythonCodeToServer(pythonCode, blockly_id, course_db);
+		});
+	}
 });
 
 async function sendPythonCodeToServer(code: string, blockly_id: string, course_db: string) {
-	const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+	const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+	if (!csrfTokenElement) {
+		alert('Error csrf-forgery\n');
+		return;
+	}
+	const csrfToken = csrfTokenElement.getAttribute('content');
 	if (!csrfToken) {
 		alert('Error csrf-forgery\n');
 		return;
@@ -67,6 +76,27 @@ async function sendPythonCodeToServer(code: string, blockly_id: string, course_d
 			addBlocklyFlashMessage('Nesprávná odpověď.');
 		} else {
 			addBlocklyFlashMessage('Správně.', true);
+
+			const chapterFinished = (window as any).chapterFinished;
+			console.log('chapter finished: ', chapterFinished);
+			if (chapterFinished === "False") {
+				const chapter_id = (window as any).chapterId;
+				const lesson_id = (window as any).lessonId;
+				const project_id = (window as any).projectId;
+				const course = (window as any).courseName;
+				const response = await fetch('/projects/lesson/unlock-chapter', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+						'X-CSRFToken': csrfToken
+					},
+					body: new URLSearchParams({ chapter_id, lesson_id, project_id, course })
+				});
+
+				if (response.redirected) {
+					window.location.href = response.url;
+				}
+			}
 		}
 	} catch (error) {
 		alert('Problém na straně serveru. zkuste tuto akci prosím později.');

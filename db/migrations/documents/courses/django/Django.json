@@ -1064,7 +1064,7 @@
 	"blockly": [
 		{
 			"_id": 1,
-			"title": "python test",
+			"title": "Python test",
 			"task_description": "Task description",
 			"expected_task": "print",
 			"expected_result": "Hello world!",

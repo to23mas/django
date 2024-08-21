@@ -1,11 +1,9 @@
 """views.py"""
-import json
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from domain.data.blockly.BlocklyDataSerializer import BlocklyDataSerializer
 from domain.data.blockly.BlocklyStorage import get_blockly
 from domain.data.chapters.ChapterStorage import find_chapters, get_chapter
 from domain.data.content_progress.ContentProgressStorage import get_content_progress

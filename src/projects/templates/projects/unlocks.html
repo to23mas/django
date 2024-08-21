@@ -1,49 +1,21 @@
 {% load get_mongo_id %}
 
 <div class="mx-auto lg:w-4/6 pt-3">
-	{% if chapter_finished  %}
-	<form action="{% url 'projects:next_chapter' %}" class="float-end" method="post">
-		{% csrf_token %}
-		<input type="hidden" name="chapter_id" value="{{ chapter.id }}">
-		<input type="hidden" name="lesson_id" value="{{ chapter.lesson_id }}">
-		<input type="hidden" name="project_id" value="{{ project.id }}">
-		<input type="hidden" name="course" value="{{ course_name }}">
-		<button type="submit" class="green_button mb-6">
-			Další
-		</button>
-	</form>
-	{% else %}
 		{% if chapter.unlock_type  == 'button' %}
-		<form action="{% url 'projects:unlock_chapter' %}" class="float-end" method="post">
-			{% csrf_token %}
-			<input type="hidden" name="chapter_id" value="{{ chapter.id }}">
-			<input type="hidden" name="lesson_id" value="{{ chapter.lesson_id }}">
-			<input type="hidden" name="project_id" value="{{ project.id }}">
-			<input type="hidden" name="course" value="{{ course_name }}">
-			<button type="submit"
-				class="blue_button mb-6">
-				Odemknout další kapitolu
-			</button>
-		</form>
-		{% elif chapter.unlock_type  == 'blockly' %}
-		<div class="chapter_block">
-			<div id="blocklyDiv" style="height: 480px" class="mt-5"></div>
-			<h4 class="mt-5">Generated Python Code:</h4>
-			<div id="blockly-flash-messages"> </div>
-			<div id="blocklyPythonCode"> </div>
-			<meta name="csrf-token" content="{{ csrf_token }}">
-			<button id="validateButton" class="gray_button mt-3">Validate Python Code</button>
+			{% if chapter_finished  %}
+				{% include './unlocks/next_button.html' %}
+			{% else %}
+				{% include './unlocks/unlock_button.html' %}
+			{% endif %}
+		{% endif %}
 
-	</div>
-
-		<script type="text/javascript">
-			window.blocklyToolboxConfig = {{ blockly.toolbox | safe }};
-			window.blocklyId = {{ blockly.id | safe }};
-			window.courseName = "{{ course_name }}";
-		</script>
-	{% endif %}
-
-{% endif %}
+		{% if chapter.unlock_type  == 'blockly' %}
+			{% include './unlocks/blockly.html' %}
+			{% if chapter_finished  %}
+				{% include './unlocks/next_button.html' %}
+			{% endif %}
+		{% endif %}
+</div>
 
 <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/atom-one-dark.min.css">
 <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
@@ -63,4 +35,3 @@
 		}
 	});
 	</script>
-</div>

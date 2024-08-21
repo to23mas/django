@@ -9,6 +9,6 @@ urlpatterns = [
 	path('c-<str:course>/project/<int:project_id>/', detail, name='detail'),
 	path('c-<str:course>/project-<int:project_id>/lesson-<int:lesson_id>/chapter-<int:chapter_id>', lesson, name='lesson'),
 	path('lesson/next-chapter', next_chapter, name='next_chapter'),
-	path('lesson/unclock-chapter', unlock_next_chapter, name='unlock_chapter'),
+	path('lesson/unlock-chapter', unlock_next_chapter, name='unlock_chapter'),
 	path('lesson/validate-python', validate_python, name='validate_python'),
 ]
