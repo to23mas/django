@@ -6,4 +6,6 @@ from typing import Dict
 class BlocklyData():
 	id: int
 	title: str
+	expected_task: str
+	expected_result: str
 	toolbox: Dict

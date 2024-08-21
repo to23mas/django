@@ -29,6 +29,18 @@
 								</div></div></div>
 
 								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Title:</label>
+									{{form.expected_task}}
+									{% if form.expected_task.errors %} <div class="form-errors">{{ form.expected_task.errors }}</div> {% endif %}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Title:</label>
+									{{form.expected_result}}
+									{% if form.expected_result.errors %} <div class="form-errors">{{ form.expected_result.errors }}</div> {% endif %}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
 									<label class="required">Toolbox:</label>
 									{{form.toolbox}}
 									{% if form.toolbox.errors %} <div class="form-errors">{{ form.toolbox.errors }}</div> {% endif %}

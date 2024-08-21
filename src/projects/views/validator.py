@@ -6,31 +6,33 @@ from RestrictedPython import compile_restricted
 from RestrictedPython.Guards import safe_builtins
 
 from domain.data.blockly.BlocklyStorage import get_blockly
-
+from domain.data.blockly.enum.ExpectedTaskTypes import ExpectedTaskTypes
 
 
 @login_required
 def validate_python(request: HttpRequest) -> HttpResponse:
 	"""list all projects"""
-	username = request.user.username #type: ignore
-
 	code = str(request.POST.get('code', ''))
 	blockly_id = str(request.POST.get('blockly_id', ''))
 	course_db = str(request.POST.get('course_db', ''))
-
-	print(request.POST)
 	blockly = get_blockly(course_db, int(blockly_id))
 
 	if blockly == None:
-		pass # sent error
+		return JsonResponse({'status': 'error', 'message': 'Blockly not found'})
 
-	print(course_db)
-	print(blockly_id)
-	print(blockly)
-	# TODO add valid result to blockly definition
-	code_print_result = validate_python_code_print_safe(code)
+	match (blockly.expected_task):
+		case ExpectedTaskTypes.PRINT.value:
+			code_result = validate_python_code_print_safe(code)
+			if code_result.endswith("\n"):
+				code_result = code_result[:-1]
+		case _:
+			code_result = ''
 
-	return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+	if blockly.expected_result == code_result:
+		print('success')
+		return JsonResponse({'status': 'success'})
+
+	return JsonResponse({'status': 'error'})
 
 
 def validate_python_code_print_safe(code):

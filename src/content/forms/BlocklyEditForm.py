@@ -6,6 +6,9 @@ class BlocklyEditForm(forms.Form):
 
 	id = forms.IntegerField(required=False)
 	title = forms.CharField()
+	expected_task = forms.CharField()
+	expected_result = forms.CharField()
+	title = forms.CharField()
 	toolbox = forms.CharField(widget=forms.Textarea(attrs={'rows': 15}))
 
 	def __init__(self, *args, **kwargs):
