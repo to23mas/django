@@ -1,4 +1,3 @@
-import json
 from django import forms
 
 
@@ -6,6 +5,7 @@ class BlocklyEditForm(forms.Form):
 
 	id = forms.IntegerField(required=False)
 	title = forms.CharField()
+	task_description = forms.CharField()
 	expected_task = forms.CharField()
 	expected_result = forms.CharField()
 	title = forms.CharField()

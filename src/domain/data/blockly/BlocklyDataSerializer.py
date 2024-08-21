@@ -11,6 +11,7 @@ class BlocklyDataSerializer:
 		return {
 			'_id': blockly_data.id,
 			'title': blockly_data.title,
+			'task_description': blockly_data.task_description,
 			'toolbox': blockly_data.toolbox,
 			'expected_task': blockly_data.expected_task,
 			'expected_result': blockly_data.expected_result,
@@ -22,6 +23,7 @@ class BlocklyDataSerializer:
 		return BlocklyData(
 			id=blockly_data[BlocklyTable.ID.value],
 			title=blockly_data[BlocklyTable.TITLE.value],
+			task_description=blockly_data[BlocklyTable.TASK_DESCRIPTION.value],
 			expected_task=blockly_data[BlocklyTable.EXPECTED_TASK.value],
 			expected_result=blockly_data[BlocklyTable.EXPECTED_RESULT.value],
 			toolbox=blockly_data[BlocklyTable.TOOLBOX.value],

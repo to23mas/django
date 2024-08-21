@@ -1,8 +1,8 @@
 import * as Blockly from 'blockly';
 import { pythonGenerator } from 'blockly/python';
+import { addBlocklyFlashMessage } from './flash_messages'
 
 document.addEventListener('DOMContentLoaded', () => {
-	console.log('toolbox', (window as any).blocklyToolboxConfig);
 	const course_db  = (window as any).courseName;
 	const blockly_id = (window as any).blocklyId;
 	const workspace = Blockly.inject('blocklyDiv', {
@@ -38,13 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			divElement.appendChild(preElement);
 		}
 	};
-
 	workspace.addChangeListener(updateCode);
-	console.log(course_db);
 
 	document.getElementById('validateButton').addEventListener('click', () => {
 		const pythonCode = pythonGenerator.workspaceToCode(workspace);
-		console.log(course_db);
 		sendPythonCodeToServer(pythonCode, blockly_id, course_db);
 	});
 });
@@ -66,13 +63,13 @@ async function sendPythonCodeToServer(code: string, blockly_id: string, course_d
 			body: new URLSearchParams({ code, blockly_id, course_db })
 		});
 		const result = await response.json();
-		if (result.error) {
-			alert('Error:\n' + result.error);
+		if (result.status == 'error') {
+			addBlocklyFlashMessage('fudsjakl fjdskal fjdsakl');
+			alert('Nesprávná opověď');
 		} else {
-			alert('Code received:\n' + result.received_code);
+			alert('SUCCESS')
 		}
 	} catch (error) {
-		console.error('Error:', error);
-		alert('An error occurred while sending the Python code.');
+		alert('Problém na straně serveru. zkuste tuto akci prosím později.');
 	}
 }
