@@ -1,5 +1,4 @@
 {% load to_code %}
-
 <style>
 	pre {
 		white-space: pre-wrap !important;
@@ -12,7 +11,15 @@
 
 <div class="flex justify-between items-center mx-auto md:w-4/6">
 	<h2 class="text-4xl font-extrabold">{{ chapter.title }}</h2>
-	<a href="{% url 'projects:detail' course=course_name project_id=project.id %}" class="text-blue-500 hover:underline">Zpět na seznam lekcí</a>
+	<div>
+		<a href="{% url 'projects:detail' course=course_name project_id=project.id %}" class="text-blue-500 hover:underline">Zpět na seznam lekcí</a>
+
+		{% if chapter_finished  %}
+			<br>
+			<br>
+			{% include './unlocks/next_button.html' %}
+		{% endif %}
+	</div>
 </div>
 
 {% for block  in chapter.blocks %}

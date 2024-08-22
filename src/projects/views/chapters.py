@@ -54,19 +54,15 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 	lesson_id = int(str(request.POST.get('lesson_id')))
 	project_id = int(str(request.POST.get('project_id')))
 	course_db = str(request.POST.get('course'))
-	# TODO implement return json for javascript
-	is_js = request.POST.get('is_js')
+	# TODO check if the chapter unlock type is button (blockly and tests should have own methods)
 
 	if request.method != 'POST':
 		return redirect('courses:overview')
 
 	project = get_project_by_id(project_id, course_db)
-	print(1)
 	if project == None: return redirect('projects:overview', course=course_db, sort_type='all')
-	print(2)
 	chapter = get_chapter(chapter_id, lesson_id, course_db, project.database)
 	if chapter == None: return redirect('projects:overview', course=course_db, sort_type='all')
-	print(3)
 
 	if not is_chapter_open(username, course_db, project_id, lesson_id, chapter_id): #type: ignore
 		if (is_chapter_done(username, course_db, chapter.id)):
@@ -85,11 +81,10 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 			finish_lesson(username, course_db, chapter.lesson_id)
 	else:
 		finish_chapter(username, course_db, chapter.id)
-		print(5)
+		## probably unlock next project
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
 	finish_chapter(username, course_db, chapter.id)
 	unlock_chapter(username, course_db, chapter.unlock_id)
 	messages.success(request, 'Kapitola ůspěšně splněna.')
-	print(6)
 	return redirect('projects:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)

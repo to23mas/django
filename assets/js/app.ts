@@ -3,8 +3,6 @@ import { pythonGenerator } from 'blockly/python';
 import { addBlocklyFlashMessage, clearBlocklyFlashMessage } from './flash_messages'
 
 document.addEventListener('DOMContentLoaded', () => {
-	const course_db  = (window as any).courseName;
-	const blockly_id = (window as any).blocklyId;
 	const workspace = Blockly.inject('blocklyDiv', {
 		toolbox: (window as any).blocklyToolboxConfig,
 		grid: { spacing: 20, length: 2, snap: true },
@@ -46,13 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (sendCodeButton) {
 		sendCodeButton.addEventListener('click', () => {
 			const pythonCode = pythonGenerator.workspaceToCode(workspace);
-			sendPythonCodeToServer(pythonCode, blockly_id, course_db);
+			sendPythonCodeToServer(pythonCode);
 		});
 	}
 });
 
-async function sendPythonCodeToServer(code: string, blockly_id: string, course_db: string) {
+async function sendPythonCodeToServer(code: string) {
 	const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+	const course_db  = (window as any).courseName;
+	const blockly_id = (window as any).blocklyId;
+	const chapter_id = (window as any).chapterId;
+	const lesson_id = (window as any).lessonId;
+	const project_id = (window as any).projectId;
 	if (!csrfTokenElement) {
 		alert('Error csrf-forgery\n');
 		return;
@@ -69,34 +72,22 @@ async function sendPythonCodeToServer(code: string, blockly_id: string, course_d
 				'Content-Type': 'application/x-www-form-urlencoded',
 				'X-CSRFToken': csrfToken
 			},
-			body: new URLSearchParams({ code, blockly_id, course_db })
+			body: new URLSearchParams({
+				code,
+				blockly_id,
+				course_db,
+				chapter_id,
+				lesson_id,
+				project_id,
+			})
 		});
 		const result = await response.json();
+		console.log(result);
+		// # TODO implement redirect
 		if (result.status == 'error') {
-			addBlocklyFlashMessage('Nesprávná odpověď.');
+			addBlocklyFlashMessage(`${result.message}`);
 		} else {
 			addBlocklyFlashMessage('Správně.', true);
-
-			const chapterFinished = (window as any).chapterFinished;
-			console.log('chapter finished: ', chapterFinished);
-			if (chapterFinished === "False") {
-				const chapter_id = (window as any).chapterId;
-				const lesson_id = (window as any).lessonId;
-				const project_id = (window as any).projectId;
-				const course = (window as any).courseName;
-				const response = await fetch('/projects/lesson/unlock-chapter', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/x-www-form-urlencoded',
-						'X-CSRFToken': csrfToken
-					},
-					body: new URLSearchParams({ chapter_id, lesson_id, project_id, course })
-				});
-
-				if (response.redirected) {
-					window.location.href = response.url;
-				}
-			}
 		}
 	} catch (error) {
 		alert('Problém na straně serveru. zkuste tuto akci prosím později.');

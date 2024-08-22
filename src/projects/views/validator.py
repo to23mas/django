@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from RestrictedPython.PrintCollector import PrintCollector
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -7,18 +8,31 @@ from RestrictedPython.Guards import safe_builtins
 
 from domain.data.blockly.BlocklyStorage import get_blockly
 from domain.data.blockly.enum.ExpectedTaskTypes import ExpectedTaskTypes
+from domain.data.chapters.ChapterData import ChapterData
+from domain.data.chapters.ChapterStorage import get_chapter, get_chapter_by_id
+from domain.data.progress.ProgressStorage import finish_chapter, finish_lesson, is_chapter_done, is_chapter_open, unlock_chapter, unlock_lesson
+from domain.data.projects.ProjectData import ProjectData
+from domain.data.projects.ProjectStorage import get_project_by_id
 
 
 @login_required
 def validate_python(request: HttpRequest) -> HttpResponse:
 	"""list all projects"""
+	username = request.user.username #type: ignore
 	code = str(request.POST.get('code', ''))
 	blockly_id = str(request.POST.get('blockly_id', ''))
 	course_db = str(request.POST.get('course_db', ''))
-	blockly = get_blockly(course_db, int(blockly_id))
+	chapter_id = int(str(request.POST.get('chapter_id')))
+	lesson_id = int(str(request.POST.get('lesson_id')))
+	project_id = int(str(request.POST.get('project_id')))
+	print(username)
 
-	if blockly == None:
-		return JsonResponse({'status': 'error', 'message': 'Blockly not found'})
+	project = get_project_by_id(project_id, course_db)
+	if project == None: return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
+	chapter = get_chapter(chapter_id, lesson_id, course_db, project.database)
+	if chapter == None: return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
+	blockly = get_blockly(course_db, int(blockly_id))
+	if blockly == None: return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
 
 	match (blockly.expected_task):
 		case ExpectedTaskTypes.PRINT.value:
@@ -29,10 +43,13 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 			code_result = ''
 
 	if blockly.expected_result == code_result:
-		print('success')
-		return JsonResponse({'status': 'success'})
+		print('ahoj')
+		match (unlock_next_chapter_blockly(username, course_db, project, chapter)):
+			case 'already done': return JsonResponse({'status': 'success', 'message': 'Správně'})
+			case 'error': return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
+			case 'success': return redirect('projects:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)
 
-	return JsonResponse({'status': 'error'})
+	return JsonResponse({'status': 'error', 'message': 'Nesprávná opověď'})
 
 
 def validate_python_code_print_safe(code):
@@ -50,3 +67,28 @@ def validate_python_code_print_safe(code):
 	output = restricted_locals[print_result]
 
 	return output
+
+def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectData, chapter: ChapterData) -> str:
+
+	if chapter.unlock_type != 'blockly':
+		return 'error'
+
+	if not is_chapter_open(username, course_db, project.id, chapter.lesson_id, chapter.id): #type: ignore
+		if (is_chapter_done(username, course_db, chapter.id)):
+			return 'already done'
+
+		return 'error'
+
+	next_chapter = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
+	if next_chapter != None:
+		unlock_lesson(username, course_db, chapter.unlock_id)
+		if next_chapter.is_last:
+			finish_lesson(username, course_db, chapter.lesson_id)
+	else:
+		finish_chapter(username, course_db, chapter.id)
+		## probably unlock next project
+		return 'success'
+
+	finish_chapter(username, course_db, chapter.id)
+	unlock_chapter(username, course_db, chapter.unlock_id)
+	return 'success'
