@@ -1,4 +1,6 @@
 from django.shortcuts import redirect
+from django.contrib import messages
+from django.urls import reverse
 from RestrictedPython.PrintCollector import PrintCollector
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -25,7 +27,6 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 	chapter_id = int(str(request.POST.get('chapter_id')))
 	lesson_id = int(str(request.POST.get('lesson_id')))
 	project_id = int(str(request.POST.get('project_id')))
-	print(username)
 
 	project = get_project_by_id(project_id, course_db)
 	if project == None: return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
@@ -43,12 +44,17 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 			code_result = ''
 
 	if blockly.expected_result == code_result:
-		print('ahoj')
 		match (unlock_next_chapter_blockly(username, course_db, project, chapter)):
 			case 'already done': return JsonResponse({'status': 'success', 'message': 'Správně'})
 			case 'error': return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
-			case 'success': return redirect('projects:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)
-
+			case 'success':
+				messages.success(request, 'Kapitola splněna')
+				url = reverse('projects:lesson', kwargs={
+					'course': course_db,
+					'project_id': project_id,
+					'lesson_id': chapter.lesson_id,
+					'chapter_id': chapter.id})
+				return JsonResponse({'status': 'success', 'redirect': True, 'url': url})
 	return JsonResponse({'status': 'error', 'message': 'Nesprávná opověď'})
 
 

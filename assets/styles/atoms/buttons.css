@@ -10,4 +10,8 @@
 	a.gray_button, button.gray_button {
 		@apply bg-gray-500 hover:bg-gray-400 text-white font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-500 rounded;
 	}
+
+	div.chapter-buttons {
+		@apply mx-auto lg:w-4/6 mb-3 flex justify-end;
+	}
 }

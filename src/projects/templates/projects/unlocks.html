@@ -1,21 +1,25 @@
 {% load get_mongo_id %}
 
-<div class="mx-auto lg:w-4/6 pt-3">
-		{% if chapter.unlock_type  == 'button' %}
-			{% if chapter_finished  %}
-				{% include './unlocks/next_button.html' %}
-			{% else %}
-				{% include './unlocks/unlock_button.html' %}
-			{% endif %}
+{% if chapter.unlock_type  == 'button' %}
+	<div class="chapter-buttons">
+		{% if chapter_finished  %}
+			{% include './unlocks/next_button.html' %}
+		{% else %}
+			{% include './unlocks/unlock_button.html' %}
 		{% endif %}
+	</div>
+{% endif %}
 
-		{% if chapter.unlock_type  == 'blockly' %}
-			{% include './unlocks/blockly.html' %}
-			{% if chapter_finished  %}
-				{% include './unlocks/next_button.html' %}
-			{% endif %}
-		{% endif %}
-</div>
+{% if chapter.unlock_type  == 'blockly' %}
+	<div>
+		{% include './unlocks/blockly.html' %}
+	</div>
+	{% if chapter_finished  %}
+		<div class="chapter-buttons">
+			{% include './unlocks/next_button.html' %}
+		</div>
+	{% endif %}
+{% endif %}
 
 <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/atom-one-dark.min.css">
 <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>

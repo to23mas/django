@@ -1,7 +1,6 @@
 @layer base {
 	div.chapter_block {
-		@apply text-block p-6 bg-white border border-gray-200 rounded-lg shadow mt-10;
+		@apply text-block p-6 bg-white border border-gray-200 rounded-lg shadow;
 	}
-
 }
 

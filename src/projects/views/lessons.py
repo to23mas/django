@@ -17,6 +17,9 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 	"""display lesson"""
 	username = request.user.username #type: ignore
 	project = get_project_by_id(project_id, course)
+	messages.warning(request, 'Lekce ještě není odemčena!')
+	messages.error(request, 'Lekce ještě není odemčena!')
+	messages.success(request, 'Lekce ještě není odemčena!')
 	if project == None:
 		messages.error(request, 'pokus o vstup k neexistujícímu projektu!')
 		return redirect('projects:overview', course=course, sort_type='all')

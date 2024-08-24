@@ -64,6 +64,10 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 	chapter = get_chapter(chapter_id, lesson_id, course_db, project.database)
 	if chapter == None: return redirect('projects:overview', course=course_db, sort_type='all')
 
+	if chapter.unlock_type != 'button':
+		return redirect('projects:overview', course=course_db, sort_type='all')
+
+
 	if not is_chapter_open(username, course_db, project_id, lesson_id, chapter_id): #type: ignore
 		if (is_chapter_done(username, course_db, chapter.id)):
 			messages.warning(request, 'Kapitola je již splněna')

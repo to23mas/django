@@ -82,14 +82,16 @@ async function sendPythonCodeToServer(code: string) {
 			})
 		});
 		const result = await response.json();
-		console.log(result);
-		// # TODO implement redirect
 		if (result.status == 'error') {
 			addBlocklyFlashMessage(`${result.message}`);
 		} else {
-			addBlocklyFlashMessage('Správně.', true);
+			if (result.redirect) {
+				window.location.href = result.url;
+			} else {
+				addBlocklyFlashMessage('Správně.', true);
+			}
 		}
 	} catch (error) {
-		alert('Problém na straně serveru. zkuste tuto akci prosím později.');
+		alert('Problém na straně serveru. Zkuste tuto akci prosím později.');
 	}
 }
