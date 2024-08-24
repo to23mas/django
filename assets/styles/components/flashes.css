@@ -18,5 +18,45 @@
 	.blockly-error-flash-message-button {
 		@apply ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8;
 	}
+
+	div.fl-placement {
+		@apply absolute z-50 right-0 pt-1 mt-1;
+	}
+
+	div.fl-warning {
+		@apply text-orange-800 bg-orange-50;
+	}
+
+	div.fl-error {
+		@apply text-red-800 bg-red-50;
+	}
+
+	div.fl-success {
+		@apply text-emerald-800 bg-emerald-50;
+	}
+
+	div.fl {
+		@apply flex items-center p-4 mb-4 rounded-lg;
+	}
+
+	div.fl-text {
+		@apply ms-3 text-sm font-medium;
+	}
+
+	button.fl-button {
+		@apply ms-auto -mx-1.5 -my-1.5 rounded-lg focus:ring-2 p-1.5 inline-flex items-center justify-center h-8 w-8;
+	}
+
+	button.fl-button-s {
+		@apply bg-emerald-50 text-emerald-500 focus:ring-emerald-400 hover:bg-emerald-200;
+	}
+
+	button.fl-button-w {
+		@apply bg-orange-50 text-orange-500 focus:ring-orange-400 hover:bg-orange-200;
+	}
+
+	button.fl-button-e {
+		@apply bg-red-50 text-red-500 focus:ring-red-400 hover:bg-red-200;
+	}
 }
 
