@@ -88,9 +88,10 @@ def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectD
 	next_chapter = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
 	if next_chapter != None:
 		unlock_lesson(username, course_db, chapter.unlock_id)
-		if next_chapter.is_last:
+		if chapter.is_last_in_lesson:
 			finish_lesson(username, course_db, chapter.lesson_id)
 	else:
+		#last chapter in project
 		finish_chapter(username, course_db, chapter.id)
 		## probably unlock next project
 		return 'success'

@@ -10,5 +10,5 @@ class ChapterData():
 	unlock_type: str
 	unlock_id: int
 	unlocker_id: int
-	is_last: bool
+	is_last_in_lesson: bool
 	blocks: List[Dict]

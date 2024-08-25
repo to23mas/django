@@ -23,7 +23,6 @@ def enroll(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
 	username = request.user.username #type: ignore
 	course = get_course_by_id(course_id)
-	messages.success(request, 'Kurz byl zapsán')
 	if course == None: return  redirect('overview')
 
 	if (enroll_course(username, course.database)):

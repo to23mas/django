@@ -3,7 +3,7 @@ from domain.Mongo import MongoStorage
 from domain.data.chapters.ChapterStorage import find_chapters
 from domain.data.content_progress.enum.ContentProgressState import ContentProgressState
 from domain.data.courses.CourseStorage import get_course
-from domain.data.lessons.LessonStorage import find_lessons
+from domain.data.lessons.LessonStorage import find_lessons, get_lesson
 from domain.data.projects.ProjectStorage import find_projects
 from domain.data.tests.TestStorage import find_tests
 from domain.data.tests.enum.TestState import TestState
@@ -82,26 +82,25 @@ def unlock_project(username: str, project_id: int, unlock: bool) -> None:
             '$pull': {f'projects.{to_rem}': project_id}
         })
 
-
-def unlock_lesson(username: str, course: str, project_no: str, lesson_no: str) -> None:
-    ms = MongoStorage()
-
-    ms.database[course].progress.update_one(
-        {'_id': username},
-        {'$push': {f'lessons.{str(project_no)}.open': int(lesson_no)},
-         '$pull': {f'lessons.{str(project_no)}.lock': int(lesson_no)}})
+def is_chapter(username: str, db: str, chapter_id: int, target: str) -> bool:
+	return MongoStorage().database[db].progress.count_documents({
+		'_id': username,
+		f'chapters.{chapter_id}': target,
+	}) == 1
 
 
 def unlock_chapter(username: str, db: str, chapter_id: int) -> None:
-	MongoStorage().database[db].progress.update_one(
-		{'_id': username},
-		{'$set': {f'chapters.{chapter_id}': 'open'}})
+	if (is_chapter(username, db, chapter_id, 'lock')):
+		MongoStorage().database[db].progress.update_one(
+			{'_id': username},
+			{'$set': {f'chapters.{chapter_id}': 'open'}})
 
 
 def finish_chapter(username: str, db: str, chapter_id: int) -> None:
-	MongoStorage().database[db].progress.update_one(
-		{'_id': username},
-		{'$set': { f'chapters.{chapter_id}': 'done' }})
+	if (is_chapter(username, db, chapter_id, 'open')):
+		MongoStorage().database[db].progress.update_one(
+			{'_id': username},
+			{'$set': { f'chapters.{chapter_id}': 'done' }})
 
 
 def find_tests_progress(db: str, username: str) -> dict | None:
@@ -151,12 +150,22 @@ def is_chapter_open(username: str, db: str, project_id: int, lesson_id: int, cha
 		f'chapters.{chapter_id}': 'open',
 	}) == 1
 
+
+def is_lesson(username: str, db: str, lesson_id: int, target: str) -> bool:
+	return MongoStorage().database[db].progress.count_documents({
+		'_id': username,
+		f'lessons.{lesson_id}': target,
+	}) == 1
+
+
 def unlock_lesson(username: str, db: str, lesson_id: int) -> None:
-	MongoStorage().database[db].progress.update_one({
-		'_id': username
-	}, {'$set': {f'lessons.{lesson_id}': 'open'}})
+	if (is_lesson(username, db, lesson_id, 'lock')):
+		MongoStorage().database[db].progress.update_one({
+			'_id': username
+		}, {'$set': {f'lessons.{lesson_id}': 'open'}})
 
 
 def finish_lesson(username: str, db: str, lesson_id: int) -> None:
-    MongoStorage().database[db].progress.update_one(
-        {'_id': username}, {'$set': {f'lessons.{lesson_id}': 'done'}})
+	if (is_lesson(username, db, lesson_id, 'open')):
+		MongoStorage().database[db].progress.update_one(
+			{'_id': username}, {'$set': {f'lessons.{lesson_id}': 'done'}})

@@ -80,10 +80,11 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 	next_chapter = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
 	if next_chapter != None:
 		unlock_lesson(username, course_db, chapter.unlock_id)
-		if next_chapter.is_last:
+		if chapter.is_last_in_lesson:
 			messages.success(request, 'Lekce ůspěšně splněna.')
 			finish_lesson(username, course_db, chapter.lesson_id)
 	else:
+		#last chapter in project
 		finish_chapter(username, course_db, chapter.id)
 		## probably unlock next project
 		return redirect('projects:overview', course=course_db, sort_type='all')
