@@ -1,7 +1,7 @@
 {% load get_mongo_id %}
 
 {% if chapter.unlock_type  == 'button' %}
-	<div class="chapter-buttons">
+	<div class="chapter-buttons mx-auto md:w-4/6">
 		{% if chapter_finished  %}
 			{% include './unlocks/next_button.html' %}
 		{% else %}
@@ -15,7 +15,7 @@
 		{% include './unlocks/blockly.html' %}
 	</div>
 	{% if chapter_finished  %}
-		<div class="chapter-buttons">
+		<div class="chapter-buttons mx-auto md:w-4/6">
 			{% include './unlocks/next_button.html' %}
 		</div>
 	{% endif %}
