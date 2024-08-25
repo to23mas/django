@@ -18,14 +18,13 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-	const buttons = document.querySelectorAll('.fl-button');
-	buttons.forEach(button => {
-		button.addEventListener('click', function() {
-			const targetId = button.getAttribute('data-dismiss-target');
-			const targetElement = document.getElementById(targetId.substring(1));
-			if (targetElement) { targetElement.remove(); }
+	document.addEventListener('DOMContentLoaded', function() {
+		document.querySelectorAll('.fl-button').forEach(button => {
+			button.addEventListener('click', function() {
+				const targetId = button.getAttribute('data-dismiss-target');
+				const targetElement = document.getElementById(targetId.substring(1));
+				if (targetElement) { targetElement.remove(); }
+			});
 		});
 	});
-});
 </script>

@@ -3,6 +3,10 @@ import { pythonGenerator } from 'blockly/python';
 import { addBlocklyFlashMessage, clearBlocklyFlashMessage } from './flash_messages'
 
 document.addEventListener('DOMContentLoaded', () => {
+
+	const blocklyContainer = document.getElementById('blocklyDiv');
+	if (! blocklyContainer) { return; }
+
 	const workspace = Blockly.inject('blocklyDiv', {
 		toolbox: (window as any).blocklyToolboxConfig,
 		grid: { spacing: 20, length: 2, snap: true },
