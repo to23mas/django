@@ -1,7 +1,7 @@
 {% load static %}
 {% load tags %}
 
-{% if lesson_chapters.count > 1 %}
+{% if lesson_chapters|length > 1 %}
 <div class="">
 	<button class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-200 rounded-full px-5 py-2.5 focus:outline-none m-5"
 		type="button" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation">
@@ -31,7 +31,7 @@
 					</a>
 					{% elif chapter_progress == 'open' %}
 					<a
-						href="{% url 'projects:lesson' course=course_name project_id=project_id lesson_id=lesson.id chapter_id=forloop.counter %}"
+						href="{% url 'projects:lesson' course=course_name project_id=project_id lesson_id=lesson.id chapter_id=chapter.id %}"
 						class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_id == chapter.id %} bg-blue-100 {% endif %}">
 						<i class="fa-solid fa-lock-open"></i>
 						<span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.title }}</span>

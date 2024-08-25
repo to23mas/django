@@ -54,7 +54,6 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 	lesson_id = int(str(request.POST.get('lesson_id')))
 	project_id = int(str(request.POST.get('project_id')))
 	course_db = str(request.POST.get('course'))
-	# TODO check if the chapter unlock type is button (blockly and tests should have own methods)
 
 	if request.method != 'POST':
 		return redirect('courses:overview')
