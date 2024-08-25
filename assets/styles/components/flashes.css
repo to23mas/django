@@ -20,7 +20,7 @@
 	}
 
 	div.fl-placement {
-		@apply absolute z-50 right-0 pt-1 mt-1;
+		@apply pt-1 mt-1 md:w-4/6 mx-auto;
 	}
 
 	div.fl-warning {
@@ -37,6 +37,10 @@
 
 	div.fl {
 		@apply flex items-center p-4 mb-4 rounded-lg;
+	}
+
+	div.fl-hidden {
+		@apply opacity-0 max-h-0 overflow-hidden;
 	}
 
 	div.fl-text {

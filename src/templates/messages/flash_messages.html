@@ -1,22 +1,13 @@
-<div class="fl-placement messages">
+<div class="fl-placement messages border-gray-200">
 	{% for message in messages %}
-	<div id="alert-{{forloop.counter}}" class="fl
-		{% if message.tags == 'warning' %} fl-warning {% endif %}
-		{% if message.tags == 'error' %} fl-error {% endif %}
-		{% if message.tags == 'success' %} fl-success {% endif %}
-		" role="{{message.tags}}">
+	<div id="alert-{{forloop.counter}}" class="fl {% if message.tags == 'warning' %} fl-warning {% endif %} {% if message.tags == 'error' %} fl-error {% endif %} {% if message.tags == 'success' %} fl-success {% endif %} " role="{{message.tags}}">
 		<svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
 			<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
 		</svg>
 		<div class="fl-text mr-6">
 			{{message}}
 		</div>
-		<button type="button"
-			class="fl-button
-			{% if message.tags == 'warning' %} fl-button-w {% endif %}
-			{% if message.tags == 'error' %} fl-button-e {% endif %}
-			{% if message.tags == 'success' %} fl-button-s {% endif %}
-			" data-dismiss-target="#alert-{{forloop.counter}}" aria-label="Close">
+		<button type="button" class="fl-button {% if message.tags == 'warning' %} fl-button-w {% endif %} {% if message.tags == 'error' %} fl-button-e {% endif %} {% if message.tags == 'success' %} fl-button-s {% endif %} " data-dismiss-target="#alert-{{forloop.counter}}" aria-label="Close">
 			<span class="sr-only">Close</span>
 			<svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
 				<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -25,3 +16,16 @@
 	</div>
 	{% endfor %}
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	const buttons = document.querySelectorAll('.fl-button');
+	buttons.forEach(button => {
+		button.addEventListener('click', function() {
+			const targetId = button.getAttribute('data-dismiss-target');
+			const targetElement = document.getElementById(targetId.substring(1));
+			if (targetElement) { targetElement.remove(); }
+		});
+	});
+});
+</script>

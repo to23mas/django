@@ -10,6 +10,9 @@ from domain.data.progress.ProgressStorage import enroll_course
 def overview(request: HttpRequest) -> HttpResponse:
 	"""list all courses"""
 	username = request.user.username #type: ignore
+	messages.success(request, 'Kurz byl zapsán')
+	messages.success(request, 'Kurz byl zapsán')
+	messages.success(request, 'Kurz byl zapsán')
 
 	return render(request, 'courses/overview.html', {
 		'courses': find_courses(),
@@ -23,6 +26,7 @@ def enroll(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
 	username = request.user.username #type: ignore
 	course = get_course_by_id(course_id)
+	messages.success(request, 'Kurz byl zapsán')
 	if course == None: return  redirect('overview')
 
 	if (enroll_course(username, course.database)):
