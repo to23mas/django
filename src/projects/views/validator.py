@@ -75,7 +75,6 @@ def validate_python_code_print_safe(code):
 	return output
 
 def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectData, chapter: ChapterData) -> str:
-
 	if chapter.unlock_type != 'blockly':
 		return 'error'
 
@@ -87,15 +86,19 @@ def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectD
 
 	next_chapter = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
 	if next_chapter != None:
-		unlock_lesson(username, course_db, chapter.unlock_id)
-		if chapter.is_last_in_lesson:
-			finish_lesson(username, course_db, chapter.lesson_id)
-	else:
+		unlock_lesson(username, course_db, next_chapter.lesson_id)
+		unlock_chapter(username, course_db, next_chapter.id)
+
+	finish_chapter(username, course_db, chapter.id)
+
+	if chapter.is_last_in_lesson:
+		finish_lesson(username, course_db, chapter.lesson_id)
+
+	if next_chapter == None:
 		#last chapter in project
-		finish_chapter(username, course_db, chapter.id)
+		# finish_project()
+		# unlock_project()
 		## probably unlock next project
 		return 'success'
 
-	finish_chapter(username, course_db, chapter.id)
-	unlock_chapter(username, course_db, chapter.unlock_id)
 	return 'success'

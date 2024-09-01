@@ -2,5 +2,17 @@
 	div.chapter_block {
 		@apply text-block p-6 bg-white border border-gray-200 rounded-lg shadow;
 	}
+
+	span.filename {
+		@apply bg-codeColor mr-10 pb-1 pt-3 pl-4 pr-4 rounded-t-xl text-gray-300;
+	}
+
+	div.filename {
+		@apply flex justify-end;
+	}
+
+	span.bash-prompt {
+		@apply text-white mr-8;
+	}
 }
 

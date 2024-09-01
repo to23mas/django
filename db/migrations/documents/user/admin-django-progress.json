@@ -1,48 +1,50 @@
 {
-	"_id": "admin",
-	"projects": {
-		"1": "open",
-		"2": "done",
-		"3": "lock",
-		"4": "lock"
-	},
-	"lessons": {
-		"1": "open",
-		"2": "done",
-		"3": "lock",
-		"4": "lock"
-	},
-	"chapters": {
-		"1": "open",
-		"2": "done",
-		"3": "lock",
-		"4": "lock"
-	},
-	"tests": [{
-			"test_id": 1,
-			"attempts": 0,
-			"state": "finish",
-			"score": []
-		},{
-			"test_id": 2,
-			"attempts": 2,
-			"state": "fail",
-			"score": []
-		},{
-			"test_id": 3,
-			"attempts": 0,
-			"state": "open",
-			"score": []
-		},{
-			"test_id": 4,
-			"attempts": 0,
-			"state": "success",
-			"score": []
-		},{
-			"test_id": 5,
-			"attempts": 0,
-			"state": "close",
-			"score": []
-		}
-	]
+  "_id": "admin",
+  "projects": {
+    "1": "open"
+  },
+  "lessons": {
+    "1": "done",
+    "2": "done",
+    "3": "open",
+    "4": "lock"
+  },
+  "chapters": {
+    "1": "done",
+    "2": "done",
+    "3": "open",
+    "4": "lock"
+  },
+  "tests": [
+    {
+      "test_id": 1,
+      "attempts": 3,
+      "state": "close",
+      "score": []
+    },
+    {
+      "test_id": 2,
+      "attempts": 3,
+      "state": "close",
+      "score": []
+    },
+    {
+      "test_id": 3,
+      "attempts": 3,
+      "state": "close",
+      "score": []
+    },
+    {
+      "test_id": 4,
+      "attempts": 3,
+      "state": "close",
+      "score": []
+    },
+    {
+      "test_id": 5,
+      "attempts": 3,
+      "state": "close",
+      "score": []
+    }
+  ]
 }

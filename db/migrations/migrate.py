@@ -7,7 +7,7 @@ def list_files(directory):
 	file_list = []
 	for root, _, files in walk(directory):
 		for filename in files:
-			file_list.append(path.join(root, filename))
+			fileChannels_list.append(path.join(root, filename))
 	return file_list
 
 
