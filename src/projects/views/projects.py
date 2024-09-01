@@ -1,10 +1,17 @@
+import json
+from typing import Dict, List
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+from domain.data.chapters.ChapterDataCollection import ChapterDataCollection
+from domain.data.chapters.ChapterStorage import find_chapters
 from domain.data.content_progress.ContentProgressStorage import get_content_progress
+from domain.data.lessons.LessonDataCollection import LessonDataCollection
 from domain.data.lessons.LessonStorage import find_lessons
+from domain.data.progress.ProgressStorage import get_user_progress_by_course
+from domain.data.projects.ProjectData import ProjectData
 from domain.data.projects.ProjectStorage import find_projects, find_projects_by_course_and_ids, get_project_by_id
 
 
@@ -47,10 +54,68 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 		messages.warning(request, 'Projekt ještě není odemčen!')
 		return redirect('projects:overview', course=course, sort_type='all')
 
+	user_progress = get_user_progress_by_course(username, course)
+	chapters = find_chapters(course, project.database)
 	lessons = find_lessons(course, project.database)
+	ch, ch_edges = get_vis_chapters(chapters, user_progress, course, project)
+	l, l_edges = get_vis_lessons(lessons, user_progress)
+
 	return render(request, 'projects/detail.html', {
 		'project': project,
 		'lessons': lessons,
+		'chapters': chapters,
 		'course_name': course,
 		'username': username,
+		'ledges': l_edges,
+		'chedges': ch_edges,
+		'ch': ch,
+		'l': l,
 	})
+
+def get_vis_lessons(lessons: LessonDataCollection, progress: Dict):
+	ch = []
+	edges = []
+	for lesson in lessons:
+		for to in lesson.to:
+			edges.append({'from': lesson.id, 'to': to})
+
+		lesson_status = progress['lessons'][str(lesson.id)]
+		color = '#ffffff'
+		match(lesson_status):
+			case 'lock': color = '#cccccc'
+			case 'done': color = '#34eb40'
+			case 'open': color = '#34c6eb'
+
+		ch.append({
+			'id': lesson.id,
+			'label': lesson.title,
+			'color': color
+		})
+
+	return (ch, edges)
+
+def get_vis_chapters(chapters: ChapterDataCollection, progress: Dict, course: str, project: ProjectData):
+	ch = []
+	edges = []
+	for chapter in chapters:
+		edges.append({'from': f'c-{chapter.id}', 'to': chapter.lesson_id})
+		chapter_status = progress['chapters'][str(chapter.id)]
+		color = '#ffffff'
+		match(chapter_status):
+			case 'lock': color = '#cccccc'
+			case 'done': color = '#34eb40'
+			case 'open': color = '#34c6eb'
+
+		ch.append({
+			'id': f'c-{chapter.id}',
+			'label': chapter.title,
+			'url': '#' if chapter_status == 'lock' else reverse('projects:lesson', kwargs={
+					'course': course,
+					'project_id': project.id,
+					'lesson_id': chapter.lesson_id,
+					'chapter_id': chapter.id}),
+			'color': color
+		})
+
+	return (ch, edges)
+

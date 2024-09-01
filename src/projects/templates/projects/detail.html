@@ -16,18 +16,24 @@
 
 	// NODES
 	let nodes_parsed = [];
-	{% for lesson in lessons %}
-	{% get_lesson_status course_name lesson.id username as lesson_status %}
+	{% for chapter in ch %}
+		nodes_parsed.push({
+			shape: 'ellipse',
+			id: '{{chapter.id}}',
+			label: '{{chapter.label}}',
+			url: '{{chapter.url}}',
+			color: {border: '{{chapter.color}}', background: '#ffffff'},
+			borderWidth: 3
+		});
+	{% endfor %}
 
+	{% for lesson in l %}
 	nodes_parsed.push({
-		id: {{ lesson.id }},
-		label: '{{ lesson.title }}',
-		url:  {% if lesson_status == 'open' or lesson_status == 'done' %}
-						"{% url 'projects:lesson' course=course_name project_id=project.id lesson_id=lesson.id chapter_id=666 %}"
-					{% else %}
-						'#'
-					{% endif %},
-		color: {% if lesson_status == 'done' %} '#34eb40' {% elif lesson_status == 'open' %} '#34c6eb' {% else %} '#cccccc' {%endif %}
+		id: '{{lesson.id}}',
+		shape: 'box',
+		label: '{{lesson.label}}',
+		color: '{{lesson.color}}',
+		url: '#'
 	});
 	{% endfor %}
 
@@ -35,10 +41,21 @@
 
 	// EDGES
 	let edges_parsed = [];
-	{% for lesson in lessons %}
-		{% for to in lesson.to %}
-			edges_parsed.push({ from: {{ lesson.id }} , to: {{ to }}});
-		{% endfor %}
+
+	{% for edge in ledges %}
+		edges_parsed.push({
+			from: {{edge.from}},
+			to: {{ edge.to }},
+			dashes: true,
+			arrows: {to: {enabled: true}}
+	});
+	{% endfor %}
+
+	{% for edge in chedges %}
+		edges_parsed.push({
+			from: '{{ edge.from }}',
+			to: {{ edge.to }}
+		});
 	{% endfor %}
 
 	 var edges = new vis.DataSet(edges_parsed);
@@ -48,7 +65,6 @@
 		 {nodes: nodes, edges: edges},
 		 {
 			edges: {
-					arrows: { to: {enabled: true} },
 					color: { color: '#cccccc' },
 					chosen: false,
 			 },
@@ -75,9 +91,31 @@
 			}
 		}});
 
-	// moving all items upwards
-	//const canvas = network.canvas.frame.canvas;
-	//canvas.style.top = parseInt(canvas.style.top || 0) - 20 + "%";
+	const originalColors = new Map(nodes_parsed.map(node => [node.id, node.color]));
+	network.on('click', function (params) {
+		if (params.nodes.length > 0) {
+			const selectedNodeId = params.nodes[0];
+			const connectedNodes = network.getConnectedNodes(selectedNodeId);
+			const allNodes = nodes.get();
+
+			// Gray out all nodes not connected to the clicked node
+			nodes.update(allNodes.map(node => {
+				if (connectedNodes.includes(node.id) || node.id === selectedNodeId) {
+					// Retain original color for connected nodes and the clicked node
+					return { id: node.id, color: originalColors.get(node.id) };
+				} else {
+					// Gray out non-connected nodes
+					return { id: node.id, color: { background: '#D3D3D3', border: '#A9A9A9' } };
+				}
+			}));
+		} else {
+			// Reset all nodes to their original colors if no node is clicked
+			nodes.update(nodes.get().map(node => ({
+				id: node.id,
+				color: originalColors.get(node.id)
+			})));
+		}
+	});
 	</script>
 
 	{% endblock %}
