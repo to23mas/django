@@ -108,7 +108,10 @@ def get_vis_chapters(chapters: ChapterDataCollection, progress: Dict, course: st
 
 		ch.append({
 			'id': f'c-{chapter.id}',
+			'chid': chapter.id,
+			'lid': chapter.lesson_id,
 			'label': chapter.title,
+			'status': chapter_status,
 			'url': '#' if chapter_status == 'lock' else reverse('projects:lesson', kwargs={
 					'course': course,
 					'project_id': project.id,

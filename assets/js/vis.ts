@@ -31,7 +31,7 @@ export function initVisNetwork() {
 					shape: 'ellipse'
 				},
 				layout: {
-					randomSeed: 2
+					randomSeed: 3
 				},
 			}
 		);
