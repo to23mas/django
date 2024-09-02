@@ -22,6 +22,7 @@
     "@pyscript/core": "^0.4.5",
     "blockly": "^11.1.1",
     "flowbite": "^2.3.0",
-    "highlight.js": "^11.10.0"
+    "highlight.js": "^11.10.0",
+    "vis-network": "^9.1.9"
   }
 }

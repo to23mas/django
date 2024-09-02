@@ -10,10 +10,7 @@
 	</p>
 	<div style="height: 50vh; margin-left: auto; margin-right: auto;" class="cursor-grabbing border mt-10 w-3/4" id="projectNetwork"></div>
 
-
-	<script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 	<script type="text/javascript">
-
 	// NODES
 	let nodes_parsed = [];
 	{% for chapter in ch %}
@@ -26,31 +23,25 @@
 			borderWidth: 3
 		});
 	{% endfor %}
-
 	{% for lesson in l %}
-	nodes_parsed.push({
-		id: '{{lesson.id}}',
-		shape: 'box',
-		label: '{{lesson.label}}',
-		color: '{{lesson.color}}',
-		url: '#'
-	});
+		nodes_parsed.push({
+			id: '{{lesson.id}}',
+			shape: 'box',
+			label: '{{lesson.label}}',
+			color: '{{lesson.color}}',
+			url: '#'
+		});
 	{% endfor %}
 
-	var nodes = new vis.DataSet(nodes_parsed);
-
-	// EDGES
 	let edges_parsed = [];
-
 	{% for edge in ledges %}
 		edges_parsed.push({
 			from: {{edge.from}},
-			to: {{ edge.to }},
+			to: {{edge.to}},
 			dashes: true,
 			arrows: {to: {enabled: true}}
-	});
+		});
 	{% endfor %}
-
 	{% for edge in chedges %}
 		edges_parsed.push({
 			from: '{{ edge.from }}',
@@ -58,64 +49,10 @@
 		});
 	{% endfor %}
 
-	 var edges = new vis.DataSet(edges_parsed);
-
-	 var network = new vis.Network(
-		 document.getElementById("projectNetwork"),
-		 {nodes: nodes, edges: edges},
-		 {
-			edges: {
-					color: { color: '#cccccc' },
-					chosen: false,
-			 },
-			nodes: {
-				 font: {
-					 size: 20
-				 },
-				 fixed: {
-					 x: true,
-					 y: true
-				 },
-				 shape: 'ellipse'
-			 },
-			layout: {
-				 randomSeed: 2
-			},
-		 }
-	 );
-	 network.on("selectNode", function (params) {
-		 if (params.nodes.length === 1) {
-			var node = nodes.get(params.nodes[0]);
-			if (node.url !== '#') {
-					window.location.href = node.url;
-			}
-		}});
-
-	const originalColors = new Map(nodes_parsed.map(node => [node.id, node.color]));
-	network.on('click', function (params) {
-		if (params.nodes.length > 0) {
-			const selectedNodeId = params.nodes[0];
-			const connectedNodes = network.getConnectedNodes(selectedNodeId);
-			const allNodes = nodes.get();
-
-			// Gray out all nodes not connected to the clicked node
-			nodes.update(allNodes.map(node => {
-				if (connectedNodes.includes(node.id) || node.id === selectedNodeId) {
-					// Retain original color for connected nodes and the clicked node
-					return { id: node.id, color: originalColors.get(node.id) };
-				} else {
-					// Gray out non-connected nodes
-					return { id: node.id, color: { background: '#D3D3D3', border: '#A9A9A9' } };
-				}
-			}));
-		} else {
-			// Reset all nodes to their original colors if no node is clicked
-			nodes.update(nodes.get().map(node => ({
-				id: node.id,
-				color: originalColors.get(node.id)
-			})));
-		}
-	});
+	window.graphData = {
+		nodes: nodes_parsed,
+		edges: edges_parsed
+	};
 	</script>
 
 	{% endblock %}
