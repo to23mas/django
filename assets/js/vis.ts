@@ -2,7 +2,8 @@ import { Network, DataSet } from 'vis-network/standalone/esm/vis-network';
 
 export function initVisNetwork() {
 	document.addEventListener('DOMContentLoaded', () => {
-		const container = document.getElementById('network');
+		const container = document.getElementById('projectNetwork');
+		if (! container) {return;}
 
 		const parsedNodes = window.graphData.nodes;
 		const parsedEdges = window.graphData.edges;
@@ -42,6 +43,8 @@ export function initVisNetwork() {
 					window.location.href = node.url;
 				}
 		}});
+
+
 
 		const originalColors = new Map(parsedNodes.map(node => [node.id, node.color]));
 		network.on('click', function (params) {
