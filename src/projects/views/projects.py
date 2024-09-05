@@ -32,7 +32,7 @@ def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
 
 	return render(request, 'projects/overview.html', {
 		'projects': projects_collection,
-		'course_name': course,
+		'course': course,
 		'username': username
 	})
 
@@ -64,7 +64,7 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 		'project': project,
 		'lessons': lessons,
 		'chapters': chapters,
-		'course_name': course,
+		'course': course,
 		'username': username,
 		'ledges': l_edges,
 		'chedges': ch_edges,

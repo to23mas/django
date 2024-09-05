@@ -7,6 +7,8 @@ from domain.data.chapters.ChapterDataSerializer import ChapterDataSerializer
 from domain.data.chapters.ChapterStorage import create_chapter, find_chapters
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
 from domain.data.courses.CourseStorage import create_course, get_course_by_id
+from domain.data.demos.DemoDataSerializer import DemoDataSerializer
+from domain.data.demos.DemoStorage import create_demo, find_demos
 from domain.data.lessons.LessonDataSerializer import LessonDataSerializer
 from domain.data.lessons.LessonStorage import create_lesson, find_lessons
 from domain.data.projects.ProjectDataSerializer import ProjectDataSerializer
@@ -58,6 +60,13 @@ def download_json(course_id: str) -> Dict | None:
 			b_dict = BlocklyDataSerializer.to_dict(b)
 			json_result['blockly'].append(b_dict)
 
+	demos = find_demos(course.database)
+	json_result['demos'] = [] #type: ignore
+	if demos != None:
+		for d in demos:
+			d_dict = DemoDataSerializer.to_dict(d)
+			json_result['demos'].append(d_dict)
+
 	return json_result
 
 
@@ -90,6 +99,10 @@ def upload_from_json(file_data: Dict) -> Exception | None:
 				blockly_data = BlocklyDataSerializer.from_dict(blockly)
 				create_blockly(blockly_data, course_data.database)
 
+			for demo in file_data['demos']:
+				demo_data = DemoDataSerializer.from_dict(demo)
+				create_demo(demo_data, course_data.database)
+
 			session.commit_transaction()
 			return None
 		except Exception as e:
@@ -108,4 +121,5 @@ def delete_all(course_id: str) -> None:
 
 	db.database[course.database].projects.delete_many({})
 	db.database[course.database].tests.delete_many({})
+	db.database[course.database].demos.delete_many({})
 	db.database.courses.delete_one({'_id': int(course_id)})

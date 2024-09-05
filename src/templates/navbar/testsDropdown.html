@@ -10,7 +10,7 @@
     <li class="hover:bg-gray-100">
       <div class="grid grid-cols-5">
         <div class="grid col-span-4">
-          <a href="{% url 'tests:overview' course=course_name sort_type='all' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Všechny testy</a>
+          <a href="{% url 'tests:overview' course=course sort_type='all' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Všechny testy</a>
         </div>
         <div class="py-1.5">
         </div>
@@ -18,7 +18,7 @@
     <li class="hover:bg-gray-100">
       <div class="grid grid-cols-5">
         <div class="grid col-span-4">
-          <a href="{% url 'tests:overview' course=course_name sort_type='open' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odemčené</a>
+          <a href="{% url 'tests:overview' course=course sort_type='open' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Odemčené</a>
         </div>
         <div class="py-1.5">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">

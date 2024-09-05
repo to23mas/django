@@ -5,3 +5,4 @@ from .chapters import *
 from .tests import *
 from .blocks import *
 from .blockly import *
+from .demos import *

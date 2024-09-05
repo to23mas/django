@@ -13,6 +13,8 @@ urlpatterns = [
 	path('projects/', include('projects.urls')),
 	#tests
 	path('tests/', include('tests.urls')),
+	#demos
+	path('demos/', include('demos.urls')),
 	#users
 	path('users/', include('users.urls')),
 	path('logout/', LogoutView.as_view(), name='logout'),

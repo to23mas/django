@@ -13,7 +13,7 @@
 <div class="flex justify-between items-center mx-auto md:w-4/6 {% if not chapter_finished %} mb-6{% endif %}">
 	<h2 class="text-4xl font-extrabold">{{ chapter.title }}</h2>
 	<div>
-		<a href="{% url 'projects:detail' course=course_name project_id=project.id %}" class="text-blue-500 hover:underline">Zpět na seznam lekcí</a>
+		<a href="{% url 'projects:detail' course=course project_id=project.id %}" class="text-blue-500 hover:underline">Zpět na seznam lekcí</a>
 	</div>
 </div>
 {% if chapter_finished  %}

@@ -3,6 +3,7 @@ from domain.Mongo import MongoStorage
 from domain.data.chapters.ChapterStorage import find_chapters
 from domain.data.content_progress.enum.ContentProgressState import ContentProgressState
 from domain.data.courses.CourseStorage import get_course
+from domain.data.demos.DemoStorage import find_demos
 from domain.data.lessons.LessonStorage import find_lessons, get_lesson
 from domain.data.projects.ProjectStorage import find_projects
 from domain.data.tests.TestStorage import find_tests
@@ -21,6 +22,7 @@ def enroll_course(username: str, db: str) -> bool:
 		"projects": {},
 		"lessons": {},
 		"chapters": {},
+		"demos": {},
 		"tests": [],
 	}
 
@@ -53,34 +55,19 @@ def enroll_course(username: str, db: str) -> bool:
 				"score": [],
 			})
 
+	demos = find_demos(course.database)
+	demo_idx = 0
+	if demos != None:
+		for demo in demos:
+			result_document['demos'][str(demo.id)] = ContentProgressState.OPEN.value if demo_idx == 0 else ContentProgressState.LOCK.value
+			demo_idx += 1
+
 	try:
 		MongoStorage().database[course.database].progress.insert_one(result_document)
 		return True
 	except:
 		return False
 
-
-def get_lesson_progress(username: str, project_no: int, course: str) -> dict | None:
-    ms = MongoStorage()
-    return ms.database[course].progress.find_one(
-        {"_id": username, f'lessons.{str(project_no)}': {'$exists': True}},
-        {'lessons': 1})
-
-
-def unlock_project(username: str, project_id: int, unlock: bool) -> None:
-    """ if not unlock -> complete """
-    ms = MongoStorage()
-
-    to_add = 'open' if unlock else 'done'
-    to_rem = 'lock' if unlock else 'open'
-
-    ms.database.progress.update_one(
-        {
-            '_id': username
-        },{
-            '$push': {f'projects.{to_add}': project_id},
-            '$pull': {f'projects.{to_rem}': project_id}
-        })
 
 def is_chapter(username: str, db: str, chapter_id: int, target: str) -> bool:
 	return MongoStorage().database[db].progress.count_documents({
@@ -109,11 +96,12 @@ def find_tests_progress(db: str, username: str) -> dict | None:
 	if result == None: return None
 	return result['tests']
 
-def get_test_progress(course: str, username: str, test_id: str) -> dict | None:
-    """return user's all tests progress"""
-    result = MongoStorage().database[course].progress.find_one({'_id': username}, {'tests': 1})
-    if result == None: return None
-    return result['tests']
+
+def find_demos_progress(db: str, username: str) -> dict | None:
+	"""return user's all tests progress"""
+	result = MongoStorage().database[db].progress.find_one({'_id': username}, {'demos': 1})
+	if result == None: return None
+	return result['demos']
 
 
 def find_available_tests(course: str, username: str) -> list | None:
@@ -129,10 +117,23 @@ def find_available_tests(course: str, username: str) -> list | None:
 	return available_tests_nos
 
 
+def find_available_demos(course: str, username: str) -> list[int] | None:
+	all_demos = find_demos_progress(course, username)
+	if all_demos == None: return None
+
+	available_demo_id = []
+	for demo_id in all_demos:
+		if (all_demos[demo_id] == ContentProgressState.OPEN.value):
+			available_demo_id.append(int(demo_id))
+
+	return available_demo_id
+
+
 def is_chapter_done(username: str, db: str, chapter_id: int) -> bool:
 	return MongoStorage().database[db].progress.count_documents(
 		{'_id': username, f'chapters.{chapter_id}': 'done'}
 	) == 1
+
 
 def is_chapter_open_or_done(username: str, db: str, chapter_id: int) -> bool:
 	return MongoStorage().database[db].progress.count_documents(

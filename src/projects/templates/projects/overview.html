@@ -3,7 +3,7 @@
 
 {% block content %}
 {% for project in projects %}
-		{% get_project_state_tag course_name username project.id as project_state %}
+		{% get_project_state_tag course username project.id as project_state %}
 			{% if project_state == 'open' %}
 			<div class="project_overview_card">
 				<ul class="project_overview_card_tabs" id="defaultTab" data-tabs-toggle="#defaultTabContent" role="tablist">
@@ -27,7 +27,7 @@
 					<div class="bg-white hidden p-4 rounded-lg md:p-8" id="about{{project.id}}" role="tabpanel" aria-labelledby="1about-tab">
 						<h2 class="card_title">{{project.title}}</h2>
 						<p class="card_description">{{project.description}}</p>
-						<a href="{% url 'projects:detail' course=course_name project_id=project.id %}" class="to_course_link">
+						<a href="{% url 'projects:detail' course=course project_id=project.id %}" class="to_course_link">
 							Přejít k lekci
 							<svg class=" w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
 								<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
@@ -73,7 +73,7 @@
 					<div class="bg-green-200 hidden p-4 rounded-lg md:p-8" id="about{{project.id}}" role="tabpanel" aria-labelledby="1about-tab">
 						<h2 class="mb-3 text-3xl font-extrabold tracking-tight text-gray-900">{{project.title}}</h2>
 						<p class="mb-3 text-gray-500 ">{{project.description}}</p>
-						<a href="{% url 'projects:detail' course=course_name project_id=project.id %}" class="inline-flex items-center font-medium text-blue-600 hover:text-blue-800">
+						<a href="{% url 'projects:detail' course=course project_id=project.id %}" class="inline-flex items-center font-medium text-blue-600 hover:text-blue-800">
 							Přejít k lekci
 							<svg class=" w-2.5 h-2.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
 								<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>

@@ -1,0 +1,54 @@
+{% extends "content/base.html" %}
+{% block content %}
+<style>
+	input:disabled, textarea:disabled, select:disabled {
+		background-color: #e0e0e0; /* Light grey background color */
+		color: #666; /* Optional: change text color for better contrast */
+	}
+</style>
+	<div class="main shifted" id="main">
+		{% include 'content/sidebar.html' %}
+		<main id="content-start" class="content" tabindex="-1">
+			<div id="content" class="colM">
+				<div id="content-main">
+				{% if demo != null %}
+					<h1>Editing Demo Project - {{demo.name}}</h1>
+				{% else %}
+					<h1>Creating Demo Project</h1>
+				{% endif %}
+					<form method="post" id="user_form" novalidate="">
+						{% csrf_token %}
+						<div>
+							<fieldset class="module aligned wide">
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">ID:</label>
+									{{form.id}}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">Name:</label>
+									{{form.name}}
+									{% if form.name.errors %} <div class="form-errors">{{ form.name.errors }}</div> {% endif %}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+
+									<label class="required">Url:</label>
+									{{form.url}}
+									{% if form.url.errors %} <div class="form-errors">{{ form.url.errors }}</div> {% endif %}
+								</div></div></div>
+
+							</fieldset>
+
+							<div class="submit-row">
+								<input type="submit" value="Save" class="default" name="_save">
+							</div>
+
+						</div>
+					</form>
+				</div>
+			</div>
+		</main>
+	</div>
+
+	{% endblock %}

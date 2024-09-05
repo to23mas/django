@@ -40,6 +40,11 @@ urlpatterns = [
 	path('course/<str:course_id>-<int:blockly_id>/blockly/edit', blockly_edit, name='admin_blockly_edit'),
 	path('course/<str:course_id>-<int:blockly_id>/blockly/delete', blockly_delete, name='admin_blockly_delete'),
 
+	path('course/<str:course_id>/demo', demo_overview, name='admin_demo_overview'),
+	path('course/<str:course_id>/demo/new', demo_new, name='admin_demo_new'),
+	path('course/<str:course_id>-<int:demo_id>/demo/edit', demo_edit, name='admin_demo_edit'),
+	path('course/<str:course_id>-<int:demo_id>/demo/delete', demo_delete, name='admin_demo_delete'),
+
 	path('course/<str:course_id>-<int:test_id>/test/new-question', test_new_question, name='admin_test_new_question'),
 	path('course/<str:course_id>-<int:test_id>-<int:question_id>/test/delete-question', test_delete_question, name='admin_test_delete_question'),
 	path('course/<str:course_id>-<int:test_id>-<int:question_id>/test/edit-question', test_edit_question, name='admin_test_edit_question'),

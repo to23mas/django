@@ -7,7 +7,7 @@ def list_files(directory):
 	file_list = []
 	for root, _, files in walk(directory):
 		for filename in files:
-			fileChannels_list.append(path.join(root, filename))
+			file_list.append(path.join(root, filename))
 	return file_list
 
 
@@ -20,6 +20,7 @@ def migrate(files, collection):
 			collection.insert_one(file_data)
 			print(f'{filename} -> migrated')
 
+
 def migrate_one_file(file, collection):
 	print('migrating -> ', file)
 	with open(file) as f:
@@ -27,6 +28,7 @@ def migrate_one_file(file, collection):
 		filename = path.basename(f.name)
 		collection.insert_one(file_data)
 		print(f'{filename} -> migrated')
+
 
 if __name__ == "__main__":
 	client = MongoClient('mongodb', 27017)
@@ -56,34 +58,8 @@ if __name__ == "__main__":
 		for blockly in file_data['blockly']:
 			database['django'].blockly.insert_one(blockly)
 
+		for demo in file_data['demos']:
+			database['django'].demos.insert_one(demo)
+
 	client.close()
 	print('[x] - Migration DONE')
-
-	# #django course
-	# django_course = migrate_one_file(
-	# 	'/usr/src/db/migrations/documents/courses/django/django.json',
-	# 	db.courses)
-	# ## projects
-	# migrate(
-	# 	list_files('/usr/src/db/migrations/documents/courses/django/projects/'),
-	# 	db.django.projects)
-	# ## lessons
-	# migrate(
-	# 	list_files('/usr/src/db/migrations/documents/courses/django/lessons/1/'),
-	# 	db.django.project.project_1.lessons)
-	# ## chapters
-	# migrate(
-	# 	list_files('/usr/src/db/migrations/documents/courses/django/chapters/1/'),
-	# 	db.django.project.project_1.chapters)
-	# migrate(
-	# 	list_files('/usr/src/db/migrations/documents/courses/django/chapters/2/'),
-	# 	db.django.project.project_1.chapters)
-	# ## user progress
-	# # migrate_one_file(
-	# # 	'/usr/src/db/migrations/documents/user/admin-django-progress.json',
-	# # 	db.django_testing.progress)
-	# ## tests
-	# migrate(
-	# 	list_files('/usr/src/db/migrations/documents/courses/django/tests/1/'),
-	# 	db.django.tests)
-	# ## user progress

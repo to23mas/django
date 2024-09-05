@@ -26,7 +26,7 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 	if user_available == None or len(user_available) == 0:
 		messages.success(request, 'V tuto chvíli nemáš žádné dostupné testy')
 		return render(request, 'tests/overview.html', {
-			'course_name': course,
+			'course': course,
 		})
 
 	available_tests = find_tests_for_overview(course, user_available)
@@ -35,7 +35,6 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 		'tests': available_tests,
 		'course': course,
 		'username': username,
-		'course_name': course,
 	})
 
 
@@ -51,7 +50,7 @@ class TestDetailView(LoginRequiredMixin, View):
 
 		return render(request, 'tests/detail.html', {
 			'testForm': DynamicTestForm(questionDataCollection),
-			'course_name': course,
+			'course': course,
 		})
 
 	def post(self, request: HttpRequest, course: str, test_no: str) -> HttpResponse:
