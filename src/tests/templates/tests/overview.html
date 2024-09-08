@@ -20,7 +20,7 @@
 						Potřebné scóre: {{test.success_score}}%
 					</p>
 					<br>
-					<a href="{% url 'tests:test' course=course test_no=test.id %}"
+					<a href="{% url 'tests:test' course=course test_id=test.id %}"
 						class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
 						Přejít k testu
 					</a>
@@ -45,7 +45,7 @@
 						Potřebné scóre: {{test.success_score}}%
 					</p>
 					<br>
-					<a href="{% url 'tests:test' course=course test_no=test.id %}"
+					<a href="{% url 'tests:test' course=course test_id=test.id %}"
 						class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
 						Přejít k testu
 					</a>
@@ -89,7 +89,7 @@
 					</h6>
 					{% else %}
 					<br>
-					<a href="{% url 'tests:test' course=course test_no=test.id %}"
+					<a href="{% url 'tests:test' course=course test_id=test.id %}"
 						class="mt-7  select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
 						Přejít k testu
 					</a>

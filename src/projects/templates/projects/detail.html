@@ -6,16 +6,23 @@
     {% include 'projects/sidebar_project_detail.html' %}
   </div>
 
-	<h1 class="mb-4 mt-20 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl text-center">
-		{{project.title}}
-	</h1>
-	<p class="text-center mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48">
-		{{project.description}}
-	</p>
-	<div style="height: 50vh; margin-left: auto; margin-right: auto;" class="cursor-grabbing border mt-10 w-3/4" id="projectNetwork"></div>
+	<div class="w-3/4 mx-auto">
+		<h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl text-center">
+			{{project.title}}
+		</h1>
+		<p class="text-center mb-6 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48">
+			{{project.description}}
+		</p>
+
+		{% if demo_url %}
+			<a href="{% url demo_url course=course demo_id=project.id %}" class="text-blue-500 hover:underline">Přejít na ukázku projektu</a>
+		{% endif %}
+	</div>
+
+	<div style="height: 70vh; margin-left: auto; margin-right: auto;" class="cursor-grabbing border mt-10 w-3/4" id="projectNetwork"></div>
 
 
-	<div class="mx-auto md:w-3/4 mt-5">
+	<div class="mx-auto md:w-3/4 mt-5 mb-5">
 		<h3>Legenda</h3>
 		<div class="grid grid-cols-1 md:grid-cols-3 gap-2">
 

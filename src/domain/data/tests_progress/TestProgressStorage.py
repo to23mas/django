@@ -15,10 +15,19 @@ def get_test_progress(db: str, username: str, test_id: int) -> TestProgressData 
 		return TestProgressDataSerializer.from_dict(result['tests'][0])
 	return result
 
-def update_test_progress(course: str, username: str, test_no: str, score: float, state: TestState) -> dict | None:
-	MongoStorage().database[course].progress.update_one(
-		{'_id': username, 'tests.test_no': int(test_no)},
+
+def update_test_progress(db: str, username: str, test_id: int, score: float, state: TestState) -> dict | None:
+	MongoStorage().database[db].progress.update_one(
+		{'_id': username, 'tests.test_id': test_id},
 		{
 			'$push': { 'tests.$.score': score },
+			'$set': { 'tests.$.state': state.value }
+		}, upsert=False)
+
+
+def unlock_test(db: str, username: str, test_id: int, state: TestState) -> dict | None:
+	MongoStorage().database[db].progress.update_one(
+		{'_id': username, 'tests.test_id': test_id},
+		{
 			'$set': { 'tests.$.state': state.value }
 		}, upsert=False)

@@ -1,14 +1,14 @@
-import json
 from typing import Dict, List
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from domain.data.chapters.ChapterDataCollection import ChapterDataCollection
+from domain.data.chapters.ChapterData import ChapterData
 from domain.data.chapters.ChapterStorage import find_chapters
 from domain.data.content_progress.ContentProgressStorage import get_content_progress
-from domain.data.lessons.LessonDataCollection import LessonDataCollection
+from domain.data.demos.DemoStorage import get_demo
+from domain.data.lessons.LessonData import LessonData
 from domain.data.lessons.LessonStorage import find_lessons
 from domain.data.progress.ProgressStorage import get_user_progress_by_course
 from domain.data.projects.ProjectData import ProjectData
@@ -60,8 +60,14 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 	ch, ch_edges = get_vis_chapters(chapters, user_progress, course, project)
 	l, l_edges = get_vis_lessons(lessons, user_progress)
 
+	demo_project = get_demo(project.id, course)
+	match demo_project:
+		case None: demo_url = None
+		case _: demo_url = f'demos:{demo_project.url}'
+
 	return render(request, 'projects/detail.html', {
 		'project': project,
+		'demo_url': demo_url,
 		'lessons': lessons,
 		'chapters': chapters,
 		'course': course,
@@ -72,9 +78,11 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 		'l': l,
 	})
 
-def get_vis_lessons(lessons: LessonDataCollection, progress: Dict):
+
+def get_vis_lessons(lessons:  List[LessonData] | None, progress: Dict | None):
 	ch = []
 	edges = []
+	if lessons == None or progress == None: return (None, None)
 	for lesson in lessons:
 		for to in lesson.to:
 			edges.append({'from': lesson.id, 'to': to})
@@ -94,9 +102,11 @@ def get_vis_lessons(lessons: LessonDataCollection, progress: Dict):
 
 	return (ch, edges)
 
-def get_vis_chapters(chapters: ChapterDataCollection, progress: Dict, course: str, project: ProjectData):
+
+def get_vis_chapters(chapters: List[ChapterData] | None, progress: Dict | None, course: str, project: ProjectData):
 	ch = []
 	edges = []
+	if chapters == None or progress == None: return (None, None)
 	for chapter in chapters:
 		edges.append({'from': f'c-{chapter.id}', 'to': chapter.lesson_id})
 		chapter_status = progress['chapters'][str(chapter.id)]

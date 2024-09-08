@@ -3,6 +3,14 @@
 - work in progress
 ! problem
 
+TODOS
+- [ ] flash messages on the same row as sidebar button
+- [ ] blockly and test icon for project detail
+- [ ] styles for plaintext documents
+- [ ] % for project detail
+- [ ] redirect from unassigned content
+- [ ] question beeng diplicated in migration download
+
 ## modules
 ### login
 - [ ] login

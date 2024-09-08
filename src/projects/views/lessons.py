@@ -7,14 +7,17 @@ from django.contrib import messages
 from domain.data.blockly.BlocklyStorage import get_blockly
 from domain.data.chapters.ChapterStorage import find_chapters, get_chapter
 from domain.data.content_progress.ContentProgressStorage import get_content_progress
+from domain.data.demos.DemoStorage import get_demo
 from domain.data.lessons.LessonStorage import get_lesson
 from domain.data.projects.ProjectStorage import get_project_by_id
+from domain.data.tests.TestStorage import get_test
+from domain.data.tests_progress.TestProgressStorage import get_test_progress
 from projects.views.enum.UnknownChapterId import UnknownChapterId
 
 
 @login_required
 def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, chapter_id: int) -> HttpResponse:
-	"""display lesson"""
+	"""display lesson VIS.js page"""
 	username = request.user.username #type: ignore
 	project = get_project_by_id(project_id, course)
 	if project == None:
@@ -54,6 +57,12 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		blockly = get_blockly(course, chapter.unlocker_id) #type: ignore
 	else: blockly = None
 
+	test_state = None
+	if chapter.unlock_type == 'test':
+		test = get_test_progress(course, username, chapter.unlocker_id)
+		if test != None:
+			test_state = test.state
+
 	lesson_chapters = find_chapters(course, project.database, {"lesson_id": lesson_id})
 	return render(request, 'projects/lesson.html', {
 		'blockly': blockly,
@@ -67,5 +76,6 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		'chapter_id': chapter_id,
 		'course': course,
 		'username': username,
+		'test_state': test_state,
 	})
 

@@ -1,0 +1,35 @@
+{% if test_state %}
+
+	{#CLOSED#}
+	{% if test_state == 'close' %}
+		<a
+			class="blue_button"
+			href="{% url 'tests:unlock' course=course test_id=chapter.unlocker_id project_id=project.id %}">
+			Odemknout test
+		</a>
+	{% endif %}
+
+	{#UNFINISHED#}
+	{% if test_state == 'fail' or test_state == 'open' %}
+		<a
+			class="blue_button"
+			href="{% url 'tests:overview' course=course %}">
+			 Přejít k testu
+		</a>
+	{% endif %}
+
+	{#FINISHED#}
+	{% if test_state == 'finish' or test_state == 'success' %}
+		<form action="{% url 'projects:next_chapter' %}" class="float-end" method="post">
+			{% csrf_token %}
+			<input type="hidden" name="chapter_id" value="{{ chapter.id }}">
+			<input type="hidden" name="lesson_id" value="{{ chapter.lesson_id }}">
+			<input type="hidden" name="project_id" value="{{ project.id }}">
+			<input type="hidden" name="course" value="{{ course }}">
+			<button type="submit" class="green_button">
+				Další Kapitola
+			</button>
+		</form>
+	{% endif %}
+
+{% endif %}
