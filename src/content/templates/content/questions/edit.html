@@ -12,10 +12,17 @@
 			<div id="content" class="colM">
 				<div id="content-main">
 				{% if question %}
-					<h1>Editing test - {{question.question}}</h1>
+					<h1>Editing question - {{question.question}}</h1>
 				{% else %}
-					<h1>Creating test </h1>
+					<h1>Creating question</h1>
 				{% endif %}
+					<ul class="object-tools">
+						<li>
+							<a href="{% url 'admin_test_edit' course_id=course.id test_id=test.id %}">
+								BACK
+							</a>
+						</li>
+					</ul>
 
 					<form method="post" id="user_form" novalidate="">
 						{% csrf_token %}

@@ -110,6 +110,7 @@ def test_new_question(request: HttpRequest, course_id: str, test_id: int) -> Htt
 
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {'TEST': f'/admin/content/course/{course.id}-{test.id}/test/edit'}, {'New Question': '#'}]
 	return render(request, 'content/questions/edit.html', {
+		'test': test,
 		'breadcrumbs': breadcrumbs,
 		'form': edit_form,
 		'course': course,
@@ -139,6 +140,7 @@ def test_edit_question(request: HttpRequest, course_id: str, test_id: int, quest
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}-{test.id}/test/edit'}, {'Editing Question': '#'}]
 
 	return render(request, 'content/questions/edit.html', {
+		'test': test,
 		'question': question_data,
 		'course': course,
 		'breadcrumbs': breadcrumbs,
