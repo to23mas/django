@@ -117,15 +117,15 @@ def get_vis_chapters(chapters: List[ChapterData] | None, progress: Dict | None, 
 			case 'open': color = '#34c6eb'
 
 		match (chapter.unlock_type):
-			case 'blockly': icon = ' 🧩'
-			case 'test': icon = '🖊️'
-			case _: icon = ' 📖'
+			case 'blockly': icon = '  🧩'
+			case 'test': icon = ' 🖊️'
+			case _: icon = ''
 
 		ch.append({
 			'id': f'c-{chapter.id}',
 			'chid': chapter.id,
 			'lid': chapter.lesson_id,
-			'label': f'{chapter.title} {icon}',
+			'label': f'{chapter.title}{icon}',
 			'status': chapter_status,
 			'url': '#' if chapter_status == 'lock' else reverse('projects:lesson', kwargs={
 					'course': course,
