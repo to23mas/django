@@ -1,4 +1,5 @@
 """views.py"""
+from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
@@ -38,6 +39,7 @@ def project_edit(request: HttpRequest, course_id: str, project_id: int) -> HttpR
 			edit_form.cleaned_data['_id'] = edit_form.cleaned_data['id']
 			project_data = ProjectDataSerializer.from_dict(edit_form.cleaned_data)
 			update_project(project_data, course.database)
+			messages.success(request, 'Project have been updated')
 			return  redirect('admin_project_edit', course_id=course_id, project_id=project_data.id)
 	else:
 		edit_form = ProjectEditForm(initial=ProjectDataSerializer.to_dict(project))
@@ -82,7 +84,8 @@ def project_new(request: HttpRequest, course_id: str) -> HttpResponse:
 def project_delete(request: HttpRequest, course_id: str, project_no: str) -> HttpResponse:
 	course = get_course_by_id(course_id)
 	if course == None: return  redirect('admin_course_overview')
-	project, _ = get_project(int(project_no), course.database)
+
+	project = get_project(course.database, {'_id': int(project_no)})
 	if project == None: return  redirect('admin_course_overview')
 
 	delete_project(course.database, project.id)

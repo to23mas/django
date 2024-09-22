@@ -1,7 +1,6 @@
 """storage for projects"""
 from typing import Dict, List
 
-from bson.objectid import ObjectId
 from domain.Mongo import MongoStorage
 from domain.data.projects.ProjectData import ProjectData
 from domain.data.projects.ProjectDataCollection import ProjectDataCollection
@@ -40,7 +39,7 @@ def create_project(project_data: ProjectData, db: str) -> None:
 		case _: raise UniqueDatabaseException
 
 
-def delete_project(db: str, project_id: ObjectId) -> None:
+def delete_project(db: str, project_id: int) -> None:
 	MongoStorage().database[db].projects.delete_one({'_id': project_id})
 
 

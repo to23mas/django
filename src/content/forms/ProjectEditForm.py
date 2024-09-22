@@ -15,10 +15,6 @@ class ProjectEditForm(forms.Form):
 		widget=forms.Textarea(attrs={'rows': 5}),
 	)
 
-	def get_todo_as_string(self):
-		todo_list = self.cleaned_data.get('todo', [])
-		return ', '.join(todo_list)
-
 	def __init__(self, *args, **kwargs):
 		initial = kwargs.get('initial', {})
 		if 'todo' in initial and isinstance(initial['todo'], list):

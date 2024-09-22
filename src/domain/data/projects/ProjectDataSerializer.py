@@ -19,6 +19,9 @@ class ProjectDataSerializer:
 
 	@staticmethod
 	def from_dict(project_data: dict) -> ProjectData:
+		if isinstance(project_data[ProjectsTable.TODO.value], str):
+			project_data[ProjectsTable.TODO.value] = project_data[ProjectsTable.TODO.value].split(', ')
+
 		return ProjectData(
 			id=project_data[ProjectsTable.ID.value],
 			title=project_data[ProjectsTable.TITLE.value],
