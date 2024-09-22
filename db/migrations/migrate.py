@@ -36,7 +36,7 @@ if __name__ == "__main__":
 	client.drop_database("inpv")
 
 	print('[ ] - Migrating Django Course')
-	with open('/usr/src/db/Django.json') as f:
+	with open('/usr/src/db/Django a Client-Server aplikace.json') as f:
 		file_data = json.load(f)
 		course_data = file_data['course']
 		database.courses.insert_one(course_data)
