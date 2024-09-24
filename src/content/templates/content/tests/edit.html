@@ -41,21 +41,38 @@
 								</div></div></div>
 
 								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Target Type:</label>
-									{{form.target_type}}
-									{% if form.target_type.errors %} <div class="form-errors">{{ form.target_type.errors }}</div> {% endif %}
+									<label class="required">UNLOCK project id:</label>
+									{{form.unlock_project}}
+									{% if form.unlock_project.errors %} <div class="form-errors">{{ form.unlock_project.errors }}</div> {% endif %}
 								</div></div></div>
 
 								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Target id:</label>
-									{{form.target_id}}
-									{% if form.target_id.errors %} <div class="form-errors">{{ form.target_id.errors }}</div> {% endif %}
+									<label class="required">UNLOCK lesson id:</label>
+									{{form.unlock_lesson}}
+									{% if form.unlock_lesson.errors %} <div class="form-errors">{{ form.unlock_lesson.errors }}</div> {% endif %}
 								</div></div></div>
 
 								<div class="form-row"><div><div class="flex-container">
-									<label class="required">Source id:</label>
-									{{form.source_id}}
-									{% if form.source_id.errors %} <div class="form-errors">{{ form.source_id.errors }}</div> {% endif %}
+									<label class="required">UNLOCK chapter id:</label>
+									{{form.unlock_chapter}}
+									{% if form.unlock_chapter.errors %} <div class="form-errors">{{ form.unlock_chapter.errors }}</div> {% endif %}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">FINISHED project id:</label>
+									{{form.finish_project}}
+									{% if form.finish_project.errors %} <div class="form-errors">{{ form.finish_project.errors }}</div> {% endif %}
+								</div></div></div>
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">FINISHED lesson id:</label>
+									{{form.finish_lesson}}
+									{% if form.finish_lesson.errors %} <div class="form-errors">{{ form.finish_lesson.errors }}</div> {% endif %}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">FINISHED chapter id:</label>
+									{{form.finish_chapter}}
+									{% if form.finish_chapter.errors %} <div class="form-errors">{{ form.finish_chapter.errors }}</div> {% endif %}
 								</div></div></div>
 
 								<div class="form-row"><div><div class="flex-container">

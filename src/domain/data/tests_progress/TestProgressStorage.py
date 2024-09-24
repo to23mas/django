@@ -1,4 +1,5 @@
 """storage for progress"""
+import datetime
 from domain.Mongo import MongoStorage
 from domain.data.tests.enum.TestState import TestState
 from domain.data.tests_progress.TestProgressData import TestProgressData
@@ -16,12 +17,20 @@ def get_test_progress(db: str, username: str, test_id: int) -> TestProgressData 
 	return result
 
 
-def update_test_progress(db: str, username: str, test_id: int, score: float, state: TestState) -> dict | None:
+def update_test_progress(db: str, username: str, test_id: int, score: float, state: TestState, attempts: int) -> dict | None:
+	match (attempts):
+		case 0: lock_until =  datetime.datetime.now() + datetime.timedelta(minutes=15)
+		case _: lock_until = ''
+
 	MongoStorage().database[db].progress.update_one(
 		{'_id': username, 'tests.test_id': test_id},
 		{
 			'$push': { 'tests.$.score': score },
-			'$set': { 'tests.$.state': state.value }
+			'$set': {
+				'tests.$.state': state.value,
+				'tests.$.attempts': attempts,
+				'tests.$.lock_until': lock_until
+			}
 		}, upsert=False)
 
 

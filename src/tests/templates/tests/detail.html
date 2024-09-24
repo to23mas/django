@@ -2,16 +2,17 @@
 {% block content %}
 
 
-{% comment %}
 <div class="w-full mx-auto md:w-4/6 mt-10">
-  <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-    {{test.title}}
-    <p class="float-right" id="timer">{{test.time}}:00</p>
-  </h5>
+	<h3>{{test.title}}</h3>
+	<h5 class="block font-sans text-xl antialiased leading-snug tracking-normal text-blue-gray-900">Zbývající počet pokusů: {{test_attempts}} z 3</h5>
 </div>
-{% endcomment %}
 
-<form id="test-form" method="post" class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10 p-6">
+	{{test_progress}}
+<form
+	id="test-form"
+	action="{% url 'tests:validate_test' course=course test_id=test.id %}"
+	method="post"
+	class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10 p-6">
 	{% csrf_token %}
 	{% for field in testForm %}
 	<div class="mt-3 parent_label">
@@ -26,6 +27,7 @@
 	<div class="mt-4 parent_label h-10">
 		<input
 			type="submit"
+			onclick="return confirmAction()"
 			value="Odevzdat"
 			class="float-right text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 focus:outline-none">
 	</div>
@@ -33,61 +35,14 @@
 </form>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-	document.getElementById('test-form').addEventListener('submit', function(event) {
-		event.preventDefault();
-		var form = document.getElementById('test-form');
-		var formData = new FormData(form);
+function confirmAction() {
+	var result = confirm("Skutečně si přeješ odevdat tento test?");
 
-		fetch(window.location.href, {
-			method: 'POST',
-			body: formData,
-			headers: {
-				'X-Requested-With': 'XMLHttpRequest',
-			},
-		})
-			.then(response => {
-				if (!response.ok) {
-					console.log(response);
-					throw new Error('Network response was not ok ' + response.statusText);
-				}
-				return response.json();
-			})
-			.then(data => {
-				console.log(data);
-			})
-			.catch(error => {
-				console.error('Error:', error);
-			});
-	});
-});
-</script>
-
-{% comment %}
-<script>
-function startTimer(duration, display) {
-	let timer = duration, minutes, seconds;
-	setInterval(function () {
-		minutes = parseInt(timer / 60, 10);
-		seconds = parseInt(timer % 60, 10);
-
-		minutes = minutes < 10 ? "0" + minutes : minutes;
-		seconds = seconds < 10 ? "0" + seconds : seconds;
-
-		display.textContent = minutes + ":" + seconds;
-
-		if (--timer < 0) {
-			timer = duration;
-		}
-	}, 1000);
+	if (result) {
+		return true;
+	} else {
+		return false;
+	}
 }
-
-window.onload = function () {
-	//var duration = 60 * {{test.time}},
-	var duration = 60 * 15,
-	element = document.querySelector('#timer');
-	startTimer(duration, element);
-};
 </script>
-{% endcomment %}
 {% endblock %}

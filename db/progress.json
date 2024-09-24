@@ -13,6 +13,6 @@
       "8": "open"
     },
     "demos": { "1": "open" },
-    "tests": [ { "test_id": 1, "attempts": 3, "state": "close", "score": [] } ]
+    "tests": [ { "test_id": 1, "attempts": 3, "state": "close", "score": [], "lock_until": "" } ]
   }
 

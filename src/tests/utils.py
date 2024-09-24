@@ -1,14 +1,17 @@
-from typing import List
+from typing import List, Tuple
 from django.http import QueryDict
 
+from domain.data.chapters.ChapterStorage import get_chapter_by_id
 from domain.data.content_progress.ContentProgressStorage import finish_project, unlock_project
+from domain.data.progress.ProgressStorage import finish_chapter, finish_lesson, unlock_chapter, unlock_lesson
+from domain.data.projects.ProjectStorage import get_project_by_id
 from domain.data.tests.QuestionData import QuestionData
 from domain.data.tests.TestData import TestData
 from domain.data.tests.TestResultData import TestResultData
 from domain.data.tests.enum.QuestionType import QuestionType
 from domain.data.tests.enum.TargetUnlockType import TargetUnlockType
 from domain.data.tests.enum.TestState import TestState
-from domain.data.tests_progress.TestProgressStorage import update_test_progress
+from domain.data.tests_progress.TestProgressStorage import get_test_progress, update_test_progress
 
 def get_test_results(user_answers: QueryDict, questionDataCollection: List[QuestionData]) -> float:
 	correct_points = 0
@@ -43,7 +46,7 @@ def validate_test_get_result(
 	course: str,
 	username: str,
 	test_id: int,
-	) -> TestResultData:
+) -> Tuple[TestResultData, bool]:
 	"""Validate test data/ users answers and return result"""
 
 	test_result = get_test_results(user_answers, questionDataCollection)
@@ -51,17 +54,16 @@ def validate_test_get_result(
 		score_total=int(test_result),
 		success=(test_result / test_data.total_points * 100) >= test_data.success_score,
 		score_percentage=test_result / test_data.total_points * 100,
-		target_unlock_type=test_data.target_type,
-		target_id=test_data.target_id,
-		source_id=test_data.source_id,
 	)
-	make_progress(test_result_data, test_data, course, username, test_id)
+	progress_happened = make_progress(test_result_data, test_data, course, username, test_id)
 
-	return test_result_data
+	return (test_result_data, progress_happened)
 
 
-def make_progress(test_result_data: TestResultData, test_data: TestData, course: str, username: str, test_id: int) -> None:
+def make_progress(test_result_data: TestResultData, test_data: TestData, course: str, username: str, test_id: int) -> bool:
 	"""Make progress if possible"""
+	current_test_progress = get_test_progress(course, username, test_id)
+	if current_test_progress == None or current_test_progress.attempts == 0: return False
 
 	if test_result_data.score_percentage >= 99.99:
 		new_test_state = TestState.FINISH
@@ -70,19 +72,25 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 	else:
 		new_test_state = TestState.FAIL
 
-	update_test_progress(course, username, test_id, test_result_data.score_total, new_test_state)
+	if new_test_state == TestState.FAIL:
+		current_test_progress.attempts -= 1
 
-	if not new_test_state == TestState.FAIL:
-		if test_result_data.target_unlock_type == TargetUnlockType.PROJECT.value:
-			if (test_result_data.target_id != 0):
-				unlock_project(username, test_result_data.target_id)
+	update_test_progress(course, username, test_id, test_result_data.score_total, new_test_state, current_test_progress.attempts)
+	if new_test_state != TestState.FAIL:
+		if (test_data.unlock_project != 0):
+			unlock_project(course, username, test_data.unlock_project)
+		if (test_data.unlock_lesson != 0):
+			unlock_lesson(username, course, test_data.unlock_lesson)
+		if (test_data.unlock_chapter != 0):
+			unlock_chapter(username, course, test_data.unlock_chapter)
+		if (test_data.finish_project != 0):
+			finish_project(course, username, test_data.finish_project)
+		if (test_data.finish_lesson != 0):
+			finish_lesson(username, course, test_data.finish_lesson)
+		if (test_data.finish_chapter != 0):
+			finish_chapter(username, course, test_data.finish_chapter)
+	return True
 
-			finish_project(username, test_result_data.source_id)
-		elif test_result_data.target_unlock_type == TargetUnlockType.LESSON.value:
-			# unlock_lesson(username, course, test_result_data.target_no )
-			pass
-		elif test_result_data.target_unlock_type == TargetUnlockType.CHAPTER.value:
-			# unlock_chapter()
-			pass
-	pass
+
+
 

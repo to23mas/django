@@ -25,10 +25,10 @@ def get_project_state(course: str, username: str, project_id: int) -> str :
 	return result['projects'][str(project_id)]
 
 
-def unlock_project(username: str, project_id: int) -> None:
+def unlock_project(course: str, username: str, project_id: int) -> None:
 	""" unlocks one project -> sets open"""
 
-	MongoStorage().database.progress.update_one({
+	MongoStorage().database[course].progress.update_one({
 		'_id': username
 	},{
 		'$push': {f'projects.open': project_id},
@@ -36,10 +36,11 @@ def unlock_project(username: str, project_id: int) -> None:
 	})
 
 
-def finish_project(username: str, project_id: int) -> None:
+
+def finish_project(course: str, username: str, project_id: int) -> None:
 	"""finish one project -> sets done"""
 
-	MongoStorage().database.progress.update_one({
+	MongoStorage().database[course].progress.update_one({
 		'_id': username
 	},{
 		'$push': {f'projects.done': project_id},

@@ -53,6 +53,7 @@ def enroll_course(username: str, db: str) -> bool:
 				"attempts": t.attempts,
 				"state": "close",
 				"score": [],
+				"lock_until": '',
 			})
 
 	demos = find_demos(course.database)

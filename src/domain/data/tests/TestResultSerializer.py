@@ -11,7 +11,4 @@ class TestResultSerializer:
 			"success": test_result_data.success,
 			"score_percentage": test_result_data.score_percentage,
 			"score_total": test_result_data.score_total,
-			"target_unlock_type": test_result_data.target_unlock_type,
-			"target_id": test_result_data.target_id,
-			"source_id": test_result_data.source_id,
 		}

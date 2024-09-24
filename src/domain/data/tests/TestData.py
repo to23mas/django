@@ -7,9 +7,12 @@ class TestData():
 	title: str
 	time: int
 	description: str
-	target_type: str
-	target_id: int
-	source_id: int
+	unlock_lesson: int
+	unlock_chapter: int
+	unlock_project: int
+	finish_project: int
+	finish_lesson: int
+	finish_chapter: int
 	attempts: int
 	success_score: float
 	total_points: int
