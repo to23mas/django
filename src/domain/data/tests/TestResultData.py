@@ -7,5 +7,5 @@ class TestResultData():
 	score_percentage: float
 	score_total: int
 	target_unlock_type: str
-	target_no: int
-	source_no: int
+	target_id: int
+	source_id: int

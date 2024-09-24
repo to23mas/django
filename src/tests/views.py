@@ -103,7 +103,7 @@ class TestDetailView(LoginRequiredMixin, View):
 			messages.success(request, 'Pokus o přístup k neexistujícímu testu')
 			return  redirect('tests:overview', course=course, sort_type='all')
 
-		test_result =  validate_test_get_result(request.POST, test_data, questionDataCollection, course, username, test_no)
+		test_result =  validate_test_get_result(request.POST, test_data, questionDataCollection, course, username, test_id)
 
 		return JsonResponse({'test_result_data': TestResultSerializer.to_array(test_result)})
 

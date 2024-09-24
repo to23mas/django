@@ -15,7 +15,7 @@ def get_test_results(user_answers: QueryDict, questionDataCollection: List[Quest
 
 	for question in questionDataCollection:
 		if question.type == QuestionType.SINGLE.value:
-			if question.correct == user_answers.get(question.question):
+			if str(user_answers.get(question.question)) in question.correct :
 				correct_points += question.points
 
 		if question.type == QuestionType.MULTIPLE.value:
@@ -42,7 +42,7 @@ def validate_test_get_result(
 	questionDataCollection: List[QuestionData],
 	course: str,
 	username: str,
-	test_no: str,
+	test_id: int,
 	) -> TestResultData:
 	"""Validate test data/ users answers and return result"""
 
@@ -52,15 +52,15 @@ def validate_test_get_result(
 		success=(test_result / test_data.total_points * 100) >= test_data.success_score,
 		score_percentage=test_result / test_data.total_points * 100,
 		target_unlock_type=test_data.target_type,
-		target_no=test_data.target_no,
-		source_no=test_data.source_no,
+		target_id=test_data.target_id,
+		source_id=test_data.source_id,
 	)
-	make_progress(test_result_data, test_data, course, username, test_no)
+	make_progress(test_result_data, test_data, course, username, test_id)
 
 	return test_result_data
 
 
-def make_progress(test_result_data: TestResultData, test_data: TestData, course: str, username: str, test_no: str) -> None:
+def make_progress(test_result_data: TestResultData, test_data: TestData, course: str, username: str, test_id: int) -> None:
 	"""Make progress if possible"""
 
 	if test_result_data.score_percentage >= 99.99:
@@ -70,12 +70,14 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 	else:
 		new_test_state = TestState.FAIL
 
-	update_test_progress(course, username, test_no, test_result_data.score_total, new_test_state)
+	update_test_progress(course, username, test_id, test_result_data.score_total, new_test_state)
 
 	if not new_test_state == TestState.FAIL:
 		if test_result_data.target_unlock_type == TargetUnlockType.PROJECT.value:
-			unlock_project(username, test_result_data.target_no)
-			finish_project(username, test_result_data.source_no)
+			if (test_result_data.target_id != 0):
+				unlock_project(username, test_result_data.target_id)
+
+			finish_project(username, test_result_data.source_id)
 		elif test_result_data.target_unlock_type == TargetUnlockType.LESSON.value:
 			# unlock_lesson(username, course, test_result_data.target_no )
 			pass

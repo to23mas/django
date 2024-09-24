@@ -4,7 +4,11 @@
 	}
 
 	span.filename {
-		@apply bg-codeColor mr-10 pb-1 pt-3 pl-4 pr-4 rounded-t-xl text-gray-300;
+		@apply bg-codeColor mr-10 pt-1 pl-2 pr-2 rounded-t-sm text-gray-300 text-xs;
+	}
+
+	div.no_highlight {
+		@apply text-block p-6 border-gray-200 rounded-lg shadow bg-codeColor text-gray-400;
 	}
 
 	div.filename {
@@ -15,4 +19,3 @@
 		@apply text-white mr-8;
 	}
 }
-

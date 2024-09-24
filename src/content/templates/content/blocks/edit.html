@@ -111,6 +111,18 @@
 	</main>
 </div>
 <script>
+var fileNoHighlight = function (context) {
+	var ui = $.summernote.ui;
+	var button = ui.button({
+		contents: 'noHighlight',
+		tooltip: 'noHighlight',
+		click: function () {
+			context.invoke('editor.pasteHTML', '<pre><div class="no_highlight">&ZeroWidthSpace;</div></pre>');
+		}
+	});
+
+	return button.render();
+}
 var pythonFilename = function (context) {
 	var ui = $.summernote.ui;
 	var button = ui.button({
@@ -174,13 +186,14 @@ $(document).ready(function() {
 			['insert', ['link']],
 			['view', ['codeview']],
 
-			['code', ['python', 'cli', 'info', 'pythonFilename']]
+			['code', ['python', 'cli', 'info', 'pythonFilename', 'noHighlight']]
 		],
 		buttons: {
 			python: python,
 			cli: cli,
 			info: info,
-			pythonFilename: pythonFilename
+			pythonFilename: pythonFilename,
+			noHighlight: fileNoHighlight
 		},
 		styleTags: [
 		{ title: 'Heading', tag: 'h3', value: 'h3' },
