@@ -4,6 +4,10 @@
 
 ## UI - assets
 
+```bash
+npm run built
+make assets
+```
 
 ## Access mongo
 
