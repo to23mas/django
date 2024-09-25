@@ -2,6 +2,9 @@
 
 `source ./venv/bin/activate.fish`
 
+## UI - assets
+
+
 ## Access mongo
 
 ```bash
