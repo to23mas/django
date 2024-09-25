@@ -3,8 +3,66 @@
 
 	{% block content %}
 
-	{{test_progress}}
-	<hr>
-	{{test_data}}
+	<div class="chapter_block mx-auto md:w-4/6 mb-6 mt-6 {% if test_progress.state == 'finish' or test_progress.state == 'success' %} !bg-green-100 {% else %} !bg-red-100 {% endif %}">
+		<h2 class="text-4xl font-extrabold">{{ test_data.title }}</h2>
+		<br>
+		<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+			{{test_data.description}}
+		</p>
+		<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+			Zbývající počet pokusů: {{test_progress.attempts}} z {{test_data.attempts}}
+		</p>
+		<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+			Celkový počet absolvovaných pokusů: {{total_attempts}}
+		</p>
+		<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
+			Potřebné scóre: {{test_data.success_score}}%
+		</p>
+	</div>
 
+	<div class="chapter_block mx-auto md:w-4/6 mb-6 mt-6">
+		<h2 class="text-2xl font-extrabold">Výsledky</h2>
+		<br>
+		<div class="flex font-sans text-base antialiased font-light leading-relaxed text-inherit">
+			<div>
+				STATUS:&nbsp
+			</div>
+			<div>
+				{% if test_progress.state == 'finish' %}
+				Test splněn na 100 % ✔️
+				{% elif test_progress.state == 'success' %}
+				Test úspěšně dokončen ✔️
+				{% else %}
+				Test zatím není splněn ❌
+				{% endif %}
+			</div>
+		</div>
+		<div class="flex font-sans text-base antialiased font-light leading-relaxed text-inherit">
+			<div>
+				Poslední dosažené skore:&nbsp
+			</div>
+			<div>
+				{{test_progress.score|last}} z {{test_data.total_points}} ({{last_percentage}}%)
+			</div>
+		</div>
+		<div class="flex font-sans text-base antialiased font-light leading-relaxed text-inherit">
+			<div>
+				Nejlepší dosažené skore:&nbsp
+			</div>
+			<div>
+				{{best_score}} z {{test_data.total_points}} ({{best_score_percentage}}%)
+			</div>
+		</div>
+		<br>
+		<div class="flex font-sans text-base antialiased font-light leading-relaxed text-inherit">
+			<div>
+				Všechny dosažené výsledky:&nbsp
+			</div>
+			<div>
+				{% for score in test_progress.score %}
+				{{score}}{% if not forloop.last %};&nbsp {% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
 	{% endblock %}

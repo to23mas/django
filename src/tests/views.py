@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponse, JsonResponse
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -8,7 +8,6 @@ from django.http import HttpRequest, HttpResponse
 from domain.data.chapters.ChapterStorage import get_chapter_by_id
 from domain.data.progress.ProgressStorage import find_available_tests, is_chapter_open
 from domain.data.projects.ProjectStorage import get_project_by_id
-from domain.data.tests.TestResultSerializer import TestResultSerializer
 from domain.data.tests.TestStorage import find_tests_for_overview, get_test
 
 
@@ -113,12 +112,13 @@ def validate_test(request: HttpRequest, course: str, test_id: int) -> HttpRespon
 		messages.error(request, 'Pokus o přístup k neexistujícímu testu')
 		return  redirect('tests:overview', course=course, sort_type='all')
 
-	test_result, test_happened =  validate_test_get_result(request.POST, test_data, questionDataCollection, course, username, test_id)
+	_, test_happened =  validate_test_get_result(request.POST, test_data, questionDataCollection, course, username, test_id)
 	if not test_happened:
 		messages.error(request, 'Nevalidní akce')
 		return  redirect('tests:overview', course=course, sort_type='all')
 
-	return  redirect('tests:result', course=course, sort_type='all', test_id=test_data.id)
+	# TODO add message with result
+	return  redirect('tests:results', course=course, test_id=test_data.id)
 
 
 @login_required
@@ -144,6 +144,10 @@ def results(request: HttpRequest, course: str, test_id: int)  -> HttpResponse:
 		'course': course,
 		'test_progress': test_progress,
 		'test_data': test_data,
+		'last_percentage': f'{(test_progress.score[-1] / (test_data.total_points/100)):.2f}',
+		'best_score': max(test_progress.score),
+		'best_score_percentage': f'{(max(test_progress.score) / (test_data.total_points/100)):.2f}',
+		'total_attempts': len(test_progress.score)
 	})
 
 
