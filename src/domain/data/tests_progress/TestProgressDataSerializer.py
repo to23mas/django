@@ -8,6 +8,7 @@ class TestProgressDataSerializer:
 		return TestProgressData(
 			test_no=progressData[TestProgressTable.TEST_ID.value],
 			attempts=progressData[TestProgressTable.ATTEMPTS.value],
+			lock_until=progressData[TestProgressTable.LOCK_UNTIL.value],
 			state=progressData[TestProgressTable.STATE.value],
 			score=progressData[TestProgressTable.SCORE.value],
 		)

@@ -36,7 +36,6 @@ def unlock_project(course: str, username: str, project_id: int) -> None:
 	})
 
 
-
 def finish_project(course: str, username: str, project_id: int) -> None:
 	"""finish one project -> sets done"""
 

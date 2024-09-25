@@ -14,7 +14,7 @@ from domain.data.tests.TestStorage import find_tests_for_overview, get_test
 from domain.data.tests.enum.TestState import TestState
 from domain.data.tests_progress.TestProgressStorage import get_test_progress, unlock_test
 from tests.forms import DynamicTestForm
-from tests.utils import validate_test_get_result
+from tests.utils import reset_test_lock_time, validate_test_get_result
 
 
 @login_required
@@ -29,6 +29,17 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 		return render(request, 'tests/overview.html', {
 			'course': course,
 		})
+
+	available_tests = find_tests_for_overview(course, user_available)
+
+	for test in available_tests:
+		print('rest')
+		reset_test_lock_time(
+			get_test_progress(course, username, test.id), #type: ignore
+			course,
+			username,
+			test,
+		)
 
 	available_tests = find_tests_for_overview(course, user_available)
 
@@ -112,12 +123,15 @@ def validate_test(request: HttpRequest, course: str, test_id: int) -> HttpRespon
 		messages.error(request, 'Pokus o přístup k neexistujícímu testu')
 		return  redirect('tests:overview', course=course, sort_type='all')
 
-	_, test_happened =  validate_test_get_result(request.POST, test_data, questionDataCollection, course, username, test_id)
+	test_progress, test_happened = validate_test_get_result(request.POST, test_data, questionDataCollection, course, username, test_id)
 	if not test_happened:
 		messages.error(request, 'Nevalidní akce')
 		return  redirect('tests:overview', course=course, sort_type='all')
 
-	# TODO add message with result
+	match (test_progress.success):
+		case True: messages.success(request, f'Test úspěšně splněn na {test_progress.score_percentage:.2f}%')
+		case False: messages.warning(request, f'Nebylo dosaženo požadovaného minima. Dosažené skóre: {test_progress.score_percentage:.2f}%')
+
 	return  redirect('tests:results', course=course, test_id=test_data.id)
 
 

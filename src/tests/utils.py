@@ -1,17 +1,16 @@
+import datetime
 from typing import List, Tuple
 from django.http import QueryDict
 
-from domain.data.chapters.ChapterStorage import get_chapter_by_id
 from domain.data.content_progress.ContentProgressStorage import finish_project, unlock_project
 from domain.data.progress.ProgressStorage import finish_chapter, finish_lesson, unlock_chapter, unlock_lesson
-from domain.data.projects.ProjectStorage import get_project_by_id
 from domain.data.tests.QuestionData import QuestionData
 from domain.data.tests.TestData import TestData
 from domain.data.tests.TestResultData import TestResultData
 from domain.data.tests.enum.QuestionType import QuestionType
-from domain.data.tests.enum.TargetUnlockType import TargetUnlockType
 from domain.data.tests.enum.TestState import TestState
-from domain.data.tests_progress.TestProgressStorage import get_test_progress, update_test_progress
+from domain.data.tests_progress.TestProgressData import TestProgressData
+from domain.data.tests_progress.TestProgressStorage import get_test_progress, reset_lock, update_test_progress
 
 def get_test_results(user_answers: QueryDict, questionDataCollection: List[QuestionData]) -> float:
 	correct_points = 0
@@ -92,5 +91,13 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 	return True
 
 
+def reset_test_lock_time(progress:  TestProgressData, db: str, username: str, test: TestData):
+	if isinstance(progress.lock_until, str): return
+	current_time = datetime.datetime.now()
+	time_difference = progress.lock_until - current_time
+	# TODO test this
+	if time_difference.total_seconds() > 15 * 60: return
+
+	reset_lock(db, username, test.id, test.attempts)
 
 

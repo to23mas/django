@@ -33,6 +33,14 @@ def update_test_progress(db: str, username: str, test_id: int, score: float, sta
 			}
 		}, upsert=False)
 
+def reset_lock(db: str, username: str, test_id: int, attempts: int) -> None:
+	MongoStorage().database[db].progress.update_one(
+		{'_id': username, 'tests.test_id': test_id},
+		{'$set': {
+			'tests.$.lock_until': '',
+			'tests.$.attempts': attempts,
+		}}, upsert=False)
+
 
 def unlock_test(db: str, username: str, test_id: int, state: TestState) -> dict | None:
 	MongoStorage().database[db].progress.update_one(

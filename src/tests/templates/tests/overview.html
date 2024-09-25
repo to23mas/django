@@ -3,7 +3,16 @@
 
 	{% block content %}
 		{% for test in tests %}
+		{{test}}
+		<hr>
 		{% get_test_state course username test.id as test_progress %}
+		{% compare_current_timestamp test_progress.lock_until as lock_until_result %}
+		{{test_progress}}
+		<hr>
+		<hr>
+		{{lock_until_result}}
+		<hr>
+		<hr>
 			{% if test_progress.state == 'open' %}
 			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
 				<div class="p-6">
@@ -20,10 +29,12 @@
 						Potřebné scóre: {{test.success_score}}%
 					</p>
 					<br>
-					<a href="{% url 'tests:test' course=course test_id=test.id %}"
-						class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-						Přejít k testu
-					</a>
+					{% if lock_until_result <= 0 %}
+						<a href="{% url 'tests:test' course=course test_id=test.id %}"
+							class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
+							Přejít k testu
+						</a>
+					{% endif %}
 				</div>
 			</div>
 			{% elif test_progress.state == 'finish' %}
@@ -45,12 +56,14 @@
 						Potřebné scóre: {{test.success_score}}%
 					</p>
 					<br>
-					<a href="{% url 'tests:test' course=course test_id=test.id %}"
-						class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-						Přejít k testu
-					</a>
+					{% if lock_until_result <= 0 %}
+						<a href="{% url 'tests:test' course=course test_id=test.id %}"
+							class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
+							Přejít k testu
+						</a>
+					{% endif %}
 					<a href="{% url 'tests:results' course=course test_id=test.id %}"
-						class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
+						class="mt-7 {% if lock_until_result <= 0 %} ml-6 {% endif %} select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-white text-black shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
 						Výsledky
 					</a>
 				</div>
@@ -67,6 +80,10 @@
 					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
 						{{test.description}}
 					</p>
+					<a href="{% url 'tests:results' course=course test_id=test.id %}"
+						class="mt-7 {% if lock_until_result <= 0 %} ml-6 {% endif %} select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-white text-black shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
+						Výsledky
+					</a>
 				</div>
 			</div>
 			{% elif test_progress.state == 'fail' %}
@@ -87,21 +104,17 @@
 					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
 						Potřebné scóre: {{test.success_score}}%
 					</p>
-					{% if test_progress.attempts == test.attempts %}
-					<h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-						Vyčerpány všechny pokusy.
-					</h6>
-					{% else %}
-					<br>
-					<a href="{% url 'tests:test' course=course test_id=test.id %}"
-						class="mt-7  select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-						Přejít k testu
-					</a>
-					<a href="{% url 'tests:results' course=course test_id=test.id %}"
-						class="mt-7 ml-6 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-white text-black shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-						Výsledky
-					</a>
-					{% endif %}
+						<br>
+						{% if lock_until_result <= 0 %}
+							<a href="{% url 'tests:test' course=course test_id=test.id %}"
+								class="mt-7  select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
+								Přejít k testu
+							</a>
+						{% endif %}
+						<a href="{% url 'tests:results' course=course test_id=test.id %}"
+							class="mt-7 {% if lock_until_result <= 0 %} ml-6 {% endif %} select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-white text-black shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
+							Výsledky
+						</a>
 				</div>
 			</div>
 			{% endif %}
