@@ -1,6 +1,6 @@
 from django import template
 
-from domain.data.content_progress.ContentProgressStorage import get_chapter_state, get_lesson_state
+from domain.data.progress.ProgressStorage import get_chapter_state, get_lesson_state
 
 register = template.Library()
 

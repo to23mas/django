@@ -1,6 +1,6 @@
 from enum import Enum
 
-class ContentProgressState(Enum):
+class ProgressState(Enum):
     OPEN = 'open'
     LOCK = 'lock'
     DONE = 'done'

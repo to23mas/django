@@ -9,9 +9,11 @@
 		<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
 			{{test_data.description}}
 		</p>
+		{%if test_progress.state != 'finish' %}
 		<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
 			Zbývající počet pokusů: {{test_progress.attempts}} z {{test_data.attempts}}
 		</p>
+		{% endif %}
 		<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
 			Celkový počet absolvovaných pokusů: {{total_attempts}}
 		</p>

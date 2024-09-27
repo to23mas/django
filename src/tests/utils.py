@@ -2,8 +2,7 @@ import datetime
 from typing import List, Tuple
 from django.http import QueryDict
 
-from domain.data.content_progress.ContentProgressStorage import finish_project, unlock_project
-from domain.data.progress.ProgressStorage import finish_chapter, finish_lesson, unlock_chapter, unlock_lesson
+from domain.data.progress.ProgressStorage import finish_chapter, finish_lesson, finish_project, unlock_chapter, unlock_lesson, unlock_project
 from domain.data.tests.QuestionData import QuestionData
 from domain.data.tests.TestData import TestData
 from domain.data.tests.TestResultData import TestResultData
@@ -71,8 +70,11 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 	else:
 		new_test_state = TestState.FAIL
 
-	if new_test_state == TestState.FAIL:
+	if new_test_state == TestState.FAIL or new_test_state == TestState.SUCCESS:
 		current_test_progress.attempts -= 1
+
+	if current_test_progress.state == TestState.SUCCESS.value:
+		new_test_state = TestState.SUCCESS
 
 	update_test_progress(course, username, test_id, test_result_data.score_total, new_test_state, current_test_progress.attempts)
 	if new_test_state != TestState.FAIL:
@@ -93,10 +95,7 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 
 def reset_test_lock_time(progress:  TestProgressData, db: str, username: str, test: TestData):
 	if isinstance(progress.lock_until, str): return
-	current_time = datetime.datetime.now()
-	time_difference = progress.lock_until - current_time
-	# TODO test this
-	if time_difference.total_seconds() > 15 * 60: return
+	if (progress.lock_until > datetime.datetime.now()): return
 
 	reset_lock(db, username, test.id, test.attempts)
 

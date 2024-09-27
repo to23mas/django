@@ -6,11 +6,10 @@ from django.contrib import messages
 
 from domain.data.chapters.ChapterData import ChapterData
 from domain.data.chapters.ChapterStorage import find_chapters
-from domain.data.content_progress.ContentProgressStorage import get_content_progress
 from domain.data.demos.DemoStorage import get_demo
 from domain.data.lessons.LessonData import LessonData
 from domain.data.lessons.LessonStorage import find_lessons
-from domain.data.progress.ProgressStorage import get_user_progress_by_course
+from domain.data.progress.ProgressStorage import get_content_progress, get_user_progress_by_course
 from domain.data.projects.ProjectData import ProjectData
 from domain.data.projects.ProjectStorage import find_projects, find_projects_by_course_and_ids, get_project_by_id
 

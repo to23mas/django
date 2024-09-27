@@ -33,15 +33,12 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 	available_tests = find_tests_for_overview(course, user_available)
 
 	for test in available_tests:
-		print('rest')
 		reset_test_lock_time(
 			get_test_progress(course, username, test.id), #type: ignore
 			course,
 			username,
 			test,
 		)
-
-	available_tests = find_tests_for_overview(course, user_available)
 
 	return render(request, 'tests/overview.html', {
 		'tests': available_tests,

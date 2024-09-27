@@ -1,5 +1,6 @@
 from django import template
-from domain.data.content_progress.ContentProgressStorage import get_project_state
+
+from domain.data.progress.ProgressStorage import get_project_state
 
 
 register = template.Library()
