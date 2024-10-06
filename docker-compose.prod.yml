@@ -3,11 +3,18 @@ version: '3.8'
 services:
   web:
     build: .
-    command: gunicorn inpv.wsgi:application --bind 0.0.0.0:8000 --reload
     volumes:
       - ./src/:/usr/src/app
+      - ./db/:/usr/src/db
+    command: >
+      sh -c "sleep 8 &&
+             python manage.py makemigrations ;
+             python manage.py migrate ;
+             python manage.py createsuperuser --username admin --email admin@admin.com --noinput ;
+             python /usr/src/db/migrations/migrate.py ;
+             gunicorn inpv.wsgi:application --bind 0.0.0.0:8888 --reload"
     expose:
-      - 8000
+      - 8888
     env_file:
       - ./.env
     depends_on:
@@ -19,13 +26,24 @@ services:
       - POSTGRES_USER=user
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=inpv
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "user", "-d", "inpv", "-h", "localhost", "-p", "5432"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   nginx:
     build: ./docker/nginx
     volumes:
       - ./src/public/:/var/www/public/
     ports:
-      - 1337:80
+      - 80:80
     depends_on:
       - web
 
+  mongodb:
+    image: mongo:6-jammy
+    ports:
+      - 27017:27017
