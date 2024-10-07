@@ -12,13 +12,13 @@ from domain.data.tests.TestDataSerializer import TestDataSerializer
 from domain.data.tests.TestData import TestData
 
 
-def find_tests_for_overview(db: str, open_tests: list = []) -> List[TestData]:
+def find_tests_for_overview(db: str, open_tests: list = []) -> List[TestData]: #pylint: disable=W0102
 	"""returns all test"""
 	tests = MongoStorage().database[db].tests.find(
 		{TestsTable.ID.value: {'$in': open_tests}}
 	).sort(TestsTable.ID.value, pymongo.DESCENDING)
 
-	if tests == None: raise DataNotFoundException
+	if tests is None: raise DataNotFoundException
 
 	return TestDataCollection.from_array(tests)
 
@@ -28,11 +28,11 @@ def get_test(db: str, test_id: int) -> Tuple[TestData | None, List[QuestionData]
 
 	test_data = MongoStorage().database[db].tests.find_one({'_id': test_id})
 
-	if test_data == None:
+	if test_data is None:
 		raise DataNotFoundException
 
 	serialized_test_data =  TestDataSerializer().from_dict(test_data)
-	if test_data.get('questions') == None:
+	if test_data.get('questions') is None:
 		serialized_question_data_collection = None
 	else:
 		serialized_question_data_collection = QuestionDataCollection.from_array(test_data.get('questions'))
@@ -60,7 +60,7 @@ def find_tests(db: str) -> List[TestData] | None:
 
 def exists_test(db: str, lesson_id: int) -> bool:
 	res = MongoStorage().database[db].lessons.find_one({'_id': lesson_id})
-	return True if res != None else False
+	return res is not None
 
 
 def delete_test(db: str, test_id: int) -> None:
@@ -84,8 +84,7 @@ def get_next_valid_question_id(db: str, test_id: int) -> int:
 
 	if result:
 		return result[0]['max_question_id'] + 1
-	else:
-		return 1
+	return 1
 
 
 def update_test(test_data: TestData, db: str) -> None:

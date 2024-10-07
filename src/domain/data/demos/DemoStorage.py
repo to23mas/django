@@ -11,13 +11,13 @@ from domain.data.demos.tableDefinition.TableDefinitions import DemosTable
 from domain.data.exception.DataNotFoundException import DataNotFoundException
 
 
-def find_demos_for_overview(db: str, open_demos: list = []) -> List[DemoData]:
+def find_demos_for_overview(db: str, open_demos: list = []) -> List[DemoData]: #pylint: disable=W0102
 	"""returns all test"""
 	demos = MongoStorage().database[db].demos.find(
 		{DemosTable.ID.value: {'$in': open_demos}}
 	).sort(DemosTable.ID.value, pymongo.DESCENDING)
 
-	if demos == None: raise DataNotFoundException
+	if demos is None: raise DataNotFoundException
 
 	return DemoDataCollection.from_dict(demos)
 

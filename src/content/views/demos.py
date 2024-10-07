@@ -14,7 +14,7 @@ from domain.data.demos.DemoStorage import create_demo, delete_demo, find_demos, 
 def demo_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	demos = find_demos(db=course.database)
 
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'demo': '#'}]
@@ -28,9 +28,9 @@ def demo_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 @staff_member_required
 def demo_edit(request: HttpRequest, course_id: str, demo_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	demo = get_demo(demo_id, course.database)
-	if demo == None: return  redirect('admin_course_overview')
+	if demo is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = DemoEditForm(request.POST)
@@ -55,7 +55,7 @@ def demo_edit(request: HttpRequest, course_id: str, demo_id: int) -> HttpRespons
 @staff_member_required
 def demo_new(request: HttpRequest, course_id: str) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = DemoEditForm(request.POST)
@@ -79,10 +79,10 @@ def demo_new(request: HttpRequest, course_id: str) -> HttpResponse:
 @staff_member_required
 def demo_delete(request: HttpRequest, course_id: str, demo_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	demo = get_demo(demo_id, course.database)
-	if demo == None: return  redirect('admin_course_overview')
+	if demo is None: return  redirect('admin_course_overview')
 
 	delete_demo(course.database, demo.id)
 	messages.success(request, 'demo has been deleted')
-	return redirect('admin_demo_overview', course_id=course_id);
+	return redirect('admin_demo_overview', course_id=course_id)

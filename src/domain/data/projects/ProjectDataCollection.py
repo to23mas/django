@@ -13,4 +13,3 @@ class ProjectDataCollection:
 		for test in testData:
 			collection.append(ProjectDataSerializer.from_dict(test))
 		return collection
-

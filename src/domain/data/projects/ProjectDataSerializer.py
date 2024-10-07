@@ -29,4 +29,3 @@ class ProjectDataSerializer:
 			database=project_data[ProjectsTable.DATABASE.value],
 			todo=project_data[ProjectsTable.TODO.value],
 		)
-

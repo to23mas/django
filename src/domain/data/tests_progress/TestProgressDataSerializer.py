@@ -12,4 +12,3 @@ class TestProgressDataSerializer:
 			state=progressData[TestProgressTable.STATE.value],
 			score=progressData[TestProgressTable.SCORE.value],
 		)
-

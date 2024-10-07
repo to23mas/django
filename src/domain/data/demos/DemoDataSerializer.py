@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict
 
 from domain.data.demos.DemoData import DemoData
 from domain.data.demos.tableDefinition.TableDefinitions import DemosTable

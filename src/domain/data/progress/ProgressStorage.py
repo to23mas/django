@@ -20,14 +20,14 @@ def get_content_progress(db: str, username: str, content: str) -> dict :
 		{ f'{content}': 1, '_id': 0 })
 
 	ret_res = list(result)
-	if ret_res == []:
+	if not ret_res:
 		return {}
 	return ret_res[0][content]
 
 
 def enroll_course(username: str, db: str) -> bool:
 	course = get_course({'database': db})
-	if course == None: return False
+	if course is None: return False
 	result_document = {
 		"_id": username,
 		"projects": {},
@@ -43,21 +43,21 @@ def enroll_course(username: str, db: str) -> bool:
 		result_document['projects'][str(project.id)] = ProgressState.OPEN.value if i == 0 else ProgressState.LOCK.value
 		lessons = find_lessons(course.database, project.database)
 		j = 0
-		if lessons != None:
+		if lessons is not None:
 			for lesson in lessons:
 				result_document['lessons'][str(lesson.id)] = ProgressState.OPEN.value if j == 0 and i == 0 else ProgressState.LOCK.value
 				j += 1
 
 		chapters = find_chapters(course.database, project.database)
 		k = 0
-		if chapters != None:
+		if chapters is not None:
 			for chapter in chapters:
 				result_document['chapters'][str(chapter.id)] = ProgressState.OPEN.value if i == 0 and k == 0 else ProgressState.LOCK.value
 				k += 1
 		i += 1
 
 	tests = find_tests(course.database)
-	if tests != None:
+	if tests is not None:
 		for t in tests:
 			result_document['tests'].append({
 				"test_id": t.id,
@@ -69,7 +69,7 @@ def enroll_course(username: str, db: str) -> bool:
 
 	demos = find_demos(course.database)
 	demo_idx = 0
-	if demos != None:
+	if demos is not None:
 		for demo in demos:
 			result_document['demos'][str(demo.id)] = ProgressState.OPEN.value if demo_idx == 0 else ProgressState.LOCK.value
 			demo_idx += 1
@@ -77,7 +77,7 @@ def enroll_course(username: str, db: str) -> bool:
 	try:
 		MongoStorage().database[course.database].progress.insert_one(result_document)
 		return True
-	except:
+	except: #pylint: disable=W0702
 		return False
 
 
@@ -105,21 +105,21 @@ def finish_chapter(username: str, db: str, chapter_id: int) -> None:
 def find_tests_progress(db: str, username: str) -> dict | None:
 	"""return user's all tests progress"""
 	result = MongoStorage().database[db].progress.find_one({'_id': username}, {'tests': 1})
-	if result == None: return None
+	if result is None: return None
 	return result['tests']
 
 
 def find_demos_progress(db: str, username: str) -> dict | None:
 	"""return user's all tests progress"""
 	result = MongoStorage().database[db].progress.find_one({'_id': username}, {'demos': 1})
-	if result == None: return None
+	if result is None: return None
 	return result['demos']
 
 
 def find_available_tests(course: str, username: str) -> list | None:
 	"""return nos of displayable tests (all except closed) tests"""
 	all_tests = find_tests_progress(course, username)
-	if all_tests == None: return None
+	if all_tests is None: return None
 
 	available_tests_ids = []
 	for test in all_tests:
@@ -131,7 +131,7 @@ def find_available_tests(course: str, username: str) -> list | None:
 
 def find_available_demos(course: str, username: str) -> list[int] | None:
 	all_demos = find_demos_progress(course, username)
-	if all_demos == None: return None
+	if all_demos is None: return None
 
 	available_demo_id = []
 	for demo_id in all_demos:
@@ -145,7 +145,7 @@ def get_project_state(course: str, username: str, project_id: int) -> str :
 	result = MongoStorage().database[course].progress.find_one(
 		{"_id": username },{ f"projects.{project_id}": 1, "_id": 0 }
 	)
-	if result == None: raise UnexpectedNoneValueException
+	if result is None: raise UnexpectedNoneValueException
 
 	return result['projects'][str(project_id)]
 
@@ -154,7 +154,7 @@ def get_chapter_state(db: str, username: str, chapter_id: int) -> str :
 	result = MongoStorage().database[db].progress.find_one(
 		{"_id": username },{ f"chapters.{chapter_id}": 1, "_id": 0 }
 	)
-	if result == None: raise UnexpectedNoneValueException
+	if result is None: raise UnexpectedNoneValueException
 
 	return result['chapters'][str(chapter_id)]
 
@@ -163,7 +163,7 @@ def get_lesson_state(db: str, username: str, lesson_id: int) -> str :
 	result = MongoStorage().database[db].progress.find_one(
 		{"_id": username },{ f"lessons.{lesson_id}": 1, "_id": 0 }
 	)
-	if result == None: raise UnexpectedNoneValueException
+	if result is None: raise UnexpectedNoneValueException
 
 	return result['lessons'][str(lesson_id)]
 
@@ -228,4 +228,3 @@ def unlock_project(db: str, username: str, project_id: int) -> None:
 	if (is_project(username, db, project_id, 'lock')):
 		MongoStorage().database[db].progress.update_one(
 			{'_id': username}, {'$set': {f'projects.{project_id}': 'open'}})
-

@@ -2,11 +2,11 @@
 
 from django.urls import path
 
-from .views import *
+from . import views
 
 app_name = 'courses'
 
 urlpatterns = [
-	path("", overview, name="overview"),
-	path("unlock/<int:course_id>", enroll, name="enroll"),
+	path("", views.overview, name="overview"),
+	path("unlock/<int:course_id>", views.enroll, name="enroll"),
 ]

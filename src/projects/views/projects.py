@@ -44,7 +44,7 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 	project = get_project_by_id(project_id, course)
 
 	# non existing project
-	if project == None:
+	if project is None:
 		messages.error(request, 'Pokus o vstup do neexistujícího projektu!')
 		return redirect('projects:overview', course=course, sort_type='all')
 
@@ -81,7 +81,9 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 def get_vis_lessons(lessons:  List[LessonData] | None, progress: Dict | None):
 	ch = []
 	edges = []
-	if lessons == None or progress == None: return (None, None)
+	if lessons is None or progress is None:
+		return (None, None)
+
 	for lesson in lessons:
 		for to in lesson.to:
 			edges.append({'from': lesson.id, 'to': to})
@@ -105,7 +107,9 @@ def get_vis_lessons(lessons:  List[LessonData] | None, progress: Dict | None):
 def get_vis_chapters(chapters: List[ChapterData] | None, progress: Dict | None, course: str, project: ProjectData):
 	ch = []
 	edges = []
-	if chapters == None or progress == None: return (None, None)
+	if chapters is None or progress is None:
+		return (None, None)
+
 	for chapter in chapters:
 		edges.append({'from': f'c-{chapter.id}', 'to': chapter.lesson_id})
 		chapter_status = progress['chapters'][str(chapter.id)]
@@ -135,4 +139,3 @@ def get_vis_chapters(chapters: List[ChapterData] | None, progress: Dict | None, 
 		})
 
 	return (ch, edges)
-

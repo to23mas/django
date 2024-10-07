@@ -24,10 +24,10 @@ class ChapterDataSerializer:
 	def from_dict(chapter_data: dict, ch_with_blocks: ChapterData|None = None) -> ChapterData:
 		try:
 			blocks = chapter_data[ChaptersTable.BLOCKS.value]
-		except:
+		except: #pylint: disable=W0702
 			blocks = []
 
-		if ch_with_blocks != None:
+		if ch_with_blocks is not None:
 			blocks = ch_with_blocks.blocks
 
 		return ChapterData(

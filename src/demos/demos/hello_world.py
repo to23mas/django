@@ -1,4 +1,3 @@
-from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -11,22 +10,22 @@ from domain.data.projects.ProjectStorage import get_project_by_id
 @login_required
 def hello_world(request: HttpRequest, course: str, demo_id: int) -> HttpResponse:
 	username = request.user.username #type: ignore
-	if (get_user_progress_by_course(username, course) == None):
+	if (get_user_progress_by_course(username, course) is None):
 		messages.warning(request, 'Kurz ještě není odemčen!')
 		return redirect('courses:overview')
 
 	demo = get_demo(demo_id, course)
-	if demo == None:
+	if demo is None:
 		messages.warning(request, 'Ukázkový projekt není v tyto chvíli dostupný')
 		return redirect('courses:overview', course=course)
 
 	user_available = find_available_demos(course, username)
-	if user_available == None or not demo.id in user_available:
+	if user_available is None or demo.id not in user_available:
 		messages.warning(request, 'Ukázkový projekt ještě není odemčen')
 		return redirect('courses:overview', course=course)
 
 	project = get_project_by_id(demo_id, course)
-	if project == None:
+	if project is None:
 		messages.error(request, 'nevalidní akce')
 		return redirect('courses:overview', course=course)
 
@@ -37,4 +36,3 @@ def hello_world(request: HttpRequest, course: str, demo_id: int) -> HttpResponse
 		'course': course,
 		'project_url': project_url,
 })
-

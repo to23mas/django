@@ -16,16 +16,16 @@ def find_courses() -> List[CourseData] | None:
 		case _: return CourseDataCollection.from_array(courses)
 
 
-def get_course(filter: Dict = {}) -> CourseData | None:
-	course = MongoStorage().database.courses.find_one(filter)
+def get_course(filter_: Dict = {}) -> CourseData | None: #pylint: disable=W0102
+	course = MongoStorage().database.courses.find_one(filter_)
 
 	match course:
 		case None: return course
 		case _: return CourseDataSerializer.from_dict(course)
 
 
-def get_course_by_id(id: str) -> CourseData | None:
-	course = MongoStorage().database.courses.find_one({"_id": int(id)})
+def get_course_by_id(id_: str) -> CourseData | None:
+	course = MongoStorage().database.courses.find_one({"_id": int(id_)})
 
 	match course:
 		case None: return course

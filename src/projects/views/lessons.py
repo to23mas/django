@@ -18,12 +18,12 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 	"""display lesson VIS.js page"""
 	username = request.user.username #type: ignore
 	project = get_project_by_id(project_id, course)
-	if project == None:
+	if project is None:
 		messages.error(request, 'pokus o vstup k neexistujícímu projektu!')
 		return redirect('projects:overview', course=course, sort_type='all')
 
-	lesson = get_lesson(lesson_id, course, project.database)
-	if lesson == None:
+	lesson_data = get_lesson(lesson_id, course, project.database)
+	if lesson_data is None:
 		messages.error(request, 'Pokus o vstup k neexistující lekci!')
 		return redirect('projects:overview', course=course, sort_type='all')
 
@@ -34,15 +34,15 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 
 	if chapter_id == UnknownChapterId.ID.value:
 		# vis js does not know what is the first chapter in lesson. Have to figure it out here
-		chapters = find_chapters(course, project.database, {'lesson_id': lesson.id})
-		if chapters == None:
+		chapters = find_chapters(course, project.database, {'lesson_id': lesson_data.id})
+		if chapters is None:
 			chapter = None
 		else:
-			chapter = chapters[0]
+			chapter = chapters[0] #pylint: disable=E1136
 
 	else:
 		chapter = get_chapter(chapter_id, lesson_id, course , project.database)
-	if chapter == None:
+	if chapter is None:
 		messages.error(request, 'Pokus o vstup k neexistující kapitole!')
 		return redirect('projects:overview', course=course, sort_type='all')
 
@@ -58,7 +58,7 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 	test_state = None
 	if chapter.unlock_type == 'test':
 		test = get_test_progress(course, username, chapter.unlocker_id)
-		if test != None:
+		if test is not None:
 			test_state = test.state
 
 	lesson_chapters = find_chapters(course, project.database, {"lesson_id": lesson_id})
@@ -76,4 +76,3 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		'username': username,
 		'test_state': test_state,
 	})
-

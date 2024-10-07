@@ -13,4 +13,3 @@ class LessonDataCollection:
 		for lesson in lessons_data:
 			collection.append(LessonDataSerializer.from_dict(lesson))
 		return collection
-

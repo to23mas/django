@@ -13,4 +13,3 @@ class TestDataCollection:
 		for test in test_data:
 			collection.append(TestDataSerializer.from_dict(test))
 		return collection
-

@@ -14,7 +14,7 @@ from domain.data.projects.ProjectStorage import create_project, delete_project, 
 def project_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	projects = find_projects(course.database)
 
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Projects': '#'}]
@@ -29,9 +29,9 @@ def project_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 def project_edit(request: HttpRequest, course_id: str, project_id: int) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	project = get_project_by_id(project_id, course.database)
-	if project == None: return  redirect('admin_course_overview')
+	if project is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = ProjectEditForm(request.POST)
@@ -57,7 +57,7 @@ def project_edit(request: HttpRequest, course_id: str, project_id: int) -> HttpR
 def project_new(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = ProjectEditForm(request.POST)
@@ -67,7 +67,7 @@ def project_new(request: HttpRequest, course_id: str) -> HttpResponse:
 			try:
 				create_project(project_data, course.database)
 				return  redirect('admin_project_edit', course_id=course_id, project_id=project_data.id)
-			except:
+			except: #pylint: disable=W0702
 				edit_form.add_error('database', 'This value must be unique')
 	else:
 		edit_form = ProjectEditForm()
@@ -81,12 +81,12 @@ def project_new(request: HttpRequest, course_id: str) -> HttpResponse:
 
 
 @staff_member_required
-def project_delete(request: HttpRequest, course_id: str, project_no: str) -> HttpResponse:
+def project_delete(request: HttpRequest, course_id: str, project_no: str) -> HttpResponse: #pylint: disable=W0613
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 
 	project = get_project(course.database, {'_id': int(project_no)})
-	if project == None: return  redirect('admin_course_overview')
+	if project is None: return  redirect('admin_course_overview')
 
 	delete_project(course.database, project.id)
-	return redirect('admin_project_overview', course_id=course_id);
+	return redirect('admin_project_overview', course_id=course_id)

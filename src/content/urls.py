@@ -1,6 +1,7 @@
+
 from django.urls import path
 
-from .views import *
+from .views import * #pylint: disable=W0401, W0614
 
 
 urlpatterns = [

@@ -25,8 +25,8 @@ def get_project_by_id(project_id: int, db: str) -> ProjectData | None:
 		case _: return ProjectDataSerializer.from_dict(project)
 
 
-def get_project(db: str, filter: Dict = {}) -> ProjectData | None:
-	project = MongoStorage().database[db].projects.find_one(filter)
+def get_project(db: str, filter_: Dict = {}) -> ProjectData | None: #pylint: disable=W0102
+	project = MongoStorage().database[db].projects.find_one(filter_)
 	match project:
 		case None: return None
 		case _: return ProjectDataSerializer.from_dict(project)
@@ -45,7 +45,7 @@ def delete_project(db: str, project_id: int) -> None:
 
 def exists_project(db: str, project_no: str) -> bool:
 	res = MongoStorage().database[db].projects.find_one({'no': project_no})
-	return True if res != None else False
+	return res is not None
 
 
 def get_next_valid_id(db: str) -> int:

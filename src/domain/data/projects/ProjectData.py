@@ -10,4 +10,3 @@ class ProjectData():
 	title: str
 	description: str
 	todo: List[str]
-

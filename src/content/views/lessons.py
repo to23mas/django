@@ -16,9 +16,9 @@ from domain.data.projects.ProjectStorage import get_project_by_id
 def lesson_overview(request: HttpRequest, course_id: str, project_id: int) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	project = get_project_by_id(project_id, course.database)
-	if project == None: return  redirect('admin_course_overview')
+	if project is None: return  redirect('admin_course_overview')
 
 	lessons = find_lessons(course.database, project.database)
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Lessons': '#'}]
@@ -34,11 +34,11 @@ def lesson_overview(request: HttpRequest, course_id: str, project_id: int) -> Ht
 def lesson_edit(request: HttpRequest, course_id: str, project_id: int, lesson_id: int) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	project = get_project_by_id(project_id, course.database)
-	if project == None: return  redirect('admin_course_overview')
+	if project is None: return  redirect('admin_course_overview')
 	lesson = get_lesson(lesson_id, course.database, project.database)
-	if lesson == None: return redirect('admin_course_overview')
+	if lesson is None: return redirect('admin_course_overview')
 
 	chapters = find_chapters(course.database, project.database, {'lesson_id': lesson.id})
 
@@ -68,9 +68,9 @@ def lesson_edit(request: HttpRequest, course_id: str, project_id: int, lesson_id
 def lesson_new(request: HttpRequest, course_id: str, project_id: int) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	project = get_project_by_id(project_id, course.database)
-	if project == None: return  redirect('admin_course_overview')
+	if project is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = LessonEditForm(request.POST)
@@ -95,12 +95,12 @@ def lesson_new(request: HttpRequest, course_id: str, project_id: int) -> HttpRes
 @staff_member_required
 def lesson_delete(request: HttpRequest, course_id: str, project_id: int, lesson_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	project = get_project_by_id(project_id, course.database)
-	if project == None: return  redirect('admin_course_overview')
+	if project is None: return  redirect('admin_course_overview')
 	lesson = get_lesson(lesson_id, course.database, project.database)
-	if lesson == None: return redirect('admin_course_overview')
+	if lesson is None: return redirect('admin_course_overview')
 
 	delete_lesson(course.database, project.database, lesson.id)
 	messages.success(request, 'Lesson has been deleted')
-	return redirect('admin_lesson_overview', course_id=course_id, project_id=project.id);
+	return redirect('admin_lesson_overview', course_id=course_id, project_id=project.id)

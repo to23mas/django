@@ -26,7 +26,7 @@ def get_chapter_by_id(chapter_id: int, db: str, project_db: str) -> ChapterData 
 		case _: return ChapterDataSerializer.from_dict(chapter)
 
 
-def find_chapters(db: str, project_db: str, query: Dict = {}) -> List[ChapterData] | None:
+def find_chapters(db: str, project_db: str, query: Dict = {}) -> List[ChapterData] | None: #pylint: disable=W0102
 	chapters = MongoStorage().database[db].project[project_db].chapters.find(query).sort(ChaptersTable.ID.value)
 	match chapters:
 		case None: return chapters
@@ -40,7 +40,7 @@ def exists_chapter(db: str, chapter_id: str, project_id: str, lesson_id: str) ->
 		'lesson': int(lesson_id),
 	})
 
-	return True if res != None else False
+	return res is not None
 
 
 def update_chapter(chapter_data: ChapterData, db: str, project_db: str, original_lesson_id: int) -> None:
@@ -94,8 +94,7 @@ def get_next_valid_block_id(db: str, chapter_id: int, lesson_id: int,  project_d
 
 	if result:
 		return result[0]['max_id'] + 1
-	else:
-		return 1
+	return 1
 
 
 def delete_chapter(db: str, project_db: str, chapter_id: int, lesson_id: int) -> None:

@@ -13,4 +13,3 @@ class DemoDataCollection:
 		for demo in demo_data:
 			collection.append(DemoDataSerializer.from_dict(demo))
 		return collection
-

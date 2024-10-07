@@ -24,25 +24,24 @@ def next_chapter(request: HttpRequest):
 	course_db = str(request.POST.get('course'))
 
 	project = get_project_by_id(project_id, course_db)
-	if project == None: return redirect('projects:overview', course=course_db, sort_type='all')
+	if project is None: return redirect('projects:overview', course=course_db, sort_type='all')
 	chapter = get_chapter(chapter_id, lesson_id, course_db, project.database)
-	if chapter == None: return redirect('projects:overview', course=course_db, sort_type='all')
+	if chapter is None: return redirect('projects:overview', course=course_db, sort_type='all')
 
 	if not is_chapter_done(username, course_db, chapter.id):
 		messages.warning(request, 'Nevalidní akce')
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
-	next_chapter = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
-	if next_chapter == None:
-		# TODO better redirect
+	next_chapter_data = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
+	if next_chapter_data is None:
 		messages.warning(request, 'Jednalo se o poslední kapitolu projektu.')
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
-	if not is_chapter_open_or_done(username, course_db, next_chapter.id):
+	if not is_chapter_open_or_done(username, course_db, next_chapter_data.id):
 		messages.warning(request, 'Pokus o přístup k zamčené kapitole')
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
-	return redirect('projects:lesson', course=course_db, project_id=project.id, lesson_id=next_chapter.lesson_id, chapter_id=next_chapter.id)
+	return redirect('projects:lesson', course=course_db, project_id=project.id, lesson_id=next_chapter_data.lesson_id, chapter_id=next_chapter_data.id)
 
 
 @login_required
@@ -60,9 +59,9 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 		return redirect('courses:overview')
 
 	project = get_project_by_id(project_id, course_db)
-	if project == None: return redirect('projects:overview', course=course_db, sort_type='all')
+	if project is None: return redirect('projects:overview', course=course_db, sort_type='all')
 	chapter = get_chapter(chapter_id, lesson_id, course_db, project.database)
-	if chapter == None: return redirect('projects:overview', course=course_db, sort_type='all')
+	if chapter is None: return redirect('projects:overview', course=course_db, sort_type='all')
 
 	if chapter.unlock_type != 'button':
 		return redirect('projects:overview', course=course_db, sort_type='all')
@@ -78,10 +77,10 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 
 
 	# Unlock part
-	next_chapter = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
-	if next_chapter != None:
-		unlock_lesson(username, course_db, next_chapter.lesson_id)
-		unlock_chapter(username, course_db, next_chapter.id)
+	next_chapter_data = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
+	if next_chapter_data is not None:
+		unlock_lesson(username, course_db, next_chapter_data.lesson_id)
+		unlock_chapter(username, course_db, next_chapter_data.id)
 
 	finish_chapter(username, course_db, chapter.id)
 	message =  'Kapitola ůspěšně splněna.'
@@ -90,7 +89,7 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 		message = 'Lekce ůspěšně splněna.'
 		finish_lesson(username, course_db, chapter.lesson_id)
 
-	if next_chapter == None:
+	if next_chapter_data is None:
 		#last chapter in project
 		# finish_project()
 		# unlock_project()

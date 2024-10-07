@@ -1,16 +1,16 @@
 from django import template
 
 from domain.data.lessons.LessonStorage import get_lesson
-from domain.data.projects.ProjectStorage import get_project
+# from domain.data.projects.ProjectStorage import get_project
 
 
 register = template.Library()
 
-@register.filter("get_project_name_from_id")
-def get_project_name_from_id(project_no: str, course: str):
-	project, _ = get_project(int(project_no), course)
-
-	return project.title #type: ignore
+# @register.filter("get_project_name_from_id")
+# def get_project_name_from_id(project_no: str, course: str):
+# 	project, _ = get_project(int(project_no), course) #pylint: disable=E0633
+#
+# 	return project.title #type: ignore
 
 
 @register.simple_tag

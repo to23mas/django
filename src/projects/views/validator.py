@@ -1,4 +1,3 @@
-from django.shortcuts import redirect
 from django.contrib import messages
 from django.urls import reverse
 from RestrictedPython.PrintCollector import PrintCollector
@@ -29,11 +28,14 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 	project_id = int(str(request.POST.get('project_id')))
 
 	project = get_project_by_id(project_id, course_db)
-	if project == None: return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
+	if project is None:
+		return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
 	chapter = get_chapter(chapter_id, lesson_id, course_db, project.database)
-	if chapter == None: return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
+	if chapter is None:
+		return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
 	blockly = get_blockly(course_db, int(blockly_id))
-	if blockly == None: return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
+	if blockly is None:
+		return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
 
 	match (blockly.expected_task):
 		case ExpectedTaskTypes.PRINT.value:
@@ -69,7 +71,7 @@ def validate_python_code_print_safe(code):
 	}
 
 	byte_code = compile_restricted(code, '<string>', 'exec')
-	exec(byte_code, restricted_globals, restricted_locals)
+	exec(byte_code, restricted_globals, restricted_locals) #pylint: disable=W0122
 	output = restricted_locals[print_result]
 
 	return output
@@ -85,7 +87,7 @@ def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectD
 		return 'error'
 
 	next_chapter = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
-	if next_chapter != None:
+	if next_chapter is not None:
 		unlock_lesson(username, course_db, next_chapter.lesson_id)
 		unlock_chapter(username, course_db, next_chapter.id)
 
@@ -94,7 +96,7 @@ def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectD
 	if chapter.is_last_in_lesson:
 		finish_lesson(username, course_db, chapter.lesson_id)
 
-	if next_chapter == None:
+	if next_chapter is None:
 		#last chapter in project
 		# finish_project()
 		# unlock_project()

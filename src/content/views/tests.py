@@ -16,7 +16,7 @@ from domain.data.tests.TestStorage import create_question, create_test, delete_q
 def test_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	tests = find_tests(db=course.database)
 
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Tests': '#'}]
@@ -30,9 +30,9 @@ def test_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 @staff_member_required
 def test_edit(request: HttpRequest, course_id: str, test_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	test, questions = get_test(course.database, test_id)
-	if test == None: return  redirect('admin_course_overview')
+	if test is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = TestEditForm(request.POST)
@@ -57,7 +57,7 @@ def test_edit(request: HttpRequest, course_id: str, test_id: int) -> HttpRespons
 @staff_member_required
 def test_new(request: HttpRequest, course_id: str) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = TestEditForm(request.POST)
@@ -81,21 +81,21 @@ def test_new(request: HttpRequest, course_id: str) -> HttpResponse:
 @staff_member_required
 def test_delete(request: HttpRequest, course_id: str, test_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	test, _ = get_test(course.database, test_id)
-	if test == None: return  redirect('admin_course_overview')
+	if test is None: return  redirect('admin_course_overview')
 
 	delete_test(course.database, test.id)
 	messages.success(request, 'Test has been deleted')
-	return redirect('admin_test_overview', course_id=course_id);
+	return redirect('admin_test_overview', course_id=course_id)
 
 
 @staff_member_required
 def test_new_question(request: HttpRequest, course_id: str, test_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	test, _ = get_test(course.database, test_id)
-	if test == None: return  redirect('admin_course_overview')
+	if test is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = QuestionEditForm(request.POST)
@@ -120,9 +120,9 @@ def test_new_question(request: HttpRequest, course_id: str, test_id: int) -> Htt
 @staff_member_required
 def test_edit_question(request: HttpRequest, course_id: str, test_id: int, question_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	test, questions = get_test(course.database, test_id)
-	if test == None: return  redirect('admin_course_overview')
+	if test is None: return  redirect('admin_course_overview')
 
 	question_data = [q for q in questions if q.id == question_id][0] #type: ignore
 
@@ -151,12 +151,10 @@ def test_edit_question(request: HttpRequest, course_id: str, test_id: int, quest
 @staff_member_required
 def test_delete_question(request: HttpRequest, course_id: str, test_id: int, question_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	test, _ = get_test(course.database, test_id)
-	if test == None: return  redirect('admin_course_overview')
+	if test is None: return  redirect('admin_course_overview')
 
 	delete_question(course.database, test.id, question_id)
 	messages.success(request, 'Question has been deleted')
-	return redirect('admin_test_edit', course_id=course_id, test_id=test.id);
-
-
+	return redirect('admin_test_edit', course_id=course_id, test_id=test.id)

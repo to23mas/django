@@ -40,7 +40,7 @@ def find_lessons_by_course(db: str, project_db) -> List[LessonData]:
 
 def exists_lesson(db: str, lesson_no: str) -> bool:
 	res = MongoStorage().database[db].lessons.find_one({'no': int(lesson_no)})
-	return True if res != None else False
+	return res is not None
 
 
 def create_lesson(lesson_data: LessonData, db: str, project_db: str) -> None:

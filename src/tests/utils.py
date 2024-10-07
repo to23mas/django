@@ -61,7 +61,7 @@ def validate_test_get_result(
 def make_progress(test_result_data: TestResultData, test_data: TestData, course: str, username: str, test_id: int) -> bool:
 	"""Make progress if possible"""
 	current_test_progress = get_test_progress(course, username, test_id)
-	if current_test_progress == None or current_test_progress.attempts == 0: return False
+	if current_test_progress is None or current_test_progress.attempts == 0: return False
 
 	if test_result_data.score_percentage >= 99.99:
 		new_test_state = TestState.FINISH
@@ -70,7 +70,7 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 	else:
 		new_test_state = TestState.FAIL
 
-	if new_test_state == TestState.FAIL or new_test_state == TestState.SUCCESS:
+	if new_test_state in [TestState.FAIL, TestState.SUCCESS]:
 		current_test_progress.attempts -= 1
 
 	if current_test_progress.state == TestState.SUCCESS.value:
@@ -98,5 +98,3 @@ def reset_test_lock_time(progress:  TestProgressData, db: str, username: str, te
 	if (progress.lock_until > datetime.datetime.now()): return
 
 	reset_lock(db, username, test.id, test.attempts)
-
-

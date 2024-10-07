@@ -1,6 +1,6 @@
 from enum import Enum
 
 class TargetUnlockType(Enum):
-    LESSON = 'lesson'
-    CHAPTER = 'chapter'
-    PROJECT = 'project'
+	LESSON = 'lesson'
+	CHAPTER = 'chapter'
+	PROJECT = 'project'

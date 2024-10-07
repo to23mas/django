@@ -27,7 +27,7 @@ class TestDataSerializer:
 	def from_dict(testData: dict) -> TestData:
 		try:
 			total_points = sum(question[TestQuestionTable.POINTS.value] for question in testData[TestsTable.QUESTIONS.value])
-		except:
+		except: #pylint: disable=W0702
 			total_points = 0
 
 		return TestData(

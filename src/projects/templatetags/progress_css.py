@@ -6,14 +6,11 @@ register = template.Library()
 @register.filter("progress_css")
 def progress_css(progress, project_no) -> str:
 
-    status = progress[str(project_no)]
+	status = progress[str(project_no)]
 
-    if status == "open":
-        return "bg-white"
+	if status == "open":
+		return "bg-white"
+	if status == "done":
+		return "bg-green-400"
 
-    elif status == "done":
-        return "bg-green-400"
-
-    else:
-        return "bg-gray-800"
-
+	return "bg-gray-800"

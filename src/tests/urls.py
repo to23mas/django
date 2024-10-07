@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import *
+from tests.views import display_test, overview, results, unlock, validate_test
 
 app_name = 'tests'
 urlpatterns = [

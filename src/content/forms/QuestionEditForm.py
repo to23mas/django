@@ -29,7 +29,7 @@ class QuestionEditForm(forms.Form):
 
 	def clean_answers(self):
 		data = self.cleaned_data['answers']
-		if (data == None or data == ''):
+		if (data is None or data == ''):
 			return {}
 		return ast.literal_eval(data)
 

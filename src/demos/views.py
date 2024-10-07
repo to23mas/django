@@ -2,8 +2,6 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.shortcuts import render
-from django.http import HttpRequest, HttpResponse
 from domain.data.demos.DemoStorage import find_demos_for_overview, get_demo
 from domain.data.progress.ProgressStorage import find_available_demos, get_user_progress_by_course
 
@@ -12,14 +10,14 @@ from domain.data.progress.ProgressStorage import find_available_demos, get_user_
 def overview(request: HttpRequest, course: str) -> HttpResponse:
 	"""list of all available demos"""
 	username = request.user.username #type: ignore
-    # TODO přidat tenhle check na více míst (lekce , teste apod)
-	if (get_user_progress_by_course(username, course) == None):
+    # (fixme) TODO přidat tenhle check na více míst (lekce , teste apod)
+	if (get_user_progress_by_course(username, course) is None):
 		messages.warning(request, 'Kurz ještě není odemčen!')
 		return redirect('courses:overview')
 
 	user_available = find_available_demos(course, username)
 
-	if user_available == None or len(user_available) == 0:
+	if user_available is None or len(user_available) == 0:
 		messages.success(request, 'V tuto chvíli nemáš žádné dostupné ukázky projektů')
 		return render(request, 'demos/overview.html', {
 			'course': course,
@@ -37,18 +35,18 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 @login_required
 def detail(request: HttpRequest, course: str, demo_id: int) -> HttpResponse:
 	username = request.user.username #type: ignore
-	if (get_user_progress_by_course(username, course) == None):
+	if (get_user_progress_by_course(username, course) is None):
 		messages.warning(request, 'Kurz ještě není odemčen!')
 		return redirect('courses:overview')
 
 	demo = get_demo(demo_id, course)
-	if demo == None:
+	if demo is None:
 		messages.warning(request, 'Ukázkový projekt není v tyto chvíli dostupný')
 		return redirect('courses:overview', course=course)
 
 	user_available = find_available_demos(course, username)
 
-	if user_available == None or not demo.id in user_available:
+	if user_available is None or demo.id not in user_available:
 		messages.warning(request, 'Ukázkový projekt ještě není odemčen')
 		return redirect('courses:overview', course=course)
 

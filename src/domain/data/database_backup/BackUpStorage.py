@@ -1,3 +1,4 @@
+# pylint: skip-file
 """storage for lessons"""
 from typing import Dict
 
@@ -21,7 +22,7 @@ from domain.data.tests.TestStorage import create_question, create_test, find_tes
 
 def download_json(course_id: str) -> Dict | None:
 	course = get_course_by_id(course_id)
-	if course == None: return None
+	if course is None: return None
 	json_result = {'course': CourseDataSerializer.to_dict(course)}
 
 	#PROJECTS LESSONS CHAPTERS
@@ -31,13 +32,13 @@ def download_json(course_id: str) -> Dict | None:
 		project_dict = ProjectDataSerializer.to_dict(project)
 
 		lessons = find_lessons(course.database, project.database)
-		if lessons == None:
+		if lessons is None:
 			json_result['projects'].append(project_dict)
 			continue
 		project_dict['lessons'] = [LessonDataSerializer.to_dict(lesson) for lesson in lessons] #type: ignore
 
 		chapters = find_chapters(course.database, project.database)
-		if chapters == None:
+		if chapters is None:
 			continue
 		project_dict['chapters'] = [ChapterDataSerializer.to_dict(chapter) for chapter in chapters] #type: ignore
 		json_result['projects'].append(project_dict)
@@ -45,24 +46,24 @@ def download_json(course_id: str) -> Dict | None:
 	#TESTS
 	tests = find_tests(course.database)
 	json_result['tests'] = [] #type: ignore
-	if tests != None:
+	if tests is not None:
 		for t in tests:
 			_, questions = get_test(course.database, t.id)
 			test_dict = TestDataSerializer.to_dict(t)
-			if questions != None:
+			if questions is not None:
 				test_dict['questions'] = [QuestionDataSerializer.to_dict(question) for question in questions] #type: ignore
 			json_result['tests'].append(test_dict)
 
 	blocklys = find_blockly(course.database)
 	json_result['blockly'] = [] #type: ignore
-	if blocklys != None:
+	if blocklys is not None:
 		for b in blocklys:
 			b_dict = BlocklyDataSerializer.to_dict(b)
 			json_result['blockly'].append(b_dict)
 
 	demos = find_demos(course.database)
 	json_result['demos'] = [] #type: ignore
-	if demos != None:
+	if demos is not None:
 		for d in demos:
 			d_dict = DemoDataSerializer.to_dict(d)
 			json_result['demos'].append(d_dict)
@@ -112,7 +113,7 @@ def upload_from_json(file_data: Dict) -> Exception | None:
 def delete_all(course_id: str) -> None:
 	db = MongoStorage()
 	course = get_course_by_id(course_id)
-	if course == None: return
+	if course is None: return
 
 	projects = find_projects(course.database)
 	for project in projects:

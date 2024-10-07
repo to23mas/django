@@ -16,15 +16,15 @@ from domain.data.projects.ProjectStorage import get_project_by_id
 def chapter_overview(request: HttpRequest, course_id: str, project_id: int) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	project = get_project_by_id(project_id, course.database)
-	if project == None: return  redirect('admin_course_overview')
+	if project is None: return  redirect('admin_course_overview')
 
-	filter = ChapterFilterForm(db=course.database, project_db=project.database)
+	filter_ = ChapterFilterForm(db=course.database, project_db=project.database)
 	if request.method == 'POST':
-		filter = ChapterFilterForm(request.POST, db=course.database, project_db=project.database)
-		if filter.is_valid():
-			chapters = find_chapters(course.database, project.database, filter.cleaned_data)
+		filter_ = ChapterFilterForm(request.POST, db=course.database, project_db=project.database)
+		if filter_.is_valid():
+			chapters = find_chapters(course.database, project.database, filter_.cleaned_data)
 		else:
 			chapters = find_chapters(course.database, project.database)
 	else:
@@ -36,18 +36,18 @@ def chapter_overview(request: HttpRequest, course_id: str, project_id: int) -> H
 		'chapters': chapters,
 		'project': project,
 		'breadcrumbs': breadcrumbs,
-		'filter': filter,
+		'filter': filter_,
 	})
 
 
 @staff_member_required
 def chapter_edit(request: HttpRequest, course_id: str, project_id: int, lesson_id: int, chapter_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	project = get_project_by_id(project_id, course.database)
-	if project == None: return  redirect('admin_course_overview')
+	if project is None: return  redirect('admin_course_overview')
 	chapter = get_chapter(chapter_id, lesson_id, course.database, project.database)
-	if chapter == None: return  redirect('admin_course_overview')
+	if chapter is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = ChapterEditForm(request.POST, db=course.database, project_db=project.database)
@@ -74,9 +74,9 @@ def chapter_edit(request: HttpRequest, course_id: str, project_id: int, lesson_i
 def chapter_new(request: HttpRequest, course_id: str, project_id: int) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	project = get_project_by_id(project_id, course.database)
-	if project == None: return  redirect('admin_course_overview')
+	if project is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = ChapterEditForm(request.POST, db=course.database, project_db=project.database)
@@ -101,12 +101,12 @@ def chapter_new(request: HttpRequest, course_id: str, project_id: int) -> HttpRe
 @staff_member_required
 def chapter_delete(request: HttpRequest, course_id: str, project_id: int, lesson_id: int, chapter_id: int) -> HttpResponse:
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 	project = get_project_by_id(project_id, course.database)
-	if project == None: return  redirect('admin_course_overview')
+	if project is None: return  redirect('admin_course_overview')
 	chapter = get_chapter(chapter_id, lesson_id, course.database, project.database)
-	if chapter == None: return  redirect('admin_course_overview')
+	if chapter is None: return  redirect('admin_course_overview')
 
 	delete_chapter(course.database, project.database, chapter.id, chapter.lesson_id)
 	messages.success(request, 'Chapter has been deleted')
-	return redirect('admin_chapter_overview', course_id=course_id, project_id=project.id);
+	return redirect('admin_chapter_overview', course_id=course_id, project_id=project.id)

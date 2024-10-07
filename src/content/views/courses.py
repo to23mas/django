@@ -16,7 +16,7 @@ from domain.data.database_backup.BackUpStorage import delete_all, download_json,
 def course_edit(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
 	course = get_course_by_id(course_id)
-	if course == None: return  redirect('admin_course_overview')
+	if course is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = CourseEditForm(request.POST, database=course.database)
@@ -37,12 +37,12 @@ def course_edit(request: HttpRequest, course_id: str) -> HttpResponse:
 
 
 @staff_member_required
-def course_download(request: HttpRequest, course_id: str) -> HttpResponse:
+def course_download(request: HttpRequest, course_id: str) -> HttpResponse: #pylint: disable=W0613
 	"""list all courses"""
 	json_result = download_json(course_id)
-	if json_result == None: return redirect('admin_course_overview')
+	if json_result is None: return redirect('admin_course_overview')
 	course = get_course_by_id(course_id)
-	if course == None: return redirect('admin_course_overview')
+	if course is None: return redirect('admin_course_overview')
 
 	response = HttpResponse(json.dumps(json_result), content_type='application/json') #type: ignore
 	response['Content-Disposition'] = f'attachment; filename={course.title}.json'
@@ -60,7 +60,7 @@ def course_new(request: HttpRequest) -> HttpResponse:
 			try:
 				create_course(course_data)
 				return redirect('admin_course_edit', course_id=course_data.id)
-			except:
+			except: #pylint: disable=W0702
 				edit_form.add_error('database', 'This string must be unique. choose another one')
 	else:
 		edit_form = CourseEditForm()
@@ -80,12 +80,11 @@ def course_overview(request: HttpRequest) -> HttpResponse:
 		form = CourseUploadForm(request.POST, request.FILES)
 		if form.is_valid():
 			upload_result = upload_from_json(json.load(request.FILES['file'])) #type: ignore
-			if upload_result == None:
+			if upload_result is None:
 				messages.success(request, 'Course successfully uploaded')
-				return redirect('admin_course_overview');
-			else:
-				messages.warning(request, f'Problem occurred during uploading file data: {str(upload_result)}')
-				return redirect('admin_course_overview');
+				return redirect('admin_course_overview')
+			messages.warning(request, f'Problem occurred during uploading file data: {str(upload_result)}')
+			return redirect('admin_course_overview')
 	else:
 		form = CourseUploadForm()
 
@@ -98,6 +97,6 @@ def course_overview(request: HttpRequest) -> HttpResponse:
 
 
 @staff_member_required
-def course_delete(request: HttpRequest, course_id: str) -> HttpResponse:
+def course_delete(request: HttpRequest, course_id: str) -> HttpResponse: #pylint: disable=W0613
 	delete_all(course_id)
-	return redirect('admin_course_overview');
+	return redirect('admin_course_overview')

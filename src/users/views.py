@@ -1,9 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
 from django.contrib.auth import login
-
 from django.shortcuts import render, redirect
 
 from users.forms.CustomUserRegistrationForm import CustomUserCreationForm

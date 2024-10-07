@@ -12,7 +12,7 @@ def get_test_progress(db: str, username: str, test_id: int) -> TestProgressData 
 		{ '_id': username, 'tests.test_id': test_id},
 		{ 'tests.$': 1, '_id': 0 })
 
-	if result != None:
+	if result is not None:
 		return TestProgressDataSerializer.from_dict(result['tests'][0])
 	return result
 
