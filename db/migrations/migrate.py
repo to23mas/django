@@ -1,3 +1,5 @@
+"""migration script for mongo db to populate database with Django course data"""
+
 from pymongo import MongoClient
 from os import path, walk
 import json

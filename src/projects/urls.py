@@ -1,6 +1,10 @@
 """URLS"""
 from django.urls import path
-from .views import *
+
+from projects.views.chapters import next_chapter, unlock_next_chapter
+from projects.views.lessons import lesson
+from projects.views.projects import detail, overview
+from projects.views.validator import validate_python
 
 app_name = 'projects'
 
