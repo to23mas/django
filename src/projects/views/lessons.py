@@ -15,7 +15,7 @@ from projects.views.enum.UnknownChapterId import UnknownChapterId
 
 @login_required
 def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, chapter_id: int) -> HttpResponse:
-	"""display lesson VIS.js page"""
+	"""display chapte"""
 	username = request.user.username #type: ignore
 	project = get_project_by_id(project_id, course)
 	if project is None:

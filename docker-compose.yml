@@ -4,37 +4,74 @@ services:
   db:
     image: postgres:15
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=inpv
-    ports:
-      - 5432:5432
+      POSTGRES_USER: ${SQL_USER}
+      POSTGRES_PASSWORD: ${SQL_PASSWORD}
+      POSTGRES_DB: ${SQL_DATABASE}
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "user", "-d", "inpv", "-h", "localhost", "-p", "5432"]
+      test: ["CMD", "pg_isready", "-U", "user", "-d", "inpv"]
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - internal_network
+
+  mongodb:
+    image: mongo:8
+    volumes:
+      - ./mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - internal_network
+
+  migrations:
+    build: .
+    environment:
+      SQL_ENGINE: ${SQL_ENGINE}
+      SQL_DATABASE: ${SQL_DATABASE}
+      SQL_USER: ${SQL_USER}
+      SQL_PASSWORD: ${SQL_PASSWORD}
+      SQL_HOST: ${SQL_HOST}
+      SQL_PORT: ${SQL_PORT}
+      DATABASE: ${DATABASE}
+      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+    volumes:
+      - ./db/:/usr/src/db
+      - ./src/:/usr/src/app
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py createsuperuser --username admin --email admin@admin.com --noinput ;
+             python /usr/src/db/migrations/migrate.py"
+    depends_on:
+      db:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    networks:
+      - internal_network
 
   web:
     build: .
-    command: >
-      sh -c "sleep 8 &&
-             python manage.py makemigrations ;
-             python manage.py migrate ;
-             python manage.py createsuperuser --username admin --email admin@admin.com --noinput ;
-             python /usr/src/db/migrations/migrate.py ;
-             python manage.py runserver 0.0.0.0:8888"
+    command: python manage.py runserver 0.0.0.0:80  # Bind only to localhost
     volumes:
       - ./src/:/usr/src/app
-      - ./db/:/usr/src/db
     ports:
-      - 8888:8888
+      - 80:80
     env_file:
-      - ./.env
+      - .env
     depends_on:
-      - db
+      migrations:
+        condition: service_completed_successfully
+    networks:
+      - internal_network
 
-  mongodb:
-    image: mongo:6-jammy
-    ports:
-      - 27017:27017
+networks:
+  internal_network:
+    driver: bridge
+
