@@ -12,7 +12,7 @@ def register(request: HttpRequest) -> HttpResponse:
 		form = CustomUserCreationForm(request.POST)
 		if form.is_valid():
 			login(request, form.save())
-			messages.success(request, 'Uživatel úspěšně vytvořen')
+			messages.success(request, 'Registrace proběhla úspěšně')
 			return redirect("courses:overview")
 	else:
 		form = CustomUserCreationForm()

@@ -7,8 +7,10 @@ services:
       POSTGRES_USER: ${SQL_USER}
       POSTGRES_PASSWORD: ${SQL_PASSWORD}
       POSTGRES_DB: ${SQL_DATABASE}
-    volumes:
-      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    # volumes:
+    #   - ./postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "user", "-d", "inpv"]
       interval: 10s
