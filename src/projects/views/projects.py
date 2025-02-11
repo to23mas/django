@@ -1,7 +1,6 @@
 from typing import Dict, List
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render, reverse
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from domain.data.chapters.ChapterData import ChapterData
@@ -14,7 +13,6 @@ from domain.data.projects.ProjectData import ProjectData
 from domain.data.projects.ProjectStorage import find_projects, find_projects_by_course_and_ids, get_project_by_id
 
 
-@login_required
 def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
 	"""list all projects"""
 	username = request.user.username #type: ignore
@@ -36,7 +34,6 @@ def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
 	})
 
 
-@login_required
 def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 	"""detail view for projects"""
 	username = request.user.username #type: ignore

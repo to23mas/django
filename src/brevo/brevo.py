@@ -15,7 +15,7 @@ def send_registration_email(username: str, user_email: str, verify_url: str):
 
 	html_content = f'''<html><body>
 	<h1>Pro dokončení registrace je potřeba kliknout na link níže</h1>
-	<br /><br /><br /><br /><br /><br />
+	<br /><br />
 	<a href="{verify_url}">Potvrdit registraci</a>
 	</body></html>'''
 

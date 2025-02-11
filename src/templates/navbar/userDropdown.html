@@ -13,7 +13,7 @@
     </li>
   </ul>
   <div class="py-1 rounded-lg hover:bg-gray-100">
-    <form id="logout-form" method="post" action="{% url 'logout' %}">
+    <form id="logout-form" method="post" action="{% url 'users:logout' %}">
       {% csrf_token %}
       <button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
         Odhlásit

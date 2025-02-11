@@ -1,5 +1,7 @@
 {% extends "content/base.html" %}
-	{% block content %}
+{% block content %}
+{% load static %}
+
 <style>
 input[readonly] {
 	background-color: #e0e0e0; /* Light grey background color */
@@ -106,8 +108,8 @@ input[readonly] {
 								<td>{{b.id}}</td>
 								<td>{{b.title}}</td>
 								<td>
-									<a style="margin-right: 10px;" href="{% url 'admin_block_edit' course_id=course.id project_id=project.id lesson_id=chapter.lesson_id chapter_id=chapter.id  block_id=b.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
-									<a href="{% url 'admin_block_delete' course_id=course.id project_id=project.id lesson_id=chapter.lesson_id chapter_id=chapter.id block_id=b.id %}" onclick="if (!confirm('Are you sure you want to delete this project?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
+									<a style="margin-right: 10px;" href="{% url 'admin_block_edit' course_id=course.id project_id=project.id lesson_id=chapter.lesson_id chapter_id=chapter.id  block_id=b.id %}"><img src="{% static 'admin/img/icon-changelink.svg' %}" alt="False"></a>
+									<a href="{% url 'admin_block_delete' course_id=course.id project_id=project.id lesson_id=chapter.lesson_id chapter_id=chapter.id block_id=b.id %}" onclick="if (!confirm('Are you sure you want to delete this project?')) { event.preventDefault(); }"><img src="{% static 'admin/img/icon-deletelink.svg' %}" alt="False"></a>
 								</td>
 							</tr>
 							{% endfor %}

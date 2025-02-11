@@ -1,5 +1,6 @@
 {% extends "content/base.html" %}
 {% block content %}
+{% load static %}
 	<div class="main shifted" id="main">
 		{% include 'content/sidebar.html' %}
 		<main id="content-start" class="content" tabindex="-1">
@@ -40,8 +41,8 @@
 											<td>{{b.id}}</td>
 											<td>{{b.title}}</td>
 										<td>
-											<a href="{% url 'admin_blockly_edit' course_id=course.id blockly_id=b.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
-											<a href="{% url 'admin_blockly_delete' course_id=course.id blockly_id=b.id %}" onclick="if (!confirm('Are you sure you want to delete this blockly?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
+											<a href="{% url 'admin_blockly_edit' course_id=course.id blockly_id=b.id %}"><img src="{% static 'admin/img/icon-changelink.svg' %}" alt="False"></a>
+											<a href="{% url 'admin_blockly_delete' course_id=course.id blockly_id=b.id %}" onclick="if (!confirm('Are you sure you want to delete this blockly?')) { event.preventDefault(); }"><img src="{% static 'admin/img/icon-deletelink.svg' %}" alt="False"></a>
 										</td>
 										</tr>
 										{% endfor %}

@@ -57,7 +57,7 @@ def verify_user(request: HttpRequest, code: str) -> HttpResponse:
 
 	try:
 		user = User.objects.get(last_name=code)
-		students_group, created = Group.objects.get_or_create(name="students")
+		students_group, _ = Group.objects.get_or_create(name="students")
 		user.groups.add(students_group)
 	except:
 		user = None

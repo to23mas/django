@@ -1,5 +1,7 @@
 {% extends "content/base.html" %}
-	{% block content %}
+{% block content %}
+{% load static %}
+
 <style>
 	input:disabled, textarea:disabled, select:disabled {
 		background-color: #e0e0e0; /* Light grey background color */
@@ -147,8 +149,8 @@
 								<td>{{ q.type }}</td>
 								<td>{{ q.points }}</td>
 								<td>
-									<a href="{% url 'admin_test_edit_question' course_id=course.id test_id=test.id question_id=q.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
-									<a href="{% url 'admin_test_delete_question' course_id=course.id test_id=test.id question_id=q.id %}" onclick="if (!confirm('Are you sure you want to delete this question?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
+									<a href="{% url 'admin_test_edit_question' course_id=course.id test_id=test.id question_id=q.id %}"><img src="{% static 'admin/img/icon-changelink.svg' %}" alt="False"></a>
+									<a href="{% url 'admin_test_delete_question' course_id=course.id test_id=test.id question_id=q.id %}" onclick="if (!confirm('Are you sure you want to delete this question?')) { event.preventDefault(); }"><img src="{% static 'admin/img/icon-deletelink.svg' %}" alt="False"></a>
 								</td>
 							</tr>
 							{% endfor %}

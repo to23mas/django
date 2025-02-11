@@ -1,6 +1,7 @@
 {% extends "content/base.html" %}
 {% load content_tags %}
 {% block content %}
+{% load static %}
 
 	<div class="main shifted" id="main">
 		{% include 'content/sidebar.html' %}
@@ -42,8 +43,8 @@
 											<td>{{lesson.id}}</td>
 											<td>{{lesson.title}}</td>
 											<td>
-												<a style="margin-right: 20px;" href="{% url 'admin_lesson_edit' course_id=course.id project_id=project.id lesson_id=lesson.id %}"><img src="/public/admin/img/icon-changelink.svg" alt="False"></a>
-												<a href="{% url 'admin_lesson_delete' course_id=course.id project_id=project.id lesson_id=lesson.id %}" onclick="if (!confirm('Are you sure you want to delete this project?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
+												<a style="margin-right: 20px;" href="{% url 'admin_lesson_edit' course_id=course.id project_id=project.id lesson_id=lesson.id %}"><img src="{% static 'admin/img/icon-changelink.svg' %}" alt="False"></a>
+												<a href="{% url 'admin_lesson_delete' course_id=course.id project_id=project.id lesson_id=lesson.id %}" onclick="if (!confirm('Are you sure you want to delete this project?')) { event.preventDefault(); }"><img src="{% static 'admin/img/icon-deletelink.svg' %}" alt="False"></a>
 											</td>
 										</tr>
 										{% endfor %}

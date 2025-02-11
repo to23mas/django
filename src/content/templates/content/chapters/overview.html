@@ -1,6 +1,7 @@
 {% extends "content/base.html" %}
 {% load content_tags %}
 {% block content %}
+{% load static %}
 
 	<div class="main shifted" id="main">
 		{% include 'content/sidebar.html' %}
@@ -57,7 +58,7 @@
 												<th scope="col"> <div class="text">{{filter.unlock_type}}</div> </th>
 												<th scope="col"> <div class="text">{{filter.unlock_id}}</div> </th>
 												<th scope="col">
-														<button type="submit"> <img src="/public/admin/img/icon-viewlink.svg" alt="False"> </button>
+														<button type="submit"> <img src="{% static 'admin/img/icon-viewlink.svg' %}" alt="False"> </button>
 												</th>
 											</tr>
 										</form>
@@ -75,9 +76,9 @@
 									<td>{{chapter.unlock_id}}</td>
 									<td>
 										<a href="{% url 'admin_chapter_edit' course_id=course.id project_id=project.id lesson_id=chapter.lesson_id chapter_id=chapter.id %}">
-											<img src="/public/admin/img/icon-changelink.svg" alt="False">
+											<img src="{% static 'admin/img/icon-changelink.svg' %}" alt="False">
 										</a>
-											<a href="{% url 'admin_chapter_delete' course_id=course.id project_id=project.id lesson_id=chapter.lesson_id chapter_id=chapter.id %}" onclick="if (!confirm('Are you sure you want to delete this project?')) { event.preventDefault(); }"><img src="/public/admin/img/icon-deletelink.svg" alt="False"></a>
+											<a href="{% url 'admin_chapter_delete' course_id=course.id project_id=project.id lesson_id=chapter.lesson_id chapter_id=chapter.id %}" onclick="if (!confirm('Are you sure you want to delete this project?')) { event.preventDefault(); }"><img src="{% static 'admin/img/icon-deletelink.svg' %}" alt="False"></a>
 									</td>
 								</tr>
 								{% endfor %}

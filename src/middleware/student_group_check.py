@@ -1,3 +1,4 @@
+from django.http.request import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.deprecation import MiddlewareMixin
@@ -7,6 +8,12 @@ class GroupCheckMiddleware(MiddlewareMixin):
 		unverified_url = "/users/unverified/"
 		login_url = "/users/login/"  # Update this if your login URL is different
 
+		if request.path.startswith('/static/'):
+			return None
+
+		if request.path.startswith('/public/'):
+			return None
+
 		if request.path == unverified_url:
 			if not request.user.is_authenticated:
 				return redirect(login_url)
@@ -14,7 +21,7 @@ class GroupCheckMiddleware(MiddlewareMixin):
 				return redirect(reverse('courses:overview'))
 			return None
 
-		if request.path.startswith('/admin/') or request.path.startswith('/users/'):
+		if request.path.startswith('/admin') or request.path.startswith('/users/'):
 			return None
 
 		if not request.user.is_authenticated:
