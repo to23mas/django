@@ -8,14 +8,14 @@ from django.shortcuts import redirect, render
 from content.forms.CourseEditForm import CourseEditForm
 from content.forms.CourseUploadForm import CourseUploadForm
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
-from domain.data.courses.CourseStorage import create_course, find_courses, get_course_by_id, get_next_valid_id, update_course
+from domain.data.courses.CourseStorage import CourseStorage
 from domain.data.database_backup.BackUpStorage import delete_all, download_json, upload_from_json
 
 
 @staff_member_required
 def course_edit(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
-	course = get_course_by_id(course_id)
+	course = CourseStorage().get_course_by_id(course_id)
 	if course is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
@@ -23,7 +23,7 @@ def course_edit(request: HttpRequest, course_id: str) -> HttpResponse:
 		if edit_form.is_valid():
 			edit_form.cleaned_data['_id'] = course.id
 			course_data = CourseDataSerializer.from_dict(edit_form.cleaned_data)
-			update_course(course_data)
+			CourseStorage().update_course(course_data)
 			return redirect('admin_course_edit', course_id=course_data.id)
 	else:
 		edit_form = CourseEditForm(initial=CourseDataSerializer.to_dict(course))
@@ -41,7 +41,7 @@ def course_download(request: HttpRequest, course_id: str) -> HttpResponse: #pyli
 	"""list all courses"""
 	json_result = download_json(course_id)
 	if json_result is None: return redirect('admin_course_overview')
-	course = get_course_by_id(course_id)
+	course = CourseStorage().get_course_by_id(course_id)
 	if course is None: return redirect('admin_course_overview')
 
 	response = HttpResponse(json.dumps(json_result), content_type='application/json') #type: ignore
@@ -55,10 +55,10 @@ def course_new(request: HttpRequest) -> HttpResponse:
 	if request.method == 'POST':
 		edit_form = CourseEditForm(request.POST)
 		if edit_form.is_valid():
-			edit_form.cleaned_data['_id'] = get_next_valid_id()
+			edit_form.cleaned_data['_id'] = CourseStorage().get_next_valid_id()
 			course_data = CourseDataSerializer.from_dict(edit_form.cleaned_data)
 			try:
-				create_course(course_data)
+				CourseStorage().create_course(course_data)
 				return redirect('admin_course_edit', course_id=course_data.id)
 			except: #pylint: disable=W0702
 				edit_form.add_error('database', 'This string must be unique. choose another one')
@@ -75,7 +75,7 @@ def course_new(request: HttpRequest) -> HttpResponse:
 @staff_member_required
 def course_overview(request: HttpRequest) -> HttpResponse:
 	"""list all courses"""
-	courses = find_courses()
+	courses = CourseStorage().find_courses()
 	if request.method == 'POST':
 		form = CourseUploadForm(request.POST, request.FILES)
 		if form.is_valid():

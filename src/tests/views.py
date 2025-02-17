@@ -3,14 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 
-from domain.data.chapters.ChapterStorage import get_chapter_by_id
-from domain.data.progress.ProgressStorage import find_available_tests, is_chapter_open
-from domain.data.projects.ProjectStorage import get_project_by_id
-from domain.data.tests.TestStorage import find_tests_for_overview, get_test
-
+from domain.data.chapters.ChapterStorage import ChapterStorage
+from domain.data.progress.ProgressStorage import ProgressStorage
+from domain.data.projects.ProjectStorage import ProjectStorage
+from domain.data.tests.TestStorage import TestStorage
 
 from domain.data.tests.enum.TestState import TestState
-from domain.data.tests_progress.TestProgressStorage import get_test_progress, unlock_test
+from domain.data.tests_progress.TestProgressStorage import TestProgressStorage
 from tests.forms import DynamicTestForm
 from tests.utils import reset_test_lock_time, validate_test_get_result
 
@@ -20,7 +19,7 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 	"""list of all available tests"""
 
 	username = request.user.username #type: ignore
-	user_available = find_available_tests(course, username)
+	user_available = ProgressStorage().find_available_tests(course, username)
 
 	if user_available is None or len(user_available) == 0:
 		messages.success(request, 'V tuto chvíli nemáš žádné dostupné testy')
@@ -28,11 +27,11 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 			'course': course,
 		})
 
-	available_tests = find_tests_for_overview(course, user_available)
+	available_tests = TestStorage().find_tests_for_overview(course, user_available)
 
 	for test in available_tests:
 		reset_test_lock_time(
-			get_test_progress(course, username, test.id), #type: ignore
+			TestProgressStorage().get_test_progress(course, username, test.id), #type: ignore
 			course,
 			username,
 			test,
@@ -49,7 +48,7 @@ def unlock(request: HttpRequest, course: str, test_id: int, project_id: int) -> 
 	"""list of all available tests"""
 	username = request.user.username #type: ignore
 
-	test_progress = get_test_progress(course, username, test_id)
+	test_progress = TestProgressStorage().get_test_progress(course, username, test_id)
 	if test_progress is None:
 		messages.success(request, 'V tuto chvíli nemáš žádné dostupné testy')
 		return redirect('tests:overview', course=course)
@@ -58,23 +57,23 @@ def unlock(request: HttpRequest, course: str, test_id: int, project_id: int) -> 
 		messages.error(request, 'Nevalidní akce')
 		return redirect('tests:overview', course=course)
 
-	project = get_project_by_id(project_id, course)
+	project = ProjectStorage().get_project_by_id(project_id, course)
 	if project is None:
 		messages.error(request, 'Pokus o odemknutí neexistujícího testu')
 		return redirect('tests:overview', course=course)
 
-	test_data, _ = get_test(course, test_id)
+	test_data, _ = TestStorage().get_test(course, test_id)
 	if test_data is None:
 		messages.error(request, 'Pokus o odemknutí neexistujícího testu')
 		return redirect('tests:overview', course=course)
 
-	chapter = get_chapter_by_id(test_data.finish_chapter, course, project.database)
+	chapter = ChapterStorage().get_chapter_by_id(test_data.finish_chapter, course, project.database)
 	if chapter is None:
 		messages.error(request, 'Pokus o odemknutí neexistujícího testu')
 		return redirect('tests:overview', course=course)
 
-	if is_chapter_open(username, course, project.id, chapter.lesson_id, chapter.id):
-		unlock_test(course, username, test_data.id, TestState.OPEN)
+	if ProgressStorage().is_chapter_open(username, course, project.id, chapter.lesson_id, chapter.id):
+		TestProgressStorage().unlock_test(course, username, test_data.id, TestState.OPEN)
 		return redirect('tests:overview', course=course)
 
 	messages.error(request, 'Test není možné odemknout')
@@ -86,7 +85,7 @@ def display_test(request: HttpRequest, course: str, test_id: int) -> HttpRespons
 	"""display one test"""
 	username = request.user.username #type: ignore
 
-	test_progress = get_test_progress(course, username, test_id)
+	test_progress = TestProgressStorage().get_test_progress(course, username, test_id)
 	if test_progress is None or test_progress.state is TestState.CLOSE.value:
 		messages.error(request, 'Nevalidní akce')
 		return redirect('tests:overview', course=course)
@@ -95,7 +94,7 @@ def display_test(request: HttpRequest, course: str, test_id: int) -> HttpRespons
 		messages.error(request, 'Nevalidní akce')
 		return redirect('tests:overview', course=course)
 
-	test_data, questionDataCollection = get_test(course, test_id)
+	test_data, questionDataCollection = TestStorage().get_test(course, test_id)
 	if test_data is None or questionDataCollection is None:
 		messages.error(request, 'Pokus o přístup k neexistujícímu testu')
 		return  redirect('tests:overview', course=course, sort_type='all')
@@ -112,7 +111,7 @@ def display_test(request: HttpRequest, course: str, test_id: int) -> HttpRespons
 def validate_test(request: HttpRequest, course: str, test_id: int) -> HttpResponse:
 	"""validate one test"""
 	username = request.user.username #type: ignore
-	test_data, questionDataCollection = get_test(course, test_id)
+	test_data, questionDataCollection = TestStorage().get_test(course, test_id)
 
 	if test_data is None or questionDataCollection is None:
 		messages.error(request, 'Pokus o přístup k neexistujícímu testu')
@@ -135,12 +134,12 @@ def results(request: HttpRequest, course: str, test_id: int)  -> HttpResponse:
 	"""list all projects"""
 	username = request.user.username #type: ignore
 
-	test_data, _ = get_test(course, test_id)
+	test_data, _ = TestStorage().get_test(course, test_id)
 	if test_data is None:
 		messages.error(request, 'Pokus o přístup k neexistujícímu testu')
 		return  redirect('tests:overview', course=course, sort_type='all')
 
-	test_progress = get_test_progress(course, username, test_id)
+	test_progress = TestProgressStorage().get_test_progress(course, username, test_id)
 	if test_progress is None:
 		messages.success(request, 'Zatím u testu nejsou žádné výsledky')
 		return redirect('tests:overview', course=course)
@@ -158,3 +157,4 @@ def results(request: HttpRequest, course: str, test_id: int)  -> HttpResponse:
 		'best_score_percentage': f'{(max(test_progress.score) / (test_data.total_points/100)):.2f}',
 		'total_attempts': len(test_progress.score)
 	})
+

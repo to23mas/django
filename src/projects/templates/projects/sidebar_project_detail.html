@@ -29,14 +29,14 @@
 						<li>
 						{% if chapter.status == 'done' %}
 							<a
-								href="{% url 'projects:lesson' course=course project_id=project.id lesson_id=chapter.lid chapter_id=chapter.chid %}"
+								href="{% url 'lessons:lesson' course=course project_id=project.id lesson_id=chapter.lid chapter_id=chapter.chid %}"
 								class="flex items-center p-2 text-gray-900 rounded-lg border border-green-400 hover:bg-green-100 group">
 								<i class="fa-solid fa-check"></i>
 								<span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.label }}</span>
 							</a>
 							{% elif chapter.status == 'open' %}
 							<a
-								href="{% url 'projects:lesson' course=course project_id=project.id lesson_id=chapter.lid chapter_id=chapter.chid %}"
+								href="{% url 'lessons:lesson' course=course project_id=project.id lesson_id=chapter.lid chapter_id=chapter.chid %}"
 								class="flex items-center p-2 text-gray-900 rounded-lg border border-blue-500 hover:bg-blue-100 group">
 								<i class="fa-solid fa-lock-open"></i>
 								<span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.label }}</span>

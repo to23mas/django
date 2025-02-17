@@ -20,7 +20,7 @@
 
 	{#FINISHED#}
 	{% if test_state == 'finish' or test_state == 'success' %}
-		<form action="{% url 'projects:next_chapter' %}" class="float-end" method="post">
+		<form action="{% url 'user_progress:next_chapter' %}" class="float-end" method="post">
 			{% csrf_token %}
 			<input type="hidden" name="chapter_id" value="{{ chapter.id }}">
 			<input type="hidden" name="lesson_id" value="{{ chapter.lesson_id }}">

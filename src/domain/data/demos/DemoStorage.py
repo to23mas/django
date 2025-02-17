@@ -10,57 +10,61 @@ from domain.data.demos.DemoDataSerializer import DemoDataSerializer
 from domain.data.demos.tableDefinition.TableDefinitions import DemosTable
 from domain.data.exception.DataNotFoundException import DataNotFoundException
 
-
-def find_demos_for_overview(db: str, open_demos: list = []) -> List[DemoData]: #pylint: disable=W0102
-	"""returns all test"""
-	demos = MongoStorage().database[db].demos.find(
-		{DemosTable.ID.value: {'$in': open_demos}}
-	).sort(DemosTable.ID.value, pymongo.DESCENDING)
-
-	if demos is None: raise DataNotFoundException
-
-	return DemoDataCollection.from_dict(demos)
+class DemoStorage(MongoStorage):
+	def __init__(self):
+		super().__init__()
 
 
-def get_demo(demo_id: int, db: str) -> DemoData | None:
-	demo = MongoStorage().database[db].demos.find_one({
-		"_id": demo_id,
-	})
+	def find_demos_for_overview(self, db: str, open_demos: list = []) -> List[DemoData]: #pylint: disable=W0102
+		"""returns all test"""
+		demos = self.database[db].demos.find(
+			{DemosTable.ID.value: {'$in': open_demos}}
+		).sort(DemosTable.ID.value, pymongo.DESCENDING)
 
-	match demo:
-		case None: return None
-		case _: return DemoDataSerializer.from_dict(demo)
+		if demos is None: raise DataNotFoundException
 
-
-def find_demos(db: str) -> List[DemoData] | None:
-	demos = MongoStorage().database[db].demos.find().sort('_id')
-	match demos:
-		case None: return None
-		case _: return DemoDataCollection.from_dict(demos)
+		return DemoDataCollection.from_dict(demos)
 
 
-def create_demo(demo_data: DemoData, db: str) -> None:
-	MongoStorage().database[db].demos.insert_one(
-		DemoDataSerializer.to_dict(demo_data)
-	)
+	def get_demo(self, demo_id: int, db: str) -> DemoData | None:
+		demo = self.database[db].demos.find_one({
+			"_id": demo_id,
+		})
+
+		match demo:
+			case None: return None
+			case _: return DemoDataSerializer.from_dict(demo)
 
 
-def delete_demo(db: str, demo_id: int) -> None:
-	MongoStorage().database[db].demos.delete_one({'_id': demo_id})
+	def find_demos(self, db: str) -> List[DemoData] | None:
+		demos = self.database[db].demos.find().sort('_id')
+		match demos:
+			case None: return None
+			case _: return DemoDataCollection.from_dict(demos)
 
 
-def update_demo(demo_data: DemoData, db: str) -> None:
-	MongoStorage().database[db].demos.update_one(
-		{'_id': demo_data.id},
-		{'$set': DemoDataSerializer.to_dict(demo_data)}
-	)
+	def create_demo(self, demo_data: DemoData, db: str) -> None:
+		self.database[db].demos.insert_one(
+			DemoDataSerializer.to_dict(demo_data)
+		)
 
 
-def get_next_valid_id(db: str) -> int:
-	document = MongoStorage().database[db].demos.find_one(
-		sort=[(DemosTable.ID.value, -1)]
-	)
+	def delete_demo(self, db: str, demo_id: int) -> None:
+		self.database[db].demos.delete_one({'_id': demo_id})
 
-	match document:
-		case None: return 1
-		case _: return document[DemosTable.ID.value] + 1
+
+	def update_demo(self, demo_data: DemoData, db: str) -> None:
+		self.database[db].demos.update_one(
+			{'_id': demo_data.id},
+			{'$set': DemoDataSerializer.to_dict(demo_data)}
+		)
+
+
+	def get_next_valid_id(self, db: str) -> int:
+		document = self.database[db].demos.find_one(
+			sort=[(DemosTable.ID.value, -1)]
+		)
+
+		match document:
+			case None: return 1
+			case _: return document[DemosTable.ID.value] + 1

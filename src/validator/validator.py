@@ -7,13 +7,13 @@ from django.contrib.auth.decorators import login_required
 from RestrictedPython import compile_restricted
 from RestrictedPython.Guards import safe_builtins
 
-from domain.data.blockly.BlocklyStorage import get_blockly
+from domain.data.blockly.BlocklyStorage import BlocklyStorage
 from domain.data.blockly.enum.ExpectedTaskTypes import ExpectedTaskTypes
 from domain.data.chapters.ChapterData import ChapterData
-from domain.data.chapters.ChapterStorage import get_chapter, get_chapter_by_id
-from domain.data.progress.ProgressStorage import finish_chapter, finish_lesson, is_chapter_done, is_chapter_open, unlock_chapter, unlock_lesson
+from domain.data.chapters.ChapterStorage import ChapterStorage
+from domain.data.progress.ProgressStorage import ProgressStorage
 from domain.data.projects.ProjectData import ProjectData
-from domain.data.projects.ProjectStorage import get_project_by_id
+from domain.data.projects.ProjectStorage import ProjectStorage
 
 
 @login_required
@@ -27,13 +27,13 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 	lesson_id = int(str(request.POST.get('lesson_id')))
 	project_id = int(str(request.POST.get('project_id')))
 
-	project = get_project_by_id(project_id, course_db)
+	project = ProjectStorage().get_project_by_id(project_id, course_db)
 	if project is None:
 		return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
-	chapter = get_chapter(chapter_id, lesson_id, course_db, project.database)
+	chapter = ChapterStorage().get_chapter(chapter_id, lesson_id, course_db, project.database)
 	if chapter is None:
 		return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
-	blockly = get_blockly(course_db, int(blockly_id))
+	blockly = BlocklyStorage().get_blockly(course_db, int(blockly_id))
 	if blockly is None:
 		return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
 
@@ -51,7 +51,7 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 			case 'error': return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
 			case 'success':
 				messages.success(request, 'Kapitola splněna')
-				url = reverse('projects:lesson', kwargs={
+				url = reverse('lessons:lesson', kwargs={
 					'course': course_db,
 					'project_id': project_id,
 					'lesson_id': chapter.lesson_id,
@@ -80,21 +80,21 @@ def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectD
 	if chapter.unlock_type != 'blockly':
 		return 'error'
 
-	if not is_chapter_open(username, course_db, project.id, chapter.lesson_id, chapter.id): #type: ignore
-		if (is_chapter_done(username, course_db, chapter.id)):
+	if not ProgressStorage().is_chapter_open(username, course_db, project.id, chapter.lesson_id, chapter.id): #type: ignore
+		if (ProgressStorage().is_chapter_done(username, course_db, chapter.id)):
 			return 'already done'
 
 		return 'error'
 
-	next_chapter = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
+	next_chapter = ChapterStorage().get_chapter_by_id(chapter.unlock_id, course_db, project.database)
 	if next_chapter is not None:
-		unlock_lesson(username, course_db, next_chapter.lesson_id)
-		unlock_chapter(username, course_db, next_chapter.id)
+		ProgressStorage().unlock_lesson(username, course_db, next_chapter.lesson_id)
+		ProgressStorage().unlock_chapter(username, course_db, next_chapter.id)
 
-	finish_chapter(username, course_db, chapter.id)
+	ProgressStorage().finish_chapter(username, course_db, chapter.id)
 
 	if chapter.is_last_in_lesson:
-		finish_lesson(username, course_db, chapter.lesson_id)
+		ProgressStorage().finish_lesson(username, course_db, chapter.lesson_id)
 
 	if next_chapter is None:
 		#last chapter in project
@@ -104,3 +104,4 @@ def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectD
 		return 'success'
 
 	return 'success'
+

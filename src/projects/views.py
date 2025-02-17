@@ -4,25 +4,25 @@ from django.shortcuts import redirect, render, reverse
 from django.contrib import messages
 
 from domain.data.chapters.ChapterData import ChapterData
-from domain.data.chapters.ChapterStorage import find_chapters
-from domain.data.demos.DemoStorage import get_demo
-from domain.data.lessons.LessonData import LessonData
-from domain.data.lessons.LessonStorage import find_lessons
-from domain.data.progress.ProgressStorage import get_content_progress, get_user_progress_by_course
-from domain.data.projects.ProjectData import ProjectData
-from domain.data.projects.ProjectStorage import find_projects, find_projects_by_course_and_ids, get_project_by_id
+from domain.data.chapters.ChapterStorage import ChapterStorage
 
+from domain.data.demos.DemoStorage import DemoStorage
+from domain.data.lessons.LessonData import LessonData
+from domain.data.lessons.LessonStorage import LessonStorage
+from domain.data.progress.ProgressStorage import ProgressStorage
+from domain.data.projects.ProjectData import ProjectData
+from domain.data.projects.ProjectStorage import ProjectStorage
 
 def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
 	"""list all projects"""
 	username = request.user.username #type: ignore
 
 	if sort_type == 'all':
-		projects_collection = find_projects(course)
+		projects_collection = ProjectStorage().find_projects(course)
 	else:
-		project_progress = get_content_progress(course, username, 'projects')
+		project_progress = ProgressStorage().get_content_progress(course, username, 'projects')
 		filtered_project_ids = [int(key) for key, value in project_progress.items() if value == sort_type]
-		projects_collection = find_projects_by_course_and_ids(filtered_project_ids, course)
+		projects_collection = ProjectStorage().find_projects_by_course_and_ids(filtered_project_ids, course)
 
 	if not projects_collection:
 		messages.warning(request, 'V tomto kurzu nebyly nalezeny žádné projekty.')
@@ -37,8 +37,8 @@ def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
 def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 	"""detail view for projects"""
 	username = request.user.username #type: ignore
-	project_progress = get_content_progress(course, username, 'projects')
-	project = get_project_by_id(project_id, course)
+	project_progress = ProgressStorage().get_content_progress(course, username, 'projects')
+	project = ProjectStorage().get_project_by_id(project_id, course)
 
 	# non existing project
 	if project is None:
@@ -50,13 +50,13 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 		messages.warning(request, 'Projekt ještě není odemčen!')
 		return redirect('projects:overview', course=course, sort_type='all')
 
-	user_progress = get_user_progress_by_course(username, course)
-	chapters = find_chapters(course, project.database)
-	lessons = find_lessons(course, project.database)
+	user_progress = ProgressStorage().get_user_progress_by_course(username, course)
+	chapters = ChapterStorage().find_chapters(course, project.database)
+	lessons = LessonStorage().find_lessons(course, project.database)
 	ch, ch_edges = get_vis_chapters(chapters, user_progress, course, project)
 	l, l_edges = get_vis_lessons(lessons, user_progress)
 
-	demo_project = get_demo(project.id, course)
+	demo_project = DemoStorage().get_demo(project.id, course)
 	match demo_project:
 		case None: demo_url = None
 		case _: demo_url = f'demos:{demo_project.url}'
@@ -127,7 +127,7 @@ def get_vis_chapters(chapters: List[ChapterData] | None, progress: Dict | None, 
 			'lid': chapter.lesson_id,
 			'label': f'{chapter.title}{icon}',
 			'status': chapter_status,
-			'url': '#' if chapter_status == 'lock' else reverse('projects:lesson', kwargs={
+			'url': '#' if chapter_status == 'lock' else reverse('lessons:lesson', kwargs={
 					'course': course,
 					'project_id': project.id,
 					'lesson_id': chapter.lesson_id,
@@ -136,3 +136,4 @@ def get_vis_chapters(chapters: List[ChapterData] | None, progress: Dict | None, 
 		})
 
 	return (ch, edges)
+

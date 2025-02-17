@@ -1,7 +1,7 @@
 from django import forms
 
 from domain.data.chapters.enum.ChapterUnlockType import ChapterUnlockType
-from domain.data.lessons.LessonStorage import find_lessons
+from domain.data.lessons.LessonStorage import LessonStorage
 
 
 class ChapterFilterForm(forms.Form):
@@ -14,7 +14,7 @@ class ChapterFilterForm(forms.Form):
 	def __init__(self, *args, db=None, project_db=None, **kwargs):
 		super(ChapterFilterForm, self).__init__(*args, **kwargs)
 		if db and project_db:
-			lessons = find_lessons(db, project_db)
+			lessons = LessonStorage().find_lessons(db, project_db)
 			if lessons:
 				self.fields['lesson_id'].choices = [('', 'All')] + [(int(lesson.id), lesson.title) for lesson in lessons]
 

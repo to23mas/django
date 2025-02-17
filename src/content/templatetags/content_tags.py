@@ -1,6 +1,6 @@
 from django import template
 
-from domain.data.lessons.LessonStorage import get_lesson
+from domain.data.lessons.LessonStorage import LessonStorage
 # from domain.data.projects.ProjectStorage import get_project
 
 
@@ -15,7 +15,7 @@ register = template.Library()
 
 @register.simple_tag
 def get_lesson_name(lesson_id: int, course_db: str, project_db: str) -> str:
-	lesson = get_lesson(lesson_id, course_db, project_db)
+	lesson = LessonStorage().get_lesson(lesson_id, course_db, project_db)
 	match lesson:
 		case None: return 'ERROR -> no lesson found'
 		case _: return lesson.title

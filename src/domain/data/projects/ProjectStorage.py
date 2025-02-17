@@ -7,56 +7,60 @@ from domain.data.projects.ProjectDataCollection import ProjectDataCollection
 from domain.data.projects.ProjectDataSerializer import ProjectDataSerializer
 from domain.data.projects.exception.UniqueDatabaseException import UniqueDatabaseException
 
-
-def find_projects(db: str) -> List[ProjectData]:
-	projects = MongoStorage().database[db].projects.find().sort('_id')
-	return ProjectDataCollection.from_dict(projects)
-
-
-def find_projects_by_course_and_ids(ids: list, db: str) -> List[ProjectData]:
-	projects = MongoStorage().database[db].projects.find({"_id": {"$in": ids}}).sort('_id')
-	return ProjectDataCollection.from_dict(projects)
+class ProjectStorage(MongoStorage):
+	def __init__(self):
+		super().__init__()
 
 
-def get_project_by_id(project_id: int, db: str) -> ProjectData | None:
-	project = MongoStorage().database[db].projects.find_one({"_id": project_id})
-	match project:
-		case None: return None
-		case _: return ProjectDataSerializer.from_dict(project)
+	def find_projects(self, db: str) -> List[ProjectData]:
+		projects = self.database[db].projects.find().sort('_id')
+		return ProjectDataCollection.from_dict(projects)
 
 
-def get_project(db: str, filter_: Dict = {}) -> ProjectData | None: #pylint: disable=W0102
-	project = MongoStorage().database[db].projects.find_one(filter_)
-	match project:
-		case None: return None
-		case _: return ProjectDataSerializer.from_dict(project)
+	def find_projects_by_course_and_ids(self, ids: list, db: str) -> List[ProjectData]:
+		projects = self.database[db].projects.find({"_id": {"$in": ids}}).sort('_id')
+		return ProjectDataCollection.from_dict(projects)
 
 
-def create_project(project_data: ProjectData, db: str) -> None:
-	project = get_project(db, {'database': project_data.database})
-	match project:
-		case None: MongoStorage().database[db].projects.insert_one(ProjectDataSerializer.to_dict(project_data))
-		case _: raise UniqueDatabaseException
+	def get_project_by_id(self, project_id: int, db: str) -> ProjectData | None:
+		project = self.database[db].projects.find_one({"_id": project_id})
+		match project:
+			case None: return None
+			case _: return ProjectDataSerializer.from_dict(project)
 
 
-def delete_project(db: str, project_id: int) -> None:
-	MongoStorage().database[db].projects.delete_one({'_id': project_id})
+	def get_project(self, db: str, filter_: Dict = {}) -> ProjectData | None: #pylint: disable=W0102
+		project = self.database[db].projects.find_one(filter_)
+		match project:
+			case None: return None
+			case _: return ProjectDataSerializer.from_dict(project)
 
 
-def exists_project(db: str, project_no: str) -> bool:
-	res = MongoStorage().database[db].projects.find_one({'no': project_no})
-	return res is not None
+	def create_project(self, project_data: ProjectData, db: str) -> None:
+		project = self.get_project(db, {'database': project_data.database})
+		match project:
+			case None: self.database[db].projects.insert_one(ProjectDataSerializer.to_dict(project_data))
+			case _: raise UniqueDatabaseException
 
 
-def get_next_valid_id(db: str) -> int:
-	document = MongoStorage().database[db].projects.find_one(sort=[('_id', -1)])
-	match document:
-		case None: return 1
-		case _: return document['_id'] + 1
+	def delete_project(self, db: str, project_id: int) -> None:
+		self.database[db].projects.delete_one({'_id': project_id})
 
 
-def update_project(project_data: ProjectData, db: str) -> None:
-	MongoStorage().database[db].projects.update_one(
-		{'_id': project_data.id},
-		{'$set': ProjectDataSerializer.to_dict(project_data)}
-	)
+	def exists_project(self, db: str, project_no: str) -> bool:
+		res = self.database[db].projects.find_one({'no': project_no})
+		return res is not None
+
+
+	def get_next_valid_id(self, db: str) -> int:
+		document = self.database[db].projects.find_one(sort=[('_id', -1)])
+		match document:
+			case None: return 1
+			case _: return document['_id'] + 1
+
+
+	def update_project(self, project_data: ProjectData, db: str) -> None:
+		self.database[db].projects.update_one(
+			{'_id': project_data.id},
+			{'$set': ProjectDataSerializer.to_dict(project_data)}
+		)

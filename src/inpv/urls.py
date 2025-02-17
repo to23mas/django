@@ -8,8 +8,10 @@ urlpatterns = [
 	# admin
 	path('admin/content/', include('content.urls')),
 	path('admin/', admin.site.urls),
-	# projects
+	# projects lessons chapters
 	path('projects/', include('projects.urls')),
+	path('projects/', include('lessons.urls')),
+	path('projects/', include('user_progress.urls')),
 	#tests
 	path('tests/', include('tests.urls')),
 	#demos

@@ -1,7 +1,7 @@
 from django import forms
 
 from domain.data.chapters.enum.ChapterUnlockType import ChapterUnlockType
-from domain.data.lessons.LessonStorage import find_lessons_by_course, get_lesson
+from domain.data.lessons.LessonStorage import LessonStorage
 
 
 class ChapterEditForm(forms.Form):
@@ -19,9 +19,9 @@ class ChapterEditForm(forms.Form):
 		super(ChapterEditForm, self).__init__(*args, **kwargs)
 
 		if project_db and db:
-			self.fields['lesson_id'].choices = [(project.id, project.title) for project in find_lessons_by_course(db, project_db)]
+			self.fields['lesson_id'].choices = [(project.id, project.title) for project in LessonStorage().find_lessons_by_course(db, project_db)]
 			if initial:
-				self.fields['lesson_id'].initial = get_lesson(initial['lesson_id'], db, project_db)
+				self.fields['lesson_id'].initial = LessonStorage().get_lesson(initial['lesson_id'], db, project_db)
 		if initial:
 			self.fields['id'].initial = initial['_id']
 

@@ -2,14 +2,14 @@ import datetime
 from typing import List, Tuple
 from django.http import QueryDict
 
-from domain.data.progress.ProgressStorage import finish_chapter, finish_lesson, finish_project, unlock_chapter, unlock_lesson, unlock_project
+from domain.data.progress.ProgressStorage import ProgressStorage
 from domain.data.tests.QuestionData import QuestionData
 from domain.data.tests.TestData import TestData
 from domain.data.tests.TestResultData import TestResultData
 from domain.data.tests.enum.QuestionType import QuestionType
 from domain.data.tests.enum.TestState import TestState
 from domain.data.tests_progress.TestProgressData import TestProgressData
-from domain.data.tests_progress.TestProgressStorage import get_test_progress, reset_lock, update_test_progress
+from domain.data.tests_progress.TestProgressStorage import TestProgressStorage
 
 def get_test_results(user_answers: QueryDict, questionDataCollection: List[QuestionData]) -> float:
 	correct_points = 0
@@ -60,7 +60,7 @@ def validate_test_get_result(
 
 def make_progress(test_result_data: TestResultData, test_data: TestData, course: str, username: str, test_id: int) -> bool:
 	"""Make progress if possible"""
-	current_test_progress = get_test_progress(course, username, test_id)
+	current_test_progress = TestProgressStorage().get_test_progress(course, username, test_id)
 	if current_test_progress is None or current_test_progress.attempts == 0: return False
 
 	if test_result_data.score_percentage >= 99.99:
@@ -76,20 +76,20 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 	if current_test_progress.state == TestState.SUCCESS.value:
 		new_test_state = TestState.SUCCESS
 
-	update_test_progress(course, username, test_id, test_result_data.score_total, new_test_state, current_test_progress.attempts)
+	TestProgressStorage().update_test_progress(course, username, test_id, test_result_data.score_total, new_test_state, current_test_progress.attempts)
 	if new_test_state != TestState.FAIL:
 		if (test_data.unlock_project != 0):
-			unlock_project(course, username, test_data.unlock_project)
+			ProgressStorage().unlock_project(course, username, test_data.unlock_project)
 		if (test_data.unlock_lesson != 0):
-			unlock_lesson(username, course, test_data.unlock_lesson)
+			ProgressStorage().unlock_lesson(username, course, test_data.unlock_lesson)
 		if (test_data.unlock_chapter != 0):
-			unlock_chapter(username, course, test_data.unlock_chapter)
+			ProgressStorage().unlock_chapter(username, course, test_data.unlock_chapter)
 		if (test_data.finish_project != 0):
-			finish_project(course, username, test_data.finish_project)
+			ProgressStorage().finish_project(course, username, test_data.finish_project)
 		if (test_data.finish_lesson != 0):
-			finish_lesson(username, course, test_data.finish_lesson)
+			ProgressStorage().finish_lesson(username, course, test_data.finish_lesson)
 		if (test_data.finish_chapter != 0):
-			finish_chapter(username, course, test_data.finish_chapter)
+			ProgressStorage().finish_chapter(username, course, test_data.finish_chapter)
 	return True
 
 
@@ -97,4 +97,4 @@ def reset_test_lock_time(progress:  TestProgressData, db: str, username: str, te
 	if isinstance(progress.lock_until, str): return
 	if (progress.lock_until > datetime.datetime.now()): return
 
-	reset_lock(db, username, test.id, test.attempts)
+	TestProgressStorage().reset_lock(db, username, test.id, test.attempts)

@@ -40,6 +40,8 @@ INSTALLED_APPS = [
 	"django.contrib.staticfiles",
 
 	'projects',
+	'lessons',
+	'user_progress',
 	'courses',
 	'tests',
 	'content',
@@ -67,6 +69,8 @@ TEMPLATES = [
 			BASE_DIR / 'courses/templates',
 			BASE_DIR / 'users/templates',
 			BASE_DIR / 'projects/templates',
+			BASE_DIR / 'lessons/templates',
+			BASE_DIR / 'user_progress/templates',
 			BASE_DIR / 'tests/templates',
 			BASE_DIR / 'demos/templates',
 			BASE_DIR / 'content/templates',

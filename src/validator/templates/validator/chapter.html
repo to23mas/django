@@ -1,0 +1,31 @@
+{% load to_code %}
+<style>
+	pre {
+		white-space: pre-wrap !important;
+	}
+	img {
+		margin-left: 25px !important;
+		 object-fit: cover !important;
+	}
+</style>
+
+
+<div class="flex justify-between items-center mx-auto md:w-4/6 {% if not chapter_finished %} mb-6{% endif %}">
+	<h2 class="text-4xl font-extrabold">{{ chapter.title }}</h2>
+	<div>
+		<a href="{% url 'projects:detail' course=course project_id=project.id %}" class="text-blue-500 hover:underline">Zpět na seznam lekcí</a>
+	</div>
+</div>
+{% if chapter_finished  %}
+	<div class="chapter-buttons mx-auto md:w-4/6">
+			{% include './unlocks/next_button.html' %}
+	</div>
+{% endif %}
+
+{% for block in chapter.blocks %}
+	<div class="chapter_block mx-auto md:w-4/6 mb-6">
+		<h3>{{block.title}}</h3>
+		<br>
+		{{ block.text | safe }}
+	</div>
+{% endfor %}

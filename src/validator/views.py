@@ -4,9 +4,9 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from domain.data.chapters.ChapterStorage import get_chapter, get_chapter_by_id
-from domain.data.progress.ProgressStorage import finish_chapter, finish_lesson, is_chapter_done, is_chapter_open, is_chapter_open_or_done, unlock_chapter, unlock_lesson
-from domain.data.projects.ProjectStorage import get_project_by_id
+from domain.data.chapters.ChapterStorage import ChapterStorage
+from domain.data.progress.ProgressStorage import ProgressStorage
+from domain.data.projects.ProjectStorage import ProjectStorage
 
 
 @login_required
@@ -23,25 +23,25 @@ def next_chapter(request: HttpRequest):
 	project_id = int(str(request.POST.get('project_id')))
 	course_db = str(request.POST.get('course'))
 
-	project = get_project_by_id(project_id, course_db)
+	project = ProjectStorage().get_project_by_id(project_id, course_db)
 	if project is None: return redirect('projects:overview', course=course_db, sort_type='all')
-	chapter = get_chapter(chapter_id, lesson_id, course_db, project.database)
+	chapter = ChapterStorage().get_chapter(chapter_id, lesson_id, course_db, project.database)
 	if chapter is None: return redirect('projects:overview', course=course_db, sort_type='all')
 
-	if not is_chapter_done(username, course_db, chapter.id):
+	if not ProgressStorage().is_chapter_done(username, course_db, chapter.id):
 		messages.warning(request, 'Nevalidní akce')
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
-	next_chapter_data = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
+	next_chapter_data = ChapterStorage().get_chapter_by_id(chapter.unlock_id, course_db, project.database)
 	if next_chapter_data is None:
 		messages.warning(request, 'Jednalo se o poslední kapitolu projektu.')
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
-	if not is_chapter_open_or_done(username, course_db, next_chapter_data.id):
+	if not ProgressStorage().is_chapter_open_or_done(username, course_db, next_chapter_data.id):
 		messages.warning(request, 'Pokus o přístup k zamčené kapitole')
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
-	return redirect('projects:lesson', course=course_db, project_id=project.id, lesson_id=next_chapter_data.lesson_id, chapter_id=next_chapter_data.id)
+	return redirect('lessons:lesson', course=course_db, project_id=project.id, lesson_id=next_chapter_data.lesson_id, chapter_id=next_chapter_data.id)
 
 
 @login_required
@@ -58,18 +58,18 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 	if request.method != 'POST':
 		return redirect('courses:overview')
 
-	project = get_project_by_id(project_id, course_db)
+	project = ProjectStorage().get_project_by_id(project_id, course_db)
 	if project is None: return redirect('projects:overview', course=course_db, sort_type='all')
-	chapter = get_chapter(chapter_id, lesson_id, course_db, project.database)
+	chapter = ChapterStorage().get_chapter(chapter_id, lesson_id, course_db, project.database)
 	if chapter is None: return redirect('projects:overview', course=course_db, sort_type='all')
 
 	if chapter.unlock_type != 'button':
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
-	if not is_chapter_open(username, course_db, project_id, lesson_id, chapter_id): #type: ignore
-		if (is_chapter_done(username, course_db, chapter.id)):
+	if not ProgressStorage().is_chapter_open(username, course_db, project_id, lesson_id, chapter_id): #type: ignore
+		if (ProgressStorage().is_chapter_done(username, course_db, chapter.id)):
 			messages.warning(request, 'Kapitola je již splněna')
-			return redirect('projects:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)
+			return redirect('lessons:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)
 
 		# pravděpodobně podvržený formulář (uživatel posílá akci z místa kde ve skutečnosti být nemůže
 		messages.warning(request, 'Nevalidní akce')
@@ -77,17 +77,17 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 
 
 	# Unlock part
-	next_chapter_data = get_chapter_by_id(chapter.unlock_id, course_db, project.database)
+	next_chapter_data = ChapterStorage().get_chapter_by_id(chapter.unlock_id, course_db, project.database)
 	if next_chapter_data is not None:
-		unlock_lesson(username, course_db, next_chapter_data.lesson_id)
-		unlock_chapter(username, course_db, next_chapter_data.id)
+		ProgressStorage().unlock_lesson(username, course_db, next_chapter_data.lesson_id)
+		ProgressStorage().unlock_chapter(username, course_db, next_chapter_data.id)
 
-	finish_chapter(username, course_db, chapter.id)
+	ProgressStorage().finish_chapter(username, course_db, chapter.id)
 	message =  'Kapitola ůspěšně splněna.'
 
 	if chapter.is_last_in_lesson:
 		message = 'Lekce ůspěšně splněna.'
-		finish_lesson(username, course_db, chapter.lesson_id)
+		ProgressStorage().finish_lesson(username, course_db, chapter.lesson_id)
 
 	if next_chapter_data is None:
 		#last chapter in project
@@ -98,4 +98,4 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
 	messages.success(request, message)
-	return redirect('projects:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)
+	return redirect('lessons:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)

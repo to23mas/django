@@ -6,18 +6,19 @@ from django.shortcuts import redirect, render
 
 from content.forms.QuestionEditForm import QuestionEditForm
 from content.forms.TestEditForm import TestEditForm
-from domain.data.courses.CourseStorage import get_course_by_id
+from domain.data.courses.CourseStorage import CourseStorage
 from domain.data.tests.QuestionDataSerializer import QuestionDataSerializer
 from domain.data.tests.TestDataSerializer import TestDataSerializer
-from domain.data.tests.TestStorage import create_question, create_test, delete_question, delete_test, find_tests, get_next_valid_id, get_next_valid_question_id, get_test, update_question, update_test
+from domain.data.tests.TestStorage import TestStorage
 
 
 @staff_member_required
 def test_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
-	course = get_course_by_id(course_id)
+	cs = CourseStorage()
+	course = cs.get_course_by_id(course_id)
 	if course is None: return  redirect('admin_course_overview')
-	tests = find_tests(db=course.database)
+	tests = TestStorage().find_tests(db=course.database)
 
 	breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/'}, {f'{course.title}': f'/admin/content/course/{course.id}/edit'}, {'Tests': '#'}]
 	return render(request, 'content/tests/overview.html', {
@@ -29,9 +30,9 @@ def test_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 
 @staff_member_required
 def test_edit(request: HttpRequest, course_id: str, test_id: int) -> HttpResponse:
-	course = get_course_by_id(course_id)
+	course = CourseStorage().get_course_by_id(course_id)
 	if course is None: return  redirect('admin_course_overview')
-	test, questions = get_test(course.database, test_id)
+	test, questions = TestStorage().get_test(course.database, test_id)
 	if test is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
@@ -39,7 +40,7 @@ def test_edit(request: HttpRequest, course_id: str, test_id: int) -> HttpRespons
 		if edit_form.is_valid():
 			edit_form.cleaned_data['_id'] = test.id
 			test_data = TestDataSerializer.from_dict(edit_form.cleaned_data)
-			update_test(test_data, course.database)
+			TestStorage().update_test(test_data, course.database)
 			messages.success(request, 'Test edited successfully')
 			return  redirect('admin_test_edit', course_id=course.id, test_id=test_data.id)
 
@@ -56,15 +57,15 @@ def test_edit(request: HttpRequest, course_id: str, test_id: int) -> HttpRespons
 
 @staff_member_required
 def test_new(request: HttpRequest, course_id: str) -> HttpResponse:
-	course = get_course_by_id(course_id)
+	course = CourseStorage().get_course_by_id(course_id)
 	if course is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = TestEditForm(request.POST)
 		if edit_form.is_valid():
-			edit_form.cleaned_data['_id'] = get_next_valid_id(course.database)
+			edit_form.cleaned_data['_id'] = TestStorage().get_next_valid_id(course.database)
 			test_data = TestDataSerializer.from_dict(edit_form.cleaned_data)
-			create_test(test_data, course.database)
+			TestStorage().create_test(test_data, course.database)
 			messages.success(request, 'Test succesfully created')
 			return  redirect('admin_test_edit', course_id=course_id, test_id=test_data.id)
 	else:
@@ -80,29 +81,29 @@ def test_new(request: HttpRequest, course_id: str) -> HttpResponse:
 
 @staff_member_required
 def test_delete(request: HttpRequest, course_id: str, test_id: int) -> HttpResponse:
-	course = get_course_by_id(course_id)
+	course = CourseStorage().get_course_by_id(course_id)
 	if course is None: return  redirect('admin_course_overview')
-	test, _ = get_test(course.database, test_id)
+	test, _ = TestStorage().get_test(course.database, test_id)
 	if test is None: return  redirect('admin_course_overview')
 
-	delete_test(course.database, test.id)
+	TestStorage().delete_test(course.database, test.id)
 	messages.success(request, 'Test has been deleted')
 	return redirect('admin_test_overview', course_id=course_id)
 
 
 @staff_member_required
 def test_new_question(request: HttpRequest, course_id: str, test_id: int) -> HttpResponse:
-	course = get_course_by_id(course_id)
+	course = CourseStorage().get_course_by_id(course_id)
 	if course is None: return  redirect('admin_course_overview')
-	test, _ = get_test(course.database, test_id)
+	test, _ = TestStorage().get_test(course.database, test_id)
 	if test is None: return  redirect('admin_course_overview')
 
 	if request.method == 'POST':
 		edit_form = QuestionEditForm(request.POST)
 		if edit_form.is_valid():
-			edit_form.cleaned_data['_id'] =  get_next_valid_question_id(course.database, test_id)
+			edit_form.cleaned_data['_id'] =  TestStorage().get_next_valid_question_id(course.database, test_id)
 			question_data = QuestionDataSerializer.from_dict(edit_form.cleaned_data)
-			create_question(question_data, test_id, course.database)
+			TestStorage().create_question(question_data, test_id, course.database)
 			messages.success(request, 'Question successfully created')
 			return  redirect('admin_test_edit_question', course_id=course.id, test_id=test.id ,question_id=question_data.id)
 	else:
@@ -119,9 +120,9 @@ def test_new_question(request: HttpRequest, course_id: str, test_id: int) -> Htt
 
 @staff_member_required
 def test_edit_question(request: HttpRequest, course_id: str, test_id: int, question_id: int) -> HttpResponse:
-	course = get_course_by_id(course_id)
+	course = CourseStorage().get_course_by_id(course_id)
 	if course is None: return  redirect('admin_course_overview')
-	test, questions = get_test(course.database, test_id)
+	test, questions = TestStorage().get_test(course.database, test_id)
 	if test is None: return  redirect('admin_course_overview')
 
 	question_data = [q for q in questions if q.id == question_id][0] #type: ignore
@@ -131,7 +132,7 @@ def test_edit_question(request: HttpRequest, course_id: str, test_id: int, quest
 		if edit_form.is_valid():
 			edit_form.cleaned_data['_id'] = question_data.id
 			question_data = QuestionDataSerializer.from_dict(edit_form.cleaned_data)
-			update_question(question_data, course.database, test.id)
+			TestStorage().update_question(question_data, course.database, test.id)
 			messages.success(request, 'Question edited successfully')
 			return  redirect('admin_test_edit_question', course_id=course.id, test_id=test.id ,question_id=question_id)
 
@@ -150,11 +151,13 @@ def test_edit_question(request: HttpRequest, course_id: str, test_id: int, quest
 
 @staff_member_required
 def test_delete_question(request: HttpRequest, course_id: str, test_id: int, question_id: int) -> HttpResponse:
-	course = get_course_by_id(course_id)
+	course = CourseStorage().get_course_by_id(course_id)
 	if course is None: return  redirect('admin_course_overview')
-	test, _ = get_test(course.database, test_id)
+	test, _ = TestStorage().get_test(course.database, test_id)
 	if test is None: return  redirect('admin_course_overview')
 
-	delete_question(course.database, test.id, question_id)
+	TestStorage().delete_question(course.database, test.id, question_id)
 	messages.success(request, 'Question has been deleted')
+
 	return redirect('admin_test_edit', course_id=course_id, test_id=test.id)
+

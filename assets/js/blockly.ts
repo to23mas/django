@@ -71,7 +71,7 @@ export function initBlockly() {
 			return;
 		}
 		try {
-			const response = await fetch('/projects/lesson/validate-python', {
+			const response = await fetch('/lessons/lesson/validate-python', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
