@@ -1,0 +1,201 @@
+{
+  "course": {
+    "_id": 1,
+    "database": "django",
+    "order": 1,
+    "title": "Django a Client-Server aplikace",
+    "visible": true,
+    "open": true,
+    "description": "Kurz je zaměřen na tvorbu Client-Server webových aplikací s využitím frameworku Django.\r\n\r\nÚčastníci se seznámí s moderními technologiemi, které se dnes nejčastěji používají při vývoji webových aplikací, jako jsou nástroje pro kontejnerizaci (Docker), CSS frameworky (Tailwind) a technologie pro práci s JavaScriptem (Vite).",
+    "tags": [
+      "Django",
+      "Vite",
+      "Tailwind",
+      "Docker"
+    ]
+  },
+  "projects": [
+    {
+      "_id": 1,
+      "database": "project_1",
+      "title": "Hello World! (Django)",
+      "description": "První projekt zaměřen na přípravu vývojového prostředí pro tvorbu webových aplikací ve frameworku Django. Výstupek je klasická Hello world aplikace.",
+      "todo": [
+        "Instalace pythonu",
+        "Instalace frameworku Django",
+        "Venv",
+        "Vývojová prostředí (IDE)"
+      ],
+      "lessons": [
+        {
+          "_id": 1,
+          "title": "IDE",
+          "to": [
+            2
+          ]
+        },
+        {
+          "_id": 2,
+          "title": "Instalace Pythonu",
+          "to": [
+            3
+          ]
+        },
+        {
+          "_id": 3,
+          "title": "Příprava prostředí",
+          "to": [
+            4
+          ]
+        },
+        {
+          "_id": 4,
+          "title": "Hello world!",
+          "to": []
+        }
+      ],
+      "chapters": [
+        {
+          "_id": 1,
+          "title": "IDE",
+          "lesson_id": 1,
+          "unlock_type": "button",
+          "unlock_id": 2,
+          "unlocker_id": "",
+          "is_last_in_lesson": true,
+          "blocks": [
+            {
+              "id": 1,
+              "order": 1,
+              "title": "Vývojová prostředí",
+              "text": "..."
+            },
+            {
+              "id": 2,
+              "order": 2,
+              "title": "PyCharm",
+              "text": "..."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "_id": 1,
+      "title": "hello world test",
+      "time": 25,
+      "description": "Test základních pojmů ohledně frameworku Django, virtuálního prostředí a IDE",
+      "finish_project": 1,
+      "finish_lesson": 4,
+      "finish_chapter": 8,
+      "unlock_project": 0,
+      "unlock_lesson": 0,
+      "unlock_chapter": 0,
+      "attempts": 3,
+      "success_score": 75,
+      "total_points": 45,
+      "questions": [
+        {
+          "_id": 1,
+          "question": "Co znamená zkratka IDE?",
+          "type": "single",
+          "answers": {
+            "1": "Integrated Development Environment (Integrované vývojové prostředí)",
+            "2": "Internet Data Exchange (Internetová výměna dat)",
+            "3": "Intelligent Device Emulator (Emulátor inteligentního zařízení)",
+            "4": "Interactive Digital Editor (Interaktivní digitální editor)"
+          },
+          "correct": [
+            "1"
+          ],
+          "points": 5
+        },
+        {
+          "_id": 2,
+          "question": "Jakým příkazem v příkazové řádce (CLI) zjistíte aktuální verzi Pythonu?",
+          "type": "single",
+          "answers": {
+            "1": "python --info",
+            "2": "python -v",
+            "3": "python.version",
+            "4": "python --version"
+          },
+          "correct": [
+            "4"
+          ],
+          "points": 5
+        },
+        {
+          "_id": 3,
+          "question": "Proč se používá virtuální prostředí (VENV) v Pythonu?",
+          "type": "multiple",
+          "answers": {
+            "1": "Pro zajištění izolace závislostí mezi různými projekty",
+            "2": "Pro instalaci balíčků globálně v systému",
+            "3": "Pro snadné použití různých verzí balíčků v různých projektech",
+            "4": "Pro zrychlení kompilace Pythonu",
+            "5": "Pro zvýšení bezpečnosti, při testování různých knihoven",
+            "6": "Pro snazší přenos vývojového prostředí mezi různými stroji"
+          },
+          "correct": [
+            "1",
+            "3",
+            "5",
+            "6"
+          ],
+          "points": 10
+        },
+        {
+          "_id": 4,
+          "question": "Které z následujících příkazů Django slouží k různým úkolům v projektu?",
+          "type": "multiple",
+          "answers": {
+            "1": "python manage.py runserver",
+            "2": "python manage.py startapp",
+            "3": "python manage.py startserver",
+            "4": "python manage.py startproject",
+            "5": "python manage.py createapp",
+            "6": "python manage.py runapp"
+          },
+          "correct": [
+            "1",
+            "2",
+            "4"
+          ],
+          "points": 10
+        },
+        {
+          "_id": 5,
+          "question": "Jaká fráze se často používá při výuce programování. Tato fráze představuje text vypsaný na obrazovku po spuštění programu.",
+          "type": "open",
+          "answers": {},
+          "correct": [
+            "hello world",
+            "hello world!",
+            "hello world."
+          ],
+          "points": 15
+        }
+      ]
+    }
+  ],
+  "blockly": [
+    {
+      "_id": 1,
+      "title": "Hello Python",
+      "task_description": "Úkolem je poskládat kód tak, aby po spuštění vypsal text „Hello world!“. Úloha je poměrně jednoduchá, slouží spíše jako seznámení se psaním kódu v této aplikaci, které vždy bude představováno skládáním bloků. Při skládání bloků je vždy vidět podoba výsledného kódu v Pythonu.",
+      "toolbox": "{\r\n  \"kind\": \"flyoutToolbox\",\r\n  \"contents\": [\r\n    {\"kind\": \"block\", \"type\": \"controls_if\"},\r\n    {\"kind\": \"block\", \"type\": \"logic_compare\"},\r\n    {\"kind\": \"block\", \"type\": \"text_print\"},  \r\n    {\"kind\": \"block\", \"type\": \"variables_set\"},\r\n    {\"kind\": \"block\", \"type\": \"variables_get\"},\r\n    {type: 'text',  kind: 'block'}\r\n  ]\r\n}",
+      "expected_task": "print",
+      "expected_result": "Hello world!"
+    }
+  ],
+  "demos": [
+    {
+      "_id": 1,
+      "name": "Hello Wolrld!",
+      "url": "hello_world"
+    }
+  ]
+}
