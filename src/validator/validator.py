@@ -1,4 +1,5 @@
 from django.contrib import messages
+import ast
 from django.urls import reverse
 from RestrictedPython.PrintCollector import PrintCollector
 from django.http import HttpRequest, HttpResponse, JsonResponse
@@ -14,6 +15,37 @@ from domain.data.chapters.ChapterStorage import ChapterStorage
 from domain.data.progress.ProgressStorage import ProgressStorage
 from domain.data.projects.ProjectData import ProjectData
 from domain.data.projects.ProjectStorage import ProjectStorage
+
+
+# TODO add ast
+FORBIDDEN_NODES = {"Import", "ImportFrom", "Exec", "Eval", "Call"}
+def is_code_safe(code):
+	"""
+	Ověří, zda Python kód neobsahuje zakázané konstrukce.
+	- Používá `ast` pro analýzu kódu místo jednoduchých regexů.
+	"""
+	try:
+		# Převede kód na abstraktní syntaktický strom (AST)
+		tree = ast.parse(code)
+
+		for node in ast.walk(tree):
+			# Kontrola, zda kód obsahuje zakázané uzly (Import, Exec, atd.)
+			if type(node).__name__ in FORBIDDEN_NODES:
+				print(f"❌ Zakázaná funkce: {type(node).__name__}")
+				return False
+
+			# Pokud je to volání funkce, ověříme, zda je povolená
+			# if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+			# 	if node.func.id not in ALLOWED_BLOCKS:
+			# 		print(f"❌ Nepovolená funkce: {node.func.id}")
+			# 		return False
+
+		return True  # ✅ Kód je bezpečný
+
+	except SyntaxError:
+		print("❌ Chyba: Kód obsahuje syntaktickou chybu!")
+		return False
+
 
 
 @login_required

@@ -6,7 +6,12 @@ export function initBlockly() {
 	document.addEventListener('DOMContentLoaded', () => {
 
 		const blocklyContainer = document.getElementById('blocklyDiv');
-		if (! blocklyContainer) { return; }
+		if (!blocklyContainer) { return; }
+
+		// TODO implement
+		// Blockly.Python.addReservedWords(
+		// 	'eval,exec,open,subprocess,os,shutil,socket,pickle,marshal,ctypes,cffi, import'
+		// );
 
 		const workspace = Blockly.inject('blocklyDiv', {
 			toolbox: (window as any).blocklyToolboxConfig,
@@ -56,7 +61,7 @@ export function initBlockly() {
 
 	async function sendPythonCodeToServer(code: string) {
 		const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
-		const course_db  = (window as any).courseName;
+		const course_db = (window as any).courseName;
 		const blockly_id = (window as any).blocklyId;
 		const chapter_id = (window as any).chapterId;
 		const lesson_id = (window as any).lessonId;
