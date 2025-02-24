@@ -1,3 +1,7 @@
+import time
+import json
+import os
+import docker
 from django.contrib import messages
 from django.urls import reverse
 from RestrictedPython.PrintCollector import PrintCollector
@@ -40,7 +44,7 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 
 	match (blockly.expected_task):
 		case ExpectedTaskTypes.PRINT.value:
-			code_result = validate_python_code_print_safe(code)
+			code_result = validate_python_code_print_safe(code, username)
 			if code_result.endswith("\n"):
 				code_result = code_result[:-1]
 		case _:
@@ -61,21 +65,32 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 	return JsonResponse({'status': 'error', 'message': 'Nesprávná opověď'})
 
 
-def validate_python_code_print_safe(code):
-	print_result = 'printed_result_validation_string_collection_grabber'
-	code += f'\n{print_result} = printed'
-	restricted_locals = {}
-	restricted_globals = {
-		"__builtins__": safe_builtins,
-		"_print_": PrintCollector,
-		"_getattr_":  getattr,
-	}
+def validate_python_code_print_safe(code, username: str):
+	file_path = os.path.join("/tmp/", f'{username}.py')
+	with open(file_path, "w") as file:
+		file.write(code)
 
-	byte_code = compile_restricted(code, '<string>', 'exec')
-	exec(byte_code, restricted_globals, restricted_locals) #pylint: disable=W0122
-	output = restricted_locals[print_result]
+	client = docker.from_env()
 
-	return output
+	container = client.containers.run(
+		image="restricted_python",
+		# TODO fix for server path
+		volumes={f'/home/soleus/Documents/School/master/django/tmp/{username}.py': {"bind": f"/sandbox/file.py", "mode": "ro"}},
+		stdout=True,
+		stderr=True,
+		remove=True,  # Automatically remove container after execution
+		detach=True,  # Run synchronously
+		command="python /sandbox/run_code.py"  # Command to execute inside container
+	)
+
+	container.wait()
+
+	logs = []
+	for log in container.logs(stream=True):
+		logs.append(log.decode('utf-8'))
+
+	print(logs)
+	return logs[0]
 
 def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectData, chapter: ChapterData) -> str:
 	if chapter.unlock_type != 'blockly':

@@ -56,3 +56,7 @@ docker exec -it django-mongodb-1 mongosh
 # Emails
 
 Using brevo
+
+# Validator
+docker build -f Dockerfile-validator -t restricted_python .
+

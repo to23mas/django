@@ -1,6 +1,7 @@
 Django==5.0.2
 psycopg2-binary==2.9.6
 gunicorn
+docker
 pymongo
 RestrictedPython
 sib-api-v3-sdk

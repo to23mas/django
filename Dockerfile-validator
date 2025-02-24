@@ -1,0 +1,11 @@
+FROM python:3.11.4-slim
+
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /sandbox
+
+RUN pip install RestrictedPython
+
+COPY validator.py /sandbox/run_code.py
+
+ENTRYPOINT ["python", "/sandbox/run_code.py"]
