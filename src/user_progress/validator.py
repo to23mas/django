@@ -45,6 +45,7 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 	match (blockly.expected_task):
 		case ExpectedTaskTypes.PRINT.value:
 			code_result = validate_python_code_print_safe(code, username)
+			if code_result == False:
 			if code_result.endswith("\n"):
 				code_result = code_result[:-1]
 		case _:
@@ -65,7 +66,7 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 	return JsonResponse({'status': 'error', 'message': 'Nesprávná opověď'})
 
 
-def validate_python_code_print_safe(code, username: str):
+def validate_python_code_print_safe(code, username: str) -> str:
 	file_path = os.path.join("/tmp/", f'{username}.py')
 	with open(file_path, "w") as file:
 		file.write(code)
@@ -80,16 +81,22 @@ def validate_python_code_print_safe(code, username: str):
 		stderr=True,
 		remove=True,  # Automatically remove container after execution
 		detach=True,  # Run synchronously
-		command="python /sandbox/run_code.py"  # Command to execute inside container
+		command="python /sandbox/run_code.py",  # Command to execute inside container
+		cpu_count=1,  # Omezení na 1 CPU jádro
+		cpu_shares=512,  # Určuje relativní prioritu (512 znamená průměrnou prioritu)
+		mem_limit="128m",  # Omezení na 128 MB RAM
+		memswap_limit="256m"  # Omezení na 256 MB (RAM + swap)
 	)
 
-	container.wait()
+	try:
+		container.wait(timeout=10)
+		logs = []
+		for log in container.logs(stream=True):
+			logs.append(log.decode('utf-8'))
+	except:
+		container.kill()
+		raise Exception('container took too long')
 
-	logs = []
-	for log in container.logs(stream=True):
-		logs.append(log.decode('utf-8'))
-
-	print(logs)
 	return logs[0]
 
 def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectData, chapter: ChapterData) -> str:
