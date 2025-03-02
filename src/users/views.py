@@ -1,4 +1,5 @@
 import hashlib
+import os
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User, Group
@@ -12,6 +13,9 @@ from users.forms.CustomUserCreationForm import CustomUserCreationForm
 
 
 def register(request: HttpRequest) -> HttpResponse:
+	if os.getenv('BREVO'):
+		return render(request, "users/register-disabled.html", {})
+
 	if request.method == "POST":
 		form = CustomUserCreationForm(request.POST)
 		if form.is_valid():

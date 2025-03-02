@@ -45,7 +45,6 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 	match (blockly.expected_task):
 		case ExpectedTaskTypes.PRINT.value:
 			code_result = validate_python_code_print_safe(code, username)
-			if code_result == False:
 			if code_result.endswith("\n"):
 				code_result = code_result[:-1]
 		case _:
