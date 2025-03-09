@@ -23,7 +23,9 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 			'course': course,
 		})
 
-	available_demos = DemoStorage().find_demos_for_overview(course, user_available)
+	# TODO uncomment following
+	# available_demos = DemoStorage().find_demos_for_overview(course, user_available)
+	available_demos = DemoStorage().find_demos(course)
 
 	return render(request, 'demos/overview.html', {
 		'demos': available_demos,
@@ -34,6 +36,7 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 
 @login_required
 def detail(request: HttpRequest, course: str, demo_id: int) -> HttpResponse:
+	print()
 	username = request.user.username #type: ignore
 	if (ProgressStorage().get_user_progress_by_course(username, course) is None):
 		messages.warning(request, 'Kurz ještě není odemčen!')
@@ -44,10 +47,12 @@ def detail(request: HttpRequest, course: str, demo_id: int) -> HttpResponse:
 		messages.warning(request, 'Ukázkový projekt není v tyto chvíli dostupný')
 		return redirect('courses:overview', course=course)
 
-	user_available = ProgressStorage().find_available_demos(course, username)
+	# TODO uncomment following
+	# user_available = ProgressStorage().find_available_demos(course, username)
+	user_available = DemoStorage().find_demos(course)
 
-	if user_available is None or demo.id not in user_available:
-		messages.warning(request, 'Ukázkový projekt ještě není odemčen')
-		return redirect('courses:overview', course=course)
+	# if user_available is None or demo.id not in user_available:
+	# 	messages.warning(request, 'Ukázkový projekt ještě není odemčen')
+	# 	return redirect('courses:overview', course=course)
 
 	return redirect(f'demos:{demo.url}', course=course, demo_id=demo.id)

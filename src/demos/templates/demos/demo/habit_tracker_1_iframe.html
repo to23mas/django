@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="cs">
 
-
 <head>
 	<meta charset="UTF-8">
 	<title>Habit Tracker</title>
 </head>
 
 <body>
+		<h1>Habit Tracker</h1>
+
 		<form method="post">
 			{% csrf_token %}
 			<input type="text" name="habit_name" class="input" placeholder="Název zvyku" required>
