@@ -17,3 +17,4 @@ __pycache__
 
 src/inpv/__pycache__
 mongodb_data
+tmp
