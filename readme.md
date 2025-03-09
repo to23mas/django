@@ -1,6 +1,44 @@
 # Installation
 
+docker:   27.5
+npm:      9.6
+GNU Make: 4.3
+
+1) javaScript and CSS
+
+install javaScript dependencies (min npm version === 9.6)
+```bash
+npm install
+```
+
+build assets
+```bash
+make assets
+```
+
+2) build stadnalone containers
+
+```bash
+make build-validator
+```
+
+3) setup environment
+
+copy `.env.local` into `.env`
+
+```bash
+cp .env.local .env
+```
+
+4) run application
+
+```bash
+make dev
+```
+
+
 ## Docker
+
 ```bash
 apt install apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -17,7 +55,7 @@ sudo apt install python3-pip
 ```
 
 ## Npm / node / javascript
-```
+```bash
 apt install node
 npm install
 ```
@@ -29,7 +67,12 @@ python3 -m pip install Django
 
 # Python
 ## Venv
-`source ./venv/bin/activate.fish`
+
+activete python virual environment for [fish shell](https://fishshell.com/)
+
+```bash
+source ./venv/bin/activate.fish
+```
 
 # UI
 ## assets
@@ -40,6 +83,7 @@ npm run built
 ```
 
 ### styles
+
 ```bash
 make assets
 ```
@@ -55,8 +99,12 @@ docker exec -it django-mongodb-1 mongosh
 
 # Emails
 
-Using brevo
+[Using brevo](https://www.brevo.com/)
+Emails are turned off by default. Enable them by setting up brevo and `.env`
 
-# Validator
-docker build -f Dockerfile-validator -t restricted_python .
+```env
+REGISTRATION=enabled
+BREVO_KEY= brevo API key
+BREVO_SENDER= Your email connected to brevo
+```
 

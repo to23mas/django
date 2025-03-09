@@ -46,7 +46,16 @@ services:
       - ./db/:/usr/src/db
       - ./src/:/usr/src/app
     command: >
-      sh -c "python manage.py makemigrations &&
+      sh -c "
+             python manage.py makemigrations sessions
+             python manage.py makemigrations auth
+             python manage.py makemigrations contenttypes
+             python manage.py makemigrations admin
+             python manage.py migrate sessions
+             python manage.py migrate auth
+             python manage.py migrate contenttypes
+             python manage.py migrate admin
+             python manage.py makemigrations &&
              python manage.py migrate &&
              python manage.py createsuperuser --username admin --email admin@admin.com --noinput ;
              python /usr/src/db/migrations/migrate.py"

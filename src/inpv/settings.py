@@ -28,9 +28,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*', '127.0.0.1',  'localhost' ]
 CSRF_TRUSTED_ORIGINS = ['http://localhost']
+X_FRAME_OPTIONS = "SAMEORIGIN"
+SESSION_COOKIE_SAMESITE = None  # Allow session cookies in iframes
+SESSION_COOKIE_SECURE = False   # Change to True if using HTTPS
+
+
 
 # Application definition
-
 INSTALLED_APPS = [
 	"django.contrib.admin",
 	"django.contrib.auth",

@@ -30,6 +30,10 @@ psql:
 migrate:
 	docker compose exec web python manage.py migrate
 
+.PHONY: build-validator
+build-validator:
+	docker build -f Dockerfile-validator -t restricted_python .
+
 .PHONY: lint
 lint:
 	pylint --rcfile pylintrc.toml src

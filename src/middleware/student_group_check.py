@@ -1,4 +1,3 @@
-from django.http.request import HttpRequest
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.deprecation import MiddlewareMixin
@@ -6,9 +5,12 @@ from django.utils.deprecation import MiddlewareMixin
 class GroupCheckMiddleware(MiddlewareMixin):
 	def process_request(self, request):
 		unverified_url = "/users/unverified/"
-		login_url = "/users/login/"  # Update this if your login URL is different
+		login_url = "/users/login/"
 
 		if request.path.startswith('/static/'):
+			return None
+
+		if request.path.endswith('/iframe'):
 			return None
 
 		if request.path.startswith('/public/'):

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="login_center">
+	<div class="login_center_headings">
+		<h2 class="login_headings">Registrace</h2>
+	</div>
+
+	<div class="login">
+			<div>
+				Registrace v tuto chvíli není možná
+			</div>
+		<div class="login_a">
+			<a href="{% url 'users:login' %}">Přihlášení</a>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
