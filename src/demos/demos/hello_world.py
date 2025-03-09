@@ -67,7 +67,6 @@ def hello_world(request: HttpRequest, course: str, demo_id: int):
 			request.session['habits'] = json.dumps(habits)
 			request.session.modified = True
 
-			return redirect(request.path)
 			return redirect('demos:habit_tracker_1', course=course, demo_id=demo_id)
 
 	return render(request, 'demos/demo/habit_tracker_1_iframe.html', {
