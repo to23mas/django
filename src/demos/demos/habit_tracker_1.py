@@ -79,7 +79,6 @@ def habit_tracker_1(request: HttpRequest, course: str, demo_id: int):
 	})
 
 def complete_habit_1(request: HttpRequest, course: str, demo_id: int, habit_name):
-	print(habit_name)
 	_, _, course, _ = _check(request, course, demo_id)
 	habits = json.loads(request.session.get('habits', '[]'))
 	completed_habits = json.loads(request.session.get('completed_habits', '[]'))

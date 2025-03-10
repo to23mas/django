@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if project_url %}
+<div class="w-2/3 mx-auto mt-24">
+	<a href="{{project_url}}" class="text-blue-500 hover:underline">Přejít k projektu</a>
+</div>
+{% endif %}
+
+<div class="border border-black w-2/3 mx-auto my-auto mt-5 bg-white shadow-2xl overflow-y-scroll sm:h-[calc(100vh-300px)] h-screen">
+	{% include './blog_navigation.html' %}
+	<div class="max-w-4xl mx-auto my-8 p-6 bg-blue rounded-lg shadow-lg">
+		<h1 class="text-2xl font-bold mb-6 text-center">
+			{% if category %}Upravit{% else %}Přidat{% endif %} kategorii
+		</h1>
+		{% if category %}
+		<p class="text-center text-lg text-gray-700">
+			Nyní upravuješ kategorii <strong class="font-bold text-blue-600">{{ category.name }}</strong>
+		</p>
+		{% endif %}
+
+		<form method="post" class="space-y-4">
+			{% csrf_token %}
+			{{ form }}
+			<button type="submit"
+				class="w-full py-2 px-4 mt-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition-colors">
+				{% if category %}Upravit{% else %}Přidat{% endif %} kategorii
+			</button>
+		</form>
+
+		<div class="mt-4 text-center">
+			<a href="{% url 'demos:category_list' course=course demo_id=demo.id %}" class="text-blue-500 hover:text-blue-700 transition-colors">
+				Zpět na seznam kategorií
+			</a>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
