@@ -1,0 +1,48 @@
+services:
+  database:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE}
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DATABASE_USER}", "-d", "${DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  database-migration:
+    build: .
+    volumes:
+      - ./app/:/usr/src/app
+    env_file:
+      - .env
+    command: >
+      sh -c "
+             python manage.py makemigrations &&
+             python manage.py migrate"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  web:
+    build: .
+    command: sh -c "
+      python manage.py runserver 0.0.0.0:80"
+    volumes:
+      - ./app/:/usr/src/app
+      - ./public/:/usr/src/public
+    ports:
+      - 80:80
+    env_file:
+      - .env
+    depends_on:
+      database-migration:
+        condition: service_completed_successfully
+
+volumes:
+  postgres_data:
