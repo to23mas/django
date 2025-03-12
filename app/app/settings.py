@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     "hello_world",
     "homepage",
+    "habit_tracker_1",
 ]
 
 MIDDLEWARE = [
