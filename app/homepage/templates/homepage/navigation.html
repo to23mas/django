@@ -1,0 +1,15 @@
+{% block navigation %}
+<nav class="bg-blue-500 p-4 text-white">
+	<div class="max-w-4xl mx-auto flex justify-between items-center">
+		<span>Přihlášen jako <span class="text-xl font-semibold ml-3">{{ request.user.username }}</span> </span>
+		<div>
+			<form method="POST" action="{% url 'users:logout' %}">
+				{% csrf_token %}
+				<button type="submit" class="text-white">
+					Odhlásit
+				</button>
+			</form>
+		</div>
+	</div>
+</nav>
+{% endblock %}

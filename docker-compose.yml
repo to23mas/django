@@ -7,8 +7,8 @@ services:
       POSTGRES_DB: ${DATABASE}
     ports:
       - 5432:5432
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${DATABASE_USER}", "-d", "${DATABASE}"]
       interval: 10s
@@ -24,6 +24,7 @@ services:
     command: >
       sh -c "
              python manage.py makemigrations &&
+             python manage.py migrate auth &&
              python manage.py migrate"
     depends_on:
       database:
