@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block navigation %}
+{% include './blog_navigation.html' %}
+{% endblock %}
+
+{% block title %}
+{% if category %}Upravit{% else %}Přidat{% endif %} kategorii
+{% endblock %}
+
+{% block content %}
+	<div class="max-w-4xl mx-auto my-8 p-6 bg-white rounded-lg">
+		<div class="flex justify-between items-center mb-4">
+			<h2 class="text-1xl font-bold text-gray-800">Seznam kategorií</h2>
+			<a href="{% url 'blog_1:category_create' %}" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
+				Nová kategorie
+			</a>
+		</div>
+
+		{% if categories %}
+		<ul class="space-y-2">
+			{% for category in categories %}
+			<li class="mt-2 flex justify-between items-center p-3 bg-blue-100 rounded-md hover:bg-blue-200">
+				<span class="text-lg font-medium">{{ category.name }}</span>
+
+				<!-- Edit Button as an Anchor -->
+				<div class="flex space-x-2">
+					<a href="{% url 'blog_1:category_edit' category.id %}" class="px-3 py-1 bg-yellow-500 text-white rounded-md hover:bg-yellow-600">
+						Upravit
+					</a>
+
+					<!-- Delete Button as an Anchor -->
+					<a href="{% url 'blog_1:category_delete' category.id %}"
+						 class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+						 onclick="return confirm('Opravdu chcete smazat tuto kategorii?');">
+						Smazat
+					</a>
+				</div>
+			</li>
+		</ul>
+        {% endfor %}
+		{% else %}
+			<p class="text-gray-500">Žádné kategorie nejsou k dispozici.</p>
+		{% endif %}
+	</div>
+{% endblock %}
+

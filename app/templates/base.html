@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="cs">
+	<head>
+		{% include 'header.html' %}
+	</head>
+<body>
+
+	{% block navigation %}{% endblock %}
+	<div class="min-h-[calc(100vh-150px)]">
+		<div class="max-w-4xl mx-auto my-8 p-6 bg-blue rounded-lg shadow-lg">
+			{% block content %}{% endblock %}
+		</div>
+	</div>
+
+	{% include 'footer.html' %}
+
+</body>
+</html>

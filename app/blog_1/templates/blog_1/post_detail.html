@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block navigation %}
+	{% include './blog_navigation.html' %}
+{% endblock %}
+
+{% block title %}
+	{{ post.title }}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto my-8 p-6">
+	<h1 class="text-3xl font-bold text-gray-800 mb-4">{{ post.title }}</h1>
+	<div class="mt-2 flex flex-wrap gap-2">
+		{% for category in post.categories.all %}
+		<span class="inline-block bg-blue-700 text-white text-sm font-semibold rounded-full px-4 py-2 hover:bg-blue-600">
+			{{ category.name }}
+		</span>
+		{% endfor %}
+	</div>
+	<p class="text-sm text-gray-500 mt-2">Vytvořeno: {{ post.created_at }}</p>
+	<p class="text-lg mt-4 text-gray-700">{{ post.content }}</p>
+
+	<div class="mt-6">
+
+		<a href="{% url 'blog_1:post_list' %}"
+			 class="text-blue-500 hover:text-blue-700 transition-colors">
+			Zpět na seznam příspěvků
+	</a>
+	</div>
+</div>
+{% endblock %}
