@@ -33,9 +33,11 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
+    #important
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
+    # ----
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
@@ -48,7 +50,14 @@ INSTALLED_APPS = [
     "tailwind",
     "theme",
     "django_browser_reload",
+    "users",
 ]
+
+LOGIN_URL = '/users/login/'
+REGISTER_URL = '/users/register/'
+LOGOUT_REDIRECT_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/'
+
 
 TAILWIND_APP_NAME = 'theme'
 
@@ -64,7 +73,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-	"django_browser_reload.middleware.BrowserReloadMiddleware", # blog
+    "middleware.custom.LoginRequiredMiddleware",
+    "middleware.custom.Redirect404Middleware",
+    # "django_browser_reload.middleware.BrowserReloadMiddleware",
 ]
 
 ROOT_URLCONF = "app.urls"

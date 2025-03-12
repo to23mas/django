@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post, Category
 from .forms import PostForm, CategoryForm
+from .decorator import group_required  
+
 
 def post_list(request):
 	posts = Post.objects.all().order_by('-created_at')
@@ -19,6 +21,7 @@ def post_detail(request, pk):
 	post = get_object_or_404(Post, pk=pk)
 	return render(request, 'blog_1/post_detail.html', {'post': post})
 
+@group_required('blog-admin')
 def post_create(request):
 	if request.method == 'POST':
 		form = PostForm(request.POST)
@@ -29,6 +32,7 @@ def post_create(request):
 		form = PostForm()
 	return render(request, 'blog_1/post_form.html', {'form': form})
 
+@group_required('blog-admin')
 def post_edit(request, pk):
 	post = get_object_or_404(Post, pk=pk)
 	if request.method == 'POST':
@@ -44,6 +48,7 @@ def post_edit(request, pk):
 	})
 
 
+@group_required('blog-admin')
 def post_delete(request, pk):
 	post = get_object_or_404(Post, pk=pk)
 	post.delete()
@@ -51,6 +56,7 @@ def post_delete(request, pk):
 
 #---------
 
+@group_required('blog-admin')
 def category_list(request):
 	categories = Category.objects.all()
 
@@ -58,10 +64,12 @@ def category_list(request):
 		'categories': categories,
 	})
 
+@group_required('blog-admin')
 def category_detail(request, pk):
 	category = get_object_or_404(Category, name=pk)
 	return render(request, 'blog_1/category_detail.html', {'category': category})
 
+@group_required('blog-admin')
 def category_create(request):
 	if request.method == 'POST':
 		form = CategoryForm(request.POST)
@@ -77,6 +85,7 @@ def category_create(request):
 		'categories': categories,
 	})
 
+@group_required('blog-admin')
 def category_edit(request, id):
 	category = get_object_or_404(Category, id=id)
 	print(category)
@@ -92,6 +101,7 @@ def category_edit(request, id):
 		'category': category,
 	})
 
+@group_required('blog-admin')
 def category_delete(request, id):
 	category = get_object_or_404(Category, id=id)
 	category.delete()

@@ -7,8 +7,8 @@ services:
       POSTGRES_DB: ${DATABASE}
     ports:
       - 5432:5432
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+    # volumes:
+    #   - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${DATABASE_USER}", "-d", "${DATABASE}"]
       interval: 10s
@@ -24,7 +24,9 @@ services:
     command: >
       sh -c "
              python manage.py makemigrations &&
-             python manage.py migrate"
+             python manage.py migrate &&
+             python manage.py createsuperuser --username admin --email admin@admin.com --noinput ;
+             echo \"migrations successful\""
     depends_on:
       database:
         condition: service_healthy

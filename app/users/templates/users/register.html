@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		{% load static tailwind_tags %}
+		{% tailwind_css %}
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Register</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="flex items-center justify-center min-h-screen bg-gray-100">
+		<div class="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+			<h2 class="mb-6 text-2xl font-bold text-center text-gray-800">Register</h2>
+
+			<form method="post" class="space-y-4">
+					{% csrf_token %}
+					{{ form.as_p }} <!-- This will render the form fields -->
+
+					<button type="submit" class="w-full px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600">
+						Register
+					</button>
+				</form>
+
+				<p class="mt-4 text-sm text-center text-gray-600">
+				Already have an account?
+				<a href="{% url 'users:login' %}" class="text-blue-500 hover:underline">Login here</a>
+				</p>
+		</div>
+	</body>
+</html>
