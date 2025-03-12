@@ -6,4 +6,5 @@ urlpatterns = [
     path("", include('homepage.urls')),
     path("hello_world", include("hello_world.urls")),
     path("habit_tracker_1/", include("habit_tracker_1.urls")),
+    path("habit_tracker_2/", include("habit_tracker_2.urls")),
 ]

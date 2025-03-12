@@ -2,3 +2,4 @@
 *__pycache__*
 app/app/__pycache__
 app/hello_world/__pycache__
+node_modules
