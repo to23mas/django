@@ -7,7 +7,7 @@ class Habit(models.Model):
     completion_count = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
 class Category(models.Model):
     id = models.AutoField(primary_key=True)

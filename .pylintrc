@@ -88,7 +88,8 @@ disable=raw-checker-failed,
         use-symbolic-message-instead,
         C0116, C0114, C0115, C0301, C0103, C0325, C0411, C0412, C0321,
         E0401, E1133,
-        R0911, R0914, R0912, R0801, R1725, R0913, R0902, R0903, R0901, R0917
+        R0911, R0914, R0912, R0801, R1725, R0913, R0902, R0903, R0901, R0917,
+        fixme
 
 
 # Enable the message, report, category or checker with the given id(s). You can
@@ -569,7 +570,6 @@ preferred-modules=
 
 # Exceptions that will emit a warning when being caught. Defaults to
 # "BaseException, Exception".
-overgeneral-exceptions=BaseException,
-                       Exception
+overgeneral-exceptions=builtins.BaseException,builtins.Exception
 
 

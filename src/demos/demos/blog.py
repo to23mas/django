@@ -244,14 +244,7 @@ class PostForm(forms.Form):
 	def save_to_session(self, request, post_id=None):
 		# Save the form data to session manually, creating a post object
 		posts = request.session.get('posts', [])
-		if post_id:
-			for post in posts:
-				if post['id'] == post_id:
-					post['title'] = self.cleaned_data['title']
-					post['content'] = self.cleaned_data['content']
-					post['categories'] = self.cleaned_data['categories']
-					break
-		else:
+		if post_id is None:
 			post = {
 				'id': post_id or len(posts) + 1,
 				'title': self.cleaned_data['title'],
@@ -259,9 +252,16 @@ class PostForm(forms.Form):
 				'categories': self.cleaned_data['categories'],
 			}
 			posts.append(post)
+		else:
+			for post in posts:
+				if post['id'] == post_id:
+					post['title'] = self.cleaned_data['title']
+					post['content'] = self.cleaned_data['content']
+					post['categories'] = self.cleaned_data['categories']
+					break
 		request.session['posts'] = posts
 
-		return post['id'] if post_id == None else post_id
+		return post['id'] if post_id is None else post_id
 
 
 class CategoryForm(forms.Form):
@@ -273,18 +273,18 @@ class CategoryForm(forms.Form):
 	def save_to_session(self, request, category_id=None):
 		categories = request.session.get('categories', [])
 
-		if category_id:
-			for category in categories:
-				if category['id'] == category_id:
-					category['name'] = self.cleaned_data['name']
-					break
-		else:
+		if category_id is None:
 			category = {
 				'id': len(categories) + 1 if categories else 1,
 				'name': self.cleaned_data['name'],
 			}
 			categories.append(category)
+		else:
+			for category in categories:
+				if category['id'] == category_id:
+					category['name'] = self.cleaned_data['name']
+					break
 
 		request.session['categories'] = categories
 
-		return category['id'] if category_id == None else category_id
+		return category['id'] if category_id is None else category_id

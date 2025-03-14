@@ -17,7 +17,7 @@ from domain.data.projects.ProjectData import ProjectData
 from domain.data.projects.ProjectStorage import ProjectStorage
 
 
-# TODO add ast
+# TODO(#123): add ast
 FORBIDDEN_NODES = {"Import", "ImportFrom", "Exec", "Eval", "Call"}
 def is_code_safe(code):
 	"""
