@@ -9,7 +9,6 @@ class LoginRequiredMiddleware:
 
 	def __call__(self, request):
 		excluded_urls = [settings.LOGIN_URL, settings.REGISTER_URL, '/admin/', '/admin/login/' ]
-		print(excluded_urls)
 
 		if not request.user.is_authenticated and request.path not in excluded_urls:
 			return redirect(settings.LOGIN_URL)

@@ -88,7 +88,6 @@ def category_create(request):
 @group_required('blog-admin')
 def category_edit(request, id):
 	category = get_object_or_404(Category, id=id)
-	print(category)
 	if request.method == 'POST':
 		form = CategoryForm(request.POST, instance=category)
 		if form.is_valid():

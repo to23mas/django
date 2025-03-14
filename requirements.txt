@@ -2,3 +2,5 @@ Django==5.0.2
 psycopg2-binary==2.9.6
 django-tailwind
 django-tailwind[reload]
+django-crontab==0.7.1
+requests

@@ -33,11 +33,9 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "django.contrib.admin",
-    #important
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
-    # ----
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
@@ -51,6 +49,8 @@ INSTALLED_APPS = [
     "theme",
     "django_browser_reload",
     "users",
+    "birthdays",
+    "django_crontab",
 ]
 
 LOGIN_URL = '/users/login/'
@@ -155,3 +155,44 @@ STATICFILES_DIRS = [BASE_DIR.parent / "public" / "static"]
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Update this based on your email provider
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')  # Your email
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')  # Your email password or app password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Crontab settings
+CRONJOBS = [
+    ('0 0 * * *', 'birthdays.cron.send_birthday_emails'),  # Daily at midnight
+    ('* * * * *', 'birthdays.cron.test_cron_job'),  # Every minute
+    ('0 0 * * *', 'birthdays.cron.check_nameday'),  # Daily at midnight - check name days
+    ('* * * * *', 'birthdays.cron.test_mail'),  # Every minute - send test mail
+]
+CRONTAB_COMMAND_SUFFIX = '>> /var/log/cron.log 2>&1'  # Log output to file
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
