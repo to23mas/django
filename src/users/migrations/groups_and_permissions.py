@@ -11,6 +11,10 @@ def create(apps, schema_editor):
 	students, _ = Group.objects.get_or_create(name="students")
 	visitors, _ = Group.objects.get_or_create(name="visitors")
 
+	habit_ct = ContentType.objects.get_or_create(app_label='demos', model='habit')[0]
+	category_ct = ContentType.objects.get_or_create(app_label='demos', model='category')[0]
+	post_ct = ContentType.objects.get_or_create(app_label='demos', model='post')[0]
+
 	content_type, _ = ContentType.objects.get_or_create(
 		app_label="users",
 		model="django"
@@ -28,15 +32,34 @@ def create(apps, schema_editor):
 		content_type=content_type
 	)
 
-	maintainers.permissions.add(p1)
+	view_habit = Permission.objects.get_or_create(
+		codename='view_habit',
+		name='Can view habit',
+		content_type=habit_ct
+	)[0]
+	
+	view_category = Permission.objects.get_or_create(
+		codename='view_category',
+		name='Can view category',
+		content_type=category_ct
+	)[0]
+	
+	view_post = Permission.objects.get_or_create(
+		codename='view_post',
+		name='Can view post',
+		content_type=post_ct
+	)[0]
+
 	maintainers.permissions.add(p1, p2)
 	visitors.permissions.add(p2)
+	students.permissions.add(view_habit, view_category, view_post)
 
 	student, _ = User.objects.get_or_create(
 		username='student',
 		defaults={
 			'email': 'student@example.com',
 			'password': make_password('password'),
+			'is_staff': True,
 		}
 	)
 
@@ -50,23 +73,24 @@ def create(apps, schema_editor):
 	)
 
 	visitor, _ = User.objects.get_or_create(
-		username='maintainer',
+		username='visitor',
 		defaults={
-			'email': 'maintainer@example.com',
+			'email': 'visitor@example.com',
 			'password': make_password('password'),
-			'is_staff': True,
 		}
 	)
 
-	maintainer.is_staff
-	visitor.is_staff
-
 	student.groups.add(students)
 	visitor.groups.add(visitors)
-	maintainer.groups.add(maintainers)
-	maintainer.groups.add(students)
+	maintainer.groups.add(maintainers, students)
 
 class Migration(migrations.Migration):
+	dependencies = [
+		('auth', '0001_initial'),
+		('contenttypes', '0001_initial'),
+		('demos', '0001_initial'),
+	]
+
 	operations = [
 		migrations.RunPython(create),
 	]

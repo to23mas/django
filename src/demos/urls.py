@@ -32,13 +32,15 @@ urlpatterns = [
 	path('c-<str:course>/d-<int:demo_id>/b-1/post/create/', demos.post_create, name='post_create'),
 	path('c-<str:course>/d-<int:demo_id>/b-1/post/<int:pk>/edit/', demos.post_edit, name='post_edit'),
 	path('c-<str:course>/d-<int:demo_id>/b-1/post/<int:pk>/delete/', demos.post_delete, name='post_delete'),
-	path('c-<str:course>/d-<int:demo_id>/categories', demos.category_list, name='category_list'),
-	path('c-<str:course>/d-<int:demo_id>/category/<int:pk>/', demos.category_detail, name='category_detail'),
-	path('c-<str:course>/d-<int:demo_id>/category/create/', demos.category_create, name='category_create'),
-	path('c-<str:course>/d-<int:demo_id>/category/<int:id>/edit/', demos.category_edit, name='category_edit'),
-	path('c-<str:course>/d-<int:demo_id>/category/<int:id>/delete/', demos.category_delete, name='category_delete'),
+	path('c-<str:course>/d-<int:demo_id>/b-1/categories/', demos.category_list, name='category_list'),
+	path('c-<str:course>/d-<int:demo_id>/b-1/category/<int:pk>/', demos.category_detail, name='category_detail'),
+	path('c-<str:course>/d-<int:demo_id>/b-1/category/create/', demos.category_create, name='category_create'),
+	path('c-<str:course>/d-<int:demo_id>/b-1/category/<int:id>/edit/', demos.category_edit, name='category_edit'),
+	path('c-<str:course>/d-<int:demo_id>/b-1/category/<int:id>/delete/', demos.category_delete, name='category_delete'),
 	#authentication
 	path('c-<str:course>/d-<int:demo_id>/auth', demos.login, name='login'),
 	path('auth/logout', LogoutView.as_view(), name='logout'),
 
+	#administration
+	path('c-<str:course>/d-<int:demo_id>/administration', demos.administration, name='administration'),
 ]

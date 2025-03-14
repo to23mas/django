@@ -1,0 +1,37 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'admin:index' %}">Django administration</a>
+</h1>
+{% endblock %}
+
+{% block usertools %}
+<div id="user-tools">
+    {% if user.is_authenticated %}
+        {% if 'students' in user.groups.all|stringformat:'s' %}
+            <strong>{% firstof user.get_short_name user.get_username %}</strong>
+            <button class="theme-toggle">🌓</button>
+        {% else %}
+            <strong>{% firstof user.get_short_name user.get_username %}</strong>
+            {% if site_url %}
+                <a href="{{ site_url }}">View site</a> /
+            {% endif %}
+            {% if user.is_active and user.is_staff %}
+                {% url 'django-admindocs-docroot' as docsroot %}
+                {% if docsroot %}
+                    <a href="{{ docsroot }}">Documentation</a> /
+                {% endif %}
+            {% endif %}
+            {% if user.has_usable_password %}
+                <a href="{% url 'admin:password_change' %}">Change password</a> /
+            {% endif %}
+            <a href="{% url 'admin:logout' %}">Log out</a>
+            <button class="theme-toggle">🌓</button>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %} 

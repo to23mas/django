@@ -3,3 +3,4 @@ from .blog import *
 from .habit_tracker_1 import *
 from .habit_tracker_2 import *
 from .login import *
+from .administration import *

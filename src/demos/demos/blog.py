@@ -19,7 +19,7 @@ def _check(request: HttpRequest, course: str, demo_id: int):
 	demo = DemoStorage().get_demo(demo_id, course)
 	if demo is None:
 		messages.warning(request, 'Ukázkový projekt není v tyto chvíli dostupný')
-		return redirect('courses:overview', course=course)
+		return redirect('courses:overview')
 
 	# TODO uncomment when project is ready
 	# user_available = ProgressStorage().find_available_demos(course, username)
@@ -38,15 +38,13 @@ def _check(request: HttpRequest, course: str, demo_id: int):
 	return username, demo, course, project_url
 
 def get_posts_from_session(request):
-	posts = request.session.get('posts', [])
-	return posts
+	return request.session.get('posts', [])
 
 def save_posts_to_session(request, posts):
 	request.session['posts'] = posts
 
 def get_categories_from_session(request):
-	categories = request.session.get('categories', [])
-	return categories
+	return request.session.get('categories', [])
 
 def save_categories_to_session(request, categories):
 	request.session['categories'] = categories

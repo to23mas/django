@@ -1,0 +1,36 @@
+[
+    {
+        "model": "demos.category",
+        "pk": 1,
+        "fields": {
+            "name": "Technology"
+        }
+    },
+    {
+        "model": "demos.category",
+        "pk": 2,
+        "fields": {
+            "name": "Programming"
+        }
+    },
+    {
+        "model": "demos.post",
+        "pk": 1,
+        "fields": {
+            "title": "First Demo Post",
+            "content": "This is a demo post content.",
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "categories": [1, 2]
+        }
+    },
+    {
+        "model": "demos.habit",
+        "pk": 1,
+        "fields": {
+            "name": "Daily Coding",
+            "completed": false,
+            "completion_count": 0
+        }
+    }
+] 
