@@ -8,6 +8,7 @@ class DemoDataSerializer:
 
 	@staticmethod
 	def to_dict(demo_data: DemoData) -> Dict[str, str|int]:
+
 		return {
 			'_id': demo_data.id,
 			'name': demo_data.name,
@@ -16,7 +17,6 @@ class DemoDataSerializer:
 
 	@staticmethod
 	def from_dict(demo_data: dict) -> DemoData:
-		__import__('pprint').pprint(demo_data)
 
 		return DemoData(
 			id=demo_data[DemosTable.ID.value],

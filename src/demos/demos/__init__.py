@@ -5,3 +5,4 @@ from .habit_tracker_2 import *
 from .login import *
 from .administration import *
 from .birthday import *
+from .chat import *

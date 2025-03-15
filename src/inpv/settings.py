@@ -36,6 +36,8 @@ SESSION_COOKIE_SECURE = False   # Change to True if using HTTPS
 
 # Application definition
 INSTALLED_APPS = [
+	"daphne",
+	"channels",
 	"django.contrib.admin",
 	"django.contrib.auth",
 	"django.contrib.contenttypes",
@@ -52,6 +54,16 @@ INSTALLED_APPS = [
 	'demos',
 	'users'
 ]
+
+ASGI_APPLICATION = 'inpv.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
 
 MIDDLEWARE = [
 	"django.middleware.security.SecurityMiddleware",

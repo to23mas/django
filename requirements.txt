@@ -5,3 +5,6 @@ docker
 pymongo
 RestrictedPython
 sib-api-v3-sdk
+channels==4.0.0
+daphne
+channels_redis

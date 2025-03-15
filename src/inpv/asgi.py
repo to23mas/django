@@ -1,16 +1,26 @@
-"""
-ASGI config for inpv project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.0/howto/deployment/asgi/
-"""
-
 import os
-
 from django.core.asgi import get_asgi_application
+from channels.routing import ProtocolTypeRouter, URLRouter
+from channels.auth import AuthMiddlewareStack
+from django.urls import path
+from demos.consumers import ChatConsumer  # Import your consumer
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "inpv.settings")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'inpv.settings')
 
-application = get_asgi_application()
+# Initialize Django ASGI application early
+django_asgi_app = get_asgi_application()
+
+# Define WebSocket URL patterns
+websocket_urlpatterns = [
+    path('ws/chat/<str:room_name>/', ChatConsumer.as_asgi()),
+]
+
+# Configure the ASGI application
+application = ProtocolTypeRouter({
+    "http": django_asgi_app,
+    "websocket": AuthMiddlewareStack(
+        URLRouter(
+            websocket_urlpatterns
+        )
+    ),
+})

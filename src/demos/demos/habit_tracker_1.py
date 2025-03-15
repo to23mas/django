@@ -2,7 +2,7 @@ import json
 from django.shortcuts import redirect, render, reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest
 from domain.data.demos.DemoStorage import DemoStorage
 from domain.data.progress.ProgressStorage import ProgressStorage
 from domain.data.projects.ProjectStorage import ProjectStorage

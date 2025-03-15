@@ -36,7 +36,6 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 
 @login_required
 def detail(request: HttpRequest, course: str, demo_id: int) -> HttpResponse:
-	print()
 	username = request.user.username #type: ignore
 	if (ProgressStorage().get_user_progress_by_course(username, course) is None):
 		messages.warning(request, 'Kurz ještě není odemčen!')
