@@ -4,3 +4,6 @@ django-tailwind
 django-tailwind[reload]
 django-crontab==0.7.1
 requests
+channels==4.0.0
+channels_redis
+daphne

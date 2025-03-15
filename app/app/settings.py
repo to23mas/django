@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -51,7 +52,19 @@ INSTALLED_APPS = [
     "users",
     "birthdays",
     "django_crontab",
+
+    "chat",
 ]
+
+ASGI_APPLICATION = "app.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)],
+        },
+    },
+}
 
 LOGIN_URL = '/users/login/'
 REGISTER_URL = '/users/register/'
@@ -167,12 +180,13 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Crontab settings
 CRONJOBS = [
-    ('0 0 * * *', 'birthdays.cron.send_birthday_emails'),  # Daily at midnight
-    ('* * * * *', 'birthdays.cron.test_cron_job'),  # Every minute
-    ('0 0 * * *', 'birthdays.cron.check_nameday'),  # Daily at midnight - check name days
-    ('* * * * *', 'birthdays.cron.test_mail'),  # Every minute - send test mail
+    # ('0 0 * * *', 'birthdays.cron.send_birthday_emails'),  # Daily at midnight
+    # ('* * * * *', 'birthdays.cron.test_cron_job'),  # Every minute
+    # ('0 0 * * *', 'birthdays.cron.check_nameday'),  # Daily at midnight - check name days
+    # ('* * * * *', 'birthdays.cron.test_mail'),  # Every minute - send test mail
 ]
 CRONTAB_COMMAND_SUFFIX = '>> /var/log/cron.log 2>&1'  # Log output to file
+
 
 
 

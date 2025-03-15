@@ -8,4 +8,5 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         print('ahoj')
+        print('ahoj')
         test_mail()
