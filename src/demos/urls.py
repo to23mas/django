@@ -43,4 +43,8 @@ urlpatterns = [
 
 	#administration
 	path('c-<str:course>/d-<int:demo_id>/administration', demos.administration, name='administration'),
+
+	# birthdays
+    path('c-<str:course>/d-<int:demo_id>/birthdays/', demos.birthday, name='birthday'),
+    path('c-<str:course>/d-<int:demo_id>/birthdays/delete/<int:pk>/', demos.delete_birthday, name='delete_birthday'),
 ]
