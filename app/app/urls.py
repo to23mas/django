@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -14,5 +16,6 @@ urlpatterns = [
     path("birthdays/", include("birthdays.urls")),
     path("chat/", include("chat.urls")),
     path('library_rest/', include('library_rest.urls', namespace='library_rest')),
+    path('library_graphql/', include('library_graphql.urls', namespace='library_graphql')),
     # path("__reload__/", include("django_browser_reload.urls")),
 ]
