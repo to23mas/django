@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -11,5 +13,6 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path("birthdays/", include("birthdays.urls")),
     path("chat/", include("chat.urls")),
+    path('library_rest/', include('library_rest.urls', namespace='library_rest')),
     # path("__reload__/", include("django_browser_reload.urls")),
 ]
