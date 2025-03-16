@@ -1,14 +1,14 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth.views import LogoutView
 
 from . import views
 from . import demos
 
 app_name = 'demos'
+
 urlpatterns = [
 	path('overview/c-<str:course>/', views.overview, name='overview'),
 	path('detail/c-<str:course>/demo-<int:demo_id>/', views.detail, name='detail'),
-
 
 	#INDIVIDUAL DEMOS
 
@@ -50,4 +50,12 @@ urlpatterns = [
 
 	#chat
     path('c-<str:course>/d-<int:demo_id>/chat', demos.chat, name='room'),
+
+	# Library demo URLs - now just include the library_patterns
+	path('c-<str:course>/d-<int:demo_id>/library/', demos.library, name='library'),
+	path('c-<str:course>/d-<int:demo_id>/library/iframe/', demos.library_iframe, name='library_iframe'),
+	path('c-<str:course>/d-<int:demo_id>/library/rest/', demos.library_rest_view, name='library_rest'),
+	path('c-<str:course>/d-<int:demo_id>/library/api/books/', demos.api_books, name='api_books'),
+	path('c-<str:course>/d-<int:demo_id>/library/api/books/<int:book_id>/', demos.api_book_detail, name='api_book_detail'),
+	path('c-<str:course>/d-<int:demo_id>/library/api/reset/', demos.api_reset, name='api_reset'),
 ]

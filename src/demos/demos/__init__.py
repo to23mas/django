@@ -6,3 +6,5 @@ from .login import *
 from .administration import *
 from .birthday import *
 from .chat import *
+from .library_base import *
+from .library_rest import *
