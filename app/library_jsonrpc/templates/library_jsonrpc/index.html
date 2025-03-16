@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block navigation %}
+    {% include './library_jsonrpc_navigation.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Reset Data Link -->
+    <div class="mb-6">
+        <a href="{% url 'library_jsonrpc:reset_data' %}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded inline-block" onclick="return confirm('Are you sure? This will delete all books and reload initial data.');">
+            Reset Data
+        </a>
+    </div>
+
+    <!-- Example Requests -->
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h2 class="text-2xl font-bold mb-4">Example Requests</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+                <h3 class="font-semibold">Get All Books</h3>
+                <pre class="bg-gray-100 p-2 rounded text-sm">{
+    "jsonrpc": "2.0",
+    "method": "get_books",
+    "params": {},
+    "id": 1
+}</pre>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-semibold">Get Single Book</h3>
+                <pre class="bg-gray-100 p-2 rounded text-sm">{
+    "jsonrpc": "2.0",
+    "method": "get_book",
+    "params": {"id": 1},
+    "id": 1
+}</pre>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-semibold">Create Book</h3>
+                <pre class="bg-gray-100 p-2 rounded text-sm">{
+    "jsonrpc": "2.0",
+    "method": "create_book",
+    "params": {
+        "title": "New Book",
+        "author": "Author Name",
+        "isbn": "1234567890123",
+        "pages": 300,
+        "published_date": "2024-03-15"
+    },
+    "id": 1
+}</pre>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-semibold">Update Book</h3>
+                <pre class="bg-gray-100 p-2 rounded text-sm">{
+    "jsonrpc": "2.0",
+    "method": "update_book",
+    "params": {
+        "id": 1,
+        "title": "Updated Title",
+        "pages": 400
+    },
+    "id": 1
+}</pre>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-semibold">Delete Book</h3>
+                <pre class="bg-gray-100 p-2 rounded text-sm">{
+    "jsonrpc": "2.0",
+    "method": "delete_book",
+    "params": {"id": 1},
+    "id": 1
+}</pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- JSON-RPC Testing Form -->
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h2 class="text-2xl font-bold mb-6">Test JSON-RPC</h2>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Request</label>
+                <textarea id="request" rows="8" 
+                         class="w-full rounded-md border-gray-300 shadow-sm font-mono"
+                         placeholder='{
+    "jsonrpc": "2.0",
+    "method": "get_books",
+    "params": {},
+    "id": 1
+}'></textarea>
+            </div>
+            <button onclick="executeRequest()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Execute Request
+            </button>
+        </div>
+        <!-- Response Display -->
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold mb-4">Response</h3>
+            <pre id="response" class="bg-gray-100 p-4 rounded-lg overflow-x-auto"></pre>
+        </div>
+    </div>
+</div>
+
+<script>
+async function executeRequest() {
+    const requestText = document.getElementById('request').value;
+
+    try {
+        const requestData = JSON.parse(requestText);
+        const response = await fetch('/library_jsonrpc/api/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: requestText
+        });
+
+        const data = await response.json();
+        document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+    } catch (error) {
+        document.getElementById('response').textContent = error.message;
+    }
+}
+</script>
+{% endblock %} 

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'library_rest',
     'graphene_django',
     'library_graphql',
+    'library_jsonrpc',
 ]
 
 ASGI_APPLICATION = "app.asgi.application"

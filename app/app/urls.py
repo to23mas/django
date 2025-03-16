@@ -17,5 +17,6 @@ urlpatterns = [
     path("chat/", include("chat.urls")),
     path('library_rest/', include('library_rest.urls', namespace='library_rest')),
     path('library_graphql/', include('library_graphql.urls', namespace='library_graphql')),
+    path('library_jsonrpc/', include('library_jsonrpc.urls', namespace='library_jsonrpc')),
     # path("__reload__/", include("django_browser_reload.urls")),
 ]

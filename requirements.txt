@@ -8,3 +8,4 @@ channels==4.0.0
 channels_redis
 daphne
 graphene-django==3.1.5
+jsonrpcserver==5.0.9
