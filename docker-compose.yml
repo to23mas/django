@@ -35,6 +35,7 @@ services:
       sh -c "
              python manage.py makemigrations &&
              python manage.py migrate &&
+             python manage.py loaddata initial_books &&
              python manage.py createsuperuser --username admin --email to23mas@gmail.com --noinput ;
              echo \"migrations successful\""
     depends_on:
