@@ -1,0 +1,131 @@
+openapi: 3.0.0
+info:
+  title: Library REST API
+  version: '1.0'
+  description: API for managing books
+paths:
+  /library_rest/api/books/:
+    get:
+      summary: Get all books
+      responses:
+        '200':
+          description: List of books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  books:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+    post:
+      summary: Create a new book
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BookCreate'
+      responses:
+        '201':
+          description: Book created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+  /library_rest/api/books/{id}/:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get a specific book
+      responses:
+        '200':
+          description: Book details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+    put:
+      summary: Update a book
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BookUpdate'
+      responses:
+        '200':
+          description: Book updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+    delete:
+      summary: Delete a book
+      responses:
+        '204':
+          description: Book deleted
+        '404':
+          description: Book not found
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        author:
+          type: string
+        isbn:
+          type: string
+        pages:
+          type: integer
+        published_date:
+          type: string
+          format: date
+    BookCreate:
+      type: object
+      required:
+        - title
+        - author
+        - isbn
+        - pages
+        - published_date
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        isbn:
+          type: string
+        pages:
+          type: integer
+        published_date:
+          type: string
+          format: date
+    BookUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        author:
+          type: string
+        isbn:
+          type: string
+        pages:
+          type: integer
+        published_date:
+          type: string
+          format: date 
