@@ -1,15 +1,124 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>GraphQL API</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-6">GraphQL API</h1>
+<body>
+<div class="container mx-auto px-4 py-8">
+    <!-- Back link at top-right -->
+    <div class="flex justify-end mb-4">
         <a href="{% url 'demos:library_iframe' course=course demo_id=demo.id %}" 
-           class="text-blue-500 hover:text-blue-700 mb-4 inline-block">← Back to APIs</a>
-        <p class="mt-4">GraphQL API implementation coming soon...</p>
+           class="text-blue-500 hover:text-blue-700">← Back to APIs</a>
     </div>
+
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Library GraphQL API</h1>
+        <button onclick="resetData()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Reset Data</button>
+    </div>
+
+    <!-- Example Queries -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold mb-4">Example Queries</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="space-y-2">
+                <h3 class="font-semibold">Get All Books</h3>
+                <pre class="bg-gray-100 p-2 rounded text-sm">query {
+  books {
+    id
+    title
+    author
+  }
+}</pre>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-semibold">Get Single Book</h3>
+                <pre class="bg-gray-100 p-2 rounded text-sm">query {
+  book(id: 1) {
+    title
+    author
+    isbn
+  }
+}</pre>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-semibold">Create Book</h3>
+                <pre class="bg-gray-100 p-2 rounded text-sm">mutation {
+  createBook(
+    title: "New Book"
+    author: "Author Name"
+    isbn: "1234567890"
+    pages: 200
+    publishedDate: "2024-03-16"
+  ) {
+    id
+    title
+  }
+}</pre>
+            </div>
+        </div>
+    </div>
+    
+    <!-- GraphQL Testing Form -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-semibold mb-4">Test GraphQL Queries</h2>
+        <div class="space-y-4">
+            <div>
+                <textarea id="query" rows="4" class="w-full border rounded p-2 font-mono">query {
+  books {
+    id
+    title
+    author
+  }
+}</textarea>
+            </div>
+            <button onclick="sendQuery()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Send Query</button>
+        </div>
+        <div class="mt-4">
+            <pre id="response" class="bg-gray-100 p-4 rounded-lg overflow-x-auto"></pre>
+        </div>
+    </div>
+
+    <script>
+        const BASE_PATH = '/demos/c-{{ course }}/d-{{ demo.id }}/library';
+
+        async function sendQuery() {
+            const query = document.getElementById('query').value;
+            
+            try {
+                const response = await fetch(`${BASE_PATH}/graphql/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ query })
+                });
+                const data = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('response').textContent = `Error: ${error.message}`;
+            }
+        }
+
+        async function resetData() {
+            if (confirm('Are you sure you want to reset all data?')) {
+                try {
+                    const response = await fetch(`${BASE_PATH}/api/reset/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    });
+                    const data = await response.json();
+                    document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+                } catch (error) {
+                    document.getElementById('response').textContent = `Error: ${error.message}`;
+                }
+            }
+        }
+    </script>
+</div>
 </body>
-</html> 
+</html>

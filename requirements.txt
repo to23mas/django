@@ -8,3 +8,4 @@ sib-api-v3-sdk
 channels==4.0.0
 daphne
 channels_redis
+graphene-django==3.1.5

@@ -58,4 +58,7 @@ urlpatterns = [
 	path('c-<str:course>/d-<int:demo_id>/library/api/books/', demos.api_books, name='api_books'),
 	path('c-<str:course>/d-<int:demo_id>/library/api/books/<int:book_id>/', demos.api_book_detail, name='api_book_detail'),
 	path('c-<str:course>/d-<int:demo_id>/library/api/reset/', demos.api_reset, name='api_reset'),
+
+	path('c-<str:course>/d-<int:demo_id>/library/graphql/', demos.library_graphql, name='library_graphql'),
+
 ]

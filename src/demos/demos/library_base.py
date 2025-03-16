@@ -58,3 +58,16 @@ def library_rest_view(request: HttpRequest, course: str, demo_id: int):
         'username': username,
         'project_url': project_url
     })
+
+def library_graphql(request: HttpRequest, course: str, demo_id: int):
+    result = _check(request, course, demo_id)
+    if hasattr(result, 'url'):
+        return result
+    username, demo, course, project_url = result
+    
+    return render(request, 'demos/demo/library_graphql.html', {
+        'demo': demo,
+        'course': course,
+        'username': username,
+        'project_url': project_url
+    })
