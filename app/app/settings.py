@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     "chat",
 
     'library_rest',
+    'graphene_django',
+    'library_graphql',
 ]
 
 ASGI_APPLICATION = "app.asgi.application"
@@ -187,6 +189,10 @@ CRONJOBS = [
     # ('* * * * *', 'birthdays.cron.test_mail'),  # Every minute - send test mail
 ]
 CRONTAB_COMMAND_SUFFIX = '>> /var/log/cron.log 2>&1'  # Log output to file
+
+GRAPHENE = {
+    'SCHEMA': 'library_graphql.schema.schema'
+}
 
 
 
