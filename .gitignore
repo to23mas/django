@@ -24,3 +24,4 @@ data/
 node_modules
 .env
 mongodb_data
+src/public

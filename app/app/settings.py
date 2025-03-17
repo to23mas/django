@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+import mimetypes
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -54,9 +55,11 @@ INSTALLED_APPS = [
     "django_crontab",
     "chat",
 
-    'library_rest',
-    'graphene_django',
-    'library_graphql',
+    "library_rest",
+    "graphene_django",
+    "library_graphql",
+
+    "hangman",
 ]
 
 ASGI_APPLICATION = "app.asgi.application"
@@ -165,7 +168,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [
+    BASE_DIR / "public" / "static",  # Update this path
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -193,6 +199,21 @@ CRONTAB_COMMAND_SUFFIX = '>> /var/log/cron.log 2>&1'  # Log output to file
 GRAPHENE = {
     'SCHEMA': 'library_graphql.schema.schema'
 }
+
+# Add DRF settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}
+
+mimetypes.add_type("application/javascript", ".js", True)
+mimetypes.add_type("text/javascript", ".js", True)
+mimetypes.add_type("text/css", ".css", True)
 
 
 
