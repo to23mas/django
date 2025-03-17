@@ -25,7 +25,7 @@ def library(request: HttpRequest, course: str, demo_id: int):
     if hasattr(result, 'url'):
         return result
     username, demo, course, project_url = result
-    
+
     return render(request, 'demos/demo/library_iframe_parent.html', {
         'demo': demo,
         'course': course,
@@ -38,7 +38,7 @@ def library_iframe(request: HttpRequest, course: str, demo_id: int):
     if hasattr(result, 'url'):
         return result
     username, demo, course, project_url = result
-    
+
     return render(request, 'demos/demo/library_iframe.html', {
         'demo': demo,
         'course': course,
@@ -51,7 +51,7 @@ def library_rest_view(request: HttpRequest, course: str, demo_id: int):
     if hasattr(result, 'url'):
         return result
     username, demo, course, project_url = result
-    
+
     return render(request, 'demos/demo/library_rest.html', {
         'demo': demo,
         'course': course,
@@ -64,7 +64,7 @@ def library_graphql(request: HttpRequest, course: str, demo_id: int):
     if hasattr(result, 'url'):
         return result
     username, demo, course, project_url = result
-    
+
     return render(request, 'demos/demo/library_graphql.html', {
         'demo': demo,
         'course': course,

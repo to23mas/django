@@ -9,13 +9,14 @@
 <div class="container mx-auto px-4 py-8">
     <!-- Back link at top-right -->
     <div class="flex justify-end mb-4">
-        <a href="{% url 'demos:library_iframe' course=course demo_id=demo.id %}" 
+        <a href="{% url 'demos:library_iframe' course=course demo_id=demo.id %}"
            class="text-blue-500 hover:text-blue-700">← Back to APIs</a>
     </div>
 
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold">Library GraphQL API</h1>
-        <button onclick="resetData()" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Reset Data</button>
+        <a href="{% url 'demos:reset_data_graph' course=course demo_id=demo.id %}" 
+           class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Reset Data</a>
     </div>
 
     <!-- Example Queries -->
@@ -25,7 +26,7 @@
             <div class="space-y-2">
                 <h3 class="font-semibold">Get All Books</h3>
                 <pre class="bg-gray-100 p-2 rounded text-sm">query {
-  books {
+  allBooks {
     id
     title
     author
@@ -52,21 +53,47 @@
     pages: 200
     publishedDate: "2024-03-16"
   ) {
-    id
-    title
+    book {
+      id
+      title
+    }
+  }
+}</pre>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-semibold">Update Book</h3>
+                <pre class="bg-gray-100 p-2 rounded text-sm">mutation {
+  updateBook(
+    id: 1
+    title: "Updated Title"
+    author: "Updated Author"
+  ) {
+    book {
+      id
+      title
+      author
+    }
+  }
+}</pre>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-semibold">Delete Book</h3>
+                <pre class="bg-gray-100 p-2 rounded text-sm">mutation {
+  deleteBook(id: 1) {
+    success
   }
 }</pre>
             </div>
         </div>
     </div>
-    
+
     <!-- GraphQL Testing Form -->
     <div class="bg-white p-6 rounded-lg shadow-md mb-6">
         <h2 class="text-xl font-semibold mb-4">Test GraphQL Queries</h2>
         <div class="space-y-4">
             <div>
                 <textarea id="query" rows="4" class="w-full border rounded p-2 font-mono">query {
-  books {
+  allBooks {
     id
     title
     author
@@ -81,7 +108,7 @@
     </div>
 
     <script>
-        const BASE_PATH = '/demos/c-{{ course }}/d-{{ demo.id }}/library';
+        const BASE_PATH = '/demos/c-{{ course }}/d-{{ demo.id }}';
 
         async function sendQuery() {
             const query = document.getElementById('query').value;
@@ -99,23 +126,6 @@
                 document.getElementById('response').textContent = JSON.stringify(data, null, 2);
             } catch (error) {
                 document.getElementById('response').textContent = `Error: ${error.message}`;
-            }
-        }
-
-        async function resetData() {
-            if (confirm('Are you sure you want to reset all data?')) {
-                try {
-                    const response = await fetch(`${BASE_PATH}/api/reset/`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        }
-                    });
-                    const data = await response.json();
-                    document.getElementById('response').textContent = JSON.stringify(data, null, 2);
-                } catch (error) {
-                    document.getElementById('response').textContent = `Error: ${error.message}`;
-                }
             }
         }
     </script>

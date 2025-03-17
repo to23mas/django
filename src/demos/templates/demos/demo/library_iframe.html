@@ -1,36 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Library APIs</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-center mb-8">Library APIs</h1>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- REST API Card -->
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-4">REST API</h2>
-                <p class="text-gray-600 mb-4">Traditional REST API implementation for the library.</p>
-                <a href="{% url 'demos:library_rest' course=course demo_id=demo.id %}" 
-                   class="text-blue-500 hover:text-blue-700">Try REST API →</a>
-            </div>
+	<head>
+		<title>Library APIs</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-gray-100">
+		<div class="container mx-auto px-4 py-8">
+			<h1 class="text-3xl font-bold text-center mb-8">Library APIs</h1>
 
-            <!-- GraphQL Card -->
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-4">GraphQL API</h2>
-                <p class="text-gray-600 mb-4">Modern GraphQL implementation for the library.</p>
-                <a href="{% url 'demos:library_graphql' course=course demo_id=demo.id %}" 
-                   class="text-blue-500 hover:text-blue-700">Try GraphQL API →</a>
-            </div>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+				<div class="bg-white p-6 rounded-lg shadow-md">
+					<a href="{% url 'demos:library_rest' course=course demo_id=demo.id %}" class="text-blue-500 hover:text-blue-700">
+						<h2 class="text-xl font-semibold mb-4">REST API</h2>
+					</a>
+				</div>
 
-            <!-- JSON-RPC Card -->
-            <div class="bg-white p-6 rounded-lg shadow-md">
-                <h2 class="text-xl font-semibold mb-4">JSON-RPC API</h2>
-                <p class="text-gray-600 mb-4">RPC-style API implementation for the library.</p>
-            </div>
-        </div>
-    </div>
-</body>
-</html> 
+				<div class="bg-white p-6 rounded-lg shadow-md">
+					<a href="{% url 'demos:library_graphql' course=course demo_id=demo.id %}" class="text-blue-500 hover:text-blue-700">
+						<h2 class="text-xl font-semibold mb-4">GraphQL API</h2>
+					</a>
+				</div>
+
+				<div class="bg-white p-6 rounded-lg shadow-md">
+					<h2 class="text-xl font-semibold mb-4">JSON-RPC API</h2>
+					<p class="text-gray-600 mb-4">RPC-style API implementation for the library.</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

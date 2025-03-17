@@ -2,6 +2,8 @@ from django.http import HttpRequest, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from typing import Dict
+from django.urls import reverse
+from django.shortcuts import redirect
 
 # In-memory storage
 BOOKS: Dict[int, dict] = {
@@ -75,28 +77,26 @@ def api_book_detail(request: HttpRequest, course: str, demo_id: int, book_id: in
         book = BOOKS.pop(book_id)
         return JsonResponse(book)
 
-@csrf_exempt
-def api_reset(request: HttpRequest, course: str, demo_id: int) -> JsonResponse:
+def reset_data_rest(request: HttpRequest, course: str, demo_id: int):
     global BOOKS, NEXT_ID
-    if request.method == 'POST':
-        BOOKS = {
-            1: {
-                "id": 1,
-                "title": "The Hobbit",
-                "author": "J.R.R. Tolkien",
-                "isbn": "978-0547928227",
-                "pages": 300,
-                "published_date": "1937-09-21"
-            },
-            2: {
-                "id": 2,
-                "title": "1984",
-                "author": "George Orwell",
-                "isbn": "978-0451524935",
-                "pages": 328,
-                "published_date": "1949-06-08"
-            }
+    BOOKS.clear()
+    NEXT_ID = 3
+    BOOKS.update({
+        1: {
+            "id": 1,
+            "title": "The Hobbit",
+            "author": "J.R.R. Tolkien",
+            "isbn": "978-0547928227",
+            "pages": 300,
+            "published_date": "1937-09-21"
+        },
+        2: {
+            "id": 2,
+            "title": "1984",
+            "author": "George Orwell",
+            "isbn": "978-0451524935",
+            "pages": 328,
+            "published_date": "1949-06-08"
         }
-        NEXT_ID = 3
-        return JsonResponse({'message': 'Data reset successfully'})
-    return JsonResponse({'error': 'Method not allowed'}, status=405)
+    })
+    return redirect(reverse('demos:library_rest', args=[course, demo_id]))

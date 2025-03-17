@@ -1,5 +1,8 @@
-from django.urls import path, include
+from django.urls import path
 from django.contrib.auth.views import LogoutView
+from django.views.decorators.csrf import csrf_exempt
+from graphene_django.views import GraphQLView
+from .schema import schema
 
 from . import views
 from . import demos
@@ -57,8 +60,10 @@ urlpatterns = [
 	path('c-<str:course>/d-<int:demo_id>/library/rest/', demos.library_rest_view, name='library_rest'),
 	path('c-<str:course>/d-<int:demo_id>/library/api/books/', demos.api_books, name='api_books'),
 	path('c-<str:course>/d-<int:demo_id>/library/api/books/<int:book_id>/', demos.api_book_detail, name='api_book_detail'),
-	path('c-<str:course>/d-<int:demo_id>/library/api/reset/', demos.api_reset, name='api_reset'),
+	path('c-<str:course>/d-<int:demo_id>/library/api/reset/', demos.reset_data_rest, name='reset_data_rest'),
 
+	# GraphQL endpoint
+	path('c-<str:course>/d-<int:demo_id>/graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema)), name='graphql'),
 	path('c-<str:course>/d-<int:demo_id>/library/graphql/', demos.library_graphql, name='library_graphql'),
-
+	path('c-<str:course>/d-<int:demo_id>/library/api/reset_graphql/', demos.reset_data_graph, name='reset_data_graph'),
 ]
