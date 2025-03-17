@@ -6,6 +6,7 @@ from .schema import schema
 
 from . import views
 from . import demos
+from .demos.library_jsonrpc import library_jsonrpc, jsonrpc_endpoint, reset_data_jsonrpc
 
 app_name = 'demos'
 
@@ -66,4 +67,9 @@ urlpatterns = [
 	path('c-<str:course>/d-<int:demo_id>/graphql/', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema)), name='graphql'),
 	path('c-<str:course>/d-<int:demo_id>/library/graphql/', demos.library_graphql, name='library_graphql'),
 	path('c-<str:course>/d-<int:demo_id>/library/api/reset_graphql/', demos.reset_data_graph, name='reset_data_graph'),
+
+	# JSON-RPC patterns
+	path('c-<str:course>/d-<int:demo_id>/library/jsonrpc/', library_jsonrpc, name='library_jsonrpc'),
+	path('c-<str:course>/d-<int:demo_id>/jsonrpc/', jsonrpc_endpoint, name='jsonrpc_endpoint'),
+	path('c-<str:course>/d-<int:demo_id>/library/api/reset-jsonrpc/', reset_data_jsonrpc, name='reset_data_jsonrpc'),
 ]
