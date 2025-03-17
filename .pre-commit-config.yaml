@@ -1,0 +1,26 @@
+repos:
+-   repo: local
+    hooks:
+    -   id: pylint
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
+        args: [
+          "-rn", # Only display messages
+          "-sn", # Don't display the score
+        ]
+    -   id: eslint
+        name: eslint
+        entry: bash -c 'cd app-frontend && npm run lint'
+        language: system
+        files: \.(js|ts|jsx|tsx)$
+        types: [file]
+        pass_filenames: false 
+    -   id: django-test
+        name: Django Tests
+        entry: bash -c 'cd app && python3 manage.py test -v 2'
+        language: system
+        pass_filenames: false
+        types: [python]
+        stages: [commit]

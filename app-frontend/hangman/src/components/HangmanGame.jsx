@@ -6,18 +6,14 @@ export default function HangmanGame() {
     const [word, setWord] = useState('');
     const [guessedLetters, setGuessedLetters] = useState(new Set());
     const [remainingGuesses, setRemainingGuesses] = useState(6);
-    const [loading, setLoading] = useState(true);
 
     const fetchWord = async () => {
         try {
             const response = await fetch('/hangman/api/hangman/word/');
             const data = await response.json();
             setWord(data.word);
-            setLoading(false);
         } catch (error) {
-            console.error('Error fetching word:', error);
             setWord('HANGMAN'); // fallback word
-            setLoading(false);
         }
     };
 
