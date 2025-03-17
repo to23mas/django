@@ -1,0 +1,57 @@
+[
+    {
+        "model": "library_rest.book",
+        "pk": 1,
+        "fields": {
+            "title": "The Hobbit",
+            "author": "J.R.R. Tolkien",
+            "isbn": "9780547928227",
+            "pages": 310,
+            "published_date": "1937-09-21"
+        }
+    },
+    {
+        "model": "library_rest.book",
+        "pk": 2,
+        "fields": {
+            "title": "1984",
+            "author": "George Orwell",
+            "isbn": "9780451524935",
+            "pages": 328,
+            "published_date": "1949-06-08"
+        }
+    },
+    {
+        "model": "library_rest.book",
+        "pk": 3,
+        "fields": {
+            "title": "Pride and Prejudice",
+            "author": "Jane Austen",
+            "isbn": "9780141439518",
+            "pages": 432,
+            "published_date": "1813-01-28"
+        }
+    },
+    {
+        "model": "library_rest.book",
+        "pk": 4,
+        "fields": {
+            "title": "To Kill a Mockingbird",
+            "author": "Harper Lee",
+            "isbn": "9780446310789",
+            "pages": 281,
+            "published_date": "1960-07-11"
+        }
+    },
+    {
+        "model": "library_rest.book",
+        "pk": 5,
+        "fields": {
+            "title": "The Great Gatsby",
+            "author": "F. Scott Fitzgerald",
+            "isbn": "9780743273565",
+            "pages": 180,
+            "published_date": "1925-04-10"
+        }
+    }
+] 

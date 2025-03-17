@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Environment variables
+.env
+
+# IDE
+.idea/
+.vscode/
+
+# Docker
+data/
+
+.venv
+**/__pycache__/
+node_modules
+.env
+mongodb_data
+src/public

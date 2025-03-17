@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+ul.errorlist li {
+  @apply text-red-700;
+}
+
+.errorlist {
+  @apply text-red-700;
+}
+
+form ul li {
+  @apply text-gray-600 text-sm;
+}
+.helptext {
+  @apply text-gray-600 text-sm;
+}

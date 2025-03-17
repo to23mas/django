@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block navigation %}
+    {% include './library_navigation.html' %}
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <!-- Reset Data Link -->
+    <div class="mb-6">
+        <a href="{% url 'library_rest:reset_data' %}" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded inline-block" onclick="return confirm('Are you sure? This will delete all books and reload initial data.');">
+            Reset Data
+        </a>
+    </div>
+
+    <!-- API Testing Form -->
+    <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <h2 class="text-2xl font-bold mb-6">Test API</h2>
+        <form onsubmit="testApi(event)" class="space-y-4">
+            <div class="flex gap-4">
+                <select id="method" class="rounded-md border-gray-300 shadow-sm">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+                <input type="text" id="path" placeholder="/library_rest/api/books/" required 
+                       class="flex-1 rounded-md border-gray-300 shadow-sm">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Request Body (for POST/PUT)</label>
+                <textarea id="body" rows="4" 
+                         class="w-full rounded-md border-gray-300 shadow-sm font-mono"
+                         placeholder='{
+    "title": "Book Title",
+    "author": "Author Name",
+    "isbn": "1234567890123",
+    "published_date": "2024-03-15"
+}'></textarea>
+            </div>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                Send Request
+            </button>
+        </form>
+        <!-- Response Display -->
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold mb-4">Response</h3>
+            <pre id="response" class="bg-gray-100 p-4 rounded-lg overflow-x-auto"></pre>
+        </div>
+    </div>
+
+    <!-- Swagger UI -->
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css" />
+    <div id="swagger-ui"></div>
+
+    <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js"></script>
+    <script>
+        window.onload = function() {
+            const ui = SwaggerUIBundle({
+                url: "/static/library_rest/openapi.yml",
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIBundle.SwaggerUIStandalonePreset
+                ],
+            });
+        }
+
+        async function testApi(event) {
+            event.preventDefault();
+            const method = document.getElementById('method').value;
+            const path = document.getElementById('path').value;
+            const bodyText = document.getElementById('body').value;
+
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                if (method === 'POST' || method === 'PUT') {
+                    try {
+                        const bodyData = JSON.parse(bodyText);
+                        options.body = JSON.stringify(bodyData);
+                    } catch (e) {
+                        displayResponse({ error: 'Invalid JSON in request body' });
+                        return;
+                    }
+                }
+
+                const response = await fetch(path, options);
+                if (response.status === 204) {
+                    displayResponse({ message: 'Success - No Content' });
+                } else {
+                    const data = await response.json();
+                    displayResponse(data);
+                }
+            } catch (error) {
+                displayResponse({ error: error.message });
+            }
+        }
+
+        function displayResponse(data) {
+            document.getElementById('response').textContent = JSON.stringify(data, null, 2);
+        }
+    </script>
+</div>
+{% endblock %}

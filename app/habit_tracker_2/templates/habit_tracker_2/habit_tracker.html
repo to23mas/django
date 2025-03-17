@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+	<head>
+		{% load static %}
+		<meta charset="UTF-8">
+		<title>Habit Tracker</title>
+		<link rel="stylesheet" href="{% static 'styles.css' %}">
+	</head>
+
+	<body class="bg-gray-100 font-sans text-gray-900">
+
+		<div class="flex justify-between items-center mt-4 px-4">
+			<h1 class="text-3xl font-bold mx-auto">Habit Tracker</h1>
+			<a href="{% url 'index' %}" class="text-blue-500 hover:text-blue-700 font-semibold">Zpět</a>
+		</div>
+
+		<form method="post" class="max-w-lg mx-auto p-4 bg-white rounded-lg shadow-md mt-6">
+			{% csrf_token %}
+			{{ form }}
+			<input type="submit" value="Uložit" class="w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300" name="_save" />
+		</form>
+
+		<h2 class="text-2xl font-semibold mt-8 text-center">Seznam zvyků</h2>
+
+		<ul class="max-w-lg mx-auto mt-6 space-y-3">
+			{% for habit in habits %}
+			<li class="grid grid-cols-3 items-center justify-between p-4 bg-white rounded-lg shadow-sm hover:bg-gray-50">
+				<div>
+					<span class="text-lg">{{ habit.name }}</span>
+				</div>
+
+				<div class="text-center">
+					{% if habit.completed %}
+					<span class="text-green-500">✅ <span class="text-gray-500"> - {{ habit.completion_count }} x</span></span>
+					{% else %}
+					<a href="{% url 'habit_tracker_2:complete_habit' habit.id %}" class="text-blue-500 hover:text-blue-700 font-semibold">[Splnit]</a>
+					{% endif %}
+				</div>
+
+				<div class="text-right">
+					<a href="{% url 'habit_tracker_2:delete_habit' habit.id %}" class="text-red-500 hover:text-red-700 font-semibold">[Smazat]</a>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+
+	</body>
+
+</html>
+

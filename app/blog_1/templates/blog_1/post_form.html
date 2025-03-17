@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block navigation %}
+	{% include './blog_navigation.html' %}
+{% endblock %}
+
+{% block title %}
+	{% if post %}Upravit{% else %}Přidat{% endif %} příspěvek
+{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6 text-center">
+	{% if post %}Upravit{% else %}Přidat{% endif %} příspěvek
+</h1>
+
+{% if post %}
+	<p class="text-center text-lg text-gray-700">
+		Nyní upravuješ příspěvek <strong class="font-bold text-blue-600">{{ post.title }}</strong>
+	</p>
+{% endif %}
+
+<form method="post" class="space-y-4">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<button type="submit"
+		class="w-full py-2 px-4 mt-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition-colors">
+		{% if post %}Upravit{% else %}Přidat{% endif %} příspěvek
+	</button>
+</form>
+<div class="mt-4 text-center">
+	<a href="{% url 'blog_1:post_list' %}" class="text-blue-500 hover:text-blue-700 transition-colors">
+		Zpět na seznam příspěvků
+	</a>
+</div>
+{% endblock %}

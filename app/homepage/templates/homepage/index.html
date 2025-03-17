@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block navigation %}
+{% include './navigation.html' %}
+{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-semibold text-gray-900 mb-6">Rozcestník</h1>
+<ul class="space-y-4">
+	<li>
+		<a href="{% url 'hello_world:hello_world' %}" class="text-lg text-blue-500 hover:text-blue-700 transition duration-300">HelloWorld</a>
+	</li>
+	<li>
+		<a href="{% url 'habit_tracker_1:habit_tracker' %}" class="text-lg text-blue-500 hover:text-blue-700 transition duration-300">Habit Tracker 1</a>
+	</li>
+	<li>
+		<a href="{% url 'habit_tracker_2:habit_tracker' %}" class="text-lg text-blue-500 hover:text-blue-700 transition duration-300">Habit Tracker 2</a>
+	</li>
+	<li>
+		<a href="{% url 'blog_1:post_list' %}" class="text-lg text-blue-500 hover:text-blue-700 transition duration-300">Blog 1</a>
+	</li>
+	<li>
+		<a href="{% url 'birthdays:birthday_list' %}" class="text-lg text-blue-500 hover:text-blue-700 transition duration-300">Birthday Tracker</a>
+	</li>
+	<li>
+		<a href="{% url 'chat:room' %}" class="text-lg text-blue-500 hover:text-blue-700 transition duration-300">Chat Room</a>
+	</li>
+	<li>
+		<a href="{% url 'library_rest:index' %}" class="text-lg text-blue-500 hover:text-blue-700 transition duration-300">Library REST</a>
+	</li>
+	<li>
+		<a href="{% url 'library_graphql:index' %}" class="text-lg text-blue-500 hover:text-blue-700 transition duration-300">Library GraphQL</a>
+	</li>
+	<li>
+		<a href="/static/hangman/index.html" class="text-lg text-blue-500 hover:text-blue-700 transition duration-300">Hangman Game</a>
+	</li>
+</ul>
+
+
+{% endblock %}

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Habit Tracker</title>
+</head>
+
+<body>
+	<h1>Habit Tracker</h1>
+
+	<form method="post">
+		{% csrf_token %}
+		<input type="text" name="habit_name" placeholder="Název zvyku" required>
+		<input type="submit" value="Uložit" class="default" name="_save">
+	</form>
+
+	<h2>Seznam zvyků</h2>
+	<ul>
+		{% for habit in habits %}
+		<li>
+			{{ habit.name }}
+			{% if habit.completed %}
+				✅ <span> - {{ habit.completion_count }} x</span>
+			{% else %}
+				<a href="{% url 'habit_tracker_1:complete_habit' habit.id %}"> [Splnit]</a>
+			{% endif %}
+			<a href="{% url 'habit_tracker_1:delete_habit' habit.id %}"> [Smazat]</a>
+		</li>
+		<br>
+		{% endfor %}
+	</ul>
+
+	<a href="{% url 'index' %}">Zpět</a>
+</body>
+
+</html>
+
