@@ -20,7 +20,7 @@ dev:
 
 .PHONY: prod
 prod:
-	docker compose up -d -f docker-compose.prod.yml
+	docker compose -f docker-compose.prod.yml up -d
 
 .PHONY: psql
 psql:
