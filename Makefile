@@ -18,9 +18,13 @@ assets:
 dev:
 	docker compose up -d
 
-.PHONY: prod
-prod:
+.PHONY: prod-up
+prod-up:
 	docker compose -f docker-compose.prod.yml up -d
+
+.PHONY: prod-down
+prod-down:
+	docker compose -f docker-compose.prod.yml down --remove-orphans
 
 .PHONY: psql
 psql:

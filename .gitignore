@@ -19,3 +19,4 @@ src/inpv/__pycache__
 mongodb_data
 tmp
 .venv
+.env
