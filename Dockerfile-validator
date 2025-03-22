@@ -6,6 +6,6 @@ WORKDIR /sandbox
 
 RUN pip install RestrictedPython
 
-COPY validator.py /sandbox/run_code.py
+COPY ./validator.py /sandbox/run_code.py
 
 ENTRYPOINT ["python", "/sandbox/run_code.py"]

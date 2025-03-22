@@ -1,27 +1,36 @@
-export function addBlocklyFlashMessage(message: string, isError:boolean = false) {
-	clearBlocklyFlashMessage()
-	const container = document.getElementById("blockly-flash-messages");
+export function addBlocklyFlashMessage(message: string, isSuccess: boolean = false) {
+	const flashContainer = document.getElementById('blockly-flash-messages');
+	if (!flashContainer) return;
 
-	if (container) {
-		const alertClass = isError ? "blockly-success-flash-message" : "blockly-error-flash-message";
-		container.innerHTML = `
-<div id="alert-f" class="${alertClass}" role="alert">
-	<svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-		<path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-	</svg>
-	<span class="sr-only">Error Info</span>
-	<div class="ms-3 text-sm font-medium">
-		${message}
-	</div>
-</div>
-`;
-	} else {}
+	// Clear existing messages
+	clearBlocklyFlashMessage();
+
+	// Create message element
+	const messageDiv = document.createElement('div');
+	messageDiv.className = `flex items-center justify-between p-4 mb-4 rounded-lg ${
+		isSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+	}`;
+
+	// Message text
+	const textSpan = document.createElement('span');
+	textSpan.textContent = message;
+	messageDiv.appendChild(textSpan);
+
+	// Close button
+	const closeButton = document.createElement('button');
+	closeButton.className = 'ml-4 text-sm font-semibold focus:outline-none';
+	closeButton.innerHTML = '❌';
+	closeButton.onclick = () => {
+		messageDiv.remove();
+	};
+	messageDiv.appendChild(closeButton);
+
+	flashContainer.appendChild(messageDiv);
 }
 
-
 export function clearBlocklyFlashMessage() {
-	const container = document.getElementById("blockly-flash-messages");
-	if (container) {
-		container.innerHTML = '';
-	} else {}
+	const flashContainer = document.getElementById('blockly-flash-messages');
+	if (flashContainer) {
+		flashContainer.innerHTML = '';
+	}
 }

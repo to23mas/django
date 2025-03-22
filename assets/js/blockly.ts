@@ -76,7 +76,7 @@ export function initBlockly() {
 			return;
 		}
 		try {
-			const response = await fetch('/lessons/lesson/validate-python', {
+			const response = await fetch('/projects/lesson/validate-python', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
@@ -101,7 +101,7 @@ export function initBlockly() {
 					addBlocklyFlashMessage('Správně.', true);
 				}
 			}
-		} catch (error) {
+		} catch (e) {
 			alert('Problém na straně serveru. Zkuste tuto akci prosím později.');
 		}
 	}

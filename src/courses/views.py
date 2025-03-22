@@ -5,6 +5,8 @@ from domain.data.courses.CourseStorage import CourseStorage
 
 from domain.data.progress.ProgressStorage import ProgressStorage
 
+import logging
+
 
 def overview(request: HttpRequest) -> HttpResponse:
 	"""list all courses"""
@@ -19,6 +21,7 @@ def overview(request: HttpRequest) -> HttpResponse:
 
 def enroll(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
+
 	username = request.user.username #type: ignore
 	course = CourseStorage().get_course_by_id(course_id)
 	if course is None: return  redirect('overview')

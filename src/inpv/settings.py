@@ -175,3 +175,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/users/login/'
 LOGOUT_REDIRECT_URL = '/users/login/'
+
+# VALIDATOR
+VALIDATOR_DIR = os.environ.get("VALIDATOR_DIR")

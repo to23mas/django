@@ -2,11 +2,15 @@ import time
 import json
 import os
 import docker
+from django.conf import settings
+
 from django.contrib import messages
 from django.urls import reverse
 from RestrictedPython.PrintCollector import PrintCollector
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
+
+import logging
 
 from RestrictedPython import compile_restricted
 from RestrictedPython.Guards import safe_builtins
@@ -20,10 +24,12 @@ from domain.data.progress.ProgressStorage import ProgressStorage
 from domain.data.projects.ProjectData import ProjectData
 from domain.data.projects.ProjectStorage import ProjectStorage
 
+logger = logging.getLogger(__name__)
 
 @login_required
 def validate_python(request: HttpRequest) -> HttpResponse:
 	"""list all projects"""
+
 	username = request.user.username #type: ignore
 	code = str(request.POST.get('code', ''))
 	blockly_id = str(request.POST.get('blockly_id', ''))
@@ -45,6 +51,7 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 	match (blockly.expected_task):
 		case ExpectedTaskTypes.PRINT.value:
 			code_result = validate_python_code_print_safe(code, username)
+			print(code_result)
 			if code_result.endswith("\n"):
 				code_result = code_result[:-1]
 		case _:
@@ -66,16 +73,20 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 
 
 def validate_python_code_print_safe(code, username: str) -> str:
-	file_path = os.path.join("/tmp/", f'{username}.py')
+	os.makedirs('./tmp', exist_ok=True)
+	os.chmod('./tmp', 0o777)
+
+	file_path = os.path.join('./tmp', f'{username}.py')
 	with open(file_path, "w") as file:
 		file.write(code)
+	os.chmod(file_path, 0o777)
 
 	client = docker.from_env()
 
 	container = client.containers.run(
 		image="restricted_python",
 		# TODO fix for server path
-		volumes={f'/home/soleus/Documents/School/master/django/tmp/{username}.py': {"bind": f"/sandbox/file.py", "mode": "ro"}},
+		volumes={f'{settings.VALIDATOR_DIR}/{username}.py': {"bind": f"/sandbox/file.py", "mode": "ro"}},
 		stdout=True,
 		stderr=True,
 		remove=True,  # Automatically remove container after execution
@@ -95,6 +106,10 @@ def validate_python_code_print_safe(code, username: str) -> str:
 	except:
 		container.kill()
 		raise Exception('container took too long')
+	finally:
+		# Clean up the file
+		if os.path.exists(file_path):
+			os.remove(file_path)
 
 	return logs[0]
 
