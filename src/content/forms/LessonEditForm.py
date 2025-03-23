@@ -13,9 +13,10 @@ class LessonEditForm(forms.Form):
 	def __init__(self, *args, **kwargs):
 		initial = kwargs.get('initial', {})
 		kwargs['initial'] = initial
-		if 'to' in initial and isinstance(initial['to'], list):
-			if (len(initial['to']) >= 2):
-				initial['to'] = ', '.join(initial['to'])
+		if 'to' in initial:
+			if isinstance(initial['to'], list):
+				# Convert list of integers or strings to comma-separated string
+				initial['to'] = ', '.join(str(x) for x in initial['to'])
 		super(LessonEditForm, self).__init__(*args, **kwargs)
 
 		if initial:
@@ -25,14 +26,12 @@ class LessonEditForm(forms.Form):
 
 	def get_to_as_string(self):
 		to_list = self.cleaned_data.get('to', [])
-		return ', '.join(to_list)
+		return ', '.join(str(x) for x in to_list)
 
 
 	def clean_to(self):
 		data = self.cleaned_data['to']
 		if isinstance(data, str):
-			string_list = [s.strip() for s in data.split(',') if s.strip()]
-		else:
-			string_list = [str(data).strip()]
-
-		return string_list
+			# Convert comma-separated string to list of integers
+			return [int(s.strip()) for s in data.split(',') if s.strip()]
+		return []

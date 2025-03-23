@@ -1,0 +1,67 @@
+{% extends "content/base.html" %}
+{% block content %}
+{% load static %}
+    <div class="main shifted" id="main">
+        {% include 'content/sidebar.html' %}
+        <main id="content-start" class="content" tabindex="-1">
+            <!-- Content -->
+            <div id="content" class="">
+                <h1>List of CLI tasks and configs</h1>
+                <div id="content-main">
+                    <ul class="object-tools">
+                        <li>
+                            <a href="{% url 'admin_cli_new' course_id=course.id %}" class="addlink">
+                                New CLI Task
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="module filtered" id="changelist">
+                        <div class="changelist-form-container">
+                            <div class="results">
+                                <table id="result_list">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">
+                                                <div class="text">ID</div>
+                                                <div class="clear"></div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="text">Title</div>
+                                                <div class="clear"></div>
+                                            </th>
+                                            <th scope="col">
+                                                <div class="text">Actions</div>
+                                                <div class="clear"></div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for cli in clis %}
+                                        <tr>
+                                            <td>{{cli.id}}</td>
+                                            <td>{{cli.title}}</td>
+                                            <td>
+                                                <a href="{% url 'admin_cli_edit' course_id=course.id cli_id=cli.id %}">
+                                                    <img src="{% static 'admin/img/icon-changelink.svg' %}" alt="Edit">
+                                                </a>
+                                                <a href="{% url 'admin_cli_delete' course_id=course.id cli_id=cli.id %}" 
+                                                   onclick="if (!confirm('Are you sure you want to delete this CLI task?')) { event.preventDefault(); }">
+                                                    <img src="{% static 'admin/img/icon-deletelink.svg' %}" alt="Delete">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br class="clear">
+            </div>
+            <!-- END Content -->
+            <div id="footer"></div>
+        </main>
+        <!-- END Container -->
+    </div>
+{% endblock %} 

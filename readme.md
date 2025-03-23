@@ -95,7 +95,13 @@ make assets
 docker exec -it django-mongodb-1 mongosh
 ```
 1. `use inpv`
-2. `db.projects.find`
+2. `db.django.projects.find()`
+
+
+```
+db.django.progress.find()
+db.django.progress.deleteOne({"_id": "student"})
+```
 
 # Emails
 

@@ -31,6 +31,17 @@
 	</div>
 {% endif %}
 
+{% if chapter.unlock_type  == 'cli' %}
+	<div>
+		{% include './unlocks/cli.html' %}
+	</div>
+	{% if chapter_finished  %}
+		<div class="chapter-buttons mx-auto md:w-4/6">
+			{% include './unlocks/next_button.html' %}
+		</div>
+	{% endif %}
+{% endif %}
+
 <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/atom-one-dark.min.css">
 <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
 <script>

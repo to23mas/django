@@ -1,4 +1,3 @@
-
 from django.urls import path
 
 from .views import * #pylint: disable=W0401, W0614
@@ -49,4 +48,9 @@ urlpatterns = [
 	path('course/<str:course_id>-<int:test_id>/test/new-question', test_new_question, name='admin_test_new_question'),
 	path('course/<str:course_id>-<int:test_id>-<int:question_id>/test/delete-question', test_delete_question, name='admin_test_delete_question'),
 	path('course/<str:course_id>-<int:test_id>-<int:question_id>/test/edit-question', test_edit_question, name='admin_test_edit_question'),
+
+	path('course/<int:course_id>/cli/', cli_overview, name='admin_cli_overview'),
+	path('course/<int:course_id>/cli/new/', cli_new, name='admin_cli_new'),
+	path('course/<int:course_id>/cli/<int:cli_id>/edit/', cli_edit, name='admin_cli_edit'),
+	path('course/<int:course_id>/cli/<int:cli_id>/delete/', cli_delete, name='admin_cli_delete'),
 ]

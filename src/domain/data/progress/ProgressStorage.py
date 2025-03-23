@@ -33,6 +33,8 @@ class ProgressStorage(MongoStorage):
 	def enroll_course(self, username: str, db: str) -> bool:
 		course = CourseStorage().get_course({'database': db})
 		if course is None: return False
+		projects = ProjectStorage().find_projects(course.database)
+		i = 0
 		result_document = {
 				"_id": username,
 				"projects": {},
@@ -42,22 +44,25 @@ class ProgressStorage(MongoStorage):
 				"tests": [],
 				}
 
-		projects = ProjectStorage().find_projects(course.database)
-		i = 0
 		for project in projects:
-			result_document['projects'][str(project.id)] = ProgressState.OPEN.value if i == 0 else ProgressState.LOCK.value
+			project_id = str(project.id)
+			result_document['projects'][project_id] = ProgressState.OPEN.value if i == 0 else ProgressState.LOCK.value
+			
+			result_document['lessons'][project_id] = {}
+			result_document['chapters'][project_id] = {}
+			
 			lessons = LessonStorage().find_lessons(course.database, project.database)
 			j = 0
 			if lessons is not None:
 				for lesson in lessons:
-					result_document['lessons'][str(lesson.id)] = ProgressState.OPEN.value if j == 0 and i == 0 else ProgressState.LOCK.value
+					result_document['lessons'][project_id][str(lesson.id)] = ProgressState.OPEN.value if j == 0 and i == 0 else ProgressState.LOCK.value
 					j += 1
 
 			chapters = ChapterStorage().find_chapters(course.database, project.database)
 			k = 0
 			if chapters is not None:
 				for chapter in chapters:
-					result_document['chapters'][str(chapter.id)] = ProgressState.OPEN.value if i == 0 and k == 0 else ProgressState.LOCK.value
+					result_document['chapters'][project_id][str(chapter.id)] = ProgressState.OPEN.value if i == 0 and k == 0 else ProgressState.LOCK.value
 					k += 1
 			i += 1
 

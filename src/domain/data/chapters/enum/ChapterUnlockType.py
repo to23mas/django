@@ -4,3 +4,4 @@ class ChapterUnlockType(Enum):
 	BUTTON = 'button'
 	TEST = 'test'
 	BLOCKLY = 'blockly'
+	CLI = 'cli'

@@ -16,7 +16,7 @@
   },
   "projects": [
     {
-      "_id": 1,
+      "_id": 2,
       "database": "project_1",
       "title": "Hello World! (Django)",
       "description": "První projekt zaměřen na přípravu vývojového prostředí pro tvorbu webových aplikací ve frameworku Django. Výstupek je klasická Hello world aplikace.",
@@ -393,6 +393,46 @@
       "_id": 1,
       "name": "Hello Wolrld!",
       "url": "hello_world"
+    },
+    {
+      "_id": 2,
+      "name": "Habit tracker 1",
+      "url": "h_t_1"
+    },
+    {
+      "_id": 3,
+      "name": "Habit tracker 2",
+      "url": "h_t_2"
+    },
+    {
+      "_id": 4,
+      "name": "Blog 1",
+      "url": "blog_1"
+    },
+    {
+      "_id": 5,
+      "name": "Authentication",
+      "url": "login"
+    },
+    {
+      "_id": 6,
+      "name": "Administration",
+      "url": "administration"
+    },
+    {
+      "_id": 7,
+      "name": "Birthday",
+      "url": "birthday"
+    },
+    {
+      "_id": 8,
+      "name": "Chat",
+      "url": "room"
+    },
+    {
+      "_id": 9,
+      "name": "API Library",
+      "url": "library"
     }
   ]
 }

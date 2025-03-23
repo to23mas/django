@@ -51,8 +51,17 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 		return redirect('projects:overview', course=course, sort_type='all')
 
 	user_progress = ProgressStorage().get_user_progress_by_course(username, course)
+	user_progress = {
+		'_id': user_progress['_id'],
+		'projects': user_progress['projects'],
+		'lessons': user_progress['lessons'][str(project_id)],
+		'chapters': user_progress['chapters'][str(project_id)],
+		'demos': user_progress['demos'],  # Keep all demos
+		'tests': user_progress['tests']   # Keep all tests
+		}
 	chapters = ChapterStorage().find_chapters(course, project.database)
 	lessons = LessonStorage().find_lessons(course, project.database)
+
 	ch, ch_edges = get_vis_chapters(chapters, user_progress, course, project)
 	l, l_edges = get_vis_lessons(lessons, user_progress)
 
