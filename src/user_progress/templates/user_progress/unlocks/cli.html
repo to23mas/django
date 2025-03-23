@@ -1,12 +1,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
 
 <div class="chapter_block mb-6 md:w-4/6 mx-auto">
 	<h3>{{cli.title}}</h3><br>
 	<div>{{cli.task_description}}</div>
 
 	<!-- Terminal display (read-only) -->
-	<div id="terminal" class="mt-5 rounded-lg overflow-hidden bg-black" style="height: 300px;"></div>
+	<div id="terminal" class="mt-5 rounded-lg overflow-hidden bg-black terminal-container"></div>
 
 	<!-- User answer form -->
 	<form id="cli-form" class="mt-4 space-y-4">
@@ -27,8 +26,36 @@
 				</svg>
 				<span>Vyhodnocování</span>
 			</span>
+		</button>
 	</form>
 </div>
+
+<style>
+	.terminal-container {
+		height: 400px;
+		background-color: #1e1e1e !important;
+		border: 1px solid #333;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
+
+	.xterm {
+		padding: 8px;
+		height: 100%;
+	}
+
+	/* Enable text selection */
+	.xterm-screen {
+		user-select: text;
+		-webkit-user-select: text;
+		-moz-user-select: text;
+		-ms-user-select: text;
+	}
+
+	/* Ensure cursor doesn't interfere with selection */
+	.xterm-cursor-layer {
+		pointer-events: none;
+	}
+</style>
 
 <script type="text/javascript">
 	window.courseName = "{{ course }}";
@@ -36,107 +63,4 @@
 	window.lessonId = "{{ chapter.lesson_id }}";
 	window.projectId = "{{ project.id }}";
 	window.chapterFinished = "{{ chapter_finished }}";
-
-	// Wait for DOM and Terminal to be available
-	window.addEventListener('load', function () {
-		if (typeof Terminal !== 'undefined') {
-			const term = new Terminal({
-				cursorBlink: true,
-				fontSize: 14,
-				fontFamily: 'Menlo, Monaco, "Courier New", monospace',
-				theme: {
-					background: '#1e1e1e',
-					foreground: '#ffffff'
-				}
-			});
-
-			// Predefined commands and their outputs
-			const commands = {
-				'ls': 'file1.txt  file2.txt  directory1/\r\n',
-				'ls -l': 'total 20\r\n-rw-r--r--  1 user user  123 Dec 25 10:00 file1.txt\r\n-rw-r--r--  1 user user  234 Dec 25 10:00 file2.txt\r\ndrwxr-xr-x  2 user user 4096 Dec 25 10:00 directory1\r\n',
-				'ls -la': 'total 20\r\ndrwxr-xr-x  2 user user 4096 Dec 25 10:00 .\r\ndrwxr-xr-x 15 user user 4096 Dec 25 09:55 ..\r\n-rw-r--r--  1 user user  123 Dec 25 10:00 file1.txt\r\n-rw-r--r--  1 user user  234 Dec 25 10:00 file2.txt\r\ndrwxr-xr-x  2 user user 4096 Dec 25 10:00 directory1\r\n',
-				'ls -a': '.  ..  .hidden  file1.txt  file2.txt  directory1/\r\n'
-			};
-
-			// Attach terminal to container
-			term.open(document.getElementById('terminal'));
-
-			// Show initial prompt
-			term.write('$ ');
-
-			// Keep track of current line
-			let currentLine = '';
-
-			// Handle terminal input
-			term.onKey(({key, domEvent}) => {
-				// Handle Enter
-				if (domEvent.keyCode === 13) {
-					term.write('\r\n');
-					const cmd = currentLine.trim();
-					if (commands.hasOwnProperty(cmd)) {
-						term.write(commands[cmd]);
-					} else {
-						term.writeln(`Command not found: ${cmd}`);
-					}
-					currentLine = '';
-					term.write('$ ');
-				}
-				// Handle Backspace
-				else if (domEvent.keyCode === 8) {
-					if (currentLine.length > 0) {
-						currentLine = currentLine.slice(0, -1);
-						term.write('\b \b');
-					}
-				}
-				// Handle normal input
-				else {
-					currentLine += key;
-					term.write(key);
-				}
-			});
-
-			// Handle form submission
-			document.getElementById('cli-form').addEventListener('submit', function (e) {
-				e.preventDefault();
-				const answer = document.getElementById('answer-input').value.trim();
-
-				// Send to backend for validation
-				fetch('/validate-cli-answer/', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-CSRFToken': document.querySelector('[name=csrf-token]').content
-					},
-					body: JSON.stringify({
-						answer: answer,
-						command: 'ls -la',
-						chapterId: window.chapterId,
-						lessonId: window.lessonId,
-						projectId: window.projectId
-					})
-				})
-					.then(response => response.json())
-					.then(data => {
-						if (data.correct) {
-							alert('Correct!');
-						} else {
-							alert('Try again!');
-						}
-					});
-			});
-		} else {
-			console.error('Terminal is not defined! Check xterm.js import.');
-		}
-	});
 </script>
-
-<style>
-	#terminal .xterm {
-		padding: 1rem;
-	}
-
-	#answer-input {
-		font-family: Menlo, Monaco, "Courier New", monospace;
-		min-height: 100px;
-	}
-</style>

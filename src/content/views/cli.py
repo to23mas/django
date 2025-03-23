@@ -79,9 +79,6 @@ def cli_new(request: HttpRequest, course_id: str) -> HttpResponse:
         if edit_form.is_valid():
             edit_form.cleaned_data['_id'] = CliStorage().get_next_valid_id(course.database)
             cli_data = CliDataSerializer.from_dict(edit_form.cleaned_data)
-            print('==========================================================')
-            __import__('pprint').pprint(cli_data)
-            print('==========================================================')
             CliStorage().create_cli(cli_data, course.database)
             messages.success(request, 'CLI task successfully created')
             return redirect('admin_cli_edit', course_id=course_id, cli_id=cli_data.id)
