@@ -2,6 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
+from django.utils import timezone
 
 from domain.data.chapters.ChapterStorage import ChapterStorage
 from domain.data.progress.ProgressStorage import ProgressStorage
@@ -11,7 +12,7 @@ from domain.data.tests.TestStorage import TestStorage
 from domain.data.tests.enum.TestState import TestState
 from domain.data.tests_progress.TestProgressStorage import TestProgressStorage
 from tests.forms import DynamicTestForm
-from tests.utils import reset_test_lock_time, validate_test_get_result
+from tests.utils import fail_test, reset_test_lock_time, validate_test_get_result
 
 
 @login_required
@@ -97,14 +98,27 @@ def display_test(request: HttpRequest, course: str, test_id: int) -> HttpRespons
 	test_data, questionDataCollection = TestStorage().get_test(course, test_id)
 	if test_data is None or questionDataCollection is None:
 		messages.error(request, 'Pokus o přístup k neexistujícímu testu')
-		return  redirect('tests:overview', course=course, sort_type='all')
+		return redirect('tests:overview', course=course, sort_type='all')
 
-	return render(request, 'tests/detail.html', {
+	# Use session to store/retrieve start time
+	session_key = f'test_{test_id}_start_time'
+	if session_key not in request.session: # type: ignore
+		request.session[session_key] = timezone.now().timestamp() # type: ignore
+
+	context = {
 		'testForm': DynamicTestForm(questionDataCollection),
 		'course': course,
 		'test': test_data,
 		'test_attempts': test_progress.attempts,
-	})
+		'test_start_time': request.session[session_key], # type: ignore
+		'test_duration': test_data.time
+	}
+
+	response = render(request, 'tests/detail.html', context)
+	response['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
+	response['Pragma'] = 'no-cache'
+	response['Expires'] = '0'
+	return response
 
 
 @login_required
@@ -118,6 +132,12 @@ def validate_test(request: HttpRequest, course: str, test_id: int) -> HttpRespon
 		return  redirect('tests:overview', course=course, sort_type='all')
 
 	test_progress, test_happened = validate_test_get_result(request.POST, test_data, questionDataCollection, course, username, test_id)
+
+	# Clear the test start time from session
+	session_key = f'test_{test_id}_start_time'
+	if session_key in request.session: # type: ignore
+		del request.session[session_key] # type: ignore
+
 	if not test_happened:
 		messages.error(request, 'Nevalidní akce')
 		return  redirect('tests:overview', course=course, sort_type='all')
@@ -157,4 +177,25 @@ def results(request: HttpRequest, course: str, test_id: int)  -> HttpResponse:
 		'best_score_percentage': f'{(max(test_progress.score) / (test_data.total_points/100)):.2f}',
 		'total_attempts': len(test_progress.score)
 	})
+
+
+@login_required
+def force_fail_test(request: HttpRequest, course: str, test_id: int) -> HttpResponse:
+	"""Force fail a test that wasn't submitted in time"""
+	username = request.user.username #type: ignore
+
+	# Clear the test start time from session
+	session_key = f'test_{test_id}_start_time'
+	if session_key in request.session: # type: ignore
+		del request.session[session_key] # type: ignore
+
+	test_data, _ = TestStorage().get_test(course, test_id)
+	if test_data is None:
+		messages.error(request, 'Pokus o přístup k neexistujícímu testu')
+		return  redirect('tests:overview', course=course, sort_type='all')
+
+	fail_test(test_data, course, username, test_id)
+
+	messages.error(request, 'Test nesplněn - vypršel časový limit')
+	return redirect('tests:results', course=course, test_id=test_id)
 

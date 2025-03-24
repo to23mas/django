@@ -37,6 +37,16 @@ def get_test_results(user_answers: QueryDict, questionDataCollection: List[Quest
 	return correct_points
 
 
+def fail_test(test_data: TestData, course: str, username: str, test_id: int):
+	test_result_data = TestResultData(
+		score_total=0,
+		success=False,
+		score_percentage=0,
+	)
+	progress_happened = make_progress(test_result_data, test_data, course, username, test_id)
+
+	return (test_result_data, progress_happened)
+
 def validate_test_get_result(
 	user_answers: QueryDict,
 	test_data: TestData,

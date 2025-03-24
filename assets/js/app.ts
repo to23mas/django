@@ -1,6 +1,7 @@
 import { initBlockly } from './blockly';
 import { initVisNetwork } from './vis';
 import { initCli } from './cli';
+import { initTimeout } from './timeout';
 import 'flowbite'
 
 // Initialize Blockly
@@ -11,3 +12,7 @@ initVisNetwork();
 
 // Initialize CLI
 initCli();
+
+// Initialize Test Timeout
+initTimeout();
+
