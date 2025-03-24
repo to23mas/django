@@ -25,6 +25,7 @@
 {% for block in chapter.blocks %}
 	<div class="chapter_block mx-auto md:w-4/6 mb-6">
 		<h3>{{block.title}}</h3>
+		<hr>
 		<br>
 		{{ block.text | safe }}
 	</div>

@@ -11,6 +11,7 @@ class TestEditForm(forms.Form):
 	unlock_chapter = forms.IntegerField(required=False)
 	unlock_project = forms.IntegerField(required=False)
 	finish_project = forms.IntegerField(required=False)
+	current_project = forms.IntegerField(required=False)
 	finish_lesson = forms.IntegerField(required=False)
 	finish_chapter = forms.IntegerField(required=False)
 	attempts = forms.IntegerField()

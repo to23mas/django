@@ -130,4 +130,4 @@ export class FileSystem {
 
         return file.content || '';
     }
-} 
+}

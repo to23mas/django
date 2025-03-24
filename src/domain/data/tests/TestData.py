@@ -13,6 +13,7 @@ class TestData():
 	finish_project: int
 	finish_lesson: int
 	finish_chapter: int
+	current_project: int
 	attempts: int
 	success_score: float
 	total_points: int

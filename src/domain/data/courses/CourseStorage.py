@@ -46,9 +46,9 @@ class CourseStorage(MongoStorage):
 
 	def update_course(self, course_data: CourseData) -> None:
 		MongoStorage().database.courses.update_one(
-				{'_id': course_data.id},
-				{'$set': CourseDataSerializer.to_dict(course_data)}
-				)
+			{'_id': course_data.id},
+			{'$set': CourseDataSerializer.to_dict(course_data)}
+		)
 
 
 	def delete_course(self, course_id: str) -> None:

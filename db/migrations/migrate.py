@@ -59,5 +59,8 @@ if __name__ == "__main__":
 		for demo in file_data['demos']:
 			database['django'].demos.insert_one(demo)
 
+		for cli in file_data['clis']:
+			database['django'].cli.insert_one(cli)
+
 	client.close()
 	print('[x] - Migration DONE')

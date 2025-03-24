@@ -12,6 +12,7 @@ class TestsTable(Enum):
 	FINISH_CHAPTER = "finish_chapter"
 	FINISH_LESSON = "finish_lesson"
 	FINISH_PROJECT = "finish_project"
+	CURRENT_PROJECT = "current_project"
 	ATTEMPTS = "attempts"
 	SUCCESS_SCORE = "success_score"
 	QUESTIONS = "questions"

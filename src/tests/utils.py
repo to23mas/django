@@ -81,15 +81,15 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 		if (test_data.unlock_project != 0):
 			ProgressStorage().unlock_project(course, username, test_data.unlock_project)
 		if (test_data.unlock_lesson != 0):
-			ProgressStorage().unlock_lesson(username, course, test_data.unlock_lesson)
+			ProgressStorage().unlock_lesson(username, course, test_data.unlock_lesson, test_data.current_project)
 		if (test_data.unlock_chapter != 0):
-			ProgressStorage().unlock_chapter(username, course, test_data.unlock_chapter)
+			ProgressStorage().unlock_chapter(username, course, test_data.unlock_chapter, test_data.current_project)
 		if (test_data.finish_project != 0):
 			ProgressStorage().finish_project(course, username, test_data.finish_project)
 		if (test_data.finish_lesson != 0):
-			ProgressStorage().finish_lesson(username, course, test_data.finish_lesson)
+			ProgressStorage().finish_lesson(username, course, test_data.finish_lesson, test_data.current_project)
 		if (test_data.finish_chapter != 0):
-			ProgressStorage().finish_chapter(username, course, test_data.finish_chapter)
+			ProgressStorage().finish_chapter(username, course, test_data.finish_chapter, test_data.current_project)
 	return True
 
 

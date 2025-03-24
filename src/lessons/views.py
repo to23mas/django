@@ -75,7 +75,7 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		'project': project,
 		'lesson_chapters': lesson_chapters,
 		'chapter': chapter,
-		'chapter_finished': chapter_progress[str(chapter.id)] == 'done',
+		'chapter_finished': chapter_progress[str(project_id)][str(chapter.id)] == 'done',
 		'sidebar_progress': chapter_progress,
 		'chapter_id': chapter_id,
 		'course': course,

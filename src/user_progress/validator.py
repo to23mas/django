@@ -94,17 +94,10 @@ def validate_python_code_print_safe(code, username: str) -> str:
 		logs = []
 		for log in container.logs(stream=True):
 			logs.append(log.decode('utf-8'))
-	except docker.errors.ContainerError as e:
+	except Exception:
 		container.kill()
-		raise Exception(f'Container error: {str(e)}') from e
-	except docker.errors.APIError as e:
-		container.kill()
-		raise Exception(f'Docker API error: {str(e)}') from e
-	except TimeoutError as e:
-		container.kill()
-		raise Exception('Container took too long') from e
+		raise Exception('Container took too long')
 	finally:
-		# Clean up the file
 		if os.path.exists(file_path):
 			os.remove(file_path)
 
@@ -115,20 +108,20 @@ def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectD
 		return 'error'
 
 	if not ProgressStorage().is_chapter_open(username, course_db, project.id, chapter.lesson_id, chapter.id): #type: ignore
-		if (ProgressStorage().is_chapter_done(username, course_db, chapter.id)):
+		if (ProgressStorage().is_chapter_done(username, course_db, chapter.id, project.id)):
 			return 'already done'
 
 		return 'error'
 
 	next_chapter = ChapterStorage().get_chapter_by_id(chapter.unlock_id, course_db, project.database)
 	if next_chapter is not None:
-		ProgressStorage().unlock_lesson(username, course_db, next_chapter.lesson_id)
-		ProgressStorage().unlock_chapter(username, course_db, next_chapter.id)
+		ProgressStorage().unlock_lesson(username, course_db, next_chapter.lesson_id, project.id)
+		ProgressStorage().unlock_chapter(username, course_db, next_chapter.id, project.id)
 
-	ProgressStorage().finish_chapter(username, course_db, chapter.id)
+	ProgressStorage().finish_chapter(username, course_db, chapter.id, project.id)
 
 	if chapter.is_last_in_lesson:
-		ProgressStorage().finish_lesson(username, course_db, chapter.lesson_id)
+		ProgressStorage().finish_lesson(username, course_db, chapter.lesson_id, project.id)
 
 	if next_chapter is None:
 		#last chapter in project

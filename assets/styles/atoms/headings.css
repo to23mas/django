@@ -6,4 +6,8 @@
 	h4 {
 		@apply text-xl font-bold;
 	}
+
+	h5 {
+		@apply text-lg font-bold;
+	}
 }

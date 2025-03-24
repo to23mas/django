@@ -39,13 +39,13 @@ def validate_cli(request: HttpRequest) -> JsonResponse:
 			# Handle successful completion
 			next_chapter = ChapterStorage().get_chapter_by_id(chapter.unlock_id, course_db, project.database)
 			if next_chapter is not None:
-				ProgressStorage().unlock_lesson(username, course_db, next_chapter.lesson_id)
-				ProgressStorage().unlock_chapter(username, course_db, next_chapter.id)
+				ProgressStorage().unlock_lesson(username, course_db, next_chapter.lesson_id, project_id)
+				ProgressStorage().unlock_chapter(username, course_db, next_chapter.id, project_id)
 
-			ProgressStorage().finish_chapter(username, course_db, chapter.id)
+			ProgressStorage().finish_chapter(username, course_db, chapter.id, project_id)
 
 			if chapter.is_last_in_lesson:
-				ProgressStorage().finish_lesson(username, course_db, chapter.lesson_id)
+				ProgressStorage().finish_lesson(username, course_db, chapter.lesson_id, project_id)
 
 			if next_chapter is None:
 				return JsonResponse({'status': 'success', 'message': 'Správná odpověď!'})

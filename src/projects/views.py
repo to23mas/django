@@ -128,6 +128,7 @@ def get_vis_chapters(chapters: List[ChapterData] | None, progress: Dict | None, 
 		match (chapter.unlock_type):
 			case 'blockly': icon = '  🧩'
 			case 'test': icon = ' 🖊️'
+			case 'cli': icon = ' 💻'
 			case _: icon = ''
 
 		ch.append({

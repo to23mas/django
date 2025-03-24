@@ -65,6 +65,7 @@
 									{{form.finish_project}}
 									{% if form.finish_project.errors %} <div class="form-errors">{{ form.finish_project.errors }}</div> {% endif %}
 								</div></div></div>
+
 								<div class="form-row"><div><div class="flex-container">
 									<label class="required">FINISHED lesson id:</label>
 									{{form.finish_lesson}}
@@ -75,6 +76,12 @@
 									<label class="required">FINISHED chapter id:</label>
 									{{form.finish_chapter}}
 									{% if form.finish_chapter.errors %} <div class="form-errors">{{ form.finish_chapter.errors }}</div> {% endif %}
+								</div></div></div>
+
+								<div class="form-row"><div><div class="flex-container">
+									<label class="required">CURRENT project id:</label>
+									{{form.current_project}}
+									{% if form.current_project.errors %} <div class="form-errors">{{ form.current_project.errors }}</div> {% endif %}
 								</div></div></div>
 
 								<div class="form-row"><div><div class="flex-container">

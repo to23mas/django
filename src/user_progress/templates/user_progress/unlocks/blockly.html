@@ -1,6 +1,6 @@
 <div class="chapter_block mb-6 md:w-4/6 mx-auto">
 	<h3>{{blockly.title}}</h3><br>
-	<div>{{blockly.task_description}}</div>
+	<div class="task-description">{{blockly.task_description}}</div>
 
 	<div id="blocklyDiv" style="height: 480px" class="mt-5"></div>
 	<h4 class="mt-5">Generated Python Code:</h4>
@@ -19,6 +19,19 @@
 		</span>
 	</button>
 </div>
+<style>
+	.task-description {
+		white-space: pre-line;
+		line-height: 1.6;
+	}
+	.task-description .command {
+		background-color: #f3f4f6;
+		padding: 0.2em 0.4em;
+		border-radius: 0.25rem;
+		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+		font-size: 0.875em;
+	}
+</style>
 <script type="text/javascript">
 	window.blocklyToolboxConfig = {{ blockly.toolbox | safe }};
 	window.blocklyId = {{ blockly.id | safe }};
@@ -27,4 +40,20 @@
 	window.lessonId = "{{ chapter.lesson_id }}";
 	window.projectId = "{{ project.id }}";
 	window.chapterFinished = "{{ chapter_finished }}";
+
+		document.addEventListener('DOMContentLoaded', () => {
+		const taskElement = document.querySelector('.task-description');
+		if (!taskElement) return;
+
+		const text = taskElement.textContent || '';
+		const formattedText = text
+			.split('\n')
+			.map(line => {
+				return line.replace(/`([^`]+)`/g, '<span class="command">$1</span>');
+			})
+			.join('<br>');
+
+		taskElement.innerHTML = formattedText;
+	});
+
 </script>

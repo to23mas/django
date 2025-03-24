@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		{% include 'head/head.html' %}
+	</head>
+
+	<body>
+		<div class="h-15"> </div>
+
+		{% if messages %}
+			{% include 'messages/flash_messages.html' %}
+		{% endif %}
+
+		<div class="h-full">
+			{% block content %} {% endblock %}
+		</div>
+
+
+		{% include 'foot/footer.html' %}
+	</body>
+</html>

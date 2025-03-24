@@ -7,6 +7,8 @@ from domain.data.blockly.BlocklyStorage import BlocklyStorage
 from domain.data.chapters.ChapterDataSerializer import ChapterDataSerializer
 from domain.data.chapters.ChapterStorage import ChapterStorage
 
+from domain.data.clis.CliDataSerializer import CliDataSerializer
+from domain.data.clis.CliStorage import CliStorage
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
 from domain.data.courses.CourseStorage import CourseStorage
 from domain.data.demos.DemoDataSerializer import DemoDataSerializer
@@ -68,6 +70,14 @@ def download_json(course_id: str) -> Dict | None:
 		for d in demos:
 			d_dict = DemoDataSerializer.to_dict(d)
 			json_result['demos'].append(d_dict)
+
+	clis = CliStorage().find_cli(course.database)
+	json_result['clis'] = [] #type: ignore
+	if clis is not None:
+		for c in clis:
+			c_dict = CliDataSerializer.to_dict(c)
+			json_result['clis'].append(c_dict)
+
 
 	return json_result
 
