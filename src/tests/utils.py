@@ -88,12 +88,12 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 
 	TestProgressStorage().update_test_progress(course, username, test_id, test_result_data.score_total, new_test_state, current_test_progress.attempts)
 	if new_test_state != TestState.FAIL:
+		# unlock new project
 		if (test_data.unlock_project != 0):
 			ProgressStorage().unlock_project(course, username, test_data.unlock_project)
-		if (test_data.unlock_lesson != 0):
-			ProgressStorage().unlock_lesson(username, course, test_data.unlock_lesson, test_data.current_project)
-		if (test_data.unlock_chapter != 0):
-			ProgressStorage().unlock_chapter(username, course, test_data.unlock_chapter, test_data.current_project)
+			ProgressStorage().unlock_lesson(username, course, test_data.unlock_lesson, test_data.unlock_project)
+			ProgressStorage().unlock_chapter(username, course, test_data.unlock_chapter, test_data.unlock_project)
+
 		if (test_data.finish_project != 0):
 			ProgressStorage().finish_project(course, username, test_data.finish_project)
 		if (test_data.finish_lesson != 0):
@@ -108,3 +108,4 @@ def reset_test_lock_time(progress:  TestProgressData, db: str, username: str, te
 	if (progress.lock_until > datetime.datetime.now()): return
 
 	TestProgressStorage().reset_lock(db, username, test.id, test.attempts)
+

@@ -56,7 +56,6 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 		'projects': user_progress['projects'],
 		'lessons': user_progress['lessons'][str(project_id)],
 		'chapters': user_progress['chapters'][str(project_id)],
-		'demos': user_progress['demos'],  # Keep all demos
 		'tests': user_progress['tests']   # Keep all tests
 		}
 	chapters = ChapterStorage().find_chapters(course, project.database)
@@ -65,7 +64,7 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 	ch, ch_edges = get_vis_chapters(chapters, user_progress, course, project)
 	l, l_edges = get_vis_lessons(lessons, user_progress)
 
-	demo_project = DemoStorage().get_demo(project.id, course)
+	demo_project = DemoStorage().get_demo_by_project_id(project.id, course)
 	match demo_project:
 		case None: demo_url = None
 		case _: demo_url = f'demos:{demo_project.url}'

@@ -726,57 +726,63 @@
   "demos": [
     {
       "_id": 1,
-	  "project_id": 1,
+      "project_id": 2,
       "name": "Hello Wolrld!",
       "url": "hello_world"
     },
     {
       "_id": 2,
-	  "project_id": 1,
+      "project_id": 3,
       "name": "Habit tracker 1",
       "url": "h_t_1"
     },
     {
       "_id": 3,
-	  "project_id": 1,
+      "project_id": 4,
       "name": "Habit tracker 2",
       "url": "h_t_2"
     },
     {
       "_id": 4,
-	  "project_id": 1,
+      "project_id": 5,
       "name": "Blog 1",
       "url": "blog_1"
     },
     {
       "_id": 5,
-	  "project_id": 1,
+      "project_id": 7,
       "name": "Authentication",
       "url": "login"
     },
     {
       "_id": 6,
-	  "project_id": 1,
+      "project_id": 8,
       "name": "Administration",
       "url": "administration"
     },
     {
       "_id": 7,
-	  "project_id": 1,
+      "project_id": 9,
       "name": "Birthday",
       "url": "birthday"
     },
     {
       "_id": 8,
-	  "project_id": 1,
+      "project_id": 10,
       "name": "Chat",
       "url": "room"
     },
     {
       "_id": 9,
-	  "project_id": 1,
+      "project_id": 11,
       "name": "API Library",
       "url": "library"
+    },
+    {
+      "_id": 10,
+      "project_id": 12,
+      "name": "Hangman",
+      "url": "hangman"
     }
   ],
   "clis": [

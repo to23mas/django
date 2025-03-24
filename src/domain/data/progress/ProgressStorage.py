@@ -40,7 +40,6 @@ class ProgressStorage(MongoStorage):
 			"projects": {},
 			"lessons": {},
 			"chapters": {},
-			"demos": {},
 			"tests": [],
 		}
 
@@ -75,14 +74,7 @@ class ProgressStorage(MongoStorage):
 					"state": "close",
 					"score": [],
 					"lock_until": '',
-					})
-
-		demos = DemoStorage().find_demos(course.database)
-		demo_idx = 0
-		if demos is not None:
-			for demo in demos:
-				result_document['demos'][str(demo.id)] = ProgressState.OPEN.value if demo_idx == 0 else ProgressState.LOCK.value
-				demo_idx += 1
+				})
 
 		try:
 			MongoStorage().database[course.database].progress.insert_one(result_document)
@@ -142,15 +134,15 @@ class ProgressStorage(MongoStorage):
 
 
 	def find_available_demos(self, course: str, username: str) -> list[int] | None:
-		all_demos = self.find_demos_progress(course, username)
-		if all_demos is None: return None
+		user_progress = self.get_user_progress_by_course(username, course)
+		if user_progress is None: return None
 
-		available_demo_id = []
-		for demo_id in all_demos:
-			if (all_demos[demo_id] == ProgressState.OPEN.value):
-				available_demo_id.append(int(demo_id))
+		available_demos_ids = []
+		for project_id, project_state in user_progress['projects'].items():
+			if (project_state != ProgressState.LOCK.value):
+				available_demos_ids.append(int(project_id))
 
-		return available_demo_id
+		return available_demos_ids
 
 
 	def get_project_state(self, course: str, username: str, project_id: int) -> str :

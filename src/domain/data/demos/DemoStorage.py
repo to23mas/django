@@ -28,7 +28,16 @@ class DemoStorage(MongoStorage):
 
 	def get_demo(self, demo_id: int, db: str) -> DemoData | None:
 		demo = self.database[db].demos.find_one({
-			"_id": demo_id,
+			DemosTable.ID.value: demo_id,
+		})
+
+		match demo:
+			case None: return None
+			case _: return DemoDataSerializer.from_dict(demo)
+
+	def get_demo_by_project_id(self, project_id: int, db: str) -> DemoData | None:
+		demo = self.database[db].demos.find_one({
+			DemosTable.PROJECT_ID.value: project_id,
 		})
 
 		match demo:
