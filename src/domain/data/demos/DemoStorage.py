@@ -18,7 +18,7 @@ class DemoStorage(MongoStorage):
 	def find_demos_for_overview(self, db: str, open_demos: list = []) -> List[DemoData]: #pylint: disable=W0102
 		"""returns all test"""
 		demos = self.database[db].demos.find(
-			{DemosTable.ID.value: {'$in': open_demos}}
+			{DemosTable.PROJECT_ID.value: {'$in': open_demos}}
 		).sort(DemosTable.ID.value, pymongo.DESCENDING)
 
 		if demos is None: raise DataNotFoundException

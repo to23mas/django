@@ -11,21 +11,24 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 	"""list of all available demos"""
 	username = request.user.username #type: ignore
 	# (fixme) TODO přidat tenhle check na více míst (lekce , teste apod)
-	if (ProgressStorage().get_user_progress_by_course(username, course) is None):
+
+	user_progress = ProgressStorage().get_user_progress_by_course(username, course)
+	if (user_progress is None):
 		messages.warning(request, 'Kurz ještě není odemčen!')
 		return redirect('courses:overview')
 
-	user_available = ProgressStorage().find_available_demos(course, username)
+	available_demos_ids = []
+	for project_id, project_state in user_progress['projects'].items():
+		if (project_state != 'lock'):
+			available_demos_ids.append(int(project_id))
 
-	if user_available is None or len(user_available) == 0:
+	if available_demos_ids is None or len(available_demos_ids) == 0:
 		messages.success(request, 'V tuto chvíli nemáš žádné dostupné ukázky projektů')
 		return render(request, 'demos/overview.html', {
 			'course': course,
 		})
 
-	# TODO uncomment following
-	# available_demos = DemoStorage().find_demos_for_overview(course, user_available)
-	available_demos = DemoStorage().find_demos(course)
+	available_demos = DemoStorage().find_demos_for_overview(course, available_demos_ids)
 
 	return render(request, 'demos/overview.html', {
 		'demos': available_demos,

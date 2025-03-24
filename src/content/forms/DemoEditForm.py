@@ -4,6 +4,7 @@ from django import forms
 class DemoEditForm(forms.Form):
 
 	id = forms.IntegerField(required=False)
+	project_id = forms.IntegerField(required=False)
 	name = forms.CharField()
 	url = forms.CharField()
 

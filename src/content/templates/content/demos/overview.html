@@ -34,6 +34,10 @@
 												<div class="clear"></div>
 											</th>
 											<th scope="col">
+												<div class="text">Project</div>
+												<div class="clear"></div>
+											</th>
+											<th scope="col">
 												<div class="text">Actions</div>
 												<div class="clear"></div>
 											</th>
@@ -45,6 +49,7 @@
 											<td>{{demo.id}}</td>
 											<td>{{demo.name}}</td>
 											<td>{{demo.url}}</td>
+											<td>{{demo.project_id}}</td>
 										<td>
 											<a href="{% url 'admin_demo_edit' course_id=course.id demo_id=demo.id %}"><img src="{% static 'admin/img/icon-changelink.svg' %}" alt="False"></a>
 											<a href="{% url 'admin_demo_delete' course_id=course.id demo_id=demo.id %}" onclick="if (!confirm('Are you sure you want to delete this demo project?')) { event.preventDefault(); }"><img src="{% static 'admin/img/icon-deletelink.svg' %}" alt="False"></a>

@@ -1,6 +1,6 @@
 @layer base {
 	div.project_overview_card {
-		@apply w-full border border-gray-200 rounded-lg shadow  mx-auto md:w-4/6 mt-10;
+		@apply w-full border border-gray-200 rounded-lg shadow  mx-auto md:w-4/6 mt-6 mb-6;
 	}
 
 	ul.project_overview_card_tabs {
