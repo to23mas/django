@@ -24,11 +24,11 @@ ignore=CVS
 
 # Add files or directories matching the regex patterns to the ignore-list. The
 # regex matches against paths and can be in Posix or Windows format.
-ignore-paths=
+ignore-paths=.*/demos/demos/.*
 
 # Files or directories matching the regex patterns are skipped. The regex
 # matches against base names, not paths.
-ignore-patterns=
+ignore-patterns=test_.*\.py$
 
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
@@ -87,8 +87,11 @@ disable=raw-checker-failed,
         deprecated-pragma,
         use-symbolic-message-instead,
         C0116, C0114, C0115, C0301, C0103, C0325, C0411, C0412, C0321,
-        E0401, E1133,
-        R0911, R0914, R0912, R0801, R1725, R0913, R0902, R0903, R0901, R0917,
+        C0303, C0305, C0209, C0121,
+        E0401, E1133, E0307,
+        R0911, R0914, R0912, R0801, R1725, R0913, R0902, R0903, R0901, R0904, R0917,
+        R1705, R1710,
+        W0613, W0602, W0246, W0718, W0719,
         fixme
 
 

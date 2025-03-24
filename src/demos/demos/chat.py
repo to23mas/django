@@ -4,7 +4,6 @@ from django.shortcuts import render, reverse, redirect
 from django.http import HttpRequest
 from domain.data.demos.DemoStorage import DemoStorage
 from domain.data.progress.ProgressStorage import ProgressStorage
-from domain.data.projects.ProjectStorage import ProjectStorage
 
 
 def _check(request: HttpRequest, course: str, demo_id: int):
@@ -44,4 +43,4 @@ def chat(request: HttpRequest, course: str, demo_id: int):
 		'username': username,
 		'course': course,
 		'project_url': project_url,
-    })
+	})

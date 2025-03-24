@@ -4,7 +4,6 @@ from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from domain.data.demos.DemoStorage import DemoStorage
 from domain.data.progress.ProgressStorage import ProgressStorage
-from domain.data.projects.ProjectStorage import ProjectStorage
 
 
 @login_required

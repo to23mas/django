@@ -63,11 +63,10 @@ def verify_user(request: HttpRequest, code: str) -> HttpResponse:
 		user = User.objects.get(last_name=code)
 		students_group, _ = Group.objects.get_or_create(name="students")
 		user.groups.add(students_group)
-	except:
+	except Exception:
 		user = None
 
-
-	if user == None:
+	if user is None:
 		return redirect("user:login")
 
 	user.last_name = ''

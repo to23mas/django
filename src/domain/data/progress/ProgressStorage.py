@@ -47,10 +47,10 @@ class ProgressStorage(MongoStorage):
 		for project in projects:
 			project_id = str(project.id)
 			result_document['projects'][project_id] = ProgressState.OPEN.value if i == 0 else ProgressState.LOCK.value
-			
+
 			result_document['lessons'][project_id] = {}
 			result_document['chapters'][project_id] = {}
-			
+
 			lessons = LessonStorage().find_lessons(course.database, project.database)
 			j = 0
 			if lessons is not None:

@@ -8,5 +8,5 @@ app_name = 'courses'
 
 urlpatterns = [
 	path("", views.overview, name="overview"),
-	path("unlock/<int:course_id>", views.enroll, name="enroll"),
+	path("unlock/<str:course_id>", views.enroll, name="enroll"),
 ]

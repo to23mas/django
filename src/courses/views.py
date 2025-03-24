@@ -1,13 +1,13 @@
 from django.contrib import messages
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 from domain.data.courses.CourseStorage import CourseStorage
 
 from domain.data.progress.ProgressStorage import ProgressStorage
 
-import logging
 
-
+@login_required(login_url='/users/login/')
 def overview(request: HttpRequest) -> HttpResponse:
 	"""list all courses"""
 	username = request.user.username #type: ignore
@@ -19,6 +19,7 @@ def overview(request: HttpRequest) -> HttpResponse:
 	})
 
 
+@login_required(login_url='/users/login/')
 def enroll(request: HttpRequest, course_id: str) -> HttpResponse:
 	"""list all courses"""
 

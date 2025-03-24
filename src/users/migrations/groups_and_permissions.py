@@ -37,13 +37,13 @@ def create(apps, schema_editor):
 		name='Can view habit',
 		content_type=habit_ct
 	)[0]
-	
+
 	view_category = Permission.objects.get_or_create(
 		codename='view_category',
 		name='Can view category',
 		content_type=category_ct
 	)[0]
-	
+
 	view_post = Permission.objects.get_or_create(
 		codename='view_post',
 		name='Can view post',

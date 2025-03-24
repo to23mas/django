@@ -1,19 +1,11 @@
-import time
-import json
 import os
 import docker
 from django.conf import settings
 
 from django.contrib import messages
 from django.urls import reverse
-from RestrictedPython.PrintCollector import PrintCollector
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
-
-import logging
-
-from RestrictedPython import compile_restricted
-from RestrictedPython.Guards import safe_builtins
 
 from domain.data.blockly.BlocklyStorage import BlocklyStorage
 from domain.data.blockly.enum.ExpectedTaskTypes import ExpectedTaskTypes
@@ -24,7 +16,6 @@ from domain.data.progress.ProgressStorage import ProgressStorage
 from domain.data.projects.ProjectData import ProjectData
 from domain.data.projects.ProjectStorage import ProjectStorage
 
-logger = logging.getLogger(__name__)
 
 @login_required
 def validate_python(request: HttpRequest) -> HttpResponse:
@@ -77,7 +68,7 @@ def validate_python_code_print_safe(code, username: str) -> str:
 	os.chmod('./tmp', 0o777)
 
 	file_path = os.path.join('./tmp', f'{username}.py')
-	with open(file_path, "w") as file:
+	with open(file_path, "w", encoding='utf-8') as file:
 		file.write(code)
 	os.chmod(file_path, 0o777)
 
@@ -86,7 +77,7 @@ def validate_python_code_print_safe(code, username: str) -> str:
 	container = client.containers.run(
 		image="restricted_python",
 		# TODO fix for server path
-		volumes={f'{settings.VALIDATOR_DIR}/{username}.py': {"bind": f"/sandbox/file.py", "mode": "ro"}},
+		volumes={f'{settings.VALIDATOR_DIR}/{username}.py': {"bind": "/sandbox/file.py", "mode": "ro"}},
 		stdout=True,
 		stderr=True,
 		remove=True,  # Automatically remove container after execution
@@ -103,9 +94,15 @@ def validate_python_code_print_safe(code, username: str) -> str:
 		logs = []
 		for log in container.logs(stream=True):
 			logs.append(log.decode('utf-8'))
-	except:
+	except docker.errors.ContainerError as e:
 		container.kill()
-		raise Exception('container took too long')
+		raise Exception(f'Container error: {str(e)}') from e
+	except docker.errors.APIError as e:
+		container.kill()
+		raise Exception(f'Docker API error: {str(e)}') from e
+	except TimeoutError as e:
+		container.kill()
+		raise Exception('Container took too long') from e
 	finally:
 		# Clean up the file
 		if os.path.exists(file_path):

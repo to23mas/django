@@ -1,1 +1,1 @@
-from brevo import *
+# Brevo module initialization

@@ -10,7 +10,7 @@ from domain.data.progress.ProgressStorage import ProgressStorage
 def overview(request: HttpRequest, course: str) -> HttpResponse:
 	"""list of all available demos"""
 	username = request.user.username #type: ignore
-    # (fixme) TODO přidat tenhle check na více míst (lekce , teste apod)
+	# (fixme) TODO přidat tenhle check na více míst (lekce , teste apod)
 	if (ProgressStorage().get_user_progress_by_course(username, course) is None):
 		messages.warning(request, 'Kurz ještě není odemčen!')
 		return redirect('courses:overview')
@@ -48,7 +48,7 @@ def detail(request: HttpRequest, course: str, demo_id: int) -> HttpResponse:
 
 	# TODO uncomment following
 	# user_available = ProgressStorage().find_available_demos(course, username)
-	user_available = DemoStorage().find_demos(course)
+	# user_available = DemoStorage().find_demos(course)
 
 	# if user_available is None or demo.id not in user_available:
 	# 	messages.warning(request, 'Ukázkový projekt ještě není odemčen')

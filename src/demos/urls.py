@@ -49,11 +49,11 @@ urlpatterns = [
 	path('c-<str:course>/d-<int:demo_id>/administration', demos.administration, name='administration'),
 
 	#birthdays
-    path('c-<str:course>/d-<int:demo_id>/birthdays/', demos.birthday, name='birthday'),
-    path('c-<str:course>/d-<int:demo_id>/birthdays/delete/<int:pk>/', demos.delete_birthday, name='delete_birthday'),
+	path('c-<str:course>/d-<int:demo_id>/birthdays/', demos.birthday, name='birthday'),
+	path('c-<str:course>/d-<int:demo_id>/birthdays/delete/<int:pk>/', demos.delete_birthday, name='delete_birthday'),
 
 	#chat
-    path('c-<str:course>/d-<int:demo_id>/chat', demos.chat, name='room'),
+	path('c-<str:course>/d-<int:demo_id>/chat', demos.chat, name='room'),
 
 	# Library demo URLs - now just include the library_patterns
 	path('c-<str:course>/d-<int:demo_id>/library/', demos.library, name='library'),

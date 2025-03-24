@@ -5,22 +5,22 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('demos', '0001_initial'),
-    ]
+	dependencies = [
+		('demos', '0001_initial'),
+	]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='post',
-            name='categories',
-        ),
-        migrations.DeleteModel(
-            name='Habit',
-        ),
-        migrations.DeleteModel(
-            name='Category',
-        ),
-        migrations.DeleteModel(
-            name='Post',
-        ),
-    ]
+	operations = [
+		migrations.RemoveField(
+			model_name='post',
+			name='categories',
+		),
+		migrations.DeleteModel(
+			name='Habit',
+		),
+		migrations.DeleteModel(
+			name='Category',
+		),
+		migrations.DeleteModel(
+			name='Post',
+		),
+	]
