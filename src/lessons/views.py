@@ -11,6 +11,7 @@ from domain.data.lessons.LessonStorage import LessonStorage
 from domain.data.progress.ProgressStorage import ProgressStorage
 from domain.data.projects.ProjectStorage import ProjectStorage
 from domain.data.tests_progress.TestProgressStorage import TestProgressStorage
+from domain.data.clis.CliStorage import CliStorage
 
 
 @login_required
@@ -55,6 +56,10 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		blockly = BlocklyStorage().get_blockly(course, chapter.unlocker_id) #type: ignore
 	else: blockly = None
 
+	if chapter.unlock_type == 'cli':
+		cli = CliStorage().get_cli(course, chapter.unlocker_id) #type: ignore
+	else: cli = None
+
 	test_state = None
 	if chapter.unlock_type == 'test':
 		test = TestProgressStorage().get_test_progress(course, username, chapter.unlocker_id)
@@ -64,6 +69,7 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 	lesson_chapters = ChapterStorage().find_chapters(course, project.database, {"lesson_id": lesson_id})
 	return render(request, 'lessons/lesson.html', {
 		'blockly': blockly,
+		'cli': cli,
 		'project_id': project_id,
 		'lesson': lesson,
 		'project': project,

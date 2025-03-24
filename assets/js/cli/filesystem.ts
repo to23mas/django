@@ -43,10 +43,10 @@ export class FileSystem {
                                 size: 4096,
                                 modified: 'Mar 24 10:00',
                                 children: {
-                                    'readme.txt': {
+                                    'index.html': {
                                         type: 'file',
-                                        name: 'readme.txt',
-                                        content: 'Welcome to the system!',
+                                        name: 'index.html',
+                                        content: 'Vítej v CLI!',
                                         permissions: '-rw-r--r--',
                                         owner: 'user',
                                         group: 'user',
@@ -89,7 +89,8 @@ export class FileSystem {
     }
 
     changeDirectory(path: string): boolean {
-        if (path === '..') {
+        // Handle .. to go up one directory
+        if (path === '..' || path === '../') {
             if (this.currentPath.length > 1) {
                 this.currentPath.pop();
                 return true;
@@ -97,30 +98,36 @@ export class FileSystem {
             return false;
         }
 
+        // Remove trailing slash if present
+        const cleanPath = path.endsWith('/') ? path.slice(0, -1) : path;
+
         const current = this.getCurrentDirectory();
-        if (!current || !current[path] || current[path].type !== 'directory') {
+        if (!current || !current[cleanPath] || current[cleanPath].type !== 'directory') {
             return false;
         }
 
-        this.currentPath.push(path);
+        this.currentPath.push(cleanPath);
         return true;
     }
 
-    listDirectory(showHidden: boolean = false): string {
+    listDirectory(): string {
         const current = this.getCurrentDirectory();
         if (!current) return 'Error: Invalid directory';
 
-        const entries = Object.values(current);
-        if (!showHidden) {
-            entries.filter(entry => !entry.name.startsWith('.'));
+        return Object.values(current)
+            .map(entry => entry.name + (entry.type === 'directory' ? '/' : ''))
+            .join('  ');
+    }
+
+    readFile(filename: string): string | null {
+        const current = this.getCurrentDirectory();
+        if (!current) return null;
+
+        const file = current[filename];
+        if (!file || file.type !== 'file') {
+            return null;
         }
 
-        return entries.map(entry => {
-            if (entry.type === 'directory') {
-                return `${entry.permissions}  ${entry.owner} ${entry.group}  ${entry.size.toString().padStart(6)} ${entry.modified} ${entry.name}/`;
-            } else {
-                return `${entry.permissions}  ${entry.owner} ${entry.group}  ${entry.size.toString().padStart(6)} ${entry.modified} ${entry.name}`;
-            }
-        }).join('\r\n');
+        return file.content || '';
     }
 } 
