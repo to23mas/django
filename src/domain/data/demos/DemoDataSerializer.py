@@ -11,6 +11,7 @@ class DemoDataSerializer:
 
 		return {
 			'_id': demo_data.id,
+			'project_id': demo_data.project_id,
 			'name': demo_data.name,
 			'url': demo_data.url,
 		}
@@ -20,6 +21,7 @@ class DemoDataSerializer:
 
 		return DemoData(
 			id=demo_data[DemosTable.ID.value],
+			project_id=demo_data[DemosTable.PROJECT_ID.value],
 			name=demo_data[DemosTable.NAME.value],
 			url=demo_data[DemosTable.URL.value],
 		)

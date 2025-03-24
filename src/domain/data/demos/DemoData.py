@@ -5,5 +5,6 @@ from dataclasses import dataclass
 class DemoData():
 
 	id: int
+	project_id: int
 	name: str
 	url: str
