@@ -1,4 +1,5 @@
 from unittest import TestCase
+
 from unittest.mock import MagicMock
 from domain.data.lessons.LessonData import LessonData
 from domain.data.lessons.LessonStorage import LessonStorage

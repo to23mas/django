@@ -11,7 +11,6 @@ export function initVisNetwork() {
 		const nodes = new DataSet(parsedNodes);
 		const edges = new DataSet(parsedEdges);
 
-		const options = {};
 		const network = new Network(
 			document.getElementById("projectNetwork"),
 			{nodes: nodes, edges: edges},
@@ -24,14 +23,29 @@ export function initVisNetwork() {
 					font: {
 						size: 20
 					},
-					fixed: {
-						x: true,
-						y: true
-					},
+					// fixed: {
+					//     x: true,
+					//     y: true
+					// },
 					shape: 'ellipse'
 				},
 				layout: {
-					randomSeed: 3
+					randomSeed: 1,
+					improvedLayout: true
+				},
+				physics: {
+					stabilization: {
+						enabled: true,
+						iterations: 100,
+						onlyDynamicEdges: false,
+						fit: true
+					},
+					minVelocity: 0.01,
+					solver: 'repulsion',
+					repulsion: {
+						nodeDistance: 200,
+						springLength: 100
+					}
 				},
 			}
 		);
@@ -66,6 +80,20 @@ export function initVisNetwork() {
 					color: originalColors.get(node.id)
 				})));
 			}
+		});
+
+		network.once('stabilizationIterationsDone', function() {
+			// Physics is done - fix all nodes in place
+			const nodeIds = nodes.getIds();
+			nodes.update(nodeIds.map(id => ({
+				id: id,
+				fixed: {
+					x: true,
+					y: true
+				}
+			})));
+			// Optionally disable physics after stabilization
+			network.setOptions({ physics: false });
 		});
 	});
 }
