@@ -42,3 +42,13 @@ build-validator:
 lint:
 	pylint --rcfile pylintrc.toml src
 
+.PHONY: inttest
+inttest: dev
+	docker compose exec -e PYTHONPATH=/usr/src/app web python manage.py test domain.tests.inttest.test_course_storage domain.tests.inttest.test_blockly_storage domain.tests.inttest.test_cli_storage domain.tests.inttest.test_demo_storage domain.tests.inttest.test_lesson_storage domain.tests.inttest.test_project_storage domain.tests.inttest.test_test_storage --keepdb
+
+.PHONY: unittest
+unittest: dev
+	docker compose exec -e PYTHONPATH=/usr/src/app web python manage.py test domain.tests.unittest.test_blockly domain.tests.unittest.test_chapters domain.tests.unittest.test_clis domain.tests.unittest.test_demos domain.tests.unittest.test_lessons domain.tests.unittest.test_projects domain.tests.unittest.test_tests --keepdb
+
+PHONY: test
+test: inttest unittest
