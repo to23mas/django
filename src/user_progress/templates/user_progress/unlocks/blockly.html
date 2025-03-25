@@ -4,7 +4,7 @@
 
 	<div id="blocklyDiv" style="height: 480px" class="mt-5"></div>
 	<h4 class="mt-5">Generated Python Code:</h4>
-	<div id="blockly-flash-messages"> </div>
+	<div id="blockly-flash-messages" class="min-h-[60px] mt-1"></div>
 	<div id="blocklyPythonCode"> </div>
 	<meta name="csrf-token" content="{{ csrf_token }}">
 
@@ -41,19 +41,19 @@
 	window.projectId = "{{ project.id }}";
 	window.chapterFinished = "{{ chapter_finished }}";
 
-		document.addEventListener('DOMContentLoaded', () => {
-		const taskElement = document.querySelector('.task-description');
-		if (!taskElement) return;
+	document.addEventListener('DOMContentLoaded', () => {
+	const taskElement = document.querySelector('.task-description');
+	if (!taskElement) return;
 
-		const text = taskElement.textContent || '';
-		const formattedText = text
-			.split('\n')
-			.map(line => {
-				return line.replace(/`([^`]+)`/g, '<span class="command">$1</span>');
-			})
-			.join('<br>');
+	const text = taskElement.textContent || '';
+	const formattedText = text
+		.split('\n')
+		.map(line => {
+			return line.replace(/`([^`]+)`/g, '<span class="command">$1</span>');
+		})
+		.join('<br>');
 
-		taskElement.innerHTML = formattedText;
+	taskElement.innerHTML = formattedText;
 	});
 
 </script>
