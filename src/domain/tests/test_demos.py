@@ -12,14 +12,16 @@ class TestDemoStorage(TestCase):
 		self.test_demo = DemoData(
 			id=1,
 			name="Test Demo",
-			url="http://test.com"
+			url="http://test.com",
+			project_id=1
 		)
 
 	def test_get_demo(self):
 		mock_demo = {
 			"_id": 1,
 			"name": "Test Demo",
-			"url": "http://test.com"
+			"url": "http://test.com",
+			"project_id": 1
 		}
 		self.mock_db.demos.find_one.return_value = mock_demo
 
@@ -38,12 +40,14 @@ class TestDemoStorage(TestCase):
 			{
 				"_id": 1,
 				"name": "Test Demo 1",
-				"url": "http://test1.com"
+				"url": "http://test1.com",
+				"project_id": 1
 			},
 			{
 				"_id": 2,
 				"name": "Test Demo 2",
-				"url": "http://test2.com"
+				"url": "http://test2.com",
+				"project_id": 1
 			}
 		]
 		mock_find = MagicMock()
@@ -88,7 +92,8 @@ class TestDemoDataCollection(TestCase):
 			{
 				"_id": 1,
 				"name": "Test Demo 1",
-				"url": "http://test1.com"
+				"url": "http://test1.com",
+				"project_id": 1
 			}
 		]
 		result = DemoDataCollection.from_dict(mock_data)

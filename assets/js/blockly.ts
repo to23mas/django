@@ -8,11 +8,6 @@ export function initBlockly() {
 		const blocklyContainer = document.getElementById('blocklyDiv');
 		if (!blocklyContainer) { return; }
 
-		// TODO implement
-		// Blockly.Python.addReservedWords(
-		// 	'eval,exec,open,subprocess,os,shutil,socket,pickle,marshal,ctypes,cffi, import'
-		// );
-
 		const workspace = Blockly.inject('blocklyDiv', {
 			toolbox: (window as any).blocklyToolboxConfig,
 			grid: { spacing: 20, length: 2, snap: true },
@@ -33,7 +28,8 @@ export function initBlockly() {
 			if (workspace.isDragging() || !supportedEvents.has(event.type)) return;
 
 			clearBlocklyFlashMessage();
-			const pythonCode = pythonGenerator.workspaceToCode(workspace);
+			const pythonCode = pythonGenerator.workspaceToCode(workspace)
+				.replace(/# Describe this function...\n/g, '');  // Remove the comments
 			const divElement = document.getElementById('blocklyPythonCode');
 			if (!divElement) return;
 			divElement.innerHTML = '';

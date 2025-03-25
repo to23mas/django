@@ -22,7 +22,8 @@ class TestTestStorage(TestCase):
 			finish_chapter=1,
 			attempts=3,
 			success_score=70.0,
-			total_points=100
+			total_points=100,
+			current_project=1
 		)
 
 	def test_get_test(self):
@@ -40,7 +41,8 @@ class TestTestStorage(TestCase):
 			"attempts": 3,
 			"success_score": 70.0,
 			"total_points": 100,
-			"questions": None
+			"questions": None,
+			"current_project": 1
 		}
 		self.mock_db.tests.find_one.return_value = mock_test
 
@@ -70,7 +72,8 @@ class TestTestStorage(TestCase):
 				"finish_chapter": 1,
 				"attempts": 3,
 				"success_score": 70.0,
-				"total_points": 100
+				"total_points": 100,
+				"current_project": 1
 			},
 			{
 				"_id": 2,
@@ -85,7 +88,8 @@ class TestTestStorage(TestCase):
 				"finish_chapter": 1,
 				"attempts": 3,
 				"success_score": 70.0,
-				"total_points": 100
+				"total_points": 100,
+				"current_project": 1
 			}
 		]
 		mock_find = MagicMock()
@@ -139,7 +143,8 @@ class TestTestDataCollection(TestCase):
 				"finish_chapter": 1,
 				"attempts": 3,
 				"success_score": 70.0,
-				"total_points": 100
+				"total_points": 100,
+				"current_project": 1
 			}
 		]
 		result = TestDataCollection.from_array(mock_data)

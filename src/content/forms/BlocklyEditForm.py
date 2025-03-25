@@ -7,7 +7,7 @@ class BlocklyEditForm(forms.Form):
 	title = forms.CharField()
 	task_description = forms.CharField(widget=forms.Textarea(attrs={'rows': 15}))
 	expected_task = forms.CharField()
-	expected_result = forms.CharField()
+	expected_result = forms.CharField(widget=forms.Textarea(attrs={'rows': 15}))
 	title = forms.CharField()
 	toolbox = forms.CharField(widget=forms.Textarea(attrs={'rows': 15}))
 

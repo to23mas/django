@@ -31,6 +31,18 @@
 		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 		font-size: 0.875em;
 	}
+	.blocklyMainBackground + g > g.blocklyFlyout {
+		overflow: hidden !important;
+	}
+	.blocklyToolboxDiv {
+		overflow-x: hidden !important;
+	}
+	.blocklyFlyoutBackground {
+		overflow: hidden !important;
+	}
+	.blocklyFlyoutScrollbar {
+		display: none !important;
+	}
 </style>
 <script type="text/javascript">
 	window.blocklyToolboxConfig = {{ blockly.toolbox | safe }};
