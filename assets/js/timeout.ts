@@ -102,7 +102,7 @@ function startTimer({
 		const minutes = Math.floor(timeLeft / (1000 * 60));
 		const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-		timerElement.textContent = `Zbývající čas: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+		timerElement.textContent = `Probíhá test, zbývající čas: ${minutes}:${seconds.toString().padStart(2, '0')}`;
 
 		// Add warning class when less than 1 minute remains
 		if (timeLeft < 60000) {

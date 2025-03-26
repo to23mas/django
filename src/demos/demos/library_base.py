@@ -16,7 +16,8 @@ def _check(request: HttpRequest, course: str, demo_id: int):
 		messages.warning(request, 'Ukázkový projekt není v tyto chvíli dostupný')
 		return redirect('courses:overview')
 
-	project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': demo_id})
+	project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': demo.project_id})
+
 	return username, demo, course, project_url
 
 def library(request: HttpRequest, course: str, demo_id: int):

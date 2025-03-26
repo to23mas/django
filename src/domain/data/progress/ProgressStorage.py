@@ -154,19 +154,22 @@ class ProgressStorage(MongoStorage):
 		return result['projects'][str(project_id)]
 
 
-	def get_chapter_state(self, db: str, username: str, chapter_id: int) -> str :
+	def get_chapter_state(self, db: str, username: str, chapter_id: int, project_id: int) -> str :
 		result = MongoStorage().database[db].progress.find_one(
-				{"_id": username },{ f"chapters.{chapter_id}": 1, "_id": 0 }
-				)
+			{"_id": username },
+			{ f"chapters.{project_id}.{chapter_id}": 1, "_id": 0 }
+		)
 		if result is None: raise UnexpectedNoneValueException
 
-		return result['chapters'][str(chapter_id)]
+
+		__import__('pprint').pprint(result)
+		return result['chapters'][str(project_id)][str(chapter_id)]
 
 
 	def get_lesson_state(self, db: str, username: str, lesson_id: int) -> str :
 		result = MongoStorage().database[db].progress.find_one(
-				{"_id": username },{ f"lessons.{lesson_id}": 1, "_id": 0 }
-				)
+			{"_id": username },{ f"lessons.{lesson_id}": 1, "_id": 0 }
+		)
 		if result is None: raise UnexpectedNoneValueException
 
 		return result['lessons'][str(lesson_id)]

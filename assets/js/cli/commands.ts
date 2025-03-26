@@ -10,8 +10,7 @@ export class CommandHandler {
         'pwd': 'Vypíše aktuální cestu',
         'cat': 'Vypíše obsah souboru (cat <soubor>)',
         'clear': 'Vymaže obrazovku terminálu',
-        'python': 'Spustí Python interpret',
-        'python -v, --version': 'Zobrazí verzi Pythonu',
+        'python --version': 'Zobrazí verzi Pythonu',
     };
 
     constructor(terminal: Terminal) {
@@ -38,7 +37,7 @@ export class CommandHandler {
         } else if (cmd === 'help') {
             return this.help();
         } else if (cmd === 'python') {
-            if (args[0] === '-v' || args[0] === '--version') {
+            if (args[0] === '--version') {
                 return this.pythonVersion();
             }
             return this.python();

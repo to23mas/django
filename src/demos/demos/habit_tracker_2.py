@@ -28,7 +28,7 @@ def _check(request: HttpRequest, course: str, demo_id: int):
 	# 	return redirect('courses:overview', course=course)
 
 	# project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': project.id})
-	project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': 1})
+	project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': demo.project_id})
 
 	return username, demo, course, project_url
 
