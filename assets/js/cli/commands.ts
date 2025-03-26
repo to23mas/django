@@ -10,6 +10,8 @@ export class CommandHandler {
         'pwd': 'Vypíše aktuální cestu',
         'cat': 'Vypíše obsah souboru (cat <soubor>)',
         'clear': 'Vymaže obrazovku terminálu',
+        'python': 'Spustí Python interpret',
+        'python -v, --version': 'Zobrazí verzi Pythonu',
     };
 
     constructor(terminal: Terminal) {
@@ -35,6 +37,11 @@ export class CommandHandler {
             return '';
         } else if (cmd === 'help') {
             return this.help();
+        } else if (cmd === 'python') {
+            if (args[0] === '-v' || args[0] === '--version') {
+                return this.pythonVersion();
+            }
+            return this.python();
         }
         return `Command not found: ${cmd}\r\n`;
     }
@@ -83,6 +90,14 @@ export class CommandHandler {
 
     private clear(): void {
         this.term.clear();
+    }
+
+    private pythonVersion(): string {
+        return 'Python 3.11.8\r\n';
+    }
+
+    private python(): string {
+        return 'Python interpret není v tuto chvíli k dispozici. Použijte příkaz s parametry.\r\n';
     }
 
     getCurrentPath(): string {

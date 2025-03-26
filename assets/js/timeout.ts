@@ -28,7 +28,7 @@ export function initTimeout() {
 		const testId = (window as any).testId;
 		const courseId = (window as any).courseId;
 
-		if (testStartTime && testDuration) {
+		if (testStartTime && testDuration && window.location.pathname.includes('/tests/')) {
 			const endTime = testStartTime + (testDuration * 60 * 1000);
 			// Store test time data
 			localStorage.setItem('testTimeData', JSON.stringify({

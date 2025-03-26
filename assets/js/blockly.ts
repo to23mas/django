@@ -2,11 +2,46 @@ import * as Blockly from 'blockly';
 import { pythonGenerator } from 'blockly/python';
 import { addBlocklyFlashMessage, clearBlocklyFlashMessage } from './flash_messages'
 
+const BLOCKLY_LOCALE_CS = {
+	UNDO: 'Zpět',
+	REDO: 'Znovu',
+	DELETE_BLOCK: 'Smazat blok',
+	DELETE_X_BLOCKS: 'Smazat %1 bloků',
+	DELETE_ALL_BLOCKS: 'Smazat všechny bloky?',
+	CLEAN_UP: 'Uspořádat bloky',
+	DUPLICATE_BLOCK: 'Duplikovat',
+	REMOVE_COMMENT: 'Odstranit komentář',
+	ADD_COMMENT: 'Přidat komentář',
+	EXTERNAL_INPUTS: 'Externí vstupy',
+	INLINE_INPUTS: 'Vložené vstupy',
+	COLLAPSE_BLOCK: 'Sbalit blok',
+	EXPAND_BLOCK: 'Rozbalit blok',
+	DISABLE_BLOCK: 'Zakázat blok',
+	ENABLE_BLOCK: 'Povolit blok',
+	HELP: 'Nápověda',
+	COLLAPSE_ALL: 'Sbalit bloky',
+	EXPAND_ALL: 'Rozbalit bloky',
+	DELETE_VARIABLE_CONFIRMATION: 'Smazat %1 použití proměnné "%2"?',
+	RENAME_VARIABLE: 'Přejmenovat proměnnou...',
+	NEW_VARIABLE: 'Vytvořit proměnnou...',
+	NEW_STRING_VARIABLE: 'Vytvořit textovou proměnnou...',
+	NEW_NUMBER_VARIABLE: 'Vytvořit číselnou proměnnou...',
+	NEW_COLOUR_VARIABLE: 'Vytvořit barevnou proměnnou...',
+	NEW_VARIABLE_TYPE_TITLE: 'Nový typ proměnné:',
+	NEW_VARIABLE_TITLE: 'Nové jméno proměnné:',
+	VARIABLE_ALREADY_EXISTS: 'Proměnná se jménem "%1" již existuje.',
+	VARIABLE_ALREADY_EXISTS_FOR_ANOTHER_TYPE: 'Proměnná se jménem "%1" již existuje pro jiný typ: "%2".',
+	DELETE_VARIABLE: 'Smazat proměnnou "%1"',
+};
+
 export function initBlockly() {
 	document.addEventListener('DOMContentLoaded', () => {
 
 		const blocklyContainer = document.getElementById('blocklyDiv');
 		if (!blocklyContainer) { return; }
+
+		// Nastavení české lokalizace
+		Blockly.setLocale(BLOCKLY_LOCALE_CS);
 
 		const workspace = Blockly.inject('blocklyDiv', {
 			toolbox: (window as any).blocklyToolboxConfig,
@@ -71,6 +106,17 @@ export function initBlockly() {
 			alert('Error csrf-forgery\n');
 			return;
 		}
+
+		const validateButton = document.getElementById('validateButton');
+		if (validateButton) {
+			const defaultText = validateButton.querySelector('.default-text');
+			const spinner = validateButton.querySelector('.spinner');
+			if (defaultText && spinner) {
+				defaultText.classList.add('hidden');
+				spinner.classList.remove('hidden');
+			}
+		}
+
 		try {
 			const response = await fetch('/projects/lesson/validate-python', {
 				method: 'POST',
@@ -99,6 +145,16 @@ export function initBlockly() {
 			}
 		} catch (e) {
 			alert('Problém na straně serveru. Zkuste tuto akci prosím později.');
+		} finally {
+			const validateButton = document.getElementById('validateButton');
+			if (validateButton) {
+				const defaultText = validateButton.querySelector('.default-text');
+				const spinner = validateButton.querySelector('.spinner');
+				if (defaultText && spinner) {
+					defaultText.classList.remove('hidden');
+					spinner.classList.add('hidden');
+				}
+			}
 		}
 	}
 }

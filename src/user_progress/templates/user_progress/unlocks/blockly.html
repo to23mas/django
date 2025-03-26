@@ -61,7 +61,9 @@
 	const formattedText = text
 		.split('\n')
 		.map(line => {
-			return line.replace(/`([^`]+)`/g, '<span class="command">$1</span>');
+			return line
+				.replace(/`([^`]+)`/g, '<span class="command">$1</span>')
+				.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 		})
 		.join('<br>');
 

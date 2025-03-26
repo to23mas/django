@@ -29,7 +29,7 @@ def hello_world(request: HttpRequest, course: str, demo_id: int) -> HttpResponse
 		messages.error(request, 'nevalidní akce')
 		return redirect('courses:overview', course=course)
 
-	project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': project.id})
+	project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': demo.project_id})
 	return render(request, 'demos/demo/hello_world.html', {
 		'demo': demo,
 		'username': username,
