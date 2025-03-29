@@ -62,5 +62,10 @@ if __name__ == "__main__":
 		for cli in file_data['clis']:
 			database['django'].cli.insert_one(cli)
 
-	client.close()
+	print('[ ] - Migrating Users')
+	with open('/usr/src/db/student.json') as f:
+		file_data = json.load(f)
+		database['django'].progress.insert_one(file_data)
+
 	print('[x] - Migration DONE')
+	client.close()

@@ -15,6 +15,7 @@ from domain.data.demos.DemoDataSerializer import DemoDataSerializer
 from domain.data.demos.DemoStorage import DemoStorage
 from domain.data.lessons.LessonDataSerializer import LessonDataSerializer
 from domain.data.lessons.LessonStorage import LessonStorage
+from domain.data.progress.ProgressStorage import ProgressStorage
 from domain.data.projects.ProjectDataSerializer import ProjectDataSerializer
 from domain.data.projects.ProjectStorage import ProjectStorage
 from domain.data.tests.QuestionDataSerializer import QuestionDataSerializer
@@ -22,6 +23,12 @@ from domain.data.tests.TestDataSerializer import TestDataSerializer
 from domain.data.blockly.BlocklyDataSerializer import BlocklyDataSerializer
 from domain.data.tests.TestStorage import TestStorage
 
+
+def download_json_users(username:str = 'student') -> Dict | None:
+	progress = ProgressStorage().get_user_progress_by_course(username, 'django')
+	if progress is None: return None
+
+	return progress
 
 def download_json(course_id: str) -> Dict | None:
 	course = CourseStorage().get_course_by_id(course_id)

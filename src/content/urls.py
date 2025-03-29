@@ -9,6 +9,7 @@ urlpatterns = [
 	path('course/<str:course_id>/edit', course_edit, name='admin_course_edit'),
 	path('course/<str:course_id>/delete', course_delete, name='admin_course_delete'),
 	path('course/<str:course_id>/download', course_download, name='admin_course_download'),
+	path('course/download/user', progress_download, name='progress_download'),
 	path('course/new', course_new, name='admin_course_new'),
 
 	path('course/<str:course_id>/projects', project_overview, name='admin_project_overview'),

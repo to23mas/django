@@ -1,0 +1,144 @@
+{
+  "_id": "student",
+  "projects": {
+    "1": "done",
+    "2": "done",
+    "3": "done",
+    "4": "open",
+    "5": "lock",
+    "6": "lock",
+    "7": "lock",
+    "8": "lock",
+    "9": "lock",
+    "10": "lock",
+    "11": "lock",
+    "12": "lock",
+    "13": "lock"
+  },
+  "lessons": {
+    "1": {
+      "1": "done",
+      "2": "done",
+      "3": "done",
+      "4": "done",
+      "5": "done"
+    },
+    "2": {
+      "1": "done",
+      "2": "done",
+      "3": "done",
+      "4": "done"
+    },
+    "3": {
+      "1": "done",
+      "2": "done",
+      "4": "done",
+      "5": "done",
+      "6": "done",
+      "7": "done"
+    },
+    "4": {
+      "1": "open",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock"
+	},
+    "5": {},
+    "6": {},
+    "7": {},
+    "8": {},
+    "9": {},
+    "10": {},
+    "11": {},
+    "12": {},
+    "13": {}
+  },
+  "chapters": {
+    "1": {
+      "1": "done",
+      "4": "done",
+      "6": "done",
+      "7": "done",
+      "8": "done"
+    },
+    "2": {
+      "1": "done",
+      "2": "done",
+      "3": "done",
+      "4": "done",
+      "5": "done",
+      "6": "done",
+      "7": "done",
+      "8": "done"
+    },
+    "3": {
+      "1": "done",
+      "2": "done",
+      "3": "done",
+      "4": "done",
+      "5": "done",
+      "6": "done",
+      "8": "done",
+      "9": "done"
+    },
+    "4": {
+      "1": "open",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock",
+      "7": "lock",
+      "8": "lock",
+      "9": "lock"
+	},
+    "5": {},
+    "6": {},
+    "7": {},
+    "8": {},
+    "9": {},
+    "10": {},
+    "11": {},
+    "12": {},
+    "13": {}
+  },
+  "tests": [
+    {
+      "test_id": 1,
+      "attempts": 5,
+      "state": "finish",
+      "score": [
+        3,
+        3,
+        13,
+        0,
+        3,
+        30
+      ],
+      "lock_until": ""
+    },
+    {
+      "test_id": 2,
+      "attempts": 3,
+      "state": "finish",
+      "score": [
+        45
+      ],
+      "lock_until": ""
+    },
+    {
+      "test_id": 3,
+      "attempts": 3,
+      "state": "finish",
+      "score": [
+        43
+      ],
+      "lock_until": ""
+    },
+    {
+      "test_id": 3,
+      "attempts": 3,
+      "state": "close",
+      "score": [],
+      "lock_until": ""
+    }
+  ]
+}

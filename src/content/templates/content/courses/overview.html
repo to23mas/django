@@ -66,6 +66,7 @@
 									<td style="width: 10%;">
 										<a style="margin-right: 20px;" href="{% url 'admin_course_edit' course_id=course.id %}"><img src="{% static 'admin/img/icon-changelink.svg' %}" alt="False"></a>
 										<a style="margin-right: 20px;" href="{% url 'admin_course_download' course_id=course.id %}"><img src="{% static 'admin/img/icon-download.svg' %}" height="14xp" alt="False"></a>
+										<a style="margin-right: 20px;" href="{% url 'progress_download' %}">Student</a>
 										<a href="{% url 'admin_course_delete' course_id=course.id %}" onclick="if (!confirm('Are you sure you want to delete this project?')) { event.preventDefault(); }"><img src="{% static 'admin/img/icon-deletelink.svg' %}" alt="False"></a>
 									</td>
 								</tr>

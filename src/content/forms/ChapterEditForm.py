@@ -11,8 +11,8 @@ class ChapterEditForm(forms.Form):
 	title = forms.CharField()
 	is_last_in_lesson = forms.BooleanField(required=False, initial=False)
 	unlock_type = forms.ChoiceField(widget=forms.Select)
-	unlock_id = forms.IntegerField()
-	unlocker_id = forms.IntegerField()
+	unlock_id = forms.IntegerField(initial=0)
+	unlocker_id = forms.IntegerField(initial=0)
 
 	def __init__(self, *args, db=None, project_db=None, **kwargs):
 		initial = kwargs.get('initial', {})

@@ -9,7 +9,7 @@ from content.forms.CourseEditForm import CourseEditForm
 from content.forms.CourseUploadForm import CourseUploadForm
 from domain.data.courses.CourseDataSerializer import CourseDataSerializer
 from domain.data.courses.CourseStorage import CourseStorage
-from domain.data.database_backup.BackUpStorage import delete_all, download_json, upload_from_json
+from domain.data.database_backup.BackUpStorage import delete_all, download_json, download_json_users, upload_from_json
 
 
 @staff_member_required
@@ -34,6 +34,19 @@ def course_edit(request: HttpRequest, course_id: str) -> HttpResponse:
 		'breadcrumbs': breadcrumbs,
 		'form': edit_form,
 	})
+
+
+@staff_member_required
+def progress_download(request: HttpRequest) -> HttpResponse: #pylint: disable=W0613
+	"""list all courses"""
+	json_result = download_json_users()
+
+	if json_result is None: return redirect('admin_course_overview')
+
+	response = HttpResponse(json.dumps(json_result), content_type='application/json') #type: ignore
+	response['Content-Disposition'] = 'attachment; filename=student.json'
+
+	return response
 
 
 @staff_member_required
