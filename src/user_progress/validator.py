@@ -20,6 +20,7 @@ from domain.data.projects.ProjectStorage import ProjectStorage
 from .validators.print_validator import validate_python_code_print
 from .validators.function_validator import validate_python_code_function
 from .validators.variable_validator import validate_python_code_variable
+from .validators.variable_pattern_validator import validate_variable_pattern
 
 
 @login_required
@@ -54,7 +55,7 @@ def validate_python(request: HttpRequest) -> HttpResponse:
 
 	if code_result == True:
 		return handle_success(username, course_db, project, chapter)
-		
+
 	return JsonResponse({'status': 'error', 'message': 'Nesprávná odpověď'})
 
 
@@ -102,16 +103,19 @@ def validate_task(task_type: str, code: str, username: str, expected_result: str
 			if result.endswith("\n"):
 				result = result[:-1]
 			return result == expected_result
-			
+
 		case ExpectedTaskTypes.FUNCTION.value:
 			result = validate_python_code_function(code, username, expected_result)
 			if result.endswith("\n"):
 				result = result[:-1]
 			return result.strip() == 'True'
-			
+
 		case ExpectedTaskTypes.VARIABLE.value:
 			return validate_python_code_variable(code, username, expected_result)
-			
+
+		case ExpectedTaskTypes.VARIABLE_PATTERN.value:
+			return validate_variable_pattern(code, username, expected_result)
+
 		case _:
 			return False
 

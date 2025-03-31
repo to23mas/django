@@ -162,7 +162,6 @@ class ProgressStorage(MongoStorage):
 		if result is None: raise UnexpectedNoneValueException
 
 
-		__import__('pprint').pprint(result)
 		return result['chapters'][str(project_id)][str(chapter_id)]
 
 

@@ -1,6 +1,11 @@
 import * as Blockly from 'blockly';
 import { pythonGenerator } from 'blockly/python';
 import { addBlocklyFlashMessage, clearBlocklyFlashMessage } from './flash_messages'
+import { toolbox } from './blockly/toolbox';
+
+// Import the include block
+import './blockly/blocks/django_include';
+import './blockly/blocks/django_path';
 
 const BLOCKLY_LOCALE_CS = {
 	UNDO: 'Zpět',
@@ -44,7 +49,8 @@ export function initBlockly() {
 		Blockly.setLocale(BLOCKLY_LOCALE_CS);
 
 		const workspace = Blockly.inject('blocklyDiv', {
-			toolbox: (window as any).blocklyToolboxConfig,
+			// toolbox: (window as any).blocklyToolboxConfig,
+			toolbox: toolbox,
 			grid: { spacing: 20, length: 2, snap: true },
 			trashcan: true,
 			move: { scrollbars: { horizontal: true, vertical: true } },

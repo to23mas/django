@@ -4,3 +4,4 @@ class ExpectedTaskTypes(Enum):
 	PRINT = 'print'
 	FUNCTION = 'function'
 	VARIABLE = 'variable'
+	VARIABLE_PATTERN = 'variable_pattern'

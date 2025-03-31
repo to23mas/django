@@ -2,6 +2,12 @@ from RestrictedPython.PrintCollector import PrintCollector
 from RestrictedPython import compile_restricted
 from RestrictedPython.Guards import safe_builtins
 
+# Vytvoříme dummy funkce pro path a include
+def path(*args):
+    return f"path{args}"
+
+def include(*args):
+    return f"include{args}"
 
 with open('/sandbox/file.py', 'r') as file:
     code = file.read()
@@ -15,6 +21,8 @@ restricted_globals = {
 	"__builtins__": safe_builtins,
 	"_print_": PrintCollector,
 	"_getattr_":  getattr,
+	"path": path,      # Přidáme dummy funkce
+	"include": include # do globálního prostředí
 }
 
 byte_code = compile_restricted(code, '<string>', 'exec')

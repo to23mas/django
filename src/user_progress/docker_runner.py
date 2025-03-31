@@ -18,7 +18,7 @@ def run_in_docker(code: str, username: str) -> str:
         volumes={f'{settings.VALIDATOR_DIR}/{username}.py': {"bind": "/sandbox/file.py", "mode": "ro"}},
         stdout=True,
         stderr=True,
-        remove=True,
+        remove=False,
         detach=True,
         command="python /sandbox/run_code.py",
         cpu_count=1,
@@ -32,11 +32,15 @@ def run_in_docker(code: str, username: str) -> str:
         logs = []
         for log in container.logs(stream=True):
             logs.append(log.decode('utf-8'))
-    except Exception:
-        container.kill()
-        raise Exception('Container took too long')
+            container.kill()
+    except:
+        pass
     finally:
         if os.path.exists(file_path):
             os.remove(file_path)
+    try:
+        container.remove()
+    except:
+        pass
 
     return logs[0] 
