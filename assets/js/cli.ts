@@ -21,7 +21,7 @@ export function initCli() {
             },
             scrollback: 1000,
             convertEol: true,
-            cols: 80,
+            cols: 120,
             rows: 24,
             allowTransparency: true,
             rightClickSelectsWord: true,

@@ -9,6 +9,20 @@ def path(*args):
 def include(*args):
     return f"include{args}"
 
+# Vytvoříme dummy třídu Post pro testování ORM
+class Post:
+    class Manager:
+        def get(self, **kwargs):
+            return f"Post.objects.get({kwargs})"
+        
+        def filter(self, **kwargs):
+            return f"Post.objects.filter({kwargs})"
+        
+        def all(self):
+            return "Post.objects.all()"
+    
+    objects = Manager()  # Instance Manager třídy jako třídní atribut
+
 with open('/sandbox/file.py', 'r') as file:
     code = file.read()
 
@@ -22,7 +36,8 @@ restricted_globals = {
 	"_print_": PrintCollector,
 	"_getattr_":  getattr,
 	"path": path,      # Přidáme dummy funkce
-	"include": include # do globálního prostředí
+	"include": include, # do globálního prostředí
+	"Post": Post  # Přidáme dummy Post třídu
 }
 
 byte_code = compile_restricted(code, '<string>', 'exec')

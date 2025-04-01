@@ -1,9 +1,11 @@
 import { FileSystem } from './filesystem';
 import { Terminal } from 'xterm';
+import { DockerManager } from './docker';
 
 export class CommandHandler {
     private fs: FileSystem;
     private term: Terminal;
+    private dockerManager: DockerManager;
     private commands: { [key: string]: string } = {
         'ls': 'Vypíše obsah adresáře',
         'cd': 'Změna adresáře (cd <adresář>)',
@@ -15,11 +17,14 @@ export class CommandHandler {
         'python manage.py makemigrations <app_name>': 'Vytvoří migrace pro danou aplikaci',
         'npm list': 'Zobrazí seznam nainstalovaných knihoven',
         'npm list <knihovna>': 'Zobrazí informace o konkrétní knihovně',
+        'pip': 'Správce Python balíčků',
+        'docker': 'Správa Docker kontejnerů',
     };
 
     constructor(terminal: Terminal) {
         this.fs = new FileSystem();
         this.term = terminal;
+        this.dockerManager = new DockerManager();
     }
 
     executeCommand(command: string): string {
@@ -50,6 +55,13 @@ export class CommandHandler {
             return this.python();
         } else if (cmd === 'npm' && args[0] === 'list') {
             return this.npmList(args[1]);
+        } else if (cmd === 'pip') {
+            if (args[0] === 'list') {
+                return this.pipList();
+            }
+            return this.pipHelp();
+        } else if (cmd === 'docker') {
+            return this.docker(args);
         }
         return `Command not found: ${cmd}\r\n`;
     }
@@ -201,6 +213,54 @@ export class CommandHandler {
         return Object.entries(packages)
             .map(([name, version]) => `├── ${name}@${version}`)
             .join('\r\n') + '\r\n';
+    }
+
+    private pipHelp(): string {
+        return 'Usage:\n  pip <command>\n\nCommands:\n  list                        List installed packages.\n\r\n';
+    }
+
+    private pipList(): string {
+        const packages = [
+            'asgiref           3.7.2',
+            'Django            5.0.3',
+            'django-cors       0.1',
+            'django-rest       0.8.7',
+            'djangorest        3.14.0',
+            'Pillow            10.2.0',
+            'pip               24.0',
+            'psycopg2          2.9.9',
+            'pymongo           4.6.1',
+            'python-dotenv     1.0.1',
+            'redis             5.0.1',
+            'setuptools        69.1.1',
+            'sqlparse          0.4.4',
+            'typing_extensions 4.9.0',
+            'wheel             0.42.0'
+        ];
+        return packages.join('\r\n') + '\r\n';
+    }
+
+    private docker(args: string[]): string {
+        if (args.length === 0) {
+            return 'Usage: docker [command] [options]\n\nCommands:\n  ps        List containers\n  images    List images\n  run       Run a container\n';
+        }
+
+        const command = args[0];
+        const options = args.slice(1);
+
+        switch (command) {
+            case 'ps':
+                return this.dockerManager.ps(options.includes('-a'));
+            case 'images':
+                return this.dockerManager.images();
+            case 'run':
+                if (options.length === 0) {
+                    return 'Error: No image specified\nUsage: docker run [OPTIONS] IMAGE [COMMAND] [ARG...]';
+                }
+                return this.dockerManager.run(options[0]);
+            default:
+                return `docker: unknown command "${command}"\nRun 'docker' for usage information.`;
+        }
     }
 
     getCurrentPath(): string {

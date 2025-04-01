@@ -3,9 +3,8 @@ import { pythonGenerator } from 'blockly/python';
 import { addBlocklyFlashMessage, clearBlocklyFlashMessage } from './flash_messages'
 import { toolbox } from './blockly/toolbox';
 
-// Import the include block
-import './blockly/blocks/django_include';
-import './blockly/blocks/django_path';
+// Import all blocks
+import './blockly/blocks';
 
 const BLOCKLY_LOCALE_CS = {
 	UNDO: 'Zpět',

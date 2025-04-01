@@ -93,11 +93,7 @@ export const toolbox =
         "contents": [
           {
             "kind": "block",
-            "type": "django_include_block"
-          },
-          {
-            "kind": "block",
-            "type": "django_path_block"
+            "type": "django_post_get"
           }
         ]
       }
