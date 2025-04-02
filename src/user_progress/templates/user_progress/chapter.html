@@ -2,10 +2,31 @@
 <style>
 	pre {
 		white-space: pre-wrap !important;
+		position: relative;
 	}
 	img {
 		margin-left: 25px !important;
-		 object-fit: cover !important;
+		object-fit: cover !important;
+	}
+	.copy-button {
+		position: absolute;
+		right: 5px;
+		padding: 4px 8px;
+		background-color: #4a5568;
+		color: white;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		font-size: 12px;
+	}
+	.copy-button-with-filename {
+		top: 25px;
+	}
+	.copy-button-without-filename {
+		top: 5px;
+	}
+	.copy-button:hover {
+		background-color: #2d3748;
 	}
 </style>
 
@@ -30,3 +51,41 @@
 		{{ block.text | safe | escape }}
 	</div>
 {% endfor %}
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const codeElements = document.getElementsByTagName('code');
+    for (let element of codeElements) {
+        element.innerHTML = element.innerHTML
+            .replace(/&ZeroWidthSpace;/g, '')
+            .replace(/​/g, '');
+            
+        const parentPre = element.closest('pre');
+        if (parentPre) {
+            const copyButton = document.createElement('button');
+            copyButton.className = 'copy-button';
+            
+            // Kontrola, zda existuje element s třídou filename
+            const hasFilename = parentPre.querySelector('.filename') !== null;
+            copyButton.classList.add(hasFilename ? 'copy-button-with-filename' : 'copy-button-without-filename');
+            
+            copyButton.textContent = 'Kopírovat';
+            
+            copyButton.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(element.textContent);
+                    copyButton.textContent = 'Zkopírováno!';
+                    setTimeout(() => {
+                        copyButton.textContent = 'Kopírovat';
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                    copyButton.textContent = 'Chyba';
+                }
+            });
+            
+            parentPre.appendChild(copyButton);
+        }
+    }
+});
+</script>

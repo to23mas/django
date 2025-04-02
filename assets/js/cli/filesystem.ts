@@ -34,6 +34,27 @@ export class FileSystem {
                         size: 4096,
                         modified: 'Mar 24 10:00',
                         children: {
+                            'app': {
+                                type: 'directory',
+                                name: 'app',
+                                permissions: 'drwxr-xr-x',
+                                owner: 'user',
+                                group: 'user',
+                                size: 4096,
+                                modified: 'Mar 24 10:00',
+                                children: {
+                                    'manage.py': {
+                                        type: 'file',
+                                        name: 'manage.py',
+                                        content: '#!/usr/bin/env python\n"""Django\'s command-line utility."""',
+                                        permissions: '-rwxr-xr-x',
+                                        owner: 'user',
+                                        group: 'user',
+                                        size: 42,
+                                        modified: 'Mar 24 10:00'
+                                    }
+                                }
+                            },
                             'documents': {
                                 type: 'directory',
                                 name: 'documents',
@@ -129,5 +150,11 @@ export class FileSystem {
         }
 
         return file.content || '';
+    }
+
+    fileExists(filename: string): boolean {
+        const current = this.getCurrentDirectory();
+        if (!current) return false;
+        return current[filename] !== undefined && current[filename].type === 'file';
     }
 }

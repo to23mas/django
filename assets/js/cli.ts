@@ -63,15 +63,52 @@ export function initCli() {
         // Show initial prompt with path
         term.write(getPrompt());
 
+        // Add command history
+        const commandHistory: string[] = [];
+        let historyIndex = -1;
+
         // Keep track of current line
         let currentLine = '';
+        let savedLine = '';
 
         // Handle terminal input
         term.onKey(({key, domEvent}) => {
-            if (domEvent.keyCode === 13) { // Enter
+            const ev = domEvent as KeyboardEvent;
+
+            // Handle arrow up/down for history
+            if (ev.keyCode === 38) { // Up arrow
+                if (historyIndex === -1) {
+                    savedLine = currentLine;
+                }
+                if (commandHistory.length > 0 && historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    currentLine = commandHistory[commandHistory.length - 1 - historyIndex];
+                    // Clear current line and write new one
+                    term.write('\x1b[2K\r' + getPrompt() + currentLine);
+                }
+                return;
+            } else if (ev.keyCode === 40) { // Down arrow
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    currentLine = commandHistory[commandHistory.length - 1 - historyIndex];
+                    term.write('\x1b[2K\r' + getPrompt() + currentLine);
+                } else if (historyIndex === 0) {
+                    historyIndex = -1;
+                    currentLine = savedLine;
+                    term.write('\x1b[2K\r' + getPrompt() + currentLine);
+                }
+                return;
+            }
+
+            if (ev.keyCode === 13) { // Enter
                 term.write('\r\n');
                 const cmd = currentLine.trim();
                 if (cmd) {
+                    // Add command to history
+                    commandHistory.push(cmd);
+                    historyIndex = -1;
+                    savedLine = '';
+
                     const output = commandHandler.executeCommand(cmd);
                     if (cmd === 'clear') {
                         // After clear, just show the prompt
@@ -88,7 +125,7 @@ export function initCli() {
                 currentLine = '';
             }
             // Handle Backspace
-            else if (domEvent.keyCode === 8) {
+            else if (ev.keyCode === 8) {
                 if (currentLine.length > 0) {
                     currentLine = currentLine.slice(0, -1);
                     term.write('\b \b');

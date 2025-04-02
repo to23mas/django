@@ -7,14 +7,14 @@ export class CommandHandler {
     private term: Terminal;
     private dockerManager: DockerManager;
     private commands: { [key: string]: string } = {
+        'clear': 'Vyčistí obrazovku terminálu',
         'ls': 'Vypíše obsah adresáře',
         'cd': 'Změna adresáře (cd <adresář>)',
         'pwd': 'Vypíše aktuální cestu',
         'cat': 'Vypíše obsah souboru (cat <soubor>)',
-        'clear': 'Vymaže obrazovku terminálu',
         'python --version': 'Zobrazí verzi Pythonu',
-        'python manage.py makemigrations': 'Vytvoří migrace pro všechny aplikace',
         'python manage.py makemigrations <app_name>': 'Vytvoří migrace pro danou aplikaci',
+        'python manage.py startapp <app_name>': 'Vytvoří novou Django aplikaci',
         'npm list': 'Zobrazí seznam nainstalovaných knihoven',
         'npm list <knihovna>': 'Zobrazí informace o konkrétní knihovně',
         'pip': 'Správce Python balíčků',
@@ -49,8 +49,17 @@ export class CommandHandler {
             if (args[0] === '--version') {
                 return this.pythonVersion();
             }
-            if (args[0] === 'manage.py' && args[1] === 'makemigrations') {
-                return this.makemigrations(args[2]);
+            if (args[0] === 'manage.py') {
+                if (!this.isInProjectRoot()) {
+                    return 'Error: manage.py file not found in current directory.\r\nMake sure you are in the directory containing manage.py\r\n';
+                }
+                
+                if (args[1] === 'makemigrations') {
+                    return this.makemigrations(args[2]);
+                }
+                if (args[1] === 'startapp') {
+                    return this.startapp(args[2]);
+                }
             }
             return this.python();
         } else if (cmd === 'npm' && args[0] === 'list') {
@@ -263,7 +272,28 @@ export class CommandHandler {
         }
     }
 
+    private startapp(appName?: string): string {
+        if (!appName) {
+            return 'Error: You must provide an app name.\r\nUsage: python manage.py startapp <app_name>\r\n';
+        }
+
+        // Check if app already exists
+        const current = this.fs.getCurrentDirectory();
+        if (current && current[appName]) {
+            return `Error: '${appName}' already exists.\r\n`;
+        }
+
+        // Fixní hash pro 'users', jinak náhodný
+        const hash = appName === 'users' ? 'f8d9e7c6' : Math.random().toString(36).substring(2, 10);
+
+        return `${hash}\r\n`;
+    }
+
     getCurrentPath(): string {
         return this.fs.getAbsolutePath();
+    }
+
+    private isInProjectRoot(): boolean {
+        return this.fs.fileExists('manage.py');
     }
 } 
