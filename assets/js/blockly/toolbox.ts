@@ -93,7 +93,11 @@ export const toolbox =
         "contents": [
           {
             "kind": "block",
-            "type": "django_post_get"
+            "type": "django_user_function"
+          },
+          {
+            "kind": "block",
+            "type": "django_user_compare"
           }
         ]
       }

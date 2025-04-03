@@ -59,21 +59,25 @@ document.addEventListener('DOMContentLoaded', () => {
         element.innerHTML = element.innerHTML
             .replace(/&ZeroWidthSpace;/g, '')
             .replace(/​/g, '');
-            
+
         const parentPre = element.closest('pre');
         if (parentPre) {
             const copyButton = document.createElement('button');
             copyButton.className = 'copy-button';
-            
-            // Kontrola, zda existuje element s třídou filename
+
             const hasFilename = parentPre.querySelector('.filename') !== null;
             copyButton.classList.add(hasFilename ? 'copy-button-with-filename' : 'copy-button-without-filename');
-            
+
             copyButton.textContent = 'Kopírovat';
-            
+
             copyButton.addEventListener('click', async () => {
                 try {
-                    await navigator.clipboard.writeText(element.textContent);
+                    let textToCopy = element.textContent;
+                    // Pokud text začíná $, odstraníme ho
+                    if (textToCopy.startsWith('$')) {
+                        textToCopy = textToCopy.substring(1).trim();
+                    }
+                    await navigator.clipboard.writeText(textToCopy);
                     copyButton.textContent = 'Zkopírováno!';
                     setTimeout(() => {
                         copyButton.textContent = 'Kopírovat';
@@ -83,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     copyButton.textContent = 'Chyba';
                 }
             });
-            
+
             parentPre.appendChild(copyButton);
         }
     }
