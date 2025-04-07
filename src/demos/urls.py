@@ -19,6 +19,9 @@ urlpatterns = [
 	#hello world
 	path('c-<str:course>/demo-<int:demo_id>/hello_world', demos.hello_world, name='hello_world'),
 
+	#hangman
+	path('c-<str:course>/demo-<int:demo_id>/hangman', demos.hangman, name='hangman'),
+
 	#habit_tracker_1
 	path('c-<str:course>/d-<int:demo_id>/h_t_1', demos.h_t_1, name='h_t_1'), #parent html containing iframe
 	path('c-<str:course>/d-<int:demo_id>/h_t_1/iframe', demos.habit_tracker_1, name='habit_tracker_1'),

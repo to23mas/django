@@ -25,7 +25,6 @@ def cli_overview(request: HttpRequest, course_id: str) -> HttpResponse:
 		{'CLI Tasks': '#'}
 	]
 
-	__import__('pprint').pprint(cli_tasks)
 	return render(request, 'content/cli/overview.html', {
 		'course': course,
 		'clis': cli_tasks,

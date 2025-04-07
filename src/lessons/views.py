@@ -48,7 +48,7 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		return redirect('projects:overview', course=course, sort_type='all')
 
 	chapter_progress = ProgressStorage().get_content_progress(course, username, 'chapters')
-	if chapter_progress[str(chapter.id)] == 'lock':
+	if chapter_progress[str(project_id)][str(chapter.id)] == 'lock':
 		messages.warning(request, 'Kapitola ještě není odemčena!')
 		return redirect('projects:overview', course=course, sort_type='all')
 

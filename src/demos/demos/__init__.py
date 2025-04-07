@@ -9,3 +9,4 @@ from .chat import *
 from .library_base import *
 from .library_rest import *
 from .library_graphql import *
+from .hangman import *

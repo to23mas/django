@@ -191,6 +191,7 @@ class ProgressStorage(MongoStorage):
 		}) == 1
 
 	def is_chapter_open(self, username: str, db: str, project_id: int, lesson_id: int, chapter_id: int) -> bool:
+		print(lesson_id)
 		return MongoStorage().database[db].progress.count_documents({
 			'_id': username,
 			f'projects.{project_id}': 'open',

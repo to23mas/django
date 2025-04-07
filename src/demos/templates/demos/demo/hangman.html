@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% if project_url %}
+        <div class="w-2/3 mx-auto mt-24">
+            <a href="{{project_url}}" class="text-blue-500 hover:underline">Přejít k projektu</a>
+        </div>
+    {% endif %}
+
+    <div class="border border-black w-2/3 mx-auto my-auto mt-5 bg-white shadow-2xl" style="height: calc(100vh - 300px);">
+        <nav class="bg-blue-500 p-4 text-white">
+            <div class="max-w-4xl mx-auto flex justify-between items-center">
+                <h3 class="text-xl font-semibold">Hangman Game</h3>
+            </div>
+        </nav>
+
+        <div class="max-w-2xl mx-auto p-4">
+            <div class="mb-8">
+                <p class="text-2xl font-mono mb-4" id="word-display">_ _ _ _ _ _ _</p>
+                <p class="text-lg" id="remaining-guesses">Remaining guesses: 6</p>
+            </div>
+
+            <div id="keyboard" class="grid grid-cols-7 gap-2"></div>
+
+            <div id="game-over" class="text-center hidden">
+                <p class="text-xl mb-4" id="game-result"></p>
+                <button id="play-again" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                    Play Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const words = ['HANGMAN', 'JAVASCRIPT', 'PYTHON', 'PROGRAMMING', 'COMPUTER'];
+    let currentWord = '';
+    let guessedLetters = new Set();
+    let remainingGuesses = 6;
+    let gameActive = true;
+
+    const wordDisplay = document.getElementById('word-display');
+    const remainingGuessesDisplay = document.getElementById('remaining-guesses');
+    const keyboard = document.getElementById('keyboard');
+    const gameOver = document.getElementById('game-over');
+    const gameResult = document.getElementById('game-result');
+    const playAgainBtn = document.getElementById('play-again');
+
+    function initializeGame() {
+        currentWord = words[Math.floor(Math.random() * words.length)];
+        guessedLetters.clear();
+        remainingGuesses = 6;
+        gameActive = true;
+        gameOver.classList.add('hidden');
+        updateDisplay();
+        createKeyboard();
+    }
+
+    function updateDisplay() {
+        wordDisplay.textContent = currentWord
+            .split('')
+            .map(letter => guessedLetters.has(letter) ? letter : '_')
+            .join(' ');
+        remainingGuessesDisplay.textContent = `Remaining guesses: ${remainingGuesses}`;
+    }
+
+    function createKeyboard() {
+        keyboard.innerHTML = '';
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(letter => {
+            const button = document.createElement('button');
+            button.textContent = letter;
+            button.className = `p-2 text-center rounded ${
+                guessedLetters.has(letter)
+                    ? 'bg-gray-300'
+                    : 'bg-blue-500 text-white hover:bg-blue-600'
+            }`;
+            button.disabled = guessedLetters.has(letter);
+            button.addEventListener('click', () => handleGuess(letter));
+            keyboard.appendChild(button);
+        });
+    }
+
+    function handleGuess(letter) {
+        if (!gameActive || guessedLetters.has(letter)) return;
+
+        guessedLetters.add(letter);
+        if (!currentWord.includes(letter)) {
+            remainingGuesses--;
+        }
+
+        updateDisplay();
+        createKeyboard();
+        checkGameStatus();
+    }
+
+    function checkGameStatus() {
+        const hasWon = currentWord.split('').every(letter => guessedLetters.has(letter));
+        const hasLost = remainingGuesses === 0;
+
+        if (hasWon || hasLost) {
+            gameActive = false;
+            gameOver.classList.remove('hidden');
+            gameResult.textContent = hasWon ? 'Congratulations! You won!' : 'Game Over!';
+        }
+    }
+
+    playAgainBtn.addEventListener('click', initializeGame);
+    initializeGame();
+});
+</script>
+{% endblock %} 

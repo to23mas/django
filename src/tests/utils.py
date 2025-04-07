@@ -93,6 +93,12 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 			ProgressStorage().unlock_project(course, username, test_data.unlock_project)
 			ProgressStorage().unlock_lesson(username, course, test_data.unlock_lesson, test_data.unlock_project)
 			ProgressStorage().unlock_chapter(username, course, test_data.unlock_chapter, test_data.unlock_project)
+		else:
+			#unlock inside current
+			if (test_data.unlock_lesson != 0):
+				ProgressStorage().unlock_lesson(username, course, test_data.unlock_lesson, test_data.current_project)
+			if (test_data.unlock_chapter != 0):
+				ProgressStorage().unlock_chapter(username, course, test_data.unlock_chapter, test_data.current_project)
 
 		if (test_data.finish_project != 0):
 			ProgressStorage().finish_project(course, username, test_data.finish_project)

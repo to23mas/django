@@ -51,7 +51,6 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 		return redirect('projects:overview', course=course, sort_type='all')
 
 	user_progress = ProgressStorage().get_user_progress_by_course(username, course)
-	__import__('pprint').pprint(user_progress)
 	user_progress = {
 		'_id': user_progress['_id'],
 		'projects': user_progress['projects'],
@@ -116,7 +115,6 @@ def get_vis_chapters(chapters: List[ChapterData] | None, progress: Dict | None, 
 	if chapters is None or progress is None:
 		return (None, None)
 
-	__import__('pprint').pprint(progress)
 	for chapter in chapters:
 		edges.append({'from': f'c-{chapter.id}', 'to': chapter.lesson_id})
 		chapter_status = progress['chapters'][str(chapter.id)]
