@@ -29,9 +29,20 @@
             {% if user.has_usable_password %}
                 <a href="{% url 'admin:password_change' %}">Change password</a> /
             {% endif %}
-            <a href="{% url 'admin:logout' %}">Log out</a>
+					<form id="logout-form" method="post" action="{% url 'users:logout' %}">
+					{% csrf_token %}
+					<button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+						Log out
+					</button>
             <button class="theme-toggle">🌓</button>
+					</form>
         {% endif %}
+					<form id="logout-form" method="post" action="{% url 'users:logout' %}">
+					{% csrf_token %}
+					<button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+						Log out
+					</button>
+					</form>
     {% endif %}
 </div>
-{% endblock %} 
+{% endblock %}
