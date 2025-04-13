@@ -8,6 +8,8 @@ urlpatterns = [
 	path('users_progress', admin_users_overview, name='admin_users_overview'),
 	path('users_progress/<str:username>', admin_user_progress_detail, name='admin_user_progress_detail'),
     path('users_progress/<str:username>/<str:course>', admin_user_progress_course_detail, name='admin_user_progress_course_detail'),
+    path('course_progress', course_progress_overview, name='course_progress_overview'),
+    path('course_progress/<str:course_id>', course_progress_detail, name='course_progress_detail'),
 
 	path('course/<str:course_id>/edit', course_edit, name='admin_course_edit'),
 	path('course/<str:course_id>/delete', course_delete, name='admin_course_delete'),

@@ -29,6 +29,49 @@ def admin_users_overview(request: HttpRequest) -> HttpResponse:
       'breadcrumbs': breadcrumbs,
     })
 
+@login_required
+def course_progress_overview(request: HttpRequest) -> HttpResponse:
+    course_storage = CourseStorage()
+    courses = course_storage.find_courses()
+
+
+    breadcrumbs = [{'Home': '/admin/'}, {'Course progress': '#'}]
+    return render(request, "content/progress/course_progress.html", {
+      'courses': courses,
+      'breadcrumbs': breadcrumbs,
+    })
+
+@login_required
+def course_progress_detail(request: HttpRequest, course_id: str) -> HttpResponse:
+    course_storage = CourseStorage()
+    progress_storage = ProgressStorage()
+    test_storage = TestStorage()
+    course = course_storage.get_course_by_id(course_id)
+    
+    students_group = Group.objects.get(name='students')
+    total_students = User.objects.filter(groups=students_group).count()
+    
+    enrolled_students = progress_storage.find_users_by_course(course.database)
+    enrolled_students_count = len(enrolled_students)
+
+    enrollment_stats = {
+        'total_students': total_students,
+        'enrolled_count': enrolled_students_count,
+        'enrolled_students': enrolled_students,
+        'enrollment_rate': (enrolled_students_count / total_students * 100) if total_students > 0 else 0
+    }
+
+
+    tests = test_storage.find_tests(course.database)
+    breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/course_progress'}, {'Courses': '#'}]
+    context = {
+        'tests': tests,
+        'course': course,
+        'breadcrumbs': breadcrumbs,
+        'enrollment_stats': enrollment_stats,
+    }
+    return render(request, "content/progress/course_progress_detail.html", context)
+
 
 @login_required
 def admin_user_progress_detail(request: HttpRequest, username: str) -> HttpResponse:
@@ -92,7 +135,8 @@ def admin_user_progress_course_detail(request: HttpRequest, username: str, cours
                 if chapter:
                     new_chapters[chapter_id] = {
                         'status': status,
-                        'lesson_id': chapter.lesson_id
+                        'lesson_id': chapter.lesson_id,
+                        'unlock_type': chapter.unlock_type,
                     }
             progress['chapters'][project_id] = new_chapters
 

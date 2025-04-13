@@ -1,0 +1,53 @@
+{% extends "content/base.html" %}
+{% block content %}
+{% load static %}
+
+<style>
+	th { padding: 5px !important;}
+</style>
+
+<main id="content-start" class="content" tabindex="-1">
+	<div id="content" class="">
+		<h1>List of courses</h1>
+		<div id="content-main">
+			<div class="module filtered" id="changelist">
+				<div class="changelist-form-container">
+					<div class="results">
+						<table id="result_list">
+							<thead>
+								<tr>
+									<th scope="col">
+										<div class="text">course</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">database</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Actions</div>
+										<div class="clear"></div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for c in courses %}
+								<tr>
+									<td>{{ c.title }}</td>
+									<td>{{ c.database }}</td>
+									<td style="width: 10%;">
+										<a href="{% url 'course_progress_detail' course_id=c.id %}"><img src="{% static 'admin/img/icon-viewlink.svg' %}" alt="View Progress"></a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br class="clear">
+	</div>
+	<div id="footer"></div>
+</main>
+{% endblock %}

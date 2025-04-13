@@ -6,6 +6,10 @@ from domain.data.lessons.LessonStorage import LessonStorage
 
 register = template.Library()
 
+@register.filter
+def split(value, arg):
+    return value.split(arg)
+
 @register.simple_tag
 def get_chapter_title(course_id, project_id, chapter_id):
     chapter_storage = ChapterStorage()

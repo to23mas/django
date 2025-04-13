@@ -19,6 +19,11 @@ class ProgressStorage(MongoStorage):
 	def get_user_progress_by_course(self, username: str, course: str) -> dict | None:
 		return MongoStorage().database[course].progress.find_one({"_id": username})
 
+
+	def find_users_by_course(self, course: str) -> dict | None:
+		return list(MongoStorage().database[course].progress.find({}))
+
+
 	def get_content_progress(self, db: str, username: str, content: str) -> dict :
 		result = MongoStorage().database[db].progress.find(
 				{ '_id': username },
@@ -191,7 +196,6 @@ class ProgressStorage(MongoStorage):
 		}) == 1
 
 	def is_chapter_open(self, username: str, db: str, project_id: int, lesson_id: int, chapter_id: int) -> bool:
-		print(lesson_id)
 		return MongoStorage().database[db].progress.count_documents({
 			'_id': username,
 			f'projects.{project_id}': 'open',

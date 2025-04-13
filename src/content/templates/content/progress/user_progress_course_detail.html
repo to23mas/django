@@ -4,161 +4,243 @@
 {% block content %}
 
 <style>
+	:root {
+		--color-success: #4CAF50;
+		--color-info: #2196F3;
+		--color-warning: #FFC107;
+		--color-danger: #fa1212;
+		--color-disabled: #9E9E9E;
+		--bg-dark: #1e1e1e;
+		--bg-darker: #171717;
+		--text-primary: #ffffff;
+		--text-secondary: #aaaaaa;
+		--border-radius: 12px;
+	}
+
 	.section {
-		margin-bottom: 30px;
+		margin-bottom: 40px;
+		background: var(--bg-darker);
+		border-radius: var(--border-radius);
+		padding: 24px;
 	}
+
 	.section-title {
-		font-size: 1.2em;
-		margin-bottom: 15px;
-		padding-bottom: 5px;
-		border-bottom: 1px solid #eee;
+		font-size: 1.4em;
+		font-weight: 600;
+		color: var(--text-primary);
+		margin-bottom: 20px;
+		padding-bottom: 10px;
+		border-bottom: 2px solid #333;
 	}
+
 	.project-list {
 		display: grid;
-		grid-template-columns: repeat(5, 1fr);
-		gap: 20px;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 24px;
 	}
+
 	.project-item {
-		padding: 15px;
-		border-radius: 8px;
-	}
-	.project-item h3 {
-		margin: 0;
-		font-size: 1.1em;
-		margin-bottom: 10px;
-	}
-	.lesson-list {
-		margin-left: 20px;
-		margin-top: 10px;
-	}
-	.lesson-item {
-		margin-bottom: 10px;
-	}
-	.lesson-title {
-		font-weight: bold;
-		color: #666;
-	}
-	.chapter-list {
-		margin-left: 20px;
-		margin-top: 5px;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 5px;
-	}
-	.chapter-pill {
-		padding: 3px 10px;
-		border-radius: 15px;
-		font-size: 0.9em;
-		text-decoration: none;
-	}
-	.chapter-done {
-		background-color: #4CAF50;
-		color: white !important;
-	}
-	.chapter-open { 
-		background-color: #FFC107;
-		color: black !important;
-	}
-	.chapter-lock {
-		background-color: #9E9E9E;
-		color: white !important;
-	}
-	.test-list {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 20px;
+		background: var(--bg-dark);
 		padding: 20px;
-	}
-	.test-item {
-		background: #1e1e1e;
-		border-radius: 12px;
-		padding: 20px;
+		border-radius: var(--border-radius);
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 		transition: transform 0.2s, box-shadow 0.2s;
 	}
+
+	.project-item:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+	}
+
+	.project-item h3 {
+		margin: 0;
+		font-size: 1.2em;
+		color: var(--text-primary);
+		margin-bottom: 15px;
+	}
+
+	.lesson-title {
+		font-weight: 600;
+		color: var(--text-secondary);
+		display: block;
+		margin-bottom: 10px;
+		margin-top: 15px;
+	}
+
+	.chapter-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.chapter-pill {
+		padding: 6px 12px;
+		border-radius: 20px;
+		font-size: 0.9em;
+		text-decoration: none;
+		transition: transform 0.2s;
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+
+	.chapter-pill:hover {
+		transform: translateY(-1px);
+	}
+
+	.chapter-done {
+		background-color: var(--color-success);
+		color: white !important;
+	}
+
+	.chapter-open {
+		background-color: var(--color-warning);
+		color: black !important;
+	}
+
+	.chapter-lock {
+		background-color: var(--color-disabled);
+		color: white !important;
+	}
+
+	.test-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 24px;
+	}
+
+	.test-item {
+		background: var(--bg-dark);
+		border-radius: var(--border-radius);
+		padding: 20px;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		transition: transform 0.2s, box-shadow 0.2s;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.test-item::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 4px;
+		height: 100%;
+		transition: 0.3s ease;
+	}
+
 	.test-item:hover {
 		transform: translateY(-2px);
 		box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 	}
-	.test-finish {
-		border-left: 4px solid #4CAF50;
-	}
-	.test-success {
-		border-left: 4px solid #2196F3;
-	}
-	.test-open {
-		border-left: 4px solid #FFC107;
-	}
-	.test-close {
-		border-left: 4px solid #9E9E9E;
-	}
-	.test-fail {
-		border-left: 4px solid #fa1212;
-	}
+
+	.test-finish::before { background-color: var(--color-success); }
+	.test-success::before { background-color: var(--color-info); }
+	.test-open::before { background-color: var(--color-warning); }
+	.test-close::before { background-color: var(--color-disabled); }
+	.test-fail::before { background-color: var(--color-danger); }
+
 	.test-header {
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
-		margin-bottom: 15px;
+		gap: 12px;
+		margin-bottom: 20px;
 	}
+
 	.test-title {
-		font-size: 1.2em;
+		font-size: 1.3em;
 		font-weight: 600;
-		color: #ffffff;
+		color: var(--text-primary);
 	}
+
+	.test-title a {
+		color: inherit;
+		text-decoration: none;
+		transition: color 0.2s;
+	}
+
+	.test-title a:hover {
+		color: var(--color-info);
+	}
+
 	.test-meta {
 		display: flex;
-		gap: 15px;
-		color: #888;
+		flex-wrap: wrap;
+		gap: 12px;
+		color: var(--text-secondary);
 		font-size: 0.9em;
 	}
+
 	.test-meta span {
 		display: flex;
 		align-items: center;
-		gap: 4px;
+		gap: 6px;
+		padding: 4px 8px;
+		background: rgba(255, 255, 255, 0.05);
+		border-radius: 6px;
 	}
+
 	.test-description {
-		color: #aaa;
-		font-size: 0.9em;
-		margin: 10px 0;
-		line-height: 1.4;
+		color: var(--text-secondary);
+		font-size: 0.95em;
+		line-height: 1.5;
 	}
+
 	.test-score {
-		margin-top: 15px;
-		padding-top: 15px;
+		margin-top: 20px;
+		padding-top: 20px;
 		border-top: 1px solid #333;
 	}
+
 	.test-score-value {
-		font-size: 1.4em;
+		font-size: 1.5em;
 		font-weight: 600;
-		color: #ffffff;
-		margin-bottom: 8px;
+		color: var(--text-primary);
+		margin-bottom: 12px;
 	}
+
 	.test-progress {
-		height: 6px;
-		background-color: #333;
-		border-radius: 3px;
-		margin: 10px 0;
+		height: 8px;
+		background-color: rgba(255, 255, 255, 0.1);
+		border-radius: 4px;
+		margin: 12px 0;
 		overflow: hidden;
 	}
+
 	.test-progress-bar {
 		height: 100%;
-		border-radius: 3px;
-		transition: width 0.3s ease;
+		border-radius: 4px;
+		transition: width 0.4s ease;
 	}
-	.test-finish .test-progress-bar { background-color: #4CAF50; }
-	.test-success .test-progress-bar { background-color: #2196F3; }
-	.test-open .test-progress-bar { background-color: #FFC107; }
-	.test-fail .test-progress-bar { background-color: #fa1212; }
+
+	.test-finish .test-progress-bar { background-color: var(--color-success); }
+	.test-success .test-progress-bar { background-color: var(--color-info); }
+	.test-open .test-progress-bar { background-color: var(--color-warning); }
+	.test-fail .test-progress-bar { background-color: var(--color-danger); }
+
 	.test-attempts {
-		color: #888;
+		color: var(--text-secondary);
 		font-size: 0.9em;
+		display: flex;
+		align-items: center;
+		gap: 6px;
 	}
+
 	.not-attempted {
-		color: #666;
+		color: var(--text-secondary);
 		font-style: italic;
 		text-align: center;
-		padding: 20px 0;
+		padding: 24px 0;
+		background: rgba(255, 255, 255, 0.02);
+		border-radius: 8px;
+	}
+
+	.content h1 {
+		font-size: 2em;
+		color: var(--text-primary);
+		margin-bottom: 30px;
+		padding-bottom: 15px;
+		border-bottom: 2px solid #333;
 	}
 </style>
 
@@ -185,32 +267,13 @@
 												<a href="{% url 'admin_chapter_edit' course_id=c.id project_id=project_id lesson_id=lesson.grouper chapter_id=chapter_item.0 %}"
 												   class="chapter-pill chapter-{{ chapter_item.1.status }}">
 													{{ chapter_item.0 }}: {% get_chapter_title c.id project_id chapter_item.0 %}
-												</a>
-												{% endfor %}
-											</div>
-										</div>
-										{% endfor %}
-									</div>
-								</div>
-								{% endfor %}
-							</div>
-						</div>
-						<div class="section">
-							<div class="section-title">Tasks</div>
-							<div class="project-list">
-								{% for project_id, chapters in progress.chapters.items %}
-								<div class="project-item">
-									<h3>{% get_project_name c.id project_id %}</h3>
-									<div class="lesson-list">
-										{% regroup chapters.items by 1.lesson_id as lesson_list %}
-										{% for lesson in lesson_list %}
-										<div class="lesson-item">
-											<span class="lesson-title">Lesson: {% get_lesson_title c.id project_id lesson.grouper %}</span>
-											<div class="chapter-list">
-												{% for chapter_item in lesson.list %}
-												<a href="{% url 'admin_chapter_edit' course_id=c.id project_id=project_id lesson_id=lesson.grouper chapter_id=chapter_item.0 %}"
-												   class="chapter-pill chapter-{{ chapter_item.1.status }}">
-													{{ chapter_item.0 }}: {% get_chapter_title c.id project_id chapter_item.0 %}
+													{% if chapter_item.1.unlock_type == 'cli' %}
+													💻
+													{% elif chapter_item.1.unlock_type == 'test' %}
+													🖊️
+													{% elif chapter_item.1.unlock_type == 'blockly' %}
+													🧩
+													{% endif %}
 												</a>
 												{% endfor %}
 											</div>
