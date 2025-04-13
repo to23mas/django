@@ -63,7 +63,28 @@ if __name__ == "__main__":
 			database['django'].cli.insert_one(cli)
 
 	print('[ ] - Migrating Users')
+
 	with open('/usr/src/db/student.json') as f:
+		file_data = json.load(f)
+		database['django'].progress.insert_one(file_data)
+
+	with open('/usr/src/db/student_1.json') as f:
+		file_data = json.load(f)
+		database['django'].progress.insert_one(file_data)
+
+	with open('/usr/src/db/student_2.json') as f:
+		file_data = json.load(f)
+		database['django'].progress.insert_one(file_data)
+
+	with open('/usr/src/db/student_3.json') as f:
+		file_data = json.load(f)
+		database['django'].progress.insert_one(file_data)
+
+	with open('/usr/src/db/student_4.json') as f:
+		file_data = json.load(f)
+		database['django'].progress.insert_one(file_data)
+
+	with open('/usr/src/db/student_5.json') as f:
 		file_data = json.load(f)
 		database['django'].progress.insert_one(file_data)
 

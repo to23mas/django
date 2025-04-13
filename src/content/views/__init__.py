@@ -7,3 +7,5 @@ from .blocks import *
 from .blockly import *
 from .demos import *
 from .cli import *
+from .user_progress import *
+

@@ -1,0 +1,77 @@
+{% extends "content/base.html" %}
+{% block content %}
+{% load static %}
+
+<style>
+	th { padding: 5px !important;}
+</style>
+
+<main id="content-start" class="content" tabindex="-1">
+	<div id="content" class="">
+		<h1>List of students</h1>
+		<div id="content-main">
+			<div class="module filtered" id="changelist">
+				<div class="changelist-form-container">
+					<div class="results">
+						<table id="result_list">
+							<thead>
+								<tr>
+									<th scope="col">
+										<div class="text">Username</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Email</div>
+										<div class="clear"></div>
+									</th>
+									<th scope="col">
+										<div class="text">Actions</div>
+										<div class="clear"></div>
+									</th>
+								</tr>
+
+								<form method="get">
+									{% csrf_token %}
+									<tr>
+										<th scope="col">
+											<div class="text">
+												<input type="text" name="q" value="{{ request.GET.q }}" style="width: 100%;" placeholder="Search username...">
+											</div>
+										</th>
+										<th scope="col">
+											<div class="text">
+												<input type="text" name="email" value="{{ request.GET.email }}" style="width: 100%;" placeholder="Search email...">
+											</div>
+										</th>
+										<th scope="col">
+											<button type="submit">
+												<img src="{% static 'admin/img/search.svg' %}" alt="Search">
+											</button>
+											<a href="{% url 'admin_users_overview' %}" style="margin-left: 10px;">
+												<img src="{% static 'admin/img/icon-deletelink.svg' %}" alt="Clear">
+											</a>
+										</th>
+									</tr>
+								</form>
+							</thead>
+							<tbody>
+								{% for user in users %}
+								<tr>
+									<td>{{ user.username }}</td>
+									<td>{{ user.email }}</td>
+									<td style="width: 10%;">
+										<a href="{% url 'admin_user_progress_detail' username=user.username %}"><img src="{% static 'admin/img/icon-viewlink.svg' %}" alt="View Progress"></a>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br class="clear">
+	</div>
+	<div id="footer"></div>
+</main>
+{% endblock %}

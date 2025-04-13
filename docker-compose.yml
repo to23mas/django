@@ -58,20 +58,12 @@ services:
       - ./src/:/usr/src/app
     command: >
       sh -c "
-             python manage.py makemigrations sessions &&
-             python manage.py makemigrations auth &&
-             python manage.py makemigrations contenttypes &&
-             python manage.py makemigrations admin &&
-             python manage.py migrate sessions &&
-             python manage.py migrate auth &&
-             python manage.py migrate contenttypes &&
-             python manage.py migrate admin &&
              python manage.py makemigrations &&
-             python manage.py makemigrations demos &&
              python manage.py migrate &&
              python manage.py loaddata demo_data.json &&
-             python manage.py createsuperuser --username admin --email admin@admin.com --noinput ;
-             python /usr/src/db/migrations/migrate.py"
+             python manage.py loaddata users.json &&
+             python /usr/src/db/migrations/migrate.py &&
+             python manage.py createsuperuser --username admin --email admin@admin.com --noinput"
     depends_on:
       db:
         condition: service_healthy
