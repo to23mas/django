@@ -127,12 +127,17 @@ def handle_success(username: str, course_db: str, project: ProjectData, chapter:
 		case 'error':
 			return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
 		case 'success':
-			url = reverse('lessons:lesson', kwargs={
-				'course': course_db,
-				'project_id': project.id,
-				'lesson_id': chapter.lesson_id,
-				'chapter_id': chapter.id
-			})
+			next_chapter_data = ChapterStorage().get_chapter_by_id(chapter.unlock_id, course_db, project.database)
+			if next_chapter_data is None:
+				url = reverse('projects:overview', course=course_db, sort_type='all')
+			else:
+				url = reverse('lessons:lesson', kwargs={
+					'course': course_db,
+					'project_id': project.id,
+					'lesson_id': next_chapter_data.lesson_id,
+					'chapter_id': next_chapter_data.id
+				})
+
 			return JsonResponse({
 				'status': 'success',
 				'redirect': True,

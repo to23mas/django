@@ -48,14 +48,14 @@ def validate_cli(request: HttpRequest) -> JsonResponse:
 				ProgressStorage().finish_lesson(username, course_db, chapter.lesson_id, project_id)
 
 			if next_chapter is None:
-				return JsonResponse({'status': 'success', 'message': 'Správná odpověď!'})
-
-			url = reverse('lessons:lesson', kwargs={
-				'course': course_db,
-				'project_id': project_id,
-				'lesson_id': chapter.lesson_id,
-				'chapter_id': chapter.id
-			})
+				url = reverse('projects:overview', course=course_db, sort_type='all')
+			else: 
+				url = reverse('lessons:lesson', kwargs={
+					'course': course_db,
+					'project_id': project_id,
+					'lesson_id': next_chapter.lesson_id,
+					'chapter_id': next_chapter.id
+				})
 			return JsonResponse({
 				'status': 'success',
 				'redirect': True,

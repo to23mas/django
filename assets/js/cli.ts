@@ -179,10 +179,16 @@ export function initCli() {
                 const data = await response.json();
                 if (data.status === 'success') {
                     if (data.redirect) {
+					const nextButtonContainer = document.getElementById('nextButtonContainer');
+                        if (nextButtonContainer) {
+                            const anchor = document.createElement('a');
+                            anchor.href = data.url;
+                            anchor.className = 'green_button';
+                            anchor.textContent = 'Další Kapitola';
+                            nextButtonContainer.innerHTML = '';
+                            nextButtonContainer.appendChild(anchor);
+                        }
                         addBlocklyFlashMessage('Správně.', true);
-                        setTimeout(() => {
-                            window.location.href = data.url;
-                        }, 1000);
                     } else {
                         addBlocklyFlashMessage('Správně.', true);
                     }

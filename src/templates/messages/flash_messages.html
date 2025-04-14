@@ -1,4 +1,4 @@
-<div class="fl-placement messages border-gray-200 fixed top-4 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2 w-full sm:w-auto px-4 sm:px-0">
+<div class="fl-placement messages border-gray-200 fixed top-16 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2 w-full sm:w-auto px-4 sm:px-0">
 	{% for message in messages %}
 	<div id="alert-{{forloop.counter}}" class="fl {% if message.tags == 'warning' %} fl-warning {% endif %} {% if message.tags == 'error' %} fl-error {% endif %} {% if message.tags == 'success' %} fl-success {% endif %} " role="{{message.tags}}">
 		<svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">

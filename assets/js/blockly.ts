@@ -143,7 +143,16 @@ export function initBlockly() {
 				addBlocklyFlashMessage(`${result.message}`);
 			} else {
 				if (result.redirect) {
-					window.location.href = result.url;
+					const nextButtonContainer = document.getElementById('nextButtonContainer');
+					if (nextButtonContainer) {
+						const anchor = document.createElement('a');
+						anchor.href = result.url;
+						anchor.className = 'green_button';
+						anchor.textContent = 'Další Kapitola';
+						nextButtonContainer.innerHTML = '';
+						nextButtonContainer.appendChild(anchor);
+					}
+					addBlocklyFlashMessage('Správně.', true);
 				} else {
 					addBlocklyFlashMessage('Správně.', true);
 				}
