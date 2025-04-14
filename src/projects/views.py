@@ -27,8 +27,30 @@ def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
 	if not projects_collection:
 		messages.warning(request, 'V tomto kurzu nebyly nalezeny žádné projekty.')
 
+	projects_with_progress = []
+	for project in projects_collection:
+		user_progress = ProgressStorage().get_user_progress_by_course(username, course)
+		if user_progress:
+			lessons_progress = user_progress['lessons'][str(project.id)]
+			chapters_progress = user_progress['chapters'][str(project.id)]
+			
+			total_items = len(lessons_progress) + len(chapters_progress)
+			completed_items = sum(1 for status in lessons_progress.values() if status == 'done')
+			completed_items += sum(1 for status in chapters_progress.values() if status == 'done')
+			
+			progress_percentage = (completed_items / total_items * 100) if total_items > 0 else 0
+			projects_with_progress.append({
+				'project': project,
+				'progress': round(progress_percentage)
+			})
+		else:
+			projects_with_progress.append({
+				'project': project,
+				'progress': 0
+			})
+
 	return render(request, 'projects/overview.html', {
-		'projects': projects_collection,
+		'projects': projects_with_progress,
 		'course': course,
 		'username': username
 	})
