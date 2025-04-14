@@ -52,8 +52,8 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 	lesson_id = int(str(request.POST.get('lesson_id')))
 	project_id = int(str(request.POST.get('project_id')))
 	course_db = str(request.POST.get('course'))
+	action = str(request.POST.get('action', 'complete'))
 
-	# Validation part
 	if request.method != 'POST':
 		return redirect('courses:overview')
 
@@ -88,12 +88,16 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 		ProgressStorage().finish_lesson(username, course_db, chapter.lesson_id, project_id)
 
 	if next_chapter_data is None:
-		#last chapter in project
-		# finish_project()
-		# unlock_project()
-		## probably unlock next project
-		messages.warning(request, 'tak tady by mělo dojít ke splnění celého projektu, a odemčení dalšího')
-		return redirect('projects:overview', course=course_db, sort_type='all')
+		ProgressStorage().finish_project(course_db, username, project_id)
+		messages.success(request, 'Projekt ůspěšně dokončen')
+		if action == 'complete_and_next':
+			return redirect('projects:overview', course=course_db, sort_type='all')
+		else:
+			return redirect('lessons:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)
+			
 
 	messages.success(request, message)
-	return redirect('lessons:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)
+	if action == 'complete_and_next':
+		return redirect('lessons:lesson', course=course_db, project_id=project_id, lesson_id=next_chapter_data.lesson_id, chapter_id=next_chapter_data.id)
+	else:
+		return redirect('lessons:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)

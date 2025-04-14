@@ -1,12 +1,18 @@
-			<form action="{% url 'user_progress:unlock_chapter' %}" class="float-end" method="post">
-				{% csrf_token %}
-				<input type="hidden" name="chapter_id" value="{{ chapter.id }}">
-				<input type="hidden" name="lesson_id" value="{{ chapter.lesson_id }}">
-				<input type="hidden" name="project_id" value="{{ project.id }}">
-				<input type="hidden" name="course" value="{{ course }}">
-				<button type="submit"
-					class="blue_button">
-					Odemknout další kapitolu
-				</button>
-			</form>
-
+<form action="{% url 'user_progress:unlock_chapter' %}" class="float-end" method="post" id="unlockForm">
+	{% csrf_token %}
+	<input type="hidden" name="chapter_id" value="{{ chapter.id }}">
+	<input type="hidden" name="lesson_id" value="{{ chapter.lesson_id }}">
+	<input type="hidden" name="project_id" value="{{ project.id }}">
+	<input type="hidden" name="course" value="{{ course }}">
+	<input type="hidden" name="action" id="actionType" value="">
+	<button type="submit"
+		class="gray_button"
+		onclick="document.getElementById('actionType').value='complete'">
+		Splinit kapitolu
+	</button>
+	<button type="submit"
+		class="blue_button"
+		onclick="document.getElementById('actionType').value='complete_and_next'">
+		Splinit a přejít na další kapitolu
+	</button>
+</form>
