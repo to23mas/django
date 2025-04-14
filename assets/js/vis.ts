@@ -51,7 +51,7 @@ export function initVisNetwork() {
 					hover: true,
 					navigationButtons: true,
 					keyboard: true,
-					zoomView: true,
+					zoomView: false,
 					dragView: true
 				}
 			}
@@ -102,5 +102,13 @@ export function initVisNetwork() {
 			// Optionally disable physics after stabilization
 			network.setOptions({ physics: false });
 		});
+
+		network.fit({
+			animation: {
+				duration: 1000,
+				easingFunction: 'easeInOutQuad'
+			}
+		});
+		
 	});
 }

@@ -20,7 +20,7 @@
 	</div>
 
 	<div class="w-11/12 md:w-3/4 mx-auto mt-10 mb-10">
-		<div style="height: 70vh;" class="rounded-xl shadow-lg border border-gray-200 bg-white" id="projectNetwork"></div>
+		<div style="height: 70vh;" class="rounded-xl shadow-lg border border-gray-200 bg-white p-4" id="projectNetwork"></div>
 
 		<div class="mt-10 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
 			<h3 class="text-2xl font-bold mb-6">Legenda</h3>
@@ -31,11 +31,13 @@
 						<div class="w-fit px-6 py-3" style="
 							border: 3px solid #34c6eb;
 							border-radius: 50%;
+							box-shadow: 0 2px 4px rgba(52, 198, 235, 0.2);
 							">Kapitola
 						</div>
 						<div class="px-6 py-3 rounded-md" style="
 							background-color: #34c6eb;
 							border: 1px solid black;
+							box-shadow: 0 2px 4px rgba(52, 198, 235, 0.2);
 							">Lekce
 						</div>
 					</div>
@@ -47,11 +49,13 @@
 						<div class="w-fit px-6 py-3" style="
 							border: 3px solid #34eb40;
 							border-radius: 50%;
+							box-shadow: 0 2px 4px rgba(52, 235, 64, 0.2);
 							">Kapitola
 						</div>
 						<div class="px-6 py-3 rounded-md" style="
 							background-color: #34eb40;
 							border: 1px solid black;
+							box-shadow: 0 2px 4px rgba(52, 235, 64, 0.2);
 							">Lekce
 						</div>
 					</div>
@@ -63,11 +67,13 @@
 						<div class="w-fit px-6 py-3" style="
 							border: 3px solid #cccccc;
 							border-radius: 50%;
+							box-shadow: 0 2px 4px rgba(204, 204, 204, 0.2);
 							">Kapitola
 						</div>
 						<div class="px-6 py-3 rounded-md" style="
 							background-color: #cccccc;
 							border: 1px solid black;
+							box-shadow: 0 2px 4px rgba(204, 204, 204, 0.2);
 							">Lekce
 						</div>
 					</div>
@@ -76,9 +82,9 @@
 				<div class="bg-white rounded-lg p-4 border border-gray-100 shadow-sm">
 					<div class="font-medium text-gray-700 mb-3">Ikony:</div>
 					<div class="text-lg leading-relaxed">
-						<div>🧩 programovací úkol</div>
-						<div>🖊️ test</div>
-						<div>💻 CLI</div>
+						<div class="flex items-center gap-2"><span class="text-2xl">🧩</span> programovací úkol</div>
+						<div class="flex items-center gap-2"><span class="text-2xl">🖊️</span> test</div>
+						<div class="flex items-center gap-2"><span class="text-2xl">💻</span> CLI</div>
 					</div>
 				</div>
 			</div>
@@ -95,7 +101,28 @@
 			label: '{{chapter.label}}',
 			url: '{{chapter.url}}',
 			color: {border: '{{chapter.color}}', background: '#ffffff'},
-			borderWidth: 3
+			borderWidth: 3,
+			font: { 
+				size: 16, 
+				color: '#333333',
+				face: 'system-ui, -apple-system, sans-serif',
+				bold: true
+			},
+			shadow: {
+				enabled: true,
+				color: 'rgba(0,0,0,0.2)',
+				size: 6,
+				x: 2,
+				y: 4
+			},
+			size: 30,
+			chosen: {
+				node: function(values, id, selected, hovering) {
+					values.shadowSize = 8;
+					values.shadowX = 3;
+					values.shadowY = 6;
+				}
+			}
 		});
 	{% endfor %}
 	{% for lesson in l %}
@@ -104,8 +131,28 @@
 			shape: 'box',
 			label: '{{lesson.label}}',
 			color: {background: '{{lesson.color}}', border: 'black'},
-			//font: {size: 25},
-			margin: 10,
+			font: { 
+				size: 16, 
+				color: '#333333',
+				face: 'system-ui, -apple-system, sans-serif',
+				bold: true
+			},
+			margin: 12,
+			borderRadius: 4,
+			shadow: {
+				enabled: true,
+				color: 'rgba(0,0,0,0.2)',
+				size: 6,
+				x: 2,
+				y: 4
+			},
+			chosen: {
+				node: function(values, id, selected, hovering) {
+					values.shadowSize = 8;
+					values.shadowX = 3;
+					values.shadowY = 6;
+				}
+			},
 			url: '#'
 		});
 	{% endfor %}
@@ -115,14 +162,40 @@
 		edges_parsed.push({
 			from: {{edge.from}},
 			to: {{edge.to}},
-			dashes: true,
-			arrows: {to: {enabled: true}}
+			dashes: [5, 5],
+			arrows: {
+				to: {
+					enabled: true,
+					scaleFactor: 0.7,
+					type: 'arrow'
+				}
+			},
+			color: { 
+				color: '#999999',
+				hover: '#666666',
+				highlight: '#666666'
+			},
+			width: 1.5,
+			smooth: {
+				enabled: false,
+				type: 'continuous'
+			}
 		});
 	{% endfor %}
 	{% for edge in chedges %}
 		edges_parsed.push({
 			from: '{{ edge.from }}',
-			to: {{ edge.to }}
+			to: {{ edge.to }},
+			color: { 
+				color: '#666666',
+				hover: '#444444',
+				highlight: '#444444'
+			},
+			width: 1.5,
+			smooth: {
+				enabled: false,
+				type: 'continuous'
+			}
 		});
 	{% endfor %}
 
