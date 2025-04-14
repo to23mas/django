@@ -18,9 +18,11 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 		return redirect('courses:overview')
 
 	available_demos_ids = []
+	project_states = {}
 	for project_id, project_state in user_progress['projects'].items():
 		if (project_state != 'lock'):
 			available_demos_ids.append(int(project_id))
+			project_states[int(project_id)] = project_state
 
 	if available_demos_ids is None or len(available_demos_ids) == 0:
 		messages.success(request, 'V tuto chvíli nemáš žádné dostupné ukázky projektů')
@@ -29,9 +31,16 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 		})
 
 	available_demos = DemoStorage().find_demos_for_overview(course, available_demos_ids)
+	
+	demos_with_states = []
+	for demo in available_demos:
+		demos_with_states.append({
+			'demo': demo,
+			'state': project_states.get(demo.project_id, 'open')
+		})
 
 	return render(request, 'demos/overview.html', {
-		'demos': available_demos,
+		'demos': demos_with_states,
 		'username': username,
 		'course': course,
 	})

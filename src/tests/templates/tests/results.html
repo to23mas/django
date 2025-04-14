@@ -1,70 +1,94 @@
 {% extends "base.html" %}
 {% load test_tags %}
 
-	{% block content %}
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="relative">
+            <div class="absolute -top-2 -right-2">
+                {% if test_progress.state == 'finish' %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-green-700" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z"/>
+                </svg>
+                {% elif test_progress.state == 'success' %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-green-600" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.393 7.5l-5.643 5.784-2.644-2.506-1.856 1.858 4.5 4.364 7.5-7.643-1.857-1.857z"/>
+                </svg>
+                {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-red-500" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1 6h2v8h-2v-8zm0 10h2v2h-2v-2z"/>
+                </svg>
+                {% endif %}
+            </div>
+        </div>
 
-	<div class="chapter_block mx-auto md:w-4/6 mb-6 mt-6 {% if test_progress.state == 'finish' or test_progress.state == 'success' %} !bg-green-100 {% else %} !bg-red-100 {% endif %}">
-		<h2 class="text-4xl font-extrabold">{{ test_data.title }}</h2>
-		<br>
-		<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-			{{test_data.description}}
-		</p>
-		{%if test_progress.state != 'finish' %}
-		<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-			Zbývající počet pokusů: {{test_progress.attempts}} z {{test_data.attempts}}
-		</p>
-		{% endif %}
-		<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-			Celkový počet absolvovaných pokusů: {{total_attempts}}
-		</p>
-		<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-			Potřebné scóre: {{test_data.success_score}}%
-		</p>
-	</div>
+        <div class="p-8">
+            <div class="{% if test_progress.state == 'finish' or test_progress.state == 'success' %}bg-green-50{% else %}bg-red-50{% endif %} rounded-lg p-6 mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ test_data.title }}</h1>
+                <p class="text-gray-600 mb-4">{{test_data.description}}</p>
+                <div class="space-y-2">
+                    {%if test_progress.state != 'finish' %}
+                    <p class="text-gray-700">
+                        <span class="font-medium">Zbývající počet pokusů:</span> {{test_progress.attempts}} z {{test_data.attempts}}
+                    </p>
+                    {% endif %}
+                    <p class="text-gray-700">
+                        <span class="font-medium">Celkový počet absolvovaných pokusů:</span> {{total_attempts}}
+                    </p>
+                    <p class="text-gray-700">
+                        <span class="font-medium">Potřebné scóre:</span> {{test_data.success_score}}%
+                    </p>
+                </div>
+            </div>
 
-	<div class="chapter_block mx-auto md:w-4/6 mb-6 mt-6">
-		<h2 class="text-2xl font-extrabold">Výsledky</h2>
-		<br>
-		<div class="flex font-sans text-base antialiased font-light leading-relaxed text-inherit">
-			<div>
-				STATUS:&nbsp
-			</div>
-			<div>
-				{% if test_progress.state == 'finish' %}
-				Test splněn na 100 % ✔️
-				{% elif test_progress.state == 'success' %}
-				Test úspěšně dokončen ✔️
-				{% else %}
-				Test zatím není splněn ❌
-				{% endif %}
-			</div>
-		</div>
-		<div class="flex font-sans text-base antialiased font-light leading-relaxed text-inherit">
-			<div>
-				Poslední dosažené skore:&nbsp
-			</div>
-			<div>
-				{{test_progress.score|last}} z {{test_data.total_points}} ({{last_percentage}}%)
-			</div>
-		</div>
-		<div class="flex font-sans text-base antialiased font-light leading-relaxed text-inherit">
-			<div>
-				Nejlepší dosažené skore:&nbsp
-			</div>
-			<div>
-				{{best_score}} z {{test_data.total_points}} ({{best_score_percentage}}%)
-			</div>
-		</div>
-		<br>
-		<div class="flex font-sans text-base antialiased font-light leading-relaxed text-inherit">
-			<div>
-				Všechny dosažené výsledky:&nbsp
-			</div>
-			<div>
-				{% for score in test_progress.score %}
-				{{score}}{% if not forloop.last %};&nbsp {% endif %}
-				{% endfor %}
-			</div>
-		</div>
-	</div>
-	{% endblock %}
+            <div class="bg-white rounded-lg p-6">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Výsledky</h2>
+                
+                <div class="space-y-6">
+                    <div class="flex items-center">
+                        <span class="font-medium text-gray-700 w-48">STATUS:</span>
+                        <span class="{% if test_progress.state == 'finish' or test_progress.state == 'success' %}text-green-600{% else %}text-red-600{% endif %} font-semibold">
+                            {% if test_progress.state == 'finish' %}
+                            Test splněn na 100 % ✔️
+                            {% elif test_progress.state == 'success' %}
+                            Test úspěšně dokončen ✔️
+                            {% else %}
+                            Test zatím není splněn ❌
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="flex items-center">
+                        <span class="font-medium text-gray-700 w-48">Poslední dosažené skore:</span>
+                        <div class="flex items-center">
+                            <span class="text-gray-900">{{test_progress.score|last}} z {{test_data.total_points}}</span>
+                            <span class="ml-2 px-2 py-1 text-sm bg-gray-100 text-gray-700 rounded">
+                                {{last_percentage}}%
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center">
+                        <span class="font-medium text-gray-700 w-48">Nejlepší dosažené skore:</span>
+                        <div class="flex items-center">
+                            <span class="text-gray-900">{{best_score}} z {{test_data.total_points}}</span>
+                            <span class="ml-2 px-2 py-1 text-sm bg-gray-100 text-gray-700 rounded">
+                                {{best_score_percentage}}%
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="border-t pt-6 mt-6">
+                        <h3 class="font-medium text-gray-700 mb-3">Historie výsledků:</h3>
+                        <div class="flex flex-wrap gap-2">
+                            {% for score in test_progress.score %}
+                            <span class="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm">{{score}}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

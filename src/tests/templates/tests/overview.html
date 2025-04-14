@@ -1,134 +1,172 @@
 {% extends "base.html" %}
 {% load test_tags %}
 
-	{% block content %}
-		{% for test in tests %}
-		{% get_test_state course username test.id as test_progress %}
-		{% compare_current_timestamp test_progress.lock_until as lock_until_result %}
-			{% if test_progress.state == 'open' %}
-			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
-				<div class="p-6">
-					<h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-						{{test.title}}
-					</h5>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						{{test.description}}
-					</p>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						Čas na napsání: {{test.time}} min
-					</p>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						Počet pokusů: {{test.attempts}}
-					</p>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						Potřebné scóre: {{test.success_score}}%
-					</p>
-					<br>
-					{% if lock_until_result <= 0 %}
-						<a href="{% url 'tests:test' course=course test_id=test.id %}"
-							class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-							Přejít k testu
-						</a>
-					{% endif %}
-				</div>
-			</div>
-			{% elif test_progress.state == 'success' %}
-			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
-				<div class="p-6 bg-green-100">
-					<h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-						{{test.title}}
-					</h5>
-					<h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-						Test je úspěšně splněn. Lze jej ale opakovat až do dosažení 100%
-					</h6>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						{{test.description}}
-					</p>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						Čas na napsání: {{test.time}} min
-					</p>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						Počet pokusů: {{test_progress.attempts}} z {{test.attempts}}
-					</p>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						Potřebné scóre: {{test.success_score}}%
-					</p>
-					{% if lock_until_result >= 1 %}
-						<p class="block font-semibold font-sans text-base antialiased leading-relaxed text-inherit">
-						Test se odemkne za {{lock_until_result}} minut
-						</p>
-					{% endif %}
-					<br>
-					{% if lock_until_result <= 0 %}
-						<a href="{% url 'tests:test' course=course test_id=test.id %}"
-							class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-							Přejít k testu
-						</a>
-					{% endif %}
-					<a href="{% url 'tests:results' course=course test_id=test.id %}"
-						class="mt-7 {% if lock_until_result <= 0 %} ml-6 {% endif %} select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-white text-black shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-						Výsledky
-					</a>
-				</div>
-			</div>
-			{% elif test_progress.state == 'finish' %}
-			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
-				<div class="p-6 bg-green-200">
-					<h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-						{{test.title}}
-					</h5>
-					<h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-						Test je úspěšně splněn.
-					</h6>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						{{test.description}}
-					</p>
-					<br>
-					<a href="{% url 'tests:results' course=course test_id=test.id %}"
-						class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-white text-black shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-						Výsledky
-					</a>
-				</div>
-			</div>
-			{% elif test_progress.state == 'fail' %}
-			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 mt-10">
-				<div class="p-6 bg-red-100">
-					<h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-						{{test.title}}
-					</h5>
-					<h6 class="block mb-2 font-sans text-xxl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-						Test prozatím není splněn. Možnost opakovat až do vyčerpání pokusů.
-					</h6>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						{{test.description}}
-					</p>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						Čas na napsání: {{test.time}} min
-					</p>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						Počet pokusů: {{test_progress.attempts}} z {{test.attempts}}
-					</p>
-					<p class="block font-sans text-base antialiased font-light leading-relaxed text-inherit">
-						Potřebné scóre: {{test.success_score}}%
-					</p>
-					{% if lock_until_result >= 1 %}
-						<p class="block font-semibold font-sans text-base antialiased leading-relaxed text-inherit">
-						Test se odemkne za {{lock_until_result}} minut
-						</p>
-					{% endif %}
-						<br>
-						{% if lock_until_result <= 0 %}
-							<a href="{% url 'tests:test' course=course test_id=test.id %}"
-								class="mt-7  select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-								Přejít k testu
-							</a>
-						{% endif %}
-						<a href="{% url 'tests:results' course=course test_id=test.id %}"
-							class="mt-7 {% if lock_until_result <= 0 %} ml-6 {% endif %} select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-white text-black shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-							Výsledky
-						</a>
-				</div>
-			</div>
-			{% endif %}
-			{% endfor %}
-			{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="space-y-6">
+        {% for test in tests %}
+        {% get_test_state course username test.id as test_progress %}
+        {% compare_current_timestamp test_progress.lock_until as lock_until_result %}
+        
+        {% if test_progress.state == 'open' %}
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col h-full">
+            <div class="relative">
+                <div class="absolute -top-2 -right-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-blue-500" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M16 2H8C4.691 2 2 4.691 2 8v13a1 1 0 001 1h13c3.309 0 6-2.691 6-6V8c0-3.309-2.691-6-6-6zm4 14c0 2.206-1.794 4-4 4H4V8c0-2.206 1.794-4 4-4h8c2.206 0 4 1.794 4 4v8z M11 6h2v8h-2zm0 10h2v2h-2z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="p-6 flex-grow flex flex-col">
+                <div class="flex-grow">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">{{test.title}}</h2>
+                    <p class="text-gray-600 mb-4">{{test.description}}</p>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><span class="font-medium">Čas na napsání:</span> {{test.time}} min</p>
+                        <p class="text-gray-600"><span class="font-medium">Počet pokusů:</span> {{test.attempts}}</p>
+                        <p class="text-gray-600"><span class="font-medium">Potřebné scóre:</span> {{test.success_score}}%</p>
+                    </div>
+                </div>
+                {% if lock_until_result <= 0 %}
+                <div class="pt-6">
+                    <a href="{% url 'tests:test' course=course test_id=test.id %}"
+                        class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                        Přejít k testu
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% elif test_progress.state == 'success' %}
+        <div class="bg-green-50 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col h-full">
+            <div class="relative">
+                <div class="absolute -top-2 -right-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-green-600" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.393 7.5l-5.643 5.784-2.644-2.506-1.856 1.858 4.5 4.364 7.5-7.643-1.857-1.857z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="p-6 flex-grow flex flex-col">
+                <div class="flex-grow">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">{{test.title}}</h2>
+                    <div class="bg-green-100 rounded-lg p-3 mb-4">
+                        <p class="text-green-800 font-semibold">Test je úspěšně splněn. Lze jej ale opakovat až do dosažení 100%</p>
+                    </div>
+                    <p class="text-gray-600 mb-4">{{test.description}}</p>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><span class="font-medium">Čas na napsání:</span> {{test.time}} min</p>
+                        <p class="text-gray-600"><span class="font-medium">Počet pokusů:</span> {{test_progress.attempts}} z {{test.attempts}}</p>
+                        <p class="text-gray-600"><span class="font-medium">Potřebné scóre:</span> {{test.success_score}}%</p>
+                        {% if lock_until_result >= 1 %}
+                        <p class="font-semibold text-green-700">Test se odemkne za {{lock_until_result}} minut</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="pt-6 flex gap-3">
+                    {% if lock_until_result <= 0 %}
+                    <a href="{% url 'tests:test' course=course test_id=test.id %}"
+                        class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200">
+                        Přejít k testu
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'tests:results' course=course test_id=test.id %}"
+                        class="inline-flex items-center px-4 py-2 bg-white text-green-700 border border-green-600 rounded-lg hover:bg-green-50 transition-colors duration-200">
+                        Výsledky
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% elif test_progress.state == 'finish' %}
+        <div class="bg-green-100 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col h-full">
+            <div class="relative">
+                <div class="absolute -top-2 -right-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-green-700" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1.959 17l-4.5-4.319 1.395-1.435 3.08 2.937 7.021-7.183 1.422 1.409-8.418 8.591z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="p-6 flex-grow flex flex-col">
+                <div class="flex-grow">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">{{test.title}}</h2>
+                    <div class="bg-green-200 rounded-lg p-3 mb-4">
+                        <p class="text-green-800 font-semibold">Test je úspěšně splněn.</p>
+                    </div>
+                    <p class="text-gray-600">{{test.description}}</p>
+                </div>
+                <div class="pt-6">
+                    <a href="{% url 'tests:results' course=course test_id=test.id %}"
+                        class="inline-flex items-center px-4 py-2 bg-white text-green-700 border border-green-600 rounded-lg hover:bg-green-50 transition-colors duration-200">
+                        Výsledky
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% elif test_progress.state == 'fail' %}
+        <div class="bg-red-50 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col h-full">
+            <div class="relative">
+                <div class="absolute -top-2 -right-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-red-500" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1 6h2v8h-2v-8zm0 10h2v2h-2v-2z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="p-6 flex-grow flex flex-col">
+                <div class="flex-grow">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">{{test.title}}</h2>
+                    <div class="bg-red-100 rounded-lg p-3 mb-4">
+                        <p class="text-red-800 font-semibold">Test prozatím není splněn. Možnost opakovat až do vyčerpání pokusů.</p>
+                    </div>
+                    <p class="text-gray-600 mb-4">{{test.description}}</p>
+                    <div class="space-y-2">
+                        <p class="text-gray-600"><span class="font-medium">Čas na napsání:</span> {{test.time}} min</p>
+                        <p class="text-gray-600"><span class="font-medium">Počet pokusů:</span> {{test_progress.attempts}} z {{test.attempts}}</p>
+                        <p class="text-gray-600"><span class="font-medium">Potřebné scóre:</span> {{test.success_score}}%</p>
+                        {% if lock_until_result >= 1 %}
+                        <p class="font-semibold text-red-700">Test se odemkne za {{lock_until_result}} minut</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="pt-6 flex gap-3">
+                    {% if lock_until_result <= 0 %}
+                    <a href="{% url 'tests:test' course=course test_id=test.id %}"
+                        class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200">
+                        Přejít k testu
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    {% endif %}
+                    <a href="{% url 'tests:results' course=course test_id=test.id %}"
+                        class="inline-flex items-center px-4 py-2 bg-white text-red-700 border border-red-600 rounded-lg hover:bg-red-50 transition-colors duration-200">
+                        Výsledky
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

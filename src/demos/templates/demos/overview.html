@@ -1,18 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-		{% for demo in demos %}
-			<div class="w-full border border-gray-200 rounded-lg shadow mx-auto md:w-4/6 my-5 ">
-				<div class="p-6">
-					<h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-						{{demo.name}}
-					</h5>
-					<br>
-					<a href="{% url 'demos:detail' course=course demo_id=demo.id %}"
-						class="mt-7 select-none font-bold text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-xs py-3 px-6 rounded-lg bg-gray-900 text-white shadow-md shadow-gray-900/10 hover:shadow-lg hover:shadow-gray-900/20 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none">
-						Přejít k ukázkovému projektu
-					</a>
-				</div>
-			</div>
-	{% endfor %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for demo_data in demos %}
+        <div class="{% if demo_data.state == 'done' %}bg-green-50{% else %}bg-white{% endif %} rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl flex flex-col h-full">
+            <div class="relative">
+                <div class="absolute -top-2 -right-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 {% if demo_data.state == 'done' %}text-green-600{% else %}text-blue-500{% endif %}" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-3 17v-10l9 5.146-9 4.854z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="p-6 flex-grow flex flex-col">
+                <div class="flex-grow">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4">{{demo_data.demo.name}}</h2>
+                    {% if demo_data.demo.description %}
+                    <p class="text-gray-600">{{demo_data.demo.description}}</p>
+                    {% endif %}
+                </div>
+                <div class="pt-6">
+                    <a href="{% url 'demos:detail' course=course demo_id=demo_data.demo.id %}"
+                        class="inline-flex items-center px-4 py-2 {% if demo_data.state == 'done' %}bg-green-600 hover:bg-green-700{% else %}bg-blue-600 hover:bg-blue-700{% endif %} text-white rounded-lg transition-colors duration-200">
+                        Přejít k ukázkovému projektu
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}
