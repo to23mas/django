@@ -47,6 +47,13 @@ export function initVisNetwork() {
 						springLength: 100
 					}
 				},
+				interaction: {
+					hover: true,
+					navigationButtons: true,
+					keyboard: true,
+					zoomView: true,
+					dragView: true
+				}
 			}
 		);
 

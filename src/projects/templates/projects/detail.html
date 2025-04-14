@@ -19,85 +19,69 @@
 		{% endif %}
 	</div>
 
-	<div style="height: 70vh; margin-left: auto; margin-right: auto;" class="cursor-grabbing border mt-10 w-3/4" id="projectNetwork"></div>
+	<div class="w-11/12 md:w-3/4 mx-auto mt-10 mb-10">
+		<div style="height: 70vh;" class="rounded-xl shadow-lg border border-gray-200 bg-white" id="projectNetwork"></div>
 
-
-	<div class="mx-auto md:w-3/4 mt-5 mb-5">
-		<h3>Legenda</h3>
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-
-			<div class="grid grid-cols-1 border p-2">
-				<div>Odemčeno:</div>
-				<div class="flex mx-auto">
-					<div class="w-fit p-4 mr-4" style="
-						border: 3px solid;
-						border-color: #34c6eb;
-						border-bottom-left-radius: 50% 50%;
-						border-bottom-right-radius: 50% 50%;
-						border-top-left-radius: 50% 50%;
-						border-top-right-radius: 50% 50%;
-						">Kapitola
+		<div class="mt-10 bg-white rounded-xl shadow-lg border border-gray-200 p-6">
+			<h3 class="text-2xl font-bold mb-6">Legenda</h3>
+			<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+				<div class="bg-white rounded-lg p-4 border border-gray-100 shadow-sm">
+					<div class="font-medium text-gray-700 mb-3">Odemčeno:</div>
+					<div class="flex items-center justify-center gap-4">
+						<div class="w-fit px-6 py-3" style="
+							border: 3px solid #34c6eb;
+							border-radius: 50%;
+							">Kapitola
+						</div>
+						<div class="px-6 py-3 rounded-md" style="
+							background-color: #34c6eb;
+							border: 1px solid black;
+							">Lekce
+						</div>
 					</div>
-					<div class="border rounded-md w-fit p-4" style="
-						background-color: #34c6eb;
-						border: 1px solid black;
-						">Lekce
+				</div>
+
+				<div class="bg-white rounded-lg p-4 border border-gray-100 shadow-sm">
+					<div class="font-medium text-gray-700 mb-3">Splněno:</div>
+					<div class="flex items-center justify-center gap-4">
+						<div class="w-fit px-6 py-3" style="
+							border: 3px solid #34eb40;
+							border-radius: 50%;
+							">Kapitola
+						</div>
+						<div class="px-6 py-3 rounded-md" style="
+							background-color: #34eb40;
+							border: 1px solid black;
+							">Lekce
+						</div>
+					</div>
+				</div>
+
+				<div class="bg-white rounded-lg p-4 border border-gray-100 shadow-sm">
+					<div class="font-medium text-gray-700 mb-3">Zamčeno:</div>
+					<div class="flex items-center justify-center gap-4">
+						<div class="w-fit px-6 py-3" style="
+							border: 3px solid #cccccc;
+							border-radius: 50%;
+							">Kapitola
+						</div>
+						<div class="px-6 py-3 rounded-md" style="
+							background-color: #cccccc;
+							border: 1px solid black;
+							">Lekce
+						</div>
+					</div>
+				</div>
+
+				<div class="bg-white rounded-lg p-4 border border-gray-100 shadow-sm">
+					<div class="font-medium text-gray-700 mb-3">Ikony:</div>
+					<div class="text-lg leading-relaxed">
+						<div>🧩 programovací úkol</div>
+						<div>🖊️ test</div>
+						<div>💻 CLI</div>
 					</div>
 				</div>
 			</div>
-
-			<div class="grid grid-cols-1 border p-2">
-				<div>Splněno:</div>
-				<div class="flex mx-auto">
-					<div class="w-fit p-4 mr-4" style="
-						border: 3px solid;
-						border-color: #34eb40;
-						border-bottom-left-radius: 50% 50%;
-						border-bottom-right-radius: 50% 50%;
-						border-top-left-radius: 50% 50%;
-						border-top-right-radius: 50% 50%;
-						">Kapitola
-					</div>
-					<div class="border rounded-md w-fit p-4" style="
-						background-color: #34eb40;
-						border: 1px solid black;
-						">Lekce
-					</div>
-				</div>
-			</div>
-
-			<div class="grid grid-cols-1 border p-2">
-				<div>Zamčeno:</div>
-				<div class="flex mx-auto">
-					<div class="w-fit p-4 mr-4" style="
-						border: 3px solid;
-						border-color: #cccccc;
-						border-bottom-left-radius: 50% 50%;
-						border-bottom-right-radius: 50% 50%;
-						border-top-left-radius: 50% 50%;
-						border-top-right-radius: 50% 50%;
-						">Kapitola
-					</div>
-					<div class="border rounded-md w-fit p-4" style="
-						background-color: #cccccc;
-						border: 1px solid black;
-						">Lekce
-					</div>
-				</div>
-			</div>
-
-			<div class="grid grid-cols-1 border p-2">
-				<div>Ikony:</div>
-				<div class="flex mx-auto">
-					<div class="w-fit p-4 mr-4">
-						🧩  programovací úkol<br>
-						🖊️ test<br>
-						💻 CLI<br>
-					</div>
-				</div>
-			</div>
-
-
 		</div>
 	</div>
 
