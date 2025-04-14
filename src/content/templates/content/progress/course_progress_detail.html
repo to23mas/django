@@ -83,6 +83,11 @@
 		color: #666;
 		font-style: italic;
 	}
+	.test-charts-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
 </style>
 
 <main id="content-start" class="content" tabindex="-1">
@@ -141,8 +146,13 @@
 				{% for test in tests %}
 				<div class="test-chart-section">
 					<h3>Test {{ test.id }}: {{ test.title }}</h3>
-					<div class="chart-container">
-						<canvas id="testStateChart{{ test.id }}"></canvas>
+					<div class="test-charts-grid">
+						<div class="chart-container">
+							<canvas id="testStateChart{{ test.id }}"></canvas>
+						</div>
+						<div class="chart-container">
+							<canvas id="testScoresChart{{ test.id }}"></canvas>
+						</div>
 					</div>
 				</div>
 				{% endfor %}
@@ -158,15 +168,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('projectDistributionChart').getContext('2d');
     
-    // Prepare data
-    const projects = [];
-    const completed = [];
-    const inProgress = [];
-    const notStarted = [];
-    
-    // Create a map of project statuses and names
-    const projectStatuses = {};
-    const projectNames = {};
+    const projects = []; const completed = []; const inProgress = []; const notStarted = [];
+    const projectStatuses = {}; const projectNames = {};
+
     {% for student in enrollment_stats.enrolled_students %}
         {% for project_id, status in student.projects.items %}
             if (!projectStatuses['{{ project_id }}']) {
@@ -177,7 +181,6 @@ document.addEventListener('DOMContentLoaded', function() {
         {% endfor %}
     {% endfor %}
     
-    // Sort project IDs numerically and create chart data
     Object.keys(projectStatuses)
         .sort((a, b) => parseInt(a) - parseInt(b))
         .forEach(projectId => {
@@ -239,7 +242,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// First create a map of all possible lessons and initialize their counts
 const lessonData = {};
 {% for student in enrollment_stats.enrolled_students %}
     {% for project_id, project_lessons in student.lessons.items %}
@@ -260,14 +262,8 @@ const lessonData = {};
 
 document.addEventListener('DOMContentLoaded', function() {
     const lessonCtx = document.getElementById('lessonDistributionChart').getContext('2d');
+    const lessons = []; const lessonCompleted = []; const lessonInProgress = []; const lessonNotStarted = [];
     
-    // Prepare data arrays for the chart
-    const lessons = [];
-    const lessonCompleted = [];
-    const lessonInProgress = [];
-    const lessonNotStarted = [];
-    
-    // Sort and process lesson data
     Object.keys(lessonData)
         .sort((a, b) => {
             const [aProject, aLesson] = a.split('_').map(Number);
@@ -346,18 +342,16 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             layout: {
                 padding: {
-                    bottom: 100  // Add padding for the labels
+                    bottom: 100  
                 }
             }
         }
     });
 });
 
-// Chapter Distribution Chart
 document.addEventListener('DOMContentLoaded', function() {
     const chapterCtx = document.getElementById('chapterDistributionChart').getContext('2d');
     
-    // First create a map of all possible chapters and initialize their counts
     const chapterData = {};
     {% for student in enrollment_stats.enrolled_students %}
         {% for project_id, project_chapters in student.chapters.items %}
@@ -376,13 +370,8 @@ document.addEventListener('DOMContentLoaded', function() {
         {% endfor %}
     {% endfor %}
 
-    // Prepare data arrays for the chart
-    const chapters = [];
-    const chapterCompleted = [];
-    const chapterInProgress = [];
-    const chapterNotStarted = [];
+    const chapters = []; const chapterCompleted = []; const chapterInProgress = []; const chapterNotStarted = [];
     
-    // Sort and process chapter data
     Object.keys(chapterData)
         .sort((a, b) => {
             const [aProject, aChapter] = a.split('_').map(Number);
@@ -461,27 +450,18 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             layout: {
                 padding: {
-                    bottom: 100  // Add padding for the labels
+                    bottom: 100 
                 }
             }
         }
     });
-});
+}); 
 
-// Test Visualizations
 document.addEventListener('DOMContentLoaded', function() {
+    const testScores = {{scores|safe}};
     {% for test in tests %}
-    // State Distribution for Test {{ test.id }}
     const testStateCtx{{ test.id }} = document.getElementById('testStateChart{{ test.id }}').getContext('2d');
-    
-    // Prepare data for test state distribution
-    const testStates{{ test.id }} = {
-        success: 0,
-        finish: 0,
-        fail: 0,
-        open: 0,
-        close: 0
-    };
+    const testStates{{ test.id }} = { success: 0, finish: 0, fail: 0, open: 0, close: 0 };
     
     {% for student in enrollment_stats.enrolled_students %}
         {% for student_test in student.tests %}
@@ -502,13 +482,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }),
             datasets: [{
                 data: Object.values(testStates{{ test.id }}),
-                backgroundColor: [
-                    '#4CAF50', // success
-                    '#2196F3', // finish
-                    '#F44336', // fail
-                    '#FFC107', // open
-                    '#9E9E9E'  // close
-                ],
+                backgroundColor: [ '#4CAF50', '#2196F3', '#F44336', '#FFC107', '#9E9E9E'  ],
                 borderWidth: 1
             }]
         },
@@ -522,6 +496,53 @@ document.addEventListener('DOMContentLoaded', function() {
                 },
                 legend: {
                     position: 'right'
+                }
+            }
+        }
+    });
+
+    const testScoresCtx{{ test.id }} = document.getElementById('testScoresChart{{ test.id }}').getContext('2d');
+    let testData{{ test.id }} = testScores[{{ test.id }}] || {};
+    let sortedScores{{ test.id }} = Object.keys(testData{{ test.id }}).sort((a, b) => a - b);
+    let scoreLabels{{ test.id }} = sortedScores{{ test.id }};
+    let scoreData{{ test.id }} = sortedScores{{ test.id }}.map(score => testData{{ test.id }}[score]);
+
+    new Chart(testScoresCtx{{ test.id }}, {
+        type: 'bar',
+        data: {
+            labels: scoreLabels{{ test.id }},
+            datasets: [{
+                label: 'Count',
+                data: scoreData{{ test.id }},
+                backgroundColor: '#2196F3',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    ticks: {
+                        stepSize: 1
+                    },
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Count'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Scores'
+                    }
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Test Scores Distribution'
                 }
             }
         }

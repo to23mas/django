@@ -61,11 +61,24 @@ def course_progress_detail(request: HttpRequest, course_id: str) -> HttpResponse
         'enrollment_rate': (enrolled_students_count / total_students * 100) if total_students > 0 else 0
     }
 
+    test_score_counts = {}
+    for student in enrolled_students:
+        if 'tests' in student:
+            for test in student['tests']:
+                test_id = test['test_id']
+                if test_id not in test_score_counts:
+                    test_score_counts[test_id] = {}
+                if 'score' in test:
+                    for score in test['score']:
+                        if score not in test_score_counts[test_id]:
+                            test_score_counts[test_id][score] = 0
+                        test_score_counts[test_id][score] += 1
 
     tests = test_storage.find_tests(course.database)
     breadcrumbs = [{'Home': '/admin/'}, {'Courses': '/admin/content/course_progress'}, {'Courses': '#'}]
     context = {
         'tests': tests,
+        'scores': test_score_counts,
         'course': course,
         'breadcrumbs': breadcrumbs,
         'enrollment_stats': enrollment_stats,
