@@ -9,3 +9,7 @@ def get_course_progress(database: str, username: str) -> bool :
 	match (progress):
 		case None: return False
 		case _: return True
+
+@register.filter
+def get_item(dictionary, key):
+	return dictionary.get(key, 0)

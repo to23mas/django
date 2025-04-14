@@ -1,32 +1,6 @@
 [
     {
         "model": "auth.user",
-        "pk": 2,
-        "fields": {
-            "username": "maintainer",
-            "email": "maintainer@example.com",
-            "password": "pbkdf2_sha256$600000$hash$hash=",
-            "is_staff": true,
-            "is_active": true,
-            "is_superuser": false,
-            "groups": [1, 2]
-        }
-    },
-    {
-        "model": "auth.user",
-        "pk": 3,
-        "fields": {
-            "username": "visitor",
-            "email": "visitor@example.com",
-            "password": "pbkdf2_sha256$600000$hash$hash=",
-            "is_staff": false,
-            "is_active": true,
-            "is_superuser": false,
-            "groups": [3]
-        }
-    },
-    {
-        "model": "auth.user",
         "pk": 4,
         "fields": {
             "username": "student_1",

@@ -9,7 +9,7 @@
 		{% for course in courses %}
 		{% get_course_progress course.database username as course_is_enrolled %}
 		{% if course.visible %}
-		<div class="course_card">
+		<div class="course_card mb-4">
 			{% if not course.open %}<div class="blur-sm"> {% endif %}
 				<div class="px-6 mt-6 shadow-lg">
 					<div class="font-bold text-xl pt-4 mb-2 ">{{ course.title }}</div>
@@ -21,6 +21,14 @@
 						<span class="course_tag">#{{tag}}</span>
 						{% endfor %}
 						<br>
+						{% if course_is_enrolled %}
+						<div class="mt-4">
+							<div class="w-full bg-gray-200 rounded-full h-2.5">
+								<div class="bg-green-400 h-2.5 rounded-full" style="width:{{ course_progress|get_item:course.database }}%"></div>
+							</div>
+							<div class="text-sm text-gray-600 mt-1">{{ course_progress|get_item:course.database }}% dokončeno</div>
+						</div>
+						{% endif %}
 						<div class="mt-5 mb-5">
 							{% if course_is_enrolled %}
 							<a class="green_button" href="{% url 'projects:overview' course=course.database sort_type='all' %}">Přejít do kurzu</a>
