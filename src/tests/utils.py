@@ -45,7 +45,7 @@ def get_test_results(user_answers: QueryDict, questionDataCollection: List[Quest
 			correct_points += points_earned
 			is_correct = points_earned == question.points
 			# Set partially correct if some but not all correct answers were selected
-			is_partially_correct = True if points_earned != 0 else False
+			is_partially_correct = True if points_earned != 0 and points_earned != question.points else False
 
 		elif question.type == QuestionType.OPEN.value:
 			processed_answer = str(user_answers.get(question.question)).lower().strip()

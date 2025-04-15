@@ -31,6 +31,7 @@ def test_results_detail(request, course_id, test_id):
         question_stats = defaultdict(lambda: {
             'total_attempts': 0,
             'correct_attempts': 0,
+            'partially_correct_attempts': 0,
             'answer_distribution': defaultdict(int),
             'has_multiple_correct': False,
             'answer_status': defaultdict(lambda: {'count': 0, 'is_partial': False}),
@@ -59,10 +60,16 @@ def test_results_detail(request, course_id, test_id):
             # Track correct answers
             if result.is_correct:
                 question_stats[question_id]['correct_attempts'] += 1
+
+            if result.is_partially_correct:
+                question_stats[question_id]['partially_correct_attempts'] += 1
             
             # Track answer distribution
-            for answer in result.selected_answers:
-                question_stats[question_id]['answer_distribution'][str(answer)] += 1
+            if not result.selected_answers:
+                question_stats[question_id]['answer_distribution']['did not answered'] = question_stats[question_id]['answer_distribution'].get('no_answer', 0) + 1
+            else:
+                for answer in result.selected_answers:
+                    question_stats[question_id]['answer_distribution'][str(answer)] += 1
         
         # Convert question stats to list
         question_stats_list = []
@@ -72,6 +79,7 @@ def test_results_detail(request, course_id, test_id):
                 'total_attempts': stats['total_attempts'],
                 'correct_attempts': stats['correct_attempts'],
                 'correct_percentage': (stats['correct_attempts'] / stats['total_attempts'] * 100) if stats['total_attempts'] > 0 else 0,
+                'partially_correct_percentage': (stats['partially_correct_attempts'] / stats['total_attempts'] * 100) if stats['total_attempts'] > 0 else 0,
                 'answer_distribution': dict(stats['answer_distribution']),
                 'has_multiple_correct': stats['has_multiple_correct'],
                 'question_type': stats['question_type'],
