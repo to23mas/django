@@ -154,6 +154,11 @@
 							<canvas id="testScoresChart{{ test.id }}"></canvas>
 						</div>
 					</div>
+					<div style="text-align: center; margin-top: 20px;">
+						<a href="{% url 'test_results_detail' course_id=course.id test_id=test.id %}" class="btn btn-primary">
+							View Detailed Results
+						</a>
+					</div>
 				</div>
 				{% endfor %}
 			</div>

@@ -90,7 +90,6 @@ export function initVisNetwork() {
 		});
 
 		network.once('stabilizationIterationsDone', function() {
-			// Physics is done - fix all nodes in place
 			const nodeIds = nodes.getIds();
 			nodes.update(nodeIds.map(id => ({
 				id: id,
@@ -99,7 +98,6 @@ export function initVisNetwork() {
 					y: true
 				}
 			})));
-			// Optionally disable physics after stabilization
 			network.setOptions({ physics: false });
 		});
 

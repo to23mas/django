@@ -8,4 +8,5 @@ from .blockly import *
 from .demos import *
 from .cli import *
 from .user_progress import *
+from .test_results import *
 

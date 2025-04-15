@@ -1,0 +1,354 @@
+{% extends "content/base.html" %}
+{% load static %}
+{% load progress_tags %}
+{% load math_filters %}
+
+{% block title %}Test Results Detail - {{ course.name }}{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --color-success: #4CAF50;
+        --color-info: #2196F3;
+        --color-warning: #FFC107;
+        --color-danger: #fa1212;
+        --color-disabled: #9E9E9E;
+        --bg-dark: #1e1e1e;
+        --bg-darker: #171717;
+        --text-primary: #ffffff;
+        --text-secondary: #aaaaaa;
+        --border-radius: 12px;
+    }
+
+    .section {
+        margin-bottom: 40px;
+        background: var(--bg-darker);
+        border-radius: var(--border-radius);
+        padding: 24px;
+    }
+
+    .section-title {
+        font-size: 1.4em;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #333;
+    }
+
+    .results-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: var(--bg-dark);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 12px 15px;
+        text-align: left;
+        color: var(--text-primary);
+        border-bottom: 1px solid #333;
+    }
+
+    .results-table th {
+        background: rgba(255, 255, 255, 0.05);
+        font-weight: 600;
+    }
+
+    .results-table tr:hover {
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+    .content h1 {
+        font-size: 2em;
+        color: var(--text-primary);
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #333;
+    }
+
+    .correct {
+        color: var(--color-success);
+    }
+
+    .incorrect {
+        color: var(--color-danger);
+    }
+
+    .attempt-section {
+        background: var(--bg-dark);
+        border-radius: var(--border-radius);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .attempt-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .attempt-title {
+        font-size: 1.2em;
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    .attempt-stats {
+        color: var(--text-secondary);
+    }
+
+    .question-charts {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .question-chart {
+        background: var(--bg-dark);
+        border-radius: var(--border-radius);
+        padding: 10px;
+        position: relative;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .question-chart-title {
+        color: var(--text-secondary);
+        text-align: center;
+        margin-bottom: 5px;
+        font-size: 0.9em;
+    }
+
+    .chart-container {
+        flex: 1;
+        position: relative;
+        height: 50%;
+    }
+
+    .charts-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .chart-container {
+        height: 150px;
+        position: relative;
+    }
+    
+    .question-card {
+        background: var(--bg-dark);
+        border-radius: var(--border-radius);
+        padding: 15px;
+    }
+    
+    .question-header {
+        margin-bottom: 15px;
+    }
+    
+    .question-stats {
+        color: var(--text-secondary);
+        font-size: 0.9em;
+    }
+
+    .charts-wrapper {
+        display: flex;
+        gap: 20px;
+        margin-top: 15px;
+    }
+
+    .charts-wrapper .chart-container {
+        flex: 1;
+        min-width: 0;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<main id="content-start" class="content" tabindex="-1">
+    <div id="content">
+        <h1>Test Results Detail - {{ course.title }}</h1>
+        <div id="content-main">
+            <div class="module filtered" id="changelist">
+                <div class="changelist-form-container">
+                    <div class="results">
+                        <div class="section">
+                            <div class="section-title">Attempt Statistics</div>
+                            {% for attempt in attempts %}
+                            <div class="attempt-section">
+                                <h2 class="section-title">Attempt {{ attempt.attempt_number }}</h2>
+                                <div class="grid grid-cols-1 gap-4">
+                                    {% for question in attempt.question_stats %}
+                                        <div class="question-card">
+                                            {% if question.question_type == 'single' or question.question_type == 'open' or question.question_type == 'multiple' %}
+                                            <div class="question-header">
+                                                <h3>Question {{ question.question_id }}</h3>
+                                                <div class="question-stats">
+                                                    <span class="correct">{{ question.correct_attempts }}/{{ question.total_attempts }} correct</span>
+                                                    <span class="percentage">({{ question.correct_percentage|floatformat:1 }}%)</span>
+                                                </div>
+                                                {% if question.question_type == 'single' %}
+                                                <div class="correct-answers">
+                                                    <span class="text-sm text-gray-400">Correct answers: {{ question.correct_answers|join:", " }}</span>
+                                                </div>
+                                                {% elif question.question_type == 'multiple' %}
+                                                <div class="correct-answers">
+                                                    <span class="text-sm text-gray-400">Selected answers: {{ question.selected_answers|join:", " }}</span>
+                                                    <br>
+                                                    <span class="text-sm text-gray-400">Correct answers: {{ question.correct_answers|join:", " }}</span>
+                                                </div>
+                                                {% elif question.question_type == 'open' %}
+                                                <div class="correct-answers">
+                                                    <span class="text-sm text-gray-400">Correct answers: {{ question.correct_answers|join:", " }}</span>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            {% endif %}
+                                            {% if question.question_type == 'single' or question.question_type == 'open' or question.question_type == 'multiple' %}
+                                            <div class="charts-wrapper">
+                                                <div class="chart-container">
+                                                    <canvas class="chart question-pie-chart"
+                                                        data-correct="{{ question.is_correct }}"
+                                                        data-partially-correct="{{ question.is_partially_correct }}"
+                                                        data-correct-percentage="{{ question.correct_percentage }}"
+                                                        data-incorrect-percentage="{{ 100|sub:question.correct_percentage }}"
+                                                        data-question-type="{{ question.question_type }}"
+                                                        id="questionPieChart{{ attempt.attempt_number }}_{{ question.question_id }}"></canvas>
+                                                </div>
+                                                <div class="chart-container">
+                                                    <canvas class="chart answer-bar-chart"
+                                                        data-answers="{{ question.answer_distribution }}"
+                                                        id="answerBarChart{{ attempt.attempt_number }}_{{ question.question_id }}"></canvas>
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize question pie charts
+    document.querySelectorAll('.question-pie-chart').forEach(canvas => {
+        const ctx = canvas.getContext('2d');
+        const questionType = canvas.dataset.questionType;
+        
+        if (questionType === 'multiple') {
+            const isCorrect = canvas.dataset.correct === 'True';
+            const isPartiallyCorrect = canvas.dataset.partiallyCorrect === 'True';
+            
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    datasets: [{
+                        data: [1],
+                        backgroundColor: isPartiallyCorrect ? '#FFC107' : 
+                                       isCorrect ? '#4CAF50' : 
+                                       '#fa1212'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        } else {
+            const correct = parseFloat(canvas.dataset.correctPercentage);
+            const incorrect = parseFloat(canvas.dataset.incorrectPercentage);
+            
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Correct', 'Incorrect'],
+                    datasets: [{
+                        data: [correct, incorrect],
+                        backgroundColor: ['#4CAF50', '#fa1212']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+    // Initialize answer bar charts
+    document.querySelectorAll('.answer-bar-chart').forEach(canvas => {
+        const ctx = canvas.getContext('2d');
+        const answerData = JSON.parse(canvas.dataset.answers.replace(/'/g, '"'));
+        const labels = Object.keys(answerData);
+        const data = Object.values(answerData);
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: '#2196F3',
+                    borderColor: '#1976D2',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#ffffff',
+                            stepSize: 1,
+                            precision: 0
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#ffffff'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
+                }
+            }
+        });
+    });
+});
+</script>
+{% endblock %} 
