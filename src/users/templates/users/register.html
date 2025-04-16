@@ -1,23 +1,51 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
-<div class="login_center">
-	<div class="login_center_headings">
-		<h2 class="login_headings">Registrace</h2>
-	</div>
-
-	<div class="login">
-		<form class="form-with-validation" action="/users/register/" method="post">
-			{% csrf_token %}
-			{{ form }}
-			<div>
-				<button type="submit">Registrovat</button>
-			</div>
-		</form>
-		<div class="login_a">
-			<a href="{% url 'users:login' %}">Přihlášení</a>
-		</div>
-	</div>
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="max-w-md w-full mx-4 bg-white rounded-xl shadow-xl p-8">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Registrace</h1>
+            <p class="text-gray-600">Vytvořte si nový účet a začněte užívat naše služby.</p>
+        </div>
+        
+        <form class="space-y-6 w-full" action="/users/register/" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="space-y-2 w-full">
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ field.label }}
+                    </label>
+                    <div class="relative w-full">
+                        {{ field }}
+                    </div>
+                    {% if field.errors %}
+                        <div class="text-red-500 text-sm mt-1">{{ field.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-200 transform hover:scale-[1.02] shadow-sm">
+                Zaregistrovat se
+            </button>
+        </form>
+        
+        <div class="mt-8 text-center">
+            <p class="text-gray-600 text-sm">Již máte účet?</p>
+            <a href="{% url 'users:login' %}" class="text-blue-600 hover:text-blue-700 text-sm font-medium transition duration-200 inline-block mt-2">
+                Přihlaste se
+            </a>
+        </div>
+    </div>
 </div>
 
+<style>
+    input {
+        @apply w-full min-w-full block px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+    form {
+        width: 100%;
+    }
+</style>
 {% endblock %}
