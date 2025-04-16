@@ -19,11 +19,25 @@
 
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
+		const messages = document.querySelectorAll('.fl');
+		
+		messages.forEach((message, index) => {
+			setTimeout(() => {
+				if (message && message.parentNode) {
+					message.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+					setTimeout(() => message.remove(), 300);
+				}
+			}, 5000);
+		});
+
 		document.querySelectorAll('.fl-button').forEach(button => {
 			button.addEventListener('click', function() {
 				const targetId = button.getAttribute('data-dismiss-target');
 				const targetElement = document.getElementById(targetId.substring(1));
-				if (targetElement) { targetElement.remove(); }
+				if (targetElement) {
+					targetElement.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+					setTimeout(() => targetElement.remove(), 300);
+				}
 			});
 		});
 	});

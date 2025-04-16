@@ -41,7 +41,7 @@
 									<td><a href="{% url 'admin_user_progress_course_detail' user.username progress.course_id %}">{{ progress.course_title }}</a></td>
 									<td>
 										<div style="width: 100%; background-color: #e0e0e0; border-radius: 10px; overflow: hidden;">
-											<div style="padding: 2px 0 0 15px; height: 20px; background-color: #4CAF50; width: {{ progress.percentage }}%;">{{ progress.percentage }}%</div>
+											<div style="padding: 2px 0 0 15px; color: black; height: 20px; background-color: #4CAF50; width: {{ progress.percentage }}%;">{{ progress.percentage }}%</div>
 										</div>
 									</td>
 								</tr>

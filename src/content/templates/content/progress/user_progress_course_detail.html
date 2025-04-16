@@ -303,17 +303,15 @@
 										{% if user_progress %}
 											{% with max_score=user_progress.score|max_value %}
 											<div class="test-score-value">
-												Score: {{ max_score }}/{{ test.total_points }}
+												Best score: {{ max_score }}/{{ test.total_points }}
 											</div>
 											<div class="test-progress">
 												<div class="test-progress-bar" style="width: {% widthratio max_score test.total_points 100 %}%"></div>
 											</div>
 											<div class="test-attempts">
-												Attempts: {{ user_progress.attempts }}
+												Attempts: {{ user_progress.score|length }}
 											</div>
 											{% endwith %}
-										{% else %}
-											<div class="not-attempted">Not attempted yet</div>
 										{% endif %}
 									</div>
 								</div>
