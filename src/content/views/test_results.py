@@ -2,18 +2,21 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from domain.data.courses.CourseStorage import CourseStorage
+from domain.data.tests.TestStorage import TestStorage
 from tests.models import TestResult
 from collections import defaultdict
 
 @login_required
 def test_results_detail(request, course_id, test_id):
     course_storage = CourseStorage()
+    test_storage = TestStorage()
     course = course_storage.get_course_by_id(course_id)
     if not course:
         raise Http404("Course not found")
     
     # Get all test results for this test
     test_results = TestResult.objects.filter(test_id=test_id).order_by('timestamp')
+    test_data = test_storage.get_test(course.database, int(test_id))
     
     # Group results by attempt
     attempt_results = defaultdict(list)
@@ -95,7 +98,7 @@ def test_results_detail(request, course_id, test_id):
             'correct_answers': correct_answers,
             'correct_percentage': correct_percentage,
             'results': results,
-            'question_stats': question_stats_list
+            'question_stats': question_stats_list,
         })
     
     breadcrumbs = [
@@ -106,6 +109,7 @@ def test_results_detail(request, course_id, test_id):
     ]
     
     context = {
+        'test_data': test_data,
         'course': course,
         'test_id': test_id,
         'attempts': attempts,

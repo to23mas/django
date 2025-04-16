@@ -168,6 +168,59 @@
         flex: 1;
         min-width: 0;
     }
+
+    .question-header h3 {
+        color: var(--text-primary);
+        margin-bottom: 8px;
+    }
+
+    .question-text {
+        color: var(--text-primary);
+        font-size: 1.1em;
+        margin: 8px 0;
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 6px;
+        border-left: 3px solid var(--color-info);
+    }
+
+    .question-content {
+        margin-bottom: 12px;
+        font-weight: 500;
+    }
+
+    .answers-list {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .answers-title {
+        color: var(--text-secondary);
+        font-size: 0.9em;
+        margin-bottom: 6px;
+    }
+
+    .answer-item {
+        display: flex;
+        gap: 8px;
+        padding: 4px 0;
+        font-size: 0.95em;
+    }
+
+    .correct-answer .answer-key,
+    .correct-answer .answer-value {
+        color: var(--color-success) !important;
+    }
+
+    .answer-key {
+        color: var(--color-info);
+        min-width: 24px;
+    }
+
+    .answer-value {
+        color: var(--text-primary);
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -188,24 +241,38 @@
                                     {% for question in attempt.question_stats %}
                                         <div class="question-card">
                                             <div class="question-header">
-                                                <h3>Question {{ question.question_id }}</h3>
+                                                <div class="question-text">
+                                                    {% for q in test_data.1 %}
+                                                        {% if q.id == question.question_id|add:0 %}
+                                                
+                                                            <div class="question-content">{{ question.question_id }}: {{ q.question }}</div>
+                                                            {% if q.type == 'open' %}
+                                                                <div class="answers-list">
+                                                                    <div class="answers-title">Correct answer:</div>
+                                                                    <div class="answer-item correct-answer">
+                                                                        <span class="answer-value">{{ q.correct.0 }}</span>
+                                                                    </div>
+                                                                </div>
+                                                            {% else %}
+                                                                {% if q.answers %}
+                                                                    <div class="answers-list">
+                                                                        <div class="answers-title">Available answers:</div>
+                                                                        {% for key, value in q.answers.items %}
+                                                                            <div class="answer-item {% if key in q.correct %}correct-answer{% endif %}">
+                                                                                <span class="answer-key">{{ key }}:</span> 
+                                                                                <span class="answer-value">{{ value }}</span>
+                                                                            </div>
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
                                                 <div class="question-stats">
                                                     <span class="correct">{{ question.correct_attempts }}/{{ question.total_attempts }} correct</span>
                                                     <span class="percentage">({{ question.correct_percentage|floatformat:1 }}%)</span>
                                                 </div>
-                                                {% if question.question_type == 'single' %}
-                                                <div class="correct-answers">
-                                                    <span class="text-sm text-gray-400">Correct answers: {{ question.correct_answers|join:", " }}</span>
-                                                </div>
-                                                {% elif question.question_type == 'multiple' %}
-                                                <div class="correct-answers">
-                                                    <span class="text-sm text-gray-400">Correct answers: {{ question.correct_answers|join:", " }}</span>
-                                                </div>
-                                                {% elif question.question_type == 'open' %}
-                                                <div class="correct-answers">
-                                                    <span class="text-sm text-gray-400">Correct answers: {{ question.correct_answers|join:", " }}</span>
-                                                </div>
-                                                {% endif %}
                                             </div>
                                             <div class="charts-wrapper">
                                                 <div class="chart-container">
