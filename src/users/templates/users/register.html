@@ -6,9 +6,9 @@
     <div class="max-w-md w-full mx-4 bg-white rounded-xl shadow-xl p-8">
         <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-2">Registrace</h1>
-            <p class="text-gray-600">Vytvořte si nový účet a začněte užívat naše služby.</p>
+            <p class="text-gray-600">Vytvořte si nový účet.</p>
         </div>
-        
+
         <form class="space-y-6 w-full" action="/users/register/" method="post">
             {% csrf_token %}
             {% for field in form %}
@@ -28,7 +28,7 @@
                 Zaregistrovat se
             </button>
         </form>
-        
+
         <div class="mt-8 text-center">
             <p class="text-gray-600 text-sm">Již máte účet?</p>
             <a href="{% url 'users:login' %}" class="text-blue-600 hover:text-blue-700 text-sm font-medium transition duration-200 inline-block mt-2">

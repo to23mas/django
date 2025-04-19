@@ -6,7 +6,7 @@
 	<div class="max-w-md w-full mx-4 bg-white rounded-xl shadow-xl p-8">
 		<div class="text-center mb-8">
 			<h1 class="text-3xl font-bold text-gray-900 mb-2">Přihlášení</h1>
-			<p class="text-gray-600">Vítejte zpět! Prosím přihlaste se ke svému účtu.</p>
+			<p class="text-gray-600">Prosím přihlaste se ke svému účtu.</p>
 		</div>
 
 		<form class="space-y-6 w-full" action="/users/login/" method="post">
@@ -14,7 +14,13 @@
 			{% for field in form %}
 				<div class="space-y-2 w-full">
 					<label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700">
-						{{ field.label }}
+						{% if field.name == 'username' %}
+							Uživatelské jméno
+						{% elif field.name == 'password' %}
+							Heslo
+						{% else %}
+							{{ field.label }}
+						{% endif %}
 					</label>
 					<div class="relative w-full">
 						{{ field }}
