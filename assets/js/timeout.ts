@@ -1,6 +1,6 @@
 interface TimeoutConfig {
 	startTime: number;
-	duration: number;  // in minutes
+	duration: number;  
 	onTimeout: () => void;
 }
 
@@ -11,7 +11,6 @@ interface TestTimeData {
 }
 
 export function initTimeout() {
-	// Force reload on back/forward navigation
 	window.addEventListener('pageshow', (event) => {
 		if (event.persisted) {
 			window.location.reload();
@@ -19,10 +18,8 @@ export function initTimeout() {
 	});
 
 	document.addEventListener('DOMContentLoaded', () => {
-		// Prevent caching
 		window.onunload = () => {};
 
-		// If we're on the test page, store the test time
 		const testStartTime = (window as any).testStartTime;
 		const testDuration = (window as any).testDuration;
 		const testId = (window as any).testId;
@@ -30,7 +27,6 @@ export function initTimeout() {
 
 		if (testStartTime && testDuration && window.location.pathname.includes('/tests/')) {
 			const endTime = testStartTime + (testDuration * 60 * 1000);
-			// Store test time data
 			localStorage.setItem('testTimeData', JSON.stringify({
 				endTime,
 				testId,
@@ -38,11 +34,9 @@ export function initTimeout() {
 			}));
 		}
 
-		// Check if there's an active test
 		const testTimeData = getTestTimeData();
 		if (!testTimeData) return;
 
-		// Don't show timer on users or admin pages, but keep the data
 		if (window.location.pathname.startsWith('/users/') || window.location.pathname.startsWith('/admin/')) {
 			return;
 		}
@@ -65,9 +59,9 @@ function getTestTimeData(): TestTimeData | null {
 
 	const testTimeData = JSON.parse(data) as TestTimeData;
 
-	// Clear data if test has expired
 	if (Date.now() > testTimeData.endTime) {
 		localStorage.removeItem('testTimeData');
+		window.location.href = `/tests/force-fail/${testTimeData.courseId}/${testTimeData.testId}/`;
 		return null;
 	}
 
@@ -75,7 +69,6 @@ function getTestTimeData(): TestTimeData | null {
 }
 
 function createTimerElement(testTimeData: TestTimeData): HTMLDivElement {
-	console.log(testTimeData)
 	const timer = document.createElement('div');
 	timer.className = 'fixed left-1/2 top-4 transform -translate-x-1/2 bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 font-bold';
 	
@@ -104,7 +97,6 @@ function startTimer({
 	timerElement: HTMLDivElement,
 	onTimeout: () => void
 }) {
-	console.log('startTimer');
 	const interval = window.setInterval(() => {
 		const now = Date.now();
 		const timeLeft = endTime - now;
@@ -128,13 +120,11 @@ function startTimer({
 			timerElement.textContent = timeText;
 		}
 
-		// Add warning class when less than 1 minute remains
 		if (timeLeft < 60000) {
 			timerElement.classList.add('animate-pulse');
 		}
 	}, 1000);
 
-	// Add form submit listener to clear timer
 	const form = document.getElementById('test-form');
 	if (form) {
 		form.addEventListener('submit', () => {
@@ -149,13 +139,11 @@ function startTimer({
 	return () => clearInterval(interval);
 }
 
-// Add this function to handle navigation
 function handleNavigation() {
 	window.addEventListener('popstate', () => {
 		window.location.reload();
 	});
 
-	// Disable browser's back/forward cache
 	if (window.history && window.history.pushState) {
 		window.addEventListener('load', () => {
 			window.history.pushState('forward', '', window.location.href);
