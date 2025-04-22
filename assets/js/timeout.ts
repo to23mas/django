@@ -42,6 +42,11 @@ export function initTimeout() {
 		const testTimeData = getTestTimeData();
 		if (!testTimeData) return;
 
+		// Don't show timer on users or admin pages, but keep the data
+		if (window.location.pathname.startsWith('/users/') || window.location.pathname.startsWith('/admin/')) {
+			return;
+		}
+
 		const timerElement = createTimerElement(testTimeData);
 
 		startTimer({
