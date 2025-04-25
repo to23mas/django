@@ -10,7 +10,6 @@ from domain.data.progress.ProgressStorage import ProgressStorage
 def overview(request: HttpRequest, course: str) -> HttpResponse:
 	"""list of all available demos"""
 	username = request.user.username #type: ignore
-	# (fixme) TODO přidat tenhle check na více míst (lekce , teste apod)
 
 	user_progress = ProgressStorage().get_user_progress_by_course(username, course)
 	if (user_progress is None):
