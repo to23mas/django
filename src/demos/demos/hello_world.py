@@ -17,17 +17,17 @@ def hello_world(request: HttpRequest, course: str, demo_id: int) -> HttpResponse
 	demo = DemoStorage().get_demo(demo_id, course)
 	if demo is None:
 		messages.warning(request, 'Ukázkový projekt není v tyto chvíli dostupný')
-		return redirect('courses:overview', course=course)
+		return redirect('courses:overview')
 
 	user_available = ProgressStorage().find_available_demos(course, username)
 	if user_available is None or demo.id not in user_available:
 		messages.warning(request, 'Ukázkový projekt ještě není odemčen')
-		return redirect('courses:overview', course=course)
+		return redirect('courses:overview')
 
 	project = ProjectStorage().get_project_by_id(demo_id, course)
 	if project is None:
 		messages.error(request, 'nevalidní akce')
-		return redirect('courses:overview', course=course)
+		return redirect('courses:overview')
 
 	project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': demo.project_id})
 
