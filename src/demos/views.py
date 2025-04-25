@@ -59,14 +59,13 @@ def detail(request: HttpRequest, course: str, demo_id: int) -> HttpResponse:
 	demo = DemoStorage().get_demo(demo_id, course)
 	if demo is None:
 		messages.warning(request, 'Ukázkový projekt není v tyto chvíli dostupný')
-		return redirect('courses:overview', course=course)
+		return redirect('courses:overview')
 
-	# TODO uncomment following
-	user_available = ProgressStorage().find_available_demos(course, username)
-	user_available = DemoStorage().find_demos(course)
+	user_available_project_id = ProgressStorage().find_available_demos(course, username)
+	user_available_demos = DemoStorage().find_demos(course)
 
-	if user_available is None or demo.id not in user_available:
+	if user_available_demos is None or demo.project_id not in user_available_project_id:
 		messages.warning(request, 'Ukázkový projekt ještě není odemčen')
-		return redirect('courses:overview', course=course)
+		return redirect('courses:overview')
 
 	return redirect(f'demos:{demo.url}', course=course, demo_id=demo.id)
