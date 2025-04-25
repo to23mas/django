@@ -1,7 +1,7 @@
 import * as Blockly from 'blockly';
 import { pythonGenerator } from 'blockly/python';
 import { addBlocklyFlashMessage, clearBlocklyFlashMessage } from './flash_messages'
-import { toolbox } from './blockly/toolbox';
+// import { toolbox } from './blockly/toolbox';
 
 // Import all blocks
 import './blockly/blocks';
@@ -44,12 +44,11 @@ export function initBlockly() {
 		const blocklyContainer = document.getElementById('blocklyDiv');
 		if (!blocklyContainer) { return; }
 
-		// Nastavení české lokalizace
 		Blockly.setLocale(BLOCKLY_LOCALE_CS);
 
 		const workspace = Blockly.inject('blocklyDiv', {
-			// toolbox: (window as any).blocklyToolboxConfig,
-			toolbox: toolbox,
+			toolbox: (window as any).blocklyToolboxConfig,
+			// toolbox: toolbox,
 			grid: { spacing: 20, length: 2, snap: true },
 			trashcan: true,
 			move: { scrollbars: { horizontal: true, vertical: true } },
