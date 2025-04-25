@@ -1,40 +1,11 @@
 from django import forms
-from django.shortcuts import redirect, render, reverse
-from django.contrib import messages
-from django.http import HttpRequest
-from domain.data.demos.DemoStorage import DemoStorage
-from domain.data.progress.ProgressStorage import ProgressStorage
+from django.shortcuts import redirect, render
+from django.http import HttpRequest, HttpResponse
+from ..utils import check_demo_access
 
 from django.shortcuts import render, redirect
 
 
-# Helper functions to interact with session
-def _check(request: HttpRequest, course: str, demo_id: int):
-	username = request.user.username #type: ignore
-	if (ProgressStorage().get_user_progress_by_course(username, course) is None):
-		messages.warning(request, 'Kurz ještě není odemčen!')
-		return redirect('courses:overview')
-
-	demo = DemoStorage().get_demo(demo_id, course)
-	if demo is None:
-		messages.warning(request, 'Ukázkový projekt není v tyto chvíli dostupný')
-		return redirect('courses:overview')
-
-	# TODO uncomment when project is ready
-	# user_available = ProgressStorage().find_available_demos(course, username)
-	# if user_available is None or demo.id not in user_available:
-	# 	messages.warning(request, 'Ukázkový projekt ještě není odemčen')
-	# 	return redirect('courses:overview')
-
-	# project = ProjectStorage().get_project_by_id(demo_id, course)
-	# if project is None:
-	# 	messages.error(request, 'nevalidní akce')
-	# 	return redirect('courses:overview')
-
-	# project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': project.id})
-	project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': demo.project_id})
-
-	return username, demo, course, project_url
 
 def get_posts_from_session(request):
 	return request.session.get('posts', [])
@@ -51,7 +22,7 @@ def save_categories_to_session(request, categories):
 # ----------- Post Views -------------
 
 def blog_1(request: HttpRequest, course: str, demo_id: int):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
 	posts = get_posts_from_session(request)
 	categories = get_categories_from_session(request)
 	category_filter = request.GET.get('category')
@@ -69,7 +40,7 @@ def blog_1(request: HttpRequest, course: str, demo_id: int):
 	})
 
 def post_detail(request: HttpRequest, course: str, demo_id: int, pk):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
 	posts = get_posts_from_session(request)
 	post = next((post for post in posts if post['id'] == pk), None)
 	categories = get_categories_from_session(request)
@@ -86,7 +57,10 @@ def post_detail(request: HttpRequest, course: str, demo_id: int, pk):
 	})
 
 def post_create(request: HttpRequest, course: str, demo_id: int):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
+	if isinstance(project_url, HttpResponse):
+		return project_url
+
 	if request.method == 'POST':
 		form = PostForm(request.POST, request=request)
 		if form.is_valid():
@@ -105,7 +79,10 @@ def post_create(request: HttpRequest, course: str, demo_id: int):
 	})
 
 def post_edit(request: HttpRequest, course: str, demo_id: int, pk):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
+	if isinstance(project_url, HttpResponse):
+		return project_url
+
 	posts = get_posts_from_session(request)
 	post = next((post for post in posts if post['id'] == pk), None)
 
@@ -127,7 +104,10 @@ def post_edit(request: HttpRequest, course: str, demo_id: int, pk):
 	})
 
 def post_delete(request: HttpRequest, course: str, demo_id: int, pk):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
+	if isinstance(project_url, HttpResponse):
+		return project_url
+
 	posts = get_posts_from_session(request)
 	posts = [post for post in posts if post['id'] != pk]
 	save_posts_to_session(request, posts)
@@ -137,7 +117,7 @@ def post_delete(request: HttpRequest, course: str, demo_id: int, pk):
 # ----------- Category Views -------------
 
 def category_list(request: HttpRequest, course: str, demo_id: int):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
 	categories = get_categories_from_session(request)
 
 	return render(request, 'demos/demo/blog_category_list.html', {
@@ -149,7 +129,7 @@ def category_list(request: HttpRequest, course: str, demo_id: int):
 	})
 
 def category_detail(request: HttpRequest, course: str, demo_id: int, pk):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
 	categories = get_categories_from_session(request)
 	category = next((cat for cat in categories if cat['id'] == pk), None)
 
@@ -162,7 +142,10 @@ def category_detail(request: HttpRequest, course: str, demo_id: int, pk):
 	})
 
 def category_create(request: HttpRequest, course: str, demo_id: int):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
+	if isinstance(project_url, HttpResponse):
+		return project_url
+
 	if request.method == 'POST':
 		form = CategoryForm(request.POST)
 		if form.is_valid():
@@ -180,7 +163,9 @@ def category_create(request: HttpRequest, course: str, demo_id: int):
 	})
 
 def category_edit(request: HttpRequest, course: str, demo_id: int, id):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
+	if isinstance(project_url, HttpResponse):
+		return project_url
 
 	categories = request.session.get('categories', [])
 	category = next((cat for cat in categories if cat['id'] == id), None)
@@ -203,7 +188,10 @@ def category_edit(request: HttpRequest, course: str, demo_id: int, id):
 	})
 
 def category_delete(request: HttpRequest, course: str, demo_id: int, id):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
+	if isinstance(project_url, HttpResponse):
+		return project_url
+
 	categories = request.session.get('categories', [])
 	categories = [cat for cat in categories if cat['id'] != id]
 	request.session['categories'] = categories

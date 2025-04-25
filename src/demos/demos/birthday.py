@@ -1,47 +1,19 @@
 from django import forms
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.core.exceptions import ValidationError
-from django.urls import reverse
-from domain.data.demos.DemoStorage import DemoStorage
-from domain.data.progress.ProgressStorage import ProgressStorage
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponse
+from ..utils import check_demo_access
 
 # Define the BirthdayForm within this file
 
 # Temporary storage for birthdays (in-memory)
 birthdays = []
 
-def _check(request: HttpRequest, course: str, demo_id: int):
-	username = request.user.username #type: ignore
-	if (ProgressStorage().get_user_progress_by_course(username, course) is None):
-		messages.warning(request, 'Kurz ještě není odemčen!')
-		return redirect('courses:overview')
-
-	demo = DemoStorage().get_demo(demo_id, course)
-	if demo is None:
-		messages.warning(request, 'Ukázkový projekt není v tyto chvíli dostupný')
-		return redirect('courses:overview')
-
-	# TODO uncomment when project is ready
-	# user_available = ProgressStorage().find_available_demos(course, username)
-	# if user_available is None or demo.id not in user_available:
-	# 	messages.warning(request, 'Ukázkový projekt ještě není odemčen')
-	# 	return redirect('courses:overview')
-
-	# project = ProjectStorage().get_project_by_id(demo_id, course)
-	# if project is None:
-	# 	messages.error(request, 'nevalidní akce')
-	# 	return redirect('courses:overview')
-
-	# project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': project.id})
-	project_url = reverse('projects:detail', kwargs={'course': course, 'project_id': demo.project_id})
-
-	return username, demo, course, project_url
-
-
 def birthday(request: HttpRequest, course: str, demo_id: int):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
+	if isinstance(project_url, HttpResponse):
+		return project_url
+
 	if request.method == 'POST':
 		form = BirthdayForm(request.POST)
 		if form.is_valid():
@@ -63,7 +35,10 @@ def birthday(request: HttpRequest, course: str, demo_id: int):
 	})
 
 def delete_birthday(request: HttpRequest, course: str, demo_id: int, pk):
-	username, demo, course, project_url = _check(request, course, demo_id)
+	username, demo, course, project_url = check_demo_access(request, course, demo_id)
+	if isinstance(project_url, HttpResponse):
+		return project_url
+
 	if 0 <= pk < len(birthdays):
 		del birthdays[pk]  # Remove the birthday from the list
 	return redirect('demos:birthday', course=course, demo_id=demo_id)
