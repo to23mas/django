@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 	{% if project_url %}
-		<div class="w-2/3 mx-auto mt-24">
+		<div class="w-full sm:w-2/3 mx-auto mt-24">
 			<a href="{{project_url}}" class="text-blue-500 hover:underline">Přejít k projektu</a>
 		</div>
+		{{project_url}}
 	{% endif %}
 
-	<div class="border border-black w-2/3 mx-auto my-auto mt-5 bg-white shadow-2xl" style="height: calc(100vh - 300px);">
+	<div class="border border-black w-full sm:w-2/3 mx-auto my-auto mt-5 bg-white shadow-2xl" style="height: calc(100vh - 300px);">
 		Hello World!
 	</div>
 {% endblock %}
