@@ -5,7 +5,7 @@
         "fields": {
             "username": "student_1",
             "email": "student_1@example.com",
-            "password": "pbkdf2_sha256$600000$hash$hash=",
+            "password": "pbkdf2_sha256$36000$7N3ZVNBuCwH4$XcKRmY80ZVN+kpMTO8LLr45lKo+G2F/12Xb1DMcJaMw=",
             "is_staff": false,
             "is_active": true,
             "is_superuser": false,
@@ -18,7 +18,7 @@
         "fields": {
             "username": "student_2",
             "email": "student_2@example.com",
-            "password": "pbkdf2_sha256$600000$hash$hash=",
+            "password": "pbkdf2_sha256$36000$7N3ZVNBuCwH4$XcKRmY80ZVN+kpMTO8LLr45lKo+G2F/12Xb1DMcJaMw=",
             "is_staff": false,
             "is_active": true,
             "is_superuser": false,
@@ -31,7 +31,7 @@
         "fields": {
             "username": "student_3",
             "email": "student_3@example.com",
-            "password": "pbkdf2_sha256$600000$hash$hash=",
+            "password": "pbkdf2_sha256$36000$7N3ZVNBuCwH4$XcKRmY80ZVN+kpMTO8LLr45lKo+G2F/12Xb1DMcJaMw=",
             "is_staff": false,
             "is_active": true,
             "is_superuser": false,
@@ -44,7 +44,7 @@
         "fields": {
             "username": "student_4",
             "email": "student_4@example.com",
-            "password": "pbkdf2_sha256$600000$hash$hash=",
+            "password": "pbkdf2_sha256$36000$7N3ZVNBuCwH4$XcKRmY80ZVN+kpMTO8LLr45lKo+G2F/12Xb1DMcJaMw=",
             "is_staff": false,
             "is_active": true,
             "is_superuser": false,
@@ -57,12 +57,26 @@
         "fields": {
             "username": "student_5",
             "email": "student_5@example.com",
-            "password": "pbkdf2_sha256$600000$hash$hash=",
+            "password": "pbkdf2_sha256$36000$7N3ZVNBuCwH4$XcKRmY80ZVN+kpMTO8LLr45lKo+G2F/12Xb1DMcJaMw=",
+            "is_staff": false,
+            "is_active": true,
+            "is_superuser": false,
+            "groups": [2]
+        }
+    },
+    {
+        "model": "auth.user",
+        "pk": 9,
+        "fields": {
+            "username": "tomas",
+            "email": "to23mas@gmail.com",
+            "password": "pbkdf2_sha256$36000$7N3ZVNBuCwH4$XcKRmY80ZVN+kpMTO8LLr45lKo+G2F/12Xb1DMcJaMw=",
             "is_staff": false,
             "is_active": true,
             "is_superuser": false,
             "groups": [2]
         }
     }
+
 
 ] 

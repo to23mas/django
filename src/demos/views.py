@@ -39,6 +39,9 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 			'state': project_states.get(demo.project_id, 'open')
 		})
 
+	if (len(demos_with_states) == 0):
+		messages.success(request, 'V tuto chvíli nemáš žádné dostupné ukázky projektů')
+
 	return render(request, 'demos/overview.html', {
 		'demos': demos_with_states,
 		'username': username,
@@ -59,11 +62,11 @@ def detail(request: HttpRequest, course: str, demo_id: int) -> HttpResponse:
 		return redirect('courses:overview', course=course)
 
 	# TODO uncomment following
-	# user_available = ProgressStorage().find_available_demos(course, username)
-	# user_available = DemoStorage().find_demos(course)
+	user_available = ProgressStorage().find_available_demos(course, username)
+	user_available = DemoStorage().find_demos(course)
 
-	# if user_available is None or demo.id not in user_available:
-	# 	messages.warning(request, 'Ukázkový projekt ještě není odemčen')
-	# 	return redirect('courses:overview', course=course)
+	if user_available is None or demo.id not in user_available:
+		messages.warning(request, 'Ukázkový projekt ještě není odemčen')
+		return redirect('courses:overview', course=course)
 
 	return redirect(f'demos:{demo.url}', course=course, demo_id=demo.id)
