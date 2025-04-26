@@ -48,24 +48,24 @@ class BirthdayForm(forms.Form):
 		max_length=100,
 		widget=forms.TextInput(attrs={
 			'class': 'w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500',
-			'placeholder': 'Enter name'
+			'placeholder': 'Zadejte jméno'
 		}),
-		label='Name',
+		label='Jméno',
 	)
 	birth_date = forms.DateField(
 		widget=forms.DateInput(attrs={
 			'type': 'date',
 			'class': 'w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500'
 		}),
-		label='Birth Date',
+		label='Datum narození',
 	)
 	calendar_name = forms.CharField(
 		max_length=100,
 		widget=forms.TextInput(attrs={
 			'class': 'w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500',
-			'placeholder': 'Enter calendar name'
+			'placeholder': 'Křestní jméno podle kalendáře'
 		}),
-		label='Calendar Name',
+		label='Křestní jméno',
 	)
 
 	def clean(self):
@@ -75,5 +75,5 @@ class BirthdayForm(forms.Form):
 
 		# Example validation: Check if the name is not empty
 		if name and not name.strip():
-			raise ValidationError('Name cannot be empty.')
+			raise ValidationError('Jméno nemůže být prázdné.')
 		return cleaned_data

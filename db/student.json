@@ -1,5 +1,5 @@
 {
-  "_id": "student",
+  "_id": "tomas",
   "projects": {
     "1": "done",
     "2": "done",
@@ -8,12 +8,12 @@
     "5": "done",
     "6": "done",
     "7": "done",
-    "8": "done",
-    "9": "done",
-    "10": "done",
-    "11": "done",
-    "12": "done",
-    "13": "open"
+    "8": "open",
+    "9": "lock",
+    "10": "lock",
+    "11": "lock",
+    "12": "lock",
+    "13": "lock"
   },
   "lessons": {
     "1": {
@@ -27,7 +27,8 @@
       "1": "done",
       "2": "done",
       "3": "done",
-      "4": "done"
+      "4": "done",
+      "5": "done"
     },
     "3": {
       "1": "done",
@@ -35,7 +36,8 @@
       "4": "done",
       "5": "done",
       "6": "done",
-      "7": "done"
+      "7": "done",
+      "8": "done"
     },
     "4": {
       "1": "done",
@@ -66,42 +68,42 @@
       "6": "done"
     },
     "8": {
-      "1": "done",
-      "2": "done",
-      "3": "done",
-      "4": "done",
-      "5": "done",
-      "6": "done"
+      "1": "open",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock",
+      "5": "lock",
+      "6": "lock"
     },
     "9": {
-      "1": "done",
-      "2": "done",
-      "3": "done",
-      "4": "done",
-      "5": "done",
-      "6": "done"
+      "1": "lock",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock",
+      "5": "lock",
+      "6": "lock"
     },
     "10": {
-      "1": "done",
-      "2": "done",
-      "3": "done",
-      "4": "done",
-      "5": "done"
+      "1": "lock",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock",
+      "5": "lock"
     },
     "11": {
-      "1": "done",
-      "2": "done",
-      "3": "done",
-      "4": "done"
+      "1": "lock",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock"
     },
     "12": {
-      "1": "done",
-      "2": "done",
-      "3": "done",
-      "4": "done"
+      "1": "lock",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock"
     },
     "13": {
-      "1": "open",
+      "1": "lock",
       "2": "lock",
       "3": "lock",
       "4": "lock",
@@ -125,7 +127,8 @@
       "5": "done",
       "6": "done",
       "7": "done",
-      "8": "done"
+      "8": "done",
+      "9": "done"
     },
     "3": {
       "1": "done",
@@ -135,7 +138,8 @@
       "5": "done",
       "6": "done",
       "8": "done",
-      "9": "done"
+      "9": "done",
+      "10": "done"
     },
     "4": {
       "1": "done",
@@ -180,73 +184,73 @@
       "11": "done"
     },
     "8": {
-      "1": "done",
-      "2": "done",
-      "3": "done",
-      "4": "done",
-      "5": "done",
-      "6": "done",
-      "7": "done",
-      "8": "done",
-      "9": "done"
+      "1": "open",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock",
+      "5": "lock",
+      "6": "lock",
+      "7": "lock",
+      "8": "lock",
+      "9": "lock"
     },
     "9": {
-      "1": "done",
-      "2": "done",
-      "3": "done",
-      "4": "done",
-      "5": "done",
-      "6": "done",
-      "7": "done",
-      "8": "done",
-      "9": "done"
+      "1": "lock",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock",
+      "5": "lock",
+      "6": "lock",
+      "7": "lock",
+      "8": "lock",
+      "9": "lock"
     },
     "10": {
-      "1": "done",
-      "2": "done",
-      "3": "done",
-      "4": "done",
-      "5": "done",
-      "6": "done",
-      "7": "done",
-      "8": "done",
-      "10": "done"
+      "1": "lock",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock",
+      "5": "lock",
+      "6": "lock",
+      "7": "lock",
+      "8": "lock",
+      "10": "lock"
     },
     "11": {
-      "1": "done",
-      "2": "done",
-      "3": "done",
-      "4": "done",
-      "5": "done",
-      "6": "done",
-      "7": "done",
-      "8": "done",
-      "9": "done",
-      "10": "done",
-      "11": "done",
-      "12": "done",
-      "13": "done",
-      "14": "done",
-      "15": "done",
-      "16": "done",
-      "17": "done",
-      "18": "done",
-      "19": "done",
-      "20": "done",
-      "21": "done"
+      "1": "lock",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock",
+      "5": "lock",
+      "6": "lock",
+      "7": "lock",
+      "8": "lock",
+      "9": "lock",
+      "10": "lock",
+      "11": "lock",
+      "12": "lock",
+      "13": "lock",
+      "14": "lock",
+      "15": "lock",
+      "16": "lock",
+      "17": "lock",
+      "18": "lock",
+      "19": "lock",
+      "20": "lock",
+      "21": "lock"
     },
     "12": {
-      "1": "done",
-      "2": "done",
-      "3": "done",
-      "4": "done",
-      "5": "done",
-      "6": "done",
-      "7": "done",
-      "8": "done"
+      "1": "lock",
+      "2": "lock",
+      "3": "lock",
+      "4": "lock",
+      "5": "lock",
+      "6": "lock",
+      "7": "lock",
+      "8": "lock"
     },
     "13": {
-      "1": "open",
+      "1": "lock",
       "2": "lock",
       "3": "lock",
       "4": "lock",
@@ -258,117 +262,106 @@
     {
       "test_id": 1,
       "attempts": 5,
-      "state": "finish",
+      "state": "success",
       "score": [
-        3,
-        3,
-        13,
-        0,
-        3,
-        30
+        25
       ],
       "lock_until": ""
     },
     {
       "test_id": 2,
       "attempts": 3,
-      "state": "finish",
+      "state": "success",
       "score": [
-        45
+        40
       ],
       "lock_until": ""
     },
     {
       "test_id": 3,
-      "attempts": 3,
-      "state": "fail",
+      "attempts": 2,
+      "state": "success",
       "score": [
-        43
+        39
       ],
       "lock_until": ""
     },
     {
       "test_id": 4,
-      "attempts": 3,
-      "state": "finish",
+      "attempts": 2,
+      "state": "success",
       "score": [
-        36
+        31
       ],
       "lock_until": ""
     },
     {
       "test_id": 5,
-      "attempts": 5,
-      "state": "finish",
+      "attempts": 3,
+      "state": "success",
       "score": [
-        37
+        27
       ],
       "lock_until": ""
     },
     {
       "test_id": 6,
       "attempts": 2,
-      "state": "finish",
+      "state": "success",
       "score": [
-        30
+        25
       ],
       "lock_until": ""
     },
     {
       "test_id": 7,
       "attempts": 4,
-      "state": "finish",
+      "state": "success",
       "score": [
-        30
+        25
       ],
       "lock_until": ""
     },
     {
       "test_id": 8,
       "attempts": 3,
-      "state": "finish",
-      "score": [
-        33
-      ],
+      "state": "close",
+      "score": [],
       "lock_until": ""
     },
     {
       "test_id": 9,
       "attempts": 3,
-      "state": "fail",
-      "score": [
-        1
-      ],
+      "state": "close",
+      "score": [],
       "lock_until": ""
     },
     {
       "test_id": 10,
       "attempts": 3,
-      "state": "finish",
-      "score": [
-        35
-      ],
+      "state": "close",
+      "score": [],
       "lock_until": ""
     },
     {
       "test_id": 11,
       "attempts": 3,
-      "state": "finish",
-      "score": [35],
+      "state": "close",
+      "score": [],
       "lock_until": ""
     },
     {
       "test_id": 12,
       "attempts": 3,
-      "state": "finish",
-      "score": [28],
+      "state": "close",
+      "score": [],
       "lock_until": ""
     },
     {
       "test_id": 13,
       "attempts": 3,
-      "state": "finish",
-      "score": [20],
+      "state": "close",
+      "score": [],
       "lock_until": ""
     },
     {
