@@ -4,7 +4,7 @@
 	}
 
 	span.filename {
-		@apply bg-codeColor mr-10 pt-1 pl-2 pr-2 rounded-t-sm text-gray-300 text-xs;
+		@apply bg-codeColor mr-10 pt-1 pl-2 pr-2 rounded-t-sm text-gray-300 text-xs break-all whitespace-normal;
 	}
 
 	div.no_highlight {
@@ -12,7 +12,7 @@
 	}
 
 	div.filename {
-		@apply flex justify-end;
+		@apply flex justify-end break-all whitespace-normal;
 	}
 
 	span.bash-prompt {
