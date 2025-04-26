@@ -44,7 +44,7 @@ export function initVisNetwork() {
 					solver: 'repulsion',
 					repulsion: {
 						nodeDistance: 200,
-						springLength: 100
+						springLength: 120,
 					}
 				},
 				interaction: {
