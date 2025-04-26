@@ -145,7 +145,8 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 		current_test_progress.attempts -= 1
 
 	if current_test_progress.state == TestState.SUCCESS.value:
-		new_test_state = TestState.SUCCESS
+		if new_test_state != TestState.FINISH:
+			new_test_state = TestState.SUCCESS
 
 	TestProgressStorage().update_test_progress(course, username, test_id, test_result_data.score_total, new_test_state, current_test_progress.attempts)
 	if new_test_state != TestState.FAIL:
