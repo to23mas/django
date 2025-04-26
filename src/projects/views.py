@@ -78,8 +78,8 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 		'projects': user_progress['projects'],
 		'lessons': user_progress['lessons'][str(project_id)],
 		'chapters': user_progress['chapters'][str(project_id)],
-		'tests': user_progress['tests']   # Keep all tests
-		}
+		'tests': user_progress['tests'] 
+	}
 	chapters = ChapterStorage().find_chapters(course, project.database)
 	lessons = LessonStorage().find_lessons(course, project.database)
 
@@ -89,7 +89,7 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 	demo_project = DemoStorage().get_demo_by_project_id(project.id, course)
 	match demo_project:
 		case None: demo_url = None
-		case _: demo_url = f'demos:{demo_project.url}'
+		case _: demo_url = reverse(f'demos:{demo_project.url}', kwargs={'course': course, 'demo_id': demo_project.id})
 
 	return render(request, 'projects/detail.html', {
 		'project': project,

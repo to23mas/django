@@ -15,7 +15,7 @@
 		</p>
 
 		{% if demo_url %}
-			<a href="{% url demo_url course=course demo_id=project.id %}" class="text-blue-500 hover:underline">Přejít na ukázku projektu</a>
+			<a href="{{ demo_url }}" class="text-blue-500 hover:underline">Přejít na ukázku projektu</a>
 		{% endif %}
 	</div>
 

@@ -15,7 +15,6 @@ from domain.data.projects.ProjectStorage import ProjectStorage
 
 @staff_member_required
 def lesson_overview(request: HttpRequest, course_id: str, project_id: int) -> HttpResponse:
-	"""list all courses"""
 	course = CourseStorage().get_course_by_id(course_id)
 	if course is None: return  redirect('admin_course_overview')
 	project = ProjectStorage().get_project_by_id(project_id, course.database)
@@ -33,7 +32,6 @@ def lesson_overview(request: HttpRequest, course_id: str, project_id: int) -> Ht
 
 @staff_member_required
 def lesson_edit(request: HttpRequest, course_id: str, project_id: int, lesson_id: int) -> HttpResponse:
-	"""list all courses"""
 	course = CourseStorage().get_course_by_id(course_id)
 	if course is None: return  redirect('admin_course_overview')
 	project = ProjectStorage().get_project_by_id(project_id, course.database)
