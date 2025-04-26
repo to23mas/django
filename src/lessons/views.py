@@ -16,7 +16,7 @@ from domain.data.clis.CliStorage import CliStorage
 
 @login_required
 def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, chapter_id: int) -> HttpResponse:
-	"""display chapte"""
+	"""display chapter"""
 	username = request.user.username #type: ignore
 	project = ProjectStorage().get_project_by_id(project_id, course)
 	if project is None:

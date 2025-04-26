@@ -16,7 +16,6 @@ from domain.data.tests.TestStorage import TestStorage
 def get_test_results(user_answers: QueryDict, questionDataCollection: List[QuestionData], test_id: int, username: str) -> float:
 	correct_points = 0
 	
-	# Get the current attempt number for this user and test
 	last_attempt = TestResult.objects.filter(user_id=username, test_id=test_id).order_by('-attempt_number').first()
 	current_attempt = (last_attempt.attempt_number + 1) if last_attempt else 1
 
@@ -75,16 +74,13 @@ def get_test_results(user_answers: QueryDict, questionDataCollection: List[Quest
 
 
 def fail_test(test_data: TestData, course: str, username: str, test_id: int):
-	# Get the current attempt number for this user and test
 	last_attempt = TestResult.objects.filter(user_id=username, test_id=test_id).order_by('-attempt_number').first()
 	current_attempt = (last_attempt.attempt_number + 1) if last_attempt else 1
 
-	# Get the questions for this test
 	_, questionDataCollection = TestStorage().get_test(course, test_id)
 	if questionDataCollection is None:
 		return (TestResultData(score_total=0, success=False, score_percentage=0), False)
 
-	# Create TestResult records for each question with 0 points
 	for question in questionDataCollection:
 		TestResult.objects.create(
 			user_id=username,

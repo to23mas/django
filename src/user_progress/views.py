@@ -28,7 +28,7 @@ def next_chapter(request: HttpRequest):
 	if chapter is None: return redirect('projects:overview', course=course_db, sort_type='all')
 
 	if not ProgressStorage().is_chapter_done(username, course_db, chapter.id, project_id):
-		messages.warning(request, 'Nevalidní akce 1')
+		messages.warning(request, 'Přístup k neexistujícímu, nebo zamčenému zdroji')
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
 	next_chapter_data = ChapterStorage().get_chapter_by_id(chapter.unlock_id, course_db, project.database)
