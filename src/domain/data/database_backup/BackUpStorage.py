@@ -24,7 +24,7 @@ from domain.data.blockly.BlocklyDataSerializer import BlocklyDataSerializer
 from domain.data.tests.TestStorage import TestStorage
 
 
-def download_json_users(username:str = 'student') -> Dict | None:
+def download_json_users(username:str = 'tomas') -> Dict | None:
 	progress = ProgressStorage().get_user_progress_by_course(username, 'django')
 	if progress is None: return None
 
