@@ -4,3 +4,6 @@ export * from './django_orm';
 export * from './django_user';
 export * from './django_user_function';
 export * from './django_user_compare';
+export * from './django_model_class';
+export * from './django_model_field';
+export * from './django_model_field_param';

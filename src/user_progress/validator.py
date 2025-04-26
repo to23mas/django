@@ -21,6 +21,7 @@ from .validators.print_validator import validate_python_code_print
 from .validators.function_validator import validate_python_code_function
 from .validators.variable_validator import validate_python_code_variable
 from .validators.variable_pattern_validator import validate_variable_pattern
+from .validators.class_validator import validate_python_code_class
 
 
 @login_required
@@ -115,6 +116,9 @@ def validate_task(task_type: str, code: str, username: str, expected_result: str
 
 		case ExpectedTaskTypes.VARIABLE_PATTERN.value:
 			return validate_variable_pattern(code, username, expected_result)
+
+		case ExpectedTaskTypes.CLASS.value:
+			return validate_python_code_class(code, username, expected_result)
 
 		case _:
 			return False

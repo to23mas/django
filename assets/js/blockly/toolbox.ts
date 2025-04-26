@@ -93,11 +93,15 @@ export const toolbox =
         "contents": [
           {
             "kind": "block",
-            "type": "django_user_function"
+            "type": "django_model_class"
           },
           {
             "kind": "block",
-            "type": "django_user_compare"
+            "type": "django_model_field"
+          },
+          {
+            "kind": "block",
+            "type": "django_model_field_param"
           }
         ]
       }

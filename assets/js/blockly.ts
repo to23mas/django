@@ -1,7 +1,7 @@
 import * as Blockly from 'blockly';
 import { pythonGenerator } from 'blockly/python';
 import { addBlocklyFlashMessage, clearBlocklyFlashMessage } from './flash_messages'
-// import { toolbox } from './blockly/toolbox';
+import { toolbox } from './blockly/toolbox';
 
 // Import all blocks
 import './blockly/blocks';
