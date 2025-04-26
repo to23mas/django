@@ -30,6 +30,8 @@ class ChapterDataSerializer:
 		if ch_with_blocks is not None:
 			blocks = ch_with_blocks.blocks
 
+		blocks = sorted(blocks, key=lambda x: x.get('order', 0))
+
 		return ChapterData(
 			id=chapter_data[ChaptersTable.ID.value],
 			title=chapter_data[ChaptersTable.TITLE.value],
