@@ -4,7 +4,7 @@ class CLIEditForm(forms.Form):
 	id = forms.IntegerField(required=False)
 	title = forms.CharField()
 	task_description = forms.CharField(widget=forms.Textarea(attrs={'rows': 15}))
-	expected_output = forms.CharField(widget=forms.Textarea(attrs={'rows': 15}))  # Expected output of the command
+	expected_output = forms.CharField(widget=forms.Textarea(attrs={'rows': 15}))
 
 	def __init__(self, *args, **kwargs):
 		initial = kwargs.get('initial', {})

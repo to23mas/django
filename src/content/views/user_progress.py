@@ -14,7 +14,6 @@ def admin_users_overview(request: HttpRequest) -> HttpResponse:
     students_group = Group.objects.get(name='students')
     users = User.objects.filter(groups=students_group)
 
-    # Handle search queries
     username_query = request.GET.get('q', '')
     email_query = request.GET.get('email', '')
 
@@ -47,10 +46,10 @@ def course_progress_detail(request: HttpRequest, course_id: str) -> HttpResponse
     progress_storage = ProgressStorage()
     test_storage = TestStorage()
     course = course_storage.get_course_by_id(course_id)
-    
+
     students_group = Group.objects.get(name='students')
     total_students = User.objects.filter(groups=students_group).count()
-    
+
     enrolled_students = progress_storage.find_users_by_course(course.database)
     enrolled_students_count = len(enrolled_students)
 
@@ -138,7 +137,6 @@ def admin_user_progress_course_detail(request: HttpRequest, username: str, cours
     if not progress:
         progress = {'chapters': {}, 'tests': []}
 
-    # Add lesson_id information to chapters
     for project_id, chapters in progress['chapters'].items():
         project = ProjectStorage().get_project(course_data.database, {'_id': int(project_id)})
         if project:
@@ -153,7 +151,6 @@ def admin_user_progress_course_detail(request: HttpRequest, username: str, cours
                     }
             progress['chapters'][project_id] = new_chapters
 
-    # Load test metadata and combine with progress
     tests = test_storage.find_tests(course_data.database)
 
     breadcrumbs = [{'Home': '/admin/'}, {'Users': '/admin/content/users_progress'}, {f'{username}': f'/admin/content/users_progress/{username}'}, {'View': '#'}]

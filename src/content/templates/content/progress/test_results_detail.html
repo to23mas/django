@@ -137,22 +137,22 @@
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .chart-container {
         height: 150px;
         position: relative;
     }
-    
+
     .question-card {
         background: var(--bg-dark);
         border-radius: var(--border-radius);
         padding: 15px;
     }
-    
+
     .question-header {
         margin-bottom: 15px;
     }
-    
+
     .question-stats {
         color: var(--text-secondary);
         font-size: 0.9em;
@@ -249,6 +249,7 @@
     }
 </style>
 
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <main id="content-start" class="content" tabindex="-1">
@@ -279,7 +280,7 @@
                                                 <div class="question-text">
                                                     {% for q in test_data.1 %}
                                                         {% if q.id == question.question_id|add:0 %}
-                                                
+
                                                             <div class="question-content">{{ question.question_id }}: {{ q.question }}</div>
                                                             {% if q.type == 'open' %}
                                                                 <div class="answers-list">
@@ -294,7 +295,7 @@
                                                                         <div class="answers-title">Available answers:</div>
                                                                         {% for key, value in q.answers.items %}
                                                                             <div class="answer-item {% if key in q.correct %}correct-answer{% endif %}">
-                                                                                <span class="answer-key">{{ key }}:</span> 
+                                                                                <span class="answer-key">{{ key }}:</span>
                                                                                 <span class="answer-value">{{ value }}</span>
                                                                             </div>
                                                                         {% endfor %}
@@ -342,23 +343,22 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize question pie charts
     document.querySelectorAll('.question-pie-chart').forEach(canvas => {
         const ctx = canvas.getContext('2d');
         const questionType = canvas.dataset.questionType;
-        
+
         if (questionType === 'multiple') {
             const partiallyCorrectPercentage = parseFloat(canvas.dataset.partiallyCorrectPercentage);
             const correctPercentage = parseFloat(canvas.dataset.correctPercentage);
             const incorrectPercentage = 100 - correctPercentage - partiallyCorrectPercentage;
-            
+
             let data, backgroundColor, labels;
-            
+
             console.log(partiallyCorrectPercentage);
             data = [partiallyCorrectPercentage, incorrectPercentage, correctPercentage];
-            backgroundColor = ['#FFC107', '#fa1212', '#4CAF50'];  // orange for partial, red for incorrect, green for correct
+            backgroundColor = ['#FFC107', '#fa1212', '#4CAF50'];
             labels = ['Partial', 'Incorrect', 'Correct'];
-            
+
             new Chart(ctx, {
                 type: 'pie',
                 data: {
@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             const correct = parseFloat(canvas.dataset.correctPercentage);
             const incorrect = parseFloat(canvas.dataset.incorrectPercentage);
-            
+
             new Chart(ctx, {
                 type: 'pie',
                 data: {
@@ -404,32 +404,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Initialize answer bar charts
     document.querySelectorAll('.answer-bar-chart').forEach(canvas => {
         const ctx = canvas.getContext('2d');
         const answerData = JSON.parse(canvas.dataset.answers.replace(/'/g, '"'));
         const correctAnswers = canvas.dataset.correctAnswers.split(',').map(a => a.trim());
         const labels = Object.keys(answerData);
         const data = Object.values(answerData);
-        
-        // Function to get color based on label
+
         const getBarColor = (label) => {
             if (label === 'did not answered') {
-                return '#9E9E9E';  // gray
+                return '#9E9E9E';
             }
             if (correctAnswers.includes(label)) {
-                return '#4CAF50';  // green for correct answers
+                return '#4CAF50';
             }
-            return '#fa1212';  // red for incorrect answers
+            return '#fa1212';
         };
-        
+
         const backgroundColor = labels.map(label => getBarColor(label));
         const borderColor = labels.map(label => {
             const color = getBarColor(label);
-            return color === '#9E9E9E' ? '#757575' : 
-                   color === '#4CAF50' ? '#388E3C' : '#d32f2f';  // darker red for border
+            return color === '#9E9E9E' ? '#757575' :
+                   color === '#4CAF50' ? '#388E3C' : '#d32f2f';
         });
-        
+
         new Chart(ctx, {
             type: 'bar',
             data: {
@@ -475,4 +473,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-{% endblock %} 
+{% endblock %}

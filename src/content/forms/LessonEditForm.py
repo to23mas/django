@@ -15,7 +15,6 @@ class LessonEditForm(forms.Form):
 		kwargs['initial'] = initial
 		if 'to' in initial:
 			if isinstance(initial['to'], list):
-				# Convert list of integers or strings to comma-separated string
 				initial['to'] = ', '.join(str(x) for x in initial['to'])
 		super(LessonEditForm, self).__init__(*args, **kwargs)
 
@@ -32,6 +31,5 @@ class LessonEditForm(forms.Form):
 	def clean_to(self):
 		data = self.cleaned_data['to']
 		if isinstance(data, str):
-			# Convert comma-separated string to list of integers
 			return [int(s.strip()) for s in data.split(',') if s.strip()]
 		return []

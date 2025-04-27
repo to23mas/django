@@ -93,7 +93,7 @@
 <main id="content-start" class="content" tabindex="-1">
 	<div id="content" class="">
 		<h1>{{ course.title }} - Course Overview</h1>
-		
+
 		<div class="section">
 			<div class="section-title">Enrollment Statistics</div>
 			<div class="stats-container">
@@ -168,11 +168,12 @@
 	<div id="footer"></div>
 </main>
 
+//TODO
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('projectDistributionChart').getContext('2d');
-    
+
     const projects = []; const completed = []; const inProgress = []; const notStarted = [];
     const projectStatuses = {}; const projectNames = {};
 
@@ -185,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
             projectStatuses['{{ project_id }}']['{{ status }}']++;
         {% endfor %}
     {% endfor %}
-    
+
     Object.keys(projectStatuses)
         .sort((a, b) => parseInt(a) - parseInt(b))
         .forEach(projectId => {
@@ -268,7 +269,7 @@ const lessonData = {};
 document.addEventListener('DOMContentLoaded', function() {
     const lessonCtx = document.getElementById('lessonDistributionChart').getContext('2d');
     const lessons = []; const lessonCompleted = []; const lessonInProgress = []; const lessonNotStarted = [];
-    
+
     Object.keys(lessonData)
         .sort((a, b) => {
             const [aProject, aLesson] = a.split('_').map(Number);
@@ -347,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             layout: {
                 padding: {
-                    bottom: 100  
+                    bottom: 100
                 }
             }
         }
@@ -356,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 document.addEventListener('DOMContentLoaded', function() {
     const chapterCtx = document.getElementById('chapterDistributionChart').getContext('2d');
-    
+
     const chapterData = {};
     {% for student in enrollment_stats.enrolled_students %}
         {% for project_id, project_chapters in student.chapters.items %}
@@ -376,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function() {
     {% endfor %}
 
     const chapters = []; const chapterCompleted = []; const chapterInProgress = []; const chapterNotStarted = [];
-    
+
     Object.keys(chapterData)
         .sort((a, b) => {
             const [aProject, aChapter] = a.split('_').map(Number);
@@ -455,19 +456,19 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             layout: {
                 padding: {
-                    bottom: 100 
+                    bottom: 100
                 }
             }
         }
     });
-}); 
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     const testScores = {{scores|safe}};
     {% for test in tests %}
     const testStateCtx{{ test.id }} = document.getElementById('testStateChart{{ test.id }}').getContext('2d');
     const testStates{{ test.id }} = { success: 0, finish: 0, fail: 0, open: 0, close: 0 };
-    
+
     {% for student in enrollment_stats.enrolled_students %}
         {% for student_test in student.tests %}
             {% if student_test.test_id == test.id %}

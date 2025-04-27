@@ -6,12 +6,6 @@ from domain.data.projects.ProjectStorage import ProjectStorage
 
 register = template.Library()
 
-# @register.filter("get_project_name_from_id")
-# def get_project_name_from_id(project_no: str, course: str):
-# 	project, _ = get_project(int(project_no), course) #pylint: disable=E0633
-#
-# 	return project.title #type: ignore
-
 
 @register.simple_tag
 def get_lesson_name(lesson_id: int, course_db: str, project_db: str) -> str:
@@ -25,7 +19,7 @@ def get_lesson_name2(lesson_id: int, course_db: str, project_id: str) -> str:
 	project = ProjectStorage().get_project_by_id(int(project_id), course_db)
 	if not project:
 		return 'no project found'
-		
+
 	lesson = LessonStorage().get_lesson(int(lesson_id), course_db, project.database)
 
 	match lesson:
