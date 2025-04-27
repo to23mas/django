@@ -60,6 +60,9 @@ export class CommandHandler {
                 if (args[1] === 'startapp') {
                     return this.startapp(args[2]);
                 }
+                if (args[1] === 'tailwind' && args[2] === 'start') {
+                    return this.handleTailwindStart();
+                }
             }
             return this.python();
         } else if (cmd === 'npm' && args[0] === 'list') {
@@ -126,7 +129,7 @@ export class CommandHandler {
     }
 
     private python(): string {
-        return 'Python interpret není v tuto chvíli k dispozici. Použijte příkaz s parametry.\r\n';
+        return 'Špatně zadaný příkaz python.\r\n';
     }
 
     private makemigrations(appName?: string): string {
@@ -277,13 +280,11 @@ export class CommandHandler {
             return 'Error: You must provide an app name.\r\nUsage: python manage.py startapp <app_name>\r\n';
         }
 
-        // Check if app already exists
         const current = this.fs.getCurrentDirectory();
         if (current && current[appName]) {
             return `Error: '${appName}' already exists.\r\n`;
         }
 
-        // Fixní hash pro 'users', jinak náhodný
         const hash = appName === 'users' ? 'f8d9e7c6' : Math.random().toString(36).substring(2, 10);
 
         return `${hash}\r\n`;
@@ -295,5 +296,17 @@ export class CommandHandler {
 
     private isInProjectRoot(): boolean {
         return this.fs.fileExists('manage.py');
+    }
+
+    private handleTailwindStart(): string {
+        return `> theme@3.8.0 start
+> npm run dev
+
+> theme@3.8.0 dev
+> cross-env NODE_ENV=development tailwindcss --postcss -i ./src/styles.css -o ../static/css/dist/secret_styles.css -w
+
+Rebuilding...
+
+Done in 403ms.`;
     }
 } 

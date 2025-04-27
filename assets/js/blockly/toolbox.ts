@@ -93,15 +93,11 @@ export const toolbox =
         "contents": [
           {
             "kind": "block",
-            "type": "django_model_class"
+            "type": "django_views"
           },
           {
             "kind": "block",
-            "type": "django_model_field"
-          },
-          {
-            "kind": "block",
-            "type": "django_model_field_param"
+            "type": "django_path_named_block"
           }
         ]
       }
