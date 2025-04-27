@@ -9,3 +9,6 @@ export * from './django_model_field';
 export * from './django_model_field_param';
 export * from './django_os_environ';
 export * from './django_views';
+export * from './django_custom_function';
+export * from './django_request_object';
+export * from './django_return';

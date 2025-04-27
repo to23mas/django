@@ -21,7 +21,7 @@ export function initCli() {
             },
             scrollback: 1000,
             convertEol: true,
-            cols: 80,
+            cols: 90,
             rows: 24,
             allowTransparency: true,
             rightClickSelectsWord: true,
@@ -180,12 +180,13 @@ export function initCli() {
                 if (data.status === 'success') {
                     if (data.redirect) {
                         const nextButtonContainer = document.getElementById('nextButtonContainer');
-                        if (!document.querySelector('body > div.h-full > div.chapter-buttons.mx-auto.md\\:w-4\\/6 > form > button')) {
+                        if (!document.querySelector('#nextButtonContainer > a:nth-child(1)') && 
+                            !document.querySelector('body > div.h-full > div.chapter-buttons.mx-auto.md\\:w-4\\/6 > form > button')) {
                             const anchor = document.createElement('a');
                             anchor.href = data.url;
                             anchor.className = 'green_button';
                             anchor.textContent = 'Další Kapitola';
-                            nextButtonContainer.appendChild(anchor);
+                            nextButtonContainer?.appendChild(anchor);
                         }
                         addBlocklyFlashMessage('Správně.', true);
                     } else {
@@ -203,4 +204,4 @@ export function initCli() {
             }
         });
     });
-} 
+}

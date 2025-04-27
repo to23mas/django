@@ -57,6 +57,13 @@ export const toolbox =
           {
             "kind": "block",
             "type": "controls_if"
+          },
+          {
+            "kind": "block",
+            "type": "logic_compare",
+            "fields": {
+              "OP": "EQ"
+            }
           }
         ]
       },
@@ -93,11 +100,19 @@ export const toolbox =
         "contents": [
           {
             "kind": "block",
-            "type": "django_views"
+            "type": "django_path_named_block"
           },
           {
             "kind": "block",
-            "type": "django_path_named_block"
+            "type": "django_custom_function"
+          },
+          {
+            "kind": "block",
+            "type": "django_request_object"
+          },
+          {
+            "kind": "block",
+            "type": "django_return"
           }
         ]
       }

@@ -15,10 +15,13 @@ export class CommandHandler {
         'python --version': 'Zobrazí verzi Pythonu',
         'python manage.py makemigrations <app_name>': 'Vytvoří migrace pro danou aplikaci',
         'python manage.py startapp <app_name>': 'Vytvoří novou Django aplikaci',
+        'python manage.py test': 'Spustí testy',
+        'pylint <python_file>': 'Spustí kontrolu kódu pomocí Pylint',
         'npm list': 'Zobrazí seznam nainstalovaných knihoven',
         'npm list <knihovna>': 'Zobrazí informace o konkrétní knihovně',
         'pip': 'Správce Python balíčků',
         'docker': 'Správa Docker kontejnerů',
+        'npm run <script>': 'Spustí daný skript',
     };
 
     constructor(terminal: Terminal) {
@@ -60,13 +63,27 @@ export class CommandHandler {
                 if (args[1] === 'startapp') {
                     return this.startapp(args[2]);
                 }
+                if (args[1] === 'test') {
+                    return this.runTests();
+                }
                 if (args[1] === 'tailwind' && args[2] === 'start') {
                     return this.handleTailwindStart();
                 }
             }
             return this.python();
-        } else if (cmd === 'npm' && args[0] === 'list') {
-            return this.npmList(args[1]);
+        } else if (cmd === 'npm') {
+            if (args[0] === 'list') {
+                return this.npmList(args[1]);
+            } else if (args[0] === 'run') {
+                if (!this.isNpmProject()) {
+                    return 'Error: package.json not found in current directory.\r\n';
+                }
+                if (args[1] === 'build:game') {
+                    return this.npmBuildGame();
+                }
+                return `npm ERR! missing script: ${args[1]}\r\n`;
+            }
+            return this.npmHelp();
         } else if (cmd === 'pip') {
             if (args[0] === 'list') {
                 return this.pipList();
@@ -74,6 +91,11 @@ export class CommandHandler {
             return this.pipHelp();
         } else if (cmd === 'docker') {
             return this.docker(args);
+        } else if (cmd === 'pylint') {
+            if (!args[0]) {
+                return 'Error: No Python file specified.\r\nUsage: pylint <python_file>\r\n';
+            }
+            return this.runPylint(args[0]);
         }
         return `Command not found: ${cmd}\r\n`;
     }
@@ -308,5 +330,100 @@ export class CommandHandler {
 Rebuilding...
 
 Done in 403ms.`;
+    }
+
+    private isNpmProject(): boolean {
+        const current = this.fs.getCurrentDirectory();
+        if (!current) return false;
+        return current['package.json'] !== undefined;
+    }
+
+    private npmBuildGame(): string {
+        if (!this.isNpmProject()) {
+            return 'Error: package.json not found in current directory.\r\n';
+        }
+
+        const hash = '42fa301';
+        return [
+            '> game@1.0.0 build:game',
+            '> vite build',
+            '',
+            'vite v5.1.4 building for production...',
+            '',
+            '✓ 0 modules transformed.',
+            'dist/index.html                   0.46 kB │ gzip:  0.30 kB',
+            `dist/assets/index-${hash}.js      1.45 kB │ gzip:  0.72 kB`,
+            `dist/assets/index-${hash}.css     0.23 kB │ gzip:  0.15 kB`,
+            '',
+            '✓ built in 234ms',
+            '',
+            'Build completed successfully!',
+            `Hash: ${hash}`,
+            ''
+        ].join('\r\n');
+    }
+
+    private npmHelp(): string {
+        return 'Usage: npm <command>\n\nCommands:\n  list        List installed packages\n  run         Run a script from package.json\n';
+    }
+
+    private runTests(): string {
+        return [
+            'Creating test database for alias \'default\'...',
+            'System check identified no issues (0 silenced).',
+            '',
+            'test_create_post (blog.tests.PostTests) ... ok',
+            'test_delete_post (blog.tests.PostTests) ... ok',
+            'test_edit_post (blog.tests.PostTests) ... FAIL',
+            'test_list_posts (blog.tests.PostTests) ... ok',
+            'test_user_login (users.tests.UserTests) ... ok',
+            'test_user_registration (users.tests.UserTests) ... ok',
+            '',
+            '======================================================================',
+            'FAIL: test_edit_post (blog.tests.PostTests)',
+            '----------------------------------------------------------------------',
+            'AssertionError: 404 != 200',
+            '',
+            '----------------------------------------------------------------------',
+            'Ran 6 tests in 0.234s',
+            '',
+            'FAILED (failures=1)',
+            'Destroying test database for alias \'default\'...',
+            ''
+        ].join('\r\n');
+    }
+
+    private runPylint(file: string): string {
+        if (!file.endsWith('.py')) {
+            return `Error: ${file} is not a Python file.\r\n`;
+        }
+
+        if (!this.fs.fileExists(file)) {
+            return `Error: ${file} does not exist.\r\n`;
+        }
+
+        if (file === 'example.py') {
+            return [
+                '************* Module example',
+                'example.py:1:0: C0111: Missing module docstring (missing-docstring)',
+                '',
+                '------------------------------------------------------------------',
+                'Your code has been rated at 9.00/10',
+                '',
+                ''
+            ].join('\r\n');
+        }
+
+        return [
+            `************* Module ${file.replace('.py', '')}`,
+            `${file}:15:4: C0116: Missing function or method docstring (missing-docstring)`,
+            `${file}:23:8: W0621: Redefining name \'request\' from outer scope (redefined-outer-name)`,
+            `${file}:45:4: C0103: Function name "create_post" doesn\'t conform to snake_case naming style (invalid-name)`,
+            '',
+            '------------------------------------------------------------------',
+            'Your code has been rated at 7.50/10',
+            '',
+            ''
+        ].join('\r\n');
     }
 } 
