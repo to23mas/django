@@ -33,11 +33,11 @@ def overview(request: HttpRequest, course: str, sort_type: str) -> HttpResponse:
 		if user_progress:
 			lessons_progress = user_progress['lessons'][str(project.id)]
 			chapters_progress = user_progress['chapters'][str(project.id)]
-			
+
 			total_items = len(lessons_progress) + len(chapters_progress)
 			completed_items = sum(1 for status in lessons_progress.values() if status == 'done')
 			completed_items += sum(1 for status in chapters_progress.values() if status == 'done')
-			
+
 			progress_percentage = (completed_items / total_items * 100) if total_items > 0 else 0
 			projects_with_progress.append({
 				'project': project,
@@ -62,12 +62,10 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 	project_progress = ProgressStorage().get_content_progress(course, username, 'projects')
 	project = ProjectStorage().get_project_by_id(project_id, course)
 
-	# non existing project
 	if project is None:
 		messages.error(request, 'Pokus o vstup do neexistujícího projektu!')
 		return redirect('projects:overview', course=course, sort_type='all')
 
-	# locked project
 	if project_progress[str(project_id)] == 'lock':
 		messages.warning(request, 'Projekt ještě není odemčen!')
 		return redirect('projects:overview', course=course, sort_type='all')
@@ -78,7 +76,7 @@ def detail(request: HttpRequest, course: str, project_id: int) -> HttpResponse:
 		'projects': user_progress['projects'],
 		'lessons': user_progress['lessons'][str(project_id)],
 		'chapters': user_progress['chapters'][str(project_id)],
-		'tests': user_progress['tests'] 
+		'tests': user_progress['tests']
 	}
 	chapters = ChapterStorage().find_chapters(course, project.database)
 	lessons = LessonStorage().find_lessons(course, project.database)

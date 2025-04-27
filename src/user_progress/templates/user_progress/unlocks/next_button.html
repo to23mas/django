@@ -1,3 +1,4 @@
+{% if not is_last_chapter %}
 <form action="{% url 'user_progress:next_chapter' %}" class="float-end" method="post">
 	{% csrf_token %}
 	<input type="hidden" name="chapter_id" value="{{ chapter.id }}">
@@ -8,4 +9,11 @@
 		Další Kapitola
 	</button>
 </form>
+{% else %}
+<div class="float-end">
+	<a href="{% url 'projects:overview' course=course sort_type='all' %}" class="green_button">
+		Přehled projektů
+	</a>
+</div>
+{% endif %}
 

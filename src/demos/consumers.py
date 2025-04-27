@@ -11,11 +11,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
 	async def disconnect(self, code):
 		await self.channel_layer.group_discard("chat", self.channel_name)
 
-	# Receive message from WebSocket
 	async def receive(self, text_data=None, bytes_data=None):
 		text_data_json = json.loads(text_data)
 		message = text_data_json['message']
-		username = self.scope["user"].username  # Get username from the authenticated user
+		username = self.scope["user"].username
 
 		await self.channel_layer.group_send(
 			"chat",
@@ -26,7 +25,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			}
 		)
 
-	# Receive message from room group
 	async def chat_message(self, event):
 		message = event['message']
 		username = event['username']

@@ -8,7 +8,7 @@ def validate_python_code_function(code: str, username: str, expected_result: str
     for line in lines[1:]:
         if ':' in line:
             params, expected = line.split(':')
-            params = [p.strip() if p.strip() == 'user' else int(p.strip()) for p in params.split(',')]
+            params = [p.strip() if p.strip() == 'user' else p.strip() for p in params.split(',')]
             expected = expected.strip().rstrip(';')
             if expected.lower() == 'true':
                 expected = True

@@ -37,10 +37,11 @@ def run_in_docker(code: str, username: str) -> str:
         pass
     finally:
         if os.path.exists(file_path):
+            pass
             os.remove(file_path)
     try:
         container.remove()
     except:
         pass
 
-    return logs[0] 
+    return logs[0]

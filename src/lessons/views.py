@@ -34,7 +34,6 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		return redirect('projects:overview', course=course, sort_type='all')
 
 	if chapter_id == UnknownChapterId.ID.value:
-		# vis js does not know what is the first chapter in lesson. Have to figure it out here
 		chapters = ChapterStorage().find_chapters(course, project.database, {'lesson_id': lesson_data.id})
 		if chapters is None:
 			chapter = None
@@ -66,6 +65,12 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		if test is not None:
 			test_state = test.state
 
+
+	is_last_chapter = False
+	next_chapter_data = ChapterStorage().get_chapter_by_id(chapter.unlock_id, course, project.database)
+	if next_chapter_data is None:
+		is_last_chapter = True
+
 	lesson_chapters = ChapterStorage().find_chapters(course, project.database, {"lesson_id": lesson_id})
 	return render(request, 'lessons/lesson.html', {
 		'blockly': blockly,
@@ -81,4 +86,5 @@ def lesson(request: HttpRequest, course: str, project_id: int, lesson_id: int, c
 		'course': course,
 		'username': username,
 		'test_state': test_state,
+		'is_last_chapter': is_last_chapter,
 	})

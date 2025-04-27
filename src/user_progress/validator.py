@@ -65,14 +65,11 @@ def check_ast(code: str) -> bool:
 		tree = ast.parse(code)
 
 		for node in ast.walk(tree):
-			# Check for imports
 			if isinstance(node, (ast.Import, ast.ImportFrom)):
 				return False
 
-			# Check for system/file operations
 			if isinstance(node, ast.Call):
 				if isinstance(node.func, ast.Name):
-					# Dangerous built-in functions
 					dangerous_functions = {
 						'eval', 'exec', 'open', 'compile',
 						'input', '__import__', 'getattr', 'setattr',
@@ -81,9 +78,7 @@ def check_ast(code: str) -> bool:
 					if node.func.id in dangerous_functions:
 						return False
 
-			# Check for attribute access
 			if isinstance(node, ast.Attribute):
-				# Dangerous attributes/methods
 				dangerous_attrs = {
 					'read', 'write', 'system', 'popen',
 					'subprocess', 'shell', 'eval', 'exec'
@@ -169,11 +164,5 @@ def unlock_next_chapter_blockly(username: str, course_db: str, project: ProjectD
 	if chapter.is_last_in_lesson:
 		ProgressStorage().finish_lesson(username, course_db, chapter.lesson_id, project.id)
 
-	if next_chapter is None:
-		#last chapter in project
-		# finish_project()
-		# unlock_project()
-		## probably unlock next project
-		return 'success'
 
 	return 'success'

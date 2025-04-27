@@ -10,12 +10,7 @@ class CustomUserCreationForm(UserCreationForm):
 			'password1',
 			'password2'
 		)
-		help_texts = {
-			# 'username': 'Custom help text for username.',
-			# 'email': 'Custom help text for email.',
-			# 'password1': 'Custom help text for password.',
-			# 'password2': 'Custom help text for password confirmation.',
-		}
+		help_texts = {}
 		error_messages = {
 			'username': {
 				'required': 'Custom error: Username is required.',

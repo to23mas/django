@@ -21,7 +21,6 @@ def validate_cli(request: HttpRequest) -> JsonResponse:
 		project_id = int(str(request.POST.get('project_id')))
 		course_db = str(request.POST.get('course_db', ''))
 
-		# Get necessary data
 		project = ProjectStorage().get_project_by_id(project_id, course_db)
 		if project is None:
 			return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
@@ -34,9 +33,7 @@ def validate_cli(request: HttpRequest) -> JsonResponse:
 		if cli is None:
 			return JsonResponse({'status': 'error', 'message': 'Nevalidní akce'})
 
-		# Validate answer
 		if cli.expected_output.strip() == answer.strip():
-			# Handle successful completion
 			next_chapter = ChapterStorage().get_chapter_by_id(chapter.unlock_id, course_db, project.database)
 			if next_chapter is not None:
 				ProgressStorage().unlock_lesson(username, course_db, next_chapter.lesson_id, project_id)
@@ -49,7 +46,7 @@ def validate_cli(request: HttpRequest) -> JsonResponse:
 
 			if next_chapter is None:
 				url = reverse('projects:overview', course=course_db, sort_type='all')
-			else: 
+			else:
 				url = reverse('lessons:lesson', kwargs={
 					'course': course_db,
 					'project_id': project_id,

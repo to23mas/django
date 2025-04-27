@@ -50,6 +50,7 @@ def unlock(request: HttpRequest, course: str, test_id: int, project_id: int) -> 
 	username = request.user.username #type: ignore
 
 	test_progress = TestProgressStorage().get_test_progress(course, username, test_id)
+	print(test_progress)
 	if test_progress is None:
 		messages.success(request, 'V tuto chvíli nemáš žádné dostupné testy')
 		return redirect('tests:overview', course=course)
@@ -64,6 +65,7 @@ def unlock(request: HttpRequest, course: str, test_id: int, project_id: int) -> 
 		return redirect('tests:overview', course=course)
 
 	test_data, _ = TestStorage().get_test(course, test_id)
+	print(test_data)
 	if test_data is None:
 		messages.error(request, 'Pokus o odemknutí neexistujícího testu')
 		return redirect('tests:overview', course=course)
@@ -100,7 +102,6 @@ def display_test(request: HttpRequest, course: str, test_id: int) -> HttpRespons
 		messages.error(request, 'Pokus o přístup k neexistujícímu testu')
 		return redirect('tests:overview', course=course, sort_type='all')
 
-	# Use session to store/retrieve start time
 	session_key = f'test_{test_id}_start_time'
 	if session_key not in request.session: # type: ignore
 		request.session[session_key] = timezone.now().timestamp() # type: ignore
@@ -133,7 +134,6 @@ def validate_test(request: HttpRequest, course: str, test_id: int) -> HttpRespon
 
 	test_progress, test_happened = validate_test_get_result(request.POST, test_data, questionDataCollection, course, username, test_id)
 
-	# Clear the test start time from session
 	session_key = f'test_{test_id}_start_time'
 	if session_key in request.session: # type: ignore
 		del request.session[session_key] # type: ignore
@@ -184,7 +184,6 @@ def force_fail_test(request: HttpRequest, course: str, test_id: int) -> HttpResp
 	"""Force fail a test that wasn't submitted in time"""
 	username = request.user.username #type: ignore
 
-	# Clear the test start time from session
 	session_key = f'test_{test_id}_start_time'
 	if session_key in request.session: # type: ignore
 		del request.session[session_key] # type: ignore

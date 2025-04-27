@@ -1,5 +1,4 @@
-from ..docker_runner import run_in_docker
-from django.db import models
+import time
 
 def validate_python_code_class(code: str, username: str, expected_result: str) -> bool:
     expected_result = expected_result.replace('\r', '')
@@ -25,5 +24,7 @@ def validate_python_code_class(code: str, username: str, expected_result: str) -
     
     test_results = class_found and class_count == 1 and len(class_content) == 3 and all(line in class_content for line in expected_content)
     
+    time.sleep(2)
+
     return(test_results)
     

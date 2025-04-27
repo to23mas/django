@@ -59,22 +59,16 @@ def double(x):
     def test_safe_operations(self):
         """Test various safe operations"""
         safe_codes = [
-            # Math operations
             "x = 1 + 2 * 3",
-            # String operations
             "'hello' + ' world'",
-            # List operations
             "[1, 2, 3].append(4)",
-            # Dictionary operations
             "{'a': 1, 'b': 2}",
-            # Control structures
             """
 if x > 0:
     return True
 else:
     return False
 """,
-            # Loop structures
             """
 for i in range(10):
     print(i)

@@ -15,7 +15,7 @@ from domain.data.tests.TestStorage import TestStorage
 
 def get_test_results(user_answers: QueryDict, questionDataCollection: List[QuestionData], test_id: int, username: str) -> float:
 	correct_points = 0
-	
+
 	last_attempt = TestResult.objects.filter(user_id=username, test_id=test_id).order_by('-attempt_number').first()
 	current_attempt = (last_attempt.attempt_number + 1) if last_attempt else 1
 
@@ -44,7 +44,6 @@ def get_test_results(user_answers: QueryDict, questionDataCollection: List[Quest
 			points_earned = (len(rightly_not_selected) + len(rightly_selected))*(question.points/len(question.answers))  #type: ignore
 			correct_points += points_earned
 			is_correct = points_earned == question.points
-			# Set partially correct if some but not all correct answers were selected
 			is_partially_correct = True if points_earned != 0 and points_earned != question.points else False
 
 		elif question.type == QuestionType.OPEN.value:
@@ -146,13 +145,11 @@ def make_progress(test_result_data: TestResultData, test_data: TestData, course:
 
 	TestProgressStorage().update_test_progress(course, username, test_id, test_result_data.score_total, new_test_state, current_test_progress.attempts)
 	if new_test_state != TestState.FAIL:
-		# unlock new project
 		if (test_data.unlock_project != 0):
 			ProgressStorage().unlock_project(course, username, test_data.unlock_project)
 			ProgressStorage().unlock_lesson(username, course, test_data.unlock_lesson, test_data.unlock_project)
 			ProgressStorage().unlock_chapter(username, course, test_data.unlock_chapter, test_data.unlock_project)
 		else:
-			#unlock inside current
 			if (test_data.unlock_lesson != 0):
 				ProgressStorage().unlock_lesson(username, course, test_data.unlock_lesson, test_data.current_project)
 			if (test_data.unlock_chapter != 0):

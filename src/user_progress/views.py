@@ -33,7 +33,7 @@ def next_chapter(request: HttpRequest):
 
 	next_chapter_data = ChapterStorage().get_chapter_by_id(chapter.unlock_id, course_db, project.database)
 	if next_chapter_data is None:
-		messages.warning(request, 'Jednalo se o poslední kapitolu projektu.')
+		messages.warning(request, 'Přístup k neexistujícímu, nebo zamčenému zdroji')
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
 	if not ProgressStorage().is_chapter_open_or_done(username, course_db, next_chapter_data.id, project_id):
@@ -70,11 +70,9 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 			messages.warning(request, 'Kapitola je již splněna')
 			return redirect('lessons:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)
 
-		# pravděpodobně podvržený formulář (uživatel posílá akci z místa kde ve skutečnosti být nemůže
-		messages.warning(request, 'Nevalidní akce 2')
+		messages.warning(request, 'Nevalidní akce')
 		return redirect('projects:overview', course=course_db, sort_type='all')
 
-	# Unlock part
 	next_chapter_data = ChapterStorage().get_chapter_by_id(chapter.unlock_id, course_db, project.database)
 	if next_chapter_data is not None:
 		ProgressStorage().unlock_lesson(username, course_db, next_chapter_data.lesson_id, project_id)
@@ -94,7 +92,7 @@ def unlock_next_chapter(request: HttpRequest) -> HttpResponse:
 			return redirect('projects:overview', course=course_db, sort_type='all')
 		else:
 			return redirect('lessons:lesson', course=course_db, project_id=project_id, lesson_id=chapter.lesson_id, chapter_id=chapter.id)
-			
+
 
 	messages.success(request, message)
 	if action == 'complete_and_next':
