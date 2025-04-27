@@ -10,6 +10,18 @@ def path(route, view, name=None):
 def include(*args):
     return f"include{args}"
 
+class Request:
+    def __init__(self, method):
+        self.method = method
+        self.GET = {}
+        self.POST = {}
+        self.user = None
+        self.session = {}
+        self.FILES = {}
+        self.COOKIES = {}
+        self.path = ''
+        self.headers = {}
+
 class Post:
     class Manager:
         def get(self, **kwargs):
@@ -65,6 +77,9 @@ print_result = 'printed_result_validation_string_collection_grabber'
 code += f'\n{print_result} = printed'
 
 user = User()
+request1 = Request('GET')
+request2 = Request('POST')
+request3 = Request('DELETE')
 
 restricted_locals = {}
 
@@ -77,7 +92,10 @@ restricted_globals = {
     "Post": Post,
     "user": user,
     "os": os,
-    "views": views
+    "views": views,
+    "request1": request1,
+    "request2": request2,
+    "request3": request3
 }
 
 byte_code = compile_restricted(code, '<string>', 'exec')
