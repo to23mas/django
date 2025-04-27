@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
     {% if project_url %}
-        <div class="w-2/3 mx-auto mt-24">
+        <div class="w-2/3 mx-auto mt-8 sm:mt-24">
             <a href="{{project_url}}" class="text-blue-500 hover:underline">Přejít k projektu</a>
         </div>
     {% endif %}
-
-    <div class="border border-black w-2/3 mx-auto my-auto mt-5 bg-white shadow-2xl" style="height: calc(100vh - 300px);">
+    <div class="border border-black overflow-y-auto w-full sm:w-2/3 mx-auto my-auto mb-5 mt-5 bg-white shadow-2xl h-[calc(100vh-200px)] sm:h-[calc(100vh-300px)]">
         <iframe src="/admin/" 
             sandbox="allow-forms allow-scripts allow-same-origin allow-top-navigation allow-top-navigation-by-user-activation"
             style="border: none; width: 100%; height: 100%;">

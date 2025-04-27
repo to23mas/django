@@ -2,12 +2,12 @@
 {% block content %}
 
 {% if project_url %}
-<div class="w-2/3 mx-auto mt-24">
+<div class="w-2/3 mx-auto mt-8 sm:mt-24">
 	<a href="{{project_url}}" class="text-blue-500 hover:underline">Přejít k projektu</a>
 </div>
 {% endif %}
 
-<div class="border border-black w-2/3 mx-auto my-auto mt-5 bg-white shadow-2xl overflow-y-scroll sm:h-[calc(100vh-300px)] h-screen">
+<div class="border border-black overflow-y-auto w-full sm:w-2/3 mx-auto my-auto mb-5 mt-5 bg-white shadow-2xl h-[calc(100vh-200px)] sm:h-[calc(100vh-300px)]">
 	{% include './blog_navigation.html' %}
 	<div class="max-w-4xl mx-auto my-8 p-6 bg-white rounded-lg">
 		<div class="flex justify-between items-center mb-4">
