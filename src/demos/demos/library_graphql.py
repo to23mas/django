@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpRequest
 from django.contrib import messages
-from .schema import books
+from demos.schema import books
 from domain.data.demos.DemoStorage import DemoStorage
 from domain.data.progress.ProgressStorage import ProgressStorage
 

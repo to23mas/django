@@ -28,7 +28,7 @@ books = [
 ]
 
 class BookType(graphene.ObjectType):
-	book_id = graphene.Int()
+	id = graphene.Int()
 	title = graphene.String()
 	author = graphene.String()
 	isbn = graphene.String()
@@ -37,14 +37,14 @@ class BookType(graphene.ObjectType):
 
 class Query(graphene.ObjectType):
 	all_books = graphene.List(BookType)
-	book = graphene.Field(BookType, book_id=graphene.Int())
+	book = graphene.Field(BookType, id=graphene.Int())
 
 	def resolve_all_books(self, info):
 		return [BookType(**book) for book in books]
 
-	def resolve_book(self, info, book_id):
+	def resolve_book(self, info, id):
 		for book in books:
-			if book["id"] == book_id:
+			if book["id"] == id:
 				return BookType(**book)
 		return None
 
@@ -73,7 +73,7 @@ class CreateBook(graphene.Mutation):
 
 class UpdateBook(graphene.Mutation):
 	class Arguments:
-		book_id = graphene.ID(required=True)
+		id = graphene.ID(required=True)
 		title = graphene.String()
 		author = graphene.String()
 		isbn = graphene.String()
@@ -82,22 +82,22 @@ class UpdateBook(graphene.Mutation):
 
 	book = graphene.Field(BookType)
 
-	def mutate(self, info, book_id, **kwargs):
+	def mutate(self, info, id, **kwargs):
 		for book in books:
-			if book["id"] == int(book_id):
+			if book["id"] == int(id):
 				book.update({k: v for k, v in kwargs.items() if v is not None})
 				return UpdateBook(book=BookType(**book))
 		return None
 
 class DeleteBook(graphene.Mutation):
 	class Arguments:
-		book_id = graphene.ID(required=True)
+		id = graphene.ID(required=True)
 
 	success = graphene.Boolean()
 
-	def mutate(self, info, book_id):
+	def mutate(self, info, id):
 		original_length = len(books)
-		books[:] = [b for b in books if b["id"] != int(book_id)]
+		books[:] = [b for b in books if b["id"] != int(id)]
 		return DeleteBook(success=len(books) < original_length)
 
 class Mutation(graphene.ObjectType):
