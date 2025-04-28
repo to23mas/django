@@ -173,6 +173,7 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
 	BASE_DIR / 'public/',
 	BASE_DIR / 'src/public/',
+	BASE_DIR / 'src/demos/static',
 	BASE_DIR / 'src/public/static',
 ]
 
