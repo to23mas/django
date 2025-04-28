@@ -14,8 +14,8 @@ from users.forms.CustomUserCreationForm import CustomUserCreationForm
 
 
 def register(request: HttpRequest) -> HttpResponse:
-	if os.getenv('REGISTRATION') == 'disabled':
-		return render(request, "users/register-disabled.html", {})
+	# if os.getenv('REGISTRATION') == 'disabled':
+	# 	return render(request, "users/register-disabled.html", {})
 
 	if request.method == "POST":
 		form = CustomUserCreationForm(request.POST)
