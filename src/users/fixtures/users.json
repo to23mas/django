@@ -68,12 +68,12 @@
         "model": "auth.user",
         "pk": 9,
         "fields": {
-            "username": "tomas",
-            "email": "to23mas@gmail.com",
+            "username": "student",
+            "email": "student@example.com",
             "password": "pbkdf2_sha256$36000$7N3ZVNBuCwH4$XcKRmY80ZVN+kpMTO8LLr45lKo+G2F/12Xb1DMcJaMw=",
             "is_staff": false,
             "is_active": true,
-            "is_superuser": false,
+            "is_superuser": true,
             "groups": [2]
         }
     }
