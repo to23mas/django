@@ -14,8 +14,8 @@ from users.forms.CustomUserCreationForm import CustomUserCreationForm
 
 
 def register(request: HttpRequest) -> HttpResponse:
-	# if os.getenv('REGISTRATION') == 'disabled':
-	# 	return render(request, "users/register-disabled.html", {})
+	if os.getenv('REGISTRATION') == 'disabled':
+		return render(request, "users/register-disabled.html", {})
 
 	if request.method == "POST":
 		form = CustomUserCreationForm(request.POST)
@@ -29,6 +29,7 @@ def register(request: HttpRequest) -> HttpResponse:
 			anon_user.save()
 
 			send_registration_email(anon_user.username, form.cleaned_data['email'], verify_url)
+			messages.success(request, 'Registrace proběhla úspěšně, ověřovací email byl odeslán.')
 			return redirect("courses:overview")
 	else:
 		form = CustomUserCreationForm()
