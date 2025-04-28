@@ -45,6 +45,8 @@ def login_view(request: HttpRequest) -> HttpResponse:
 		if form.is_valid():
 			login(request, form.get_user())
 			return redirect("courses:overview")
+		else:
+			messages.error(request, 'Nesprávné uživatelské jméno nebo heslo.')
 	else:
 		form = AuthenticationForm()
 

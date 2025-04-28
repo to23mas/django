@@ -128,6 +128,18 @@ class CustomUserCreationForm(UserCreationForm):
             'password_mismatch': 'Hesla se neshodují.',
         }
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise ValidationError('Toto uživatelské jméno je již obsazené.')
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError('Tento email je již registrován.')
+        return email
+
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
