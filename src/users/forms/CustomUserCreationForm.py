@@ -93,11 +93,11 @@ class CustomUserCreationForm(UserCreationForm):
                             raise ValidationError('Heslo je příliš podobné emailové adrese.')
 
         class CustomPasswordMatchValidator:
-            def __init__(self, password1):
-                self.password1 = password1
+            def __init__(self, form):
+                self.form = form
 
             def __call__(self, password, user=None):
-                if password != self.password1:
+                if 'password1' in self.form.data and password != self.form.data['password1']:
                     raise ValidationError('Hesla se neshodují.')
 
         self.fields['password1'].validators = [
@@ -109,7 +109,8 @@ class CustomUserCreationForm(UserCreationForm):
 
         # Přidání validátorů pro password2
         self.fields['password2'].validators = [
-            CustomPasswordMatchValidator(self.fields['password1'].widget.value_from_datadict)
+            CustomMinimumLengthValidator(min_length=8),
+            CustomPasswordMatchValidator(self)
         ]
 
         # Přepsání chybových zpráv pro validaci hesla
