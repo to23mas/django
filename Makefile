@@ -22,6 +22,10 @@ dev:
 prod-up:
 	docker compose -f docker-compose.prod.yml up -d
 
+.PHONY: prod-up-build
+prod-up-build:
+	docker compose -f docker-compose.prod.yml up -d --build
+
 .PHONY: prod-down
 prod-down:
 	docker compose -f docker-compose.prod.yml down --remove-orphans
