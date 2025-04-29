@@ -26,9 +26,10 @@ SECRET_KEY = "django-insecure-rs%!p@c7--xcb4gf^zfgbt%#j$^eujdzhp+bausw)0(n_7p7yl
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+SECURE_SSL_REDIRECT = False
 
-ALLOWED_HOSTS = ['*', '127.0.0.1',  'localhost' ]
-CSRF_TRUSTED_ORIGINS = ['http://localhost']
+ALLOWED_HOSTS = ['*', '127.0.0.1',  'localhost', '161.35.25.166' ]
+CSRF_TRUSTED_ORIGINS = ['http://localhost', 'https://localhost', 'http://161.35.25.166', 'https://161.35.25.166']
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SESSION_COOKIE_SAMESITE = None  # Allow session cookies in iframes
 SESSION_COOKIE_SECURE = False   # Change to True if using HTTPS
