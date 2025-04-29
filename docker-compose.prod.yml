@@ -49,35 +49,35 @@ services:
       timeout: 5s
       retries: 5
 
-  migrations:
-    build: .
-    environment:
-      SQL_ENGINE: ${SQL_ENGINE}
-      SQL_DATABASE: ${SQL_DATABASE}
-      SQL_USER: ${SQL_USER}
-      SQL_PASSWORD: ${SQL_PASSWORD}
-      SQL_HOST: ${SQL_HOST}
-      SQL_PORT: ${SQL_PORT}
-      DATABASE: ${DATABASE}
-      DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
-    volumes:
-      - ./db/:/usr/src/db
-      - ./src/:/usr/src/app
-    networks:
-      - internal
-    command: >
-      sh -c "python manage.py makemigrations &&
-             python manage.py migrate &&
-             python manage.py loaddata demo_data.json &&
-             python manage.py loaddata users.json &&
-             python /usr/src/db/migrations/migrate.py &&
-             python manage.py createsuperuser --username admin --email admin@admin.com --noinput ;
-             echo 0"
-    depends_on:
-      db:
-        condition: service_healthy
-      mongodb:
-        condition: service_healthy
+  # migrations:
+  #   build: .
+  #   environment:
+  #     SQL_ENGINE: ${SQL_ENGINE}
+  #     SQL_DATABASE: ${SQL_DATABASE}
+  #     SQL_USER: ${SQL_USER}
+  #     SQL_PASSWORD: ${SQL_PASSWORD}
+  #     SQL_HOST: ${SQL_HOST}
+  #     SQL_PORT: ${SQL_PORT}
+  #     DATABASE: ${DATABASE}
+  #     DJANGO_SUPERUSER_PASSWORD: ${DJANGO_SUPERUSER_PASSWORD}
+  #   volumes:
+  #     - ./db/:/usr/src/db
+  #     - ./src/:/usr/src/app
+  #   networks:
+  #     - internal
+  #   command: >
+  #     sh -c "python manage.py makemigrations &&
+  #            python manage.py migrate &&
+  #            python manage.py loaddata demo_data.json &&
+  #            python manage.py loaddata users.json &&
+  #            python /usr/src/db/migrations/migrate.py &&
+  #            python manage.py createsuperuser --username admin --email admin@admin.com --noinput ;
+  #            echo 0"
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #     mongodb:
+  #       condition: service_healthy
 
   web:
     build:
@@ -95,9 +95,9 @@ services:
       - .env
     networks:
       - internal
-    depends_on:
-      migrations:
-        condition: service_completed_successfully
+    # depends_on:
+    #   migrations:
+    #     condition: service_completed_successfully
 
   nginx:
     image: nginx:latest
@@ -110,6 +110,8 @@ services:
     volumes:
       - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./src/public/:/static:ro
+      - ~/certs/certificate.crt:/etc/nginx/certs/certificate.crt:ro
+      - ~/certs/private.key:/etc/nginx/certs/private.key:ro
     networks:
       - internal
     depends_on:
