@@ -168,7 +168,7 @@ def results(request: HttpRequest, course: str, test_id: int)  -> HttpResponse:
 		messages.error(request, 'Nevalidní akce')
 		return redirect('tests:overview', course=course)
 
-	return render(request, 'tests/results.html', {
+	response = render(request, 'tests/results.html', {
 		'course': course,
 		'test_progress': test_progress,
 		'test_data': test_data,
@@ -177,6 +177,11 @@ def results(request: HttpRequest, course: str, test_id: int)  -> HttpResponse:
 		'best_score_percentage': f'{(max(test_progress.score) / (test_data.total_points/100)):.2f}',
 		'total_attempts': len(test_progress.score)
 	})
+	
+	response['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
+	response['Pragma'] = 'no-cache'
+	response['Expires'] = '0'
+	return response
 
 
 @login_required

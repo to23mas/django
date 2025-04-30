@@ -53,58 +53,55 @@
 {% endfor %}
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const codeElements = document.getElementsByTagName('code');
-    for (let element of codeElements) {
-        element.innerHTML = element.innerHTML
-            .replace(/&ZeroWidthSpace;/g, '')
-            .replace(/​/g, '');
+	document.addEventListener('DOMContentLoaded', () => {
+		const codeElements = document.getElementsByTagName('code');
+		for (let element of codeElements) {
+			element.innerHTML = element.innerHTML
+				.replace(/&ZeroWidthSpace;/g, '')
+				.replace(/​/g, '');
 
-        const parentPre = element.closest('pre');
-        if (parentPre) {
-            const copyButton = document.createElement('button');
-            copyButton.className = 'copy-button';
+			const parentPre = element.closest('pre');
+			if (parentPre) {
+				const copyButton = document.createElement('button');
+				copyButton.className = 'copy-button';
 
-            const hasFilename = parentPre.querySelector('.filename') !== null;
-            copyButton.classList.add(hasFilename ? 'copy-button-with-filename' : 'copy-button-without-filename');
+				const hasFilename = parentPre.querySelector('.filename') !== null;
+				copyButton.classList.add(hasFilename ? 'copy-button-with-filename' : 'copy-button-without-filename');
 
-            copyButton.textContent = 'Kopírovat';
+				copyButton.textContent = 'Kopírovat';
 
-            copyButton.addEventListener('click', async () => {
-                try {
-                    let textToCopy = element.textContent;
-                    // Pokud text začíná $, odstraníme ho
-                    if (textToCopy.startsWith('$')) {
-                        textToCopy = textToCopy.substring(1).trim();
-                    }
+				copyButton.addEventListener('click', async () => {
+					try {
+						let textToCopy = element.textContent;
+						if (textToCopy.startsWith('$')) {
+							textToCopy = textToCopy.substring(1).trim();
+						}
 
-                    // Zkusíme použít Clipboard API
-                    if (navigator.clipboard && window.isSecureContext) {
-                        await navigator.clipboard.writeText(textToCopy);
-                    } else {
-                        // Fallback pro HTTP nebo starší prohlížeče
-                        const textarea = document.createElement('textarea');
-                        textarea.value = textToCopy;
-                        textarea.style.position = 'fixed';
-                        textarea.style.opacity = '0';
-                        document.body.appendChild(textarea);
-                        textarea.select();
-                        document.execCommand('copy');
-                        document.body.removeChild(textarea);
-                    }
+						if (navigator.clipboard && window.isSecureContext) {
+							await navigator.clipboard.writeText(textToCopy);
+						} else {
+							const textarea = document.createElement('textarea');
+							textarea.value = textToCopy;
+							textarea.style.position = 'fixed';
+							textarea.style.opacity = '0';
+							document.body.appendChild(textarea);
+							textarea.select();
+							document.execCommand('copy');
+							document.body.removeChild(textarea);
+						}
 
-                    copyButton.textContent = 'Zkopírováno!';
-                    setTimeout(() => {
-                        copyButton.textContent = 'Kopírovat';
-                    }, 2000);
-                } catch (err) {
-                    console.error('Failed to copy:', err);
-                    copyButton.textContent = 'Chyba';
-                }
-            });
+						copyButton.textContent = 'Zkopírováno!';
+						setTimeout(() => {
+							copyButton.textContent = 'Kopírovat';
+						}, 2000);
+					} catch (err) {
+						console.error('Failed to copy:', err);
+						copyButton.textContent = 'Chyba';
+					}
+				});
 
-            parentPre.appendChild(copyButton);
-        }
-    }
-});
+				parentPre.appendChild(copyButton);
+			}
+		}
+	});
 </script>
