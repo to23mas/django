@@ -24,6 +24,12 @@ def overview(request: HttpRequest, course: str) -> HttpResponse:
 	username = request.user.username #type: ignore
 	user_available = ProgressStorage().find_available_tests(course, username)
 
+	# Clear all test submitted flags for this course
+	for test_id in user_available:
+		test_submitted_key = f'test_{test_id}_submitted'
+		if test_submitted_key in request.session: # type: ignore
+			del request.session[test_submitted_key] # type: ignore
+
 	if user_available is None or len(user_available) == 0:
 		messages.success(request, 'V tuto chvíli nemáš žádné dostupné testy')
 		return render(request, 'tests/overview.html', {
@@ -92,18 +98,12 @@ def display_test(request: HttpRequest, course: str, test_id: int) -> HttpRespons
 	username = request.user.username #type: ignore
 
 	test_progress = TestProgressStorage().get_test_progress(course, username, test_id)
-	referrer = request.META.get('HTTP_REFERER')
-	print(referrer)
-
-
-	invalid_redirect_url = 'tests/result'
-	print(invalid_redirect_url)
-	print(invalid_redirect_url in referrer)
-	if invalid_redirect_url in referrer:
+	
+	# Check if test was submitted using session flag
+	test_submitted_key = f'test_{test_id}_submitted'
+	if request.session.get(test_submitted_key): # type: ignore
 		messages.error(request, 'Nevalidní akce')
 		return redirect('tests:overview', course=course)
-
-
 
 	if test_progress is None or test_progress.state is TestState.FINISH.value:
 		messages.error(request, 'Nevalidní akce')
@@ -135,11 +135,7 @@ def display_test(request: HttpRequest, course: str, test_id: int) -> HttpRespons
 		'test_duration': test_data.time
 	}
 
-	response = render(request, 'tests/detail.html', context)
-	response['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
-	response['Pragma'] = 'no-cache'
-	response['Expires'] = '0'
-	return response
+	return render(request, 'tests/detail.html', context)
 
 
 @login_required
@@ -157,6 +153,10 @@ def validate_test(request: HttpRequest, course: str, test_id: int) -> HttpRespon
 	session_key = f'test_{test_id}_start_time'
 	if session_key in request.session: # type: ignore
 		del request.session[session_key] # type: ignore
+
+	# Set session flag that test was submitted
+	test_submitted_key = f'test_{test_id}_submitted'
+	request.session[test_submitted_key] = True # type: ignore
 
 	if not test_happened:
 		messages.error(request, 'Nevalidní akce')
@@ -197,10 +197,7 @@ def results(request: HttpRequest, course: str, test_id: int)  -> HttpResponse:
 		'best_score_percentage': f'{(max(test_progress.score) / (test_data.total_points/100)):.2f}',
 		'total_attempts': len(test_progress.score)
 	})
-	
-	response['Cache-Control'] = 'no-cache, no-store, must-revalidate, max-age=0'
-	response['Pragma'] = 'no-cache'
-	response['Expires'] = '0'
+
 	return response
 
 

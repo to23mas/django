@@ -11,12 +11,6 @@ interface TestTimeData {
 }
 
 export function initTimeout() {
-	window.addEventListener('pageshow', (event) => {
-		if (event.persisted) {
-			window.location.reload();
-		}
-	});
-
 	document.addEventListener('DOMContentLoaded', () => {
 		window.onunload = () => {};
 
@@ -137,21 +131,4 @@ function startTimer({
 	}
 
 	return () => clearInterval(interval);
-}
-
-function handleNavigation() {
-	window.addEventListener('popstate', () => {
-		window.location.reload();
-	});
-
-	if (window.history && window.history.pushState) {
-		window.addEventListener('load', () => {
-			window.history.pushState('forward', '', window.location.href);
-		}, false);
-
-		window.addEventListener('popstate', () => {
-			window.history.pushState('forward', '', window.location.href);
-			window.location.reload();
-		});
-	}
 }
