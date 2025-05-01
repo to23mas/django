@@ -1,35 +1,33 @@
 {% extends "base_no_navigation.html" %}
 {% block content %}
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 
 <script>
-    // prevent bfcache
-    window.addEventListener('unload', function() {});
-
-    window.addEventListener('pageshow', function(event) {
-        if (event.persisted) {
-            window.location.reload();
-        }
-    });
-</script>
-
-<script>
-window.onpageshow = function(event) {
-    if (event.persisted) {
-        window.location.reload();
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
     }
-};
 
-window.history.forward();
-function noBack() {
-    window.history.forward();
-}
+    window.history.pushState(null, '', window.location.href);
+    window.onpopstate = function() {
+        window.history.pushState(null, '', window.location.href);
+        window.location.href = "{% url 'tests:overview' course=course %}";
+        return false;
+    };
 
+    window.onpageshow = function(event) {
+        if (event.persisted) {
+            window.location.href = "{% url 'tests:overview' course=course %}";
+            return false;
+        }
+    };
+
+    window.onload = function() {
+        document.getElementById('test-form').reset();
+        window.history.pushState(null, '', window.location.href);
+        window.history.pushState(null, '', window.location.href);
+    };
 </script>
 
-<body onload="noBack();" onpageshow="if (event.persisted) noBack();" onunload="">
+<body>
 
 <div class="w-full mx-auto md:w-4/6 mt-10">
 	<h3>{{test.title}}</h3>

@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.utils import timezone
+from django.urls import reverse
+from django.views.decorators.cache import never_cache
 
 from domain.data.chapters.ChapterStorage import ChapterStorage
 from domain.data.progress.ProgressStorage import ProgressStorage
@@ -84,11 +86,29 @@ def unlock(request: HttpRequest, course: str, test_id: int, project_id: int) -> 
 
 
 @login_required
+@never_cache
 def display_test(request: HttpRequest, course: str, test_id: int) -> HttpResponse:
 	"""display one test"""
 	username = request.user.username #type: ignore
 
 	test_progress = TestProgressStorage().get_test_progress(course, username, test_id)
+	referrer = request.META.get('HTTP_REFERER')
+	print(referrer)
+
+
+	invalid_redirect_url = 'tests/result'
+	print(invalid_redirect_url)
+	print(invalid_redirect_url in referrer)
+	if invalid_redirect_url in referrer:
+		messages.error(request, 'Nevalidní akce')
+		return redirect('tests:overview', course=course)
+
+
+
+	if test_progress is None or test_progress.state is TestState.FINISH.value:
+		messages.error(request, 'Nevalidní akce')
+		return redirect('tests:overview', course=course)
+
 	if test_progress is None or test_progress.state is TestState.CLOSE.value:
 		messages.error(request, 'Nevalidní akce')
 		return redirect('tests:overview', course=course)
