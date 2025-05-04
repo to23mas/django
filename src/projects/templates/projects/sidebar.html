@@ -26,18 +26,15 @@
 					<a
 						href="{% url 'lessons:lesson' course=course project_id=project_id lesson_id=chapter.lesson_id chapter_id=chapter.id %}"
 						class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_id == chapter.id %} bg-blue-100 {% endif %}">
-						<i class="fa-solid fa-check"></i>
 						<span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.title }}</span>
 					</a>
 					{% elif chapter_progress == 'open' %}
 					<a
 						href="{% url 'lessons:lesson' course=course project_id=project_id lesson_id=chapter.lesson_id chapter_id=chapter.id %}"
 						class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group {% if chapter_id == chapter.id %} bg-blue-100 {% endif %}">
-						<i class="fa-solid fa-lock-open"></i>
 						<span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.title }}</span>
 					</a>
 					{% else %}
-					<i class="fa-solid fa-lock"></i>
 					<span class="flex-1 ms-3 whitespace-nowrap">{{ chapter.title }}</span>
 					{% endif %}
 				</li>
